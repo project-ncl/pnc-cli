@@ -91,30 +91,47 @@ def pretty_format_response(input_json):
 @arg('-p','--product_code', help="The product code for the new product")
 @arg('-s','--system_code', help="The system code for the new product")
 def create_product(name, description=None, abbreviation=None, product_code=None, system_code=None):
-    "Create a new product definition on the configured PNC instance"
+    "Create a new product"
     product = _create_product_object(name, description, abbreviation, product_code, system_code)
     response = pretty_format_response(ProductsApi(client).createNew(body=product))
     print(response)
 
+
+@arg('name', help='Name for the project')
+@arg('-c','--configuration-ids', help="List of configuration IDs this project should be associated with")
+@arg('-d','--description', help="Detailed description of the new project")
+@arg('-p','--project_url', help="SCM Url for the project")
+@arg('-i','--issue_url', help="Issue tracker URL for the new project")
+@arg('-l','--license_id', help="License ID for the new project")
 def create_project(name, configuration_ids=None, description=None, issue_url=None, project_url=None, license_id=None):
+    "Create a new project "
     project = _create_project_object(name, configuration_ids, description, issue_url, project_url, license_id)
     response = pretty_format_response(ProjectsApi(client).createNew(body=project))
     print(response)
 
+@arg('name', help='Name for the new license')
+@arg('content', help='Full textual content of the new license')
+@arg('-r','--reference-url', help='URL containing a reference for the license')
+@arg('-a','--abbreviation', help='Abbreviation or \"short name\" for the license')
+@arg('-p','--project-ids', help='List of project ids that should be associated with the new license. IDs must denote existing projects')
 def create_license(name, content, reference_url=None, abbreviation=None, project_ids=None):
+    "Create a new license"
     license = _create_license_object(name, content, reference_url, abbreviation, project_ids)
     response = pretty_format_response(LicensesApi(client).createNew(body=license))
     print(response)
 
 def list_licenses():
+    "Get a JSON object containing existing licenses"
     response = pretty_format_response(LicensesApi(client).getAll())
     print(response)
 
 def list_products():
+    "Get a JSON object containing existing products"
     response = pretty_format_response(ProductsApi(client).getAll())
     print(response)
 
 def list_projects():
+    "Get a JSON object containing existing projects"
     response = pretty_format_response(ProjectsApi(client).getAll())
     print(response)
 
