@@ -136,7 +136,7 @@ class ProjectsApi(object):
         files = {}
         bodyParam = None
 
-        headerParams['Accept'] = ''
+        headerParams['Accept'] = 'application/json'
 
         
 
@@ -155,7 +155,7 @@ class ProjectsApi(object):
 
         response = self.apiClient.callAPI(resourcePath, method, queryParams,
                                           postData, headerParams, files=files)
-
+        return response
         
         
         
