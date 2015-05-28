@@ -1,2 +1,17 @@
 # pnc-cli
 A python CLI around the PNC REST API
+
+Usage:
+
+python pnc.py [-h]
+
+See the output of 'python pnc.py -h' command for instructions. Make sure you're running a local PNC instance 
+and that the base_pnc_url in pnc.py is modified to your specific setup.
+
+Coming Soon:
+
+ * Configuration files
+ * Full REST API coverage
+ * Command format refinement
+
+
