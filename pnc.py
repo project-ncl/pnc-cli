@@ -1,5 +1,6 @@
-import requests, json
-import argh
+#!/usr/bin/env python
+# PYTHON_ARGCOMPLETE_OK
+import argh, json, argcomplete
 from argh import arg
 
 from client import *
@@ -145,6 +146,7 @@ def create_build_configuration(name, project_id, environment, description='', sc
 
 parser = argh.ArghParser()
 parser.add_commands([create_product,create_project,create_license,list_products,list_projects,list_licenses])
+parser.autocomplete()
 
 if __name__ == '__main__':
     parser.dispatch()
