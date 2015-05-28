@@ -71,8 +71,7 @@ class LicensesApi(object):
         files = {}
         bodyParam = None
 
-        headerParams['Accept'] = ''
-        headerParams['Content-Type'] = ''
+        headerParams['Accept'] = 'application/json'
 
         
         if ('pageIndex' in params):
@@ -100,7 +99,7 @@ class LicensesApi(object):
 
         response = self.apiClient.callAPI(resourcePath, method, queryParams,
                                           postData, headerParams, files=files)
-
+        return response
         
         
         
@@ -136,8 +135,7 @@ class LicensesApi(object):
         files = {}
         bodyParam = None
 
-        headerParams['Accept'] = ''
-        headerParams['Content-Type'] = ''
+        headerParams['Accept'] = 'application/json'
 
         
 
@@ -156,7 +154,7 @@ class LicensesApi(object):
 
         response = self.apiClient.callAPI(resourcePath, method, queryParams,
                                           postData, headerParams, files=files)
-
+        return response
         
         
         

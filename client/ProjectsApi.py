@@ -71,8 +71,7 @@ class ProjectsApi(object):
         files = {}
         bodyParam = None
 
-        headerParams['Accept'] = ''
-        headerParams['Content-Type'] = ''
+        headerParams['Accept'] = 'application/json'
 
         
         if ('pageIndex' in params):
@@ -100,6 +99,7 @@ class ProjectsApi(object):
 
         response = self.apiClient.callAPI(resourcePath, method, queryParams,
                                           postData, headerParams, files=files)
+        return response
 
         
         
@@ -137,7 +137,6 @@ class ProjectsApi(object):
         bodyParam = None
 
         headerParams['Accept'] = ''
-        headerParams['Content-Type'] = ''
 
         
 

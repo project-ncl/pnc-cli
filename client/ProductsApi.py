@@ -71,8 +71,7 @@ class ProductsApi(object):
         files = {}
         bodyParam = None
 
-        headerParams['Accept'] = ''
-        headerParams['Content-Type'] = ''
+        headerParams['Accept'] = 'application/json'
 
         
         if ('pageIndex' in params):
@@ -100,6 +99,7 @@ class ProductsApi(object):
 
         response = self.apiClient.callAPI(resourcePath, method, queryParams,
                                           postData, headerParams, files=files)
+        return response
 
         
         
@@ -137,9 +137,8 @@ class ProductsApi(object):
         bodyParam = None
 
 
-        
 
-        
+        headerParams['Accept'] = 'application/json'
 
         
 
@@ -154,7 +153,7 @@ class ProductsApi(object):
 
         response = self.apiClient.callAPI(resourcePath, method, queryParams,
                                           postData, headerParams, files=files)
-
+        return response
         
         
         
@@ -191,7 +190,6 @@ class ProductsApi(object):
         bodyParam = None
 
         headerParams['Accept'] = ''
-        headerParams['Content-Type'] = ''
 
         
 
@@ -213,7 +211,7 @@ class ProductsApi(object):
 
         response = self.apiClient.callAPI(resourcePath, method, queryParams,
                                           postData, headerParams, files=files)
-
+        return response
         
         
         
