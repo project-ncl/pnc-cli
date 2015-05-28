@@ -14,4 +14,10 @@ Coming Soon:
  * Full REST API coverage
  * Command format refinement
 
+Rudimentary tab auto complete support:
 
+ * Currently bash only.
+ * Installation: 
+    - (sudo) pip install argcomplete
+    - Follow instructions here: https://github.com/kislyuk/argcomplete#activating-global-completion
+ 
