@@ -71,8 +71,8 @@ class BuildconfigurationsApi(object):
         files = {}
         bodyParam = None
 
-        headerParams['Accept'] = ''
-        headerParams['Content-Type'] = ''
+        headerParams['Accept'] = 'application/json'
+
 
         
         if ('pageIndex' in params):
@@ -100,6 +100,7 @@ class BuildconfigurationsApi(object):
 
         response = self.apiClient.callAPI(resourcePath, method, queryParams,
                                           postData, headerParams, files=files)
+        return response
 
         
         
@@ -633,8 +634,8 @@ class BuildconfigurationsApi(object):
         files = {}
         bodyParam = None
 
-        headerParams['Accept'] = ''
-        headerParams['Content-Type'] = '*/*,'
+        headerParams['Accept'] = 'application/json'
+        headerParams['Content-Type'] = 'application/json'
 
         
 
@@ -657,6 +658,7 @@ class BuildconfigurationsApi(object):
         response = self.apiClient.callAPI(resourcePath, method, queryParams,
                                           postData, headerParams, files=files)
 
+        return response
         
         
         
