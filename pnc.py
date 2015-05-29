@@ -136,6 +136,42 @@ def list_projects():
     response = pretty_format_response(ProjectsApi(client).getAll())
     print(response)
 
+def list_build_configurations():
+    "Get a JSON object containing existing projects"
+    response = pretty_format_response(BuildconfigurationsApi(client).getAll())
+    print(response)
+
+def find_build_configuration_by_name(name):
+    response = BuildconfigurationsApi(client).getAll()
+    for config in response:
+        if config['name'] == name:
+            return config['id']
+    return None
+
+def _build_configuration_exists(id):
+    response = BuildconfigurationsApi(client).getAll()
+    for config in response:
+        if config['id'] == int(id):
+            return True
+
+@arg('-n', '--name', help='Name of the build configuration to trigger')
+@arg('-i', '--id', help='ID of the build configuration to trigger')
+def trigger_build(name=None,id=None):
+    if id:
+        if (_build_configuration_exists(id)):
+            print(pretty_format_response(BuildconfigurationsApi(client).trigger(id=id)))
+        else:
+            print 'There is no build configuration with id {0}'.format(id)
+    elif name:
+        build_id = find_build_configuration_by_name(name)
+        if build_id:
+            print(pretty_format_response(BuildconfigurationsApi(client).trigger(id=build_id)))
+        else:
+            print 'There is no build configuration with name {0}'.format(name)
+    else:
+        print 'Trigger build requires either a name or on ID of a configuration to trigger'
+
+
 def create_build_configuration(name, project_id, environment, description='', scm_url='', scm_revision='', patches_url='',
                                build_script=''):
     #check for existing project_ids, fail out if the project id doesn't exist
@@ -145,7 +181,7 @@ def create_build_configuration(name, project_id, environment, description='', sc
 
 
 parser = argh.ArghParser()
-parser.add_commands([create_product,create_project,create_license,list_products,list_projects,list_licenses])
+parser.add_commands([create_product,create_project,create_license,list_products,list_projects,list_licenses,list_build_configurations,trigger_build])
 parser.autocomplete()
 
 if __name__ == '__main__':
