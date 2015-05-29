@@ -3,7 +3,6 @@
 import argh, json, argcomplete
 from argh import arg
 
-from client import *
 from client import swagger
 from client.BuildconfigurationsApi import BuildconfigurationsApi
 from client.LicensesApi import LicensesApi
@@ -14,6 +13,8 @@ from client.models.Configuration import Configuration
 from client.models.License import License
 from client.models.Product import *
 from client.models.Project import *
+
+from pnc_help_formatter import PNCFormatter
 
 #TODO: load this from a config file
 base_pnc_url = 'http://localhost:8080/pnc-rest/rest'
@@ -179,9 +180,8 @@ def create_build_configuration(name, project_id, environment, description='', sc
     response = pretty_format_response(BuildconfigurationsApi(client).createNew(body=build_configuration))
     print(response)
 
-
 parser = argh.ArghParser()
-parser.add_commands([create_product,create_project,create_license,list_products,list_projects,list_licenses,list_build_configurations,trigger_build])
+parser.add_commands([create_product,create_project,create_license,list_products,list_projects,list_licenses,list_build_configurations,trigger_build], func_kwargs={'formatter_class': PNCFormatter})
 parser.autocomplete()
 
 if __name__ == '__main__':
