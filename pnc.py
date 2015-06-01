@@ -138,7 +138,7 @@ def list_projects():
     print(response)
 
 def list_build_configurations():
-    "Get a JSON object containing existing projects"
+    "Get a JSON object containing existing build configurations"
     response = pretty_format_response(BuildconfigurationsApi(client).getAll())
     print(response)
 
