@@ -119,6 +119,18 @@ def _find_build_configuration_by_id(search_id):
         if config['id'] == int(search_id):
             return True
 
+#localize?
+#refine text
+@arg('name', help='Name for the product')
+@arg('-d','--description', help="Detailed description of the new product")
+@arg('-a','--abbreviation', help="The abbreviation or \"short name\" of the new product")
+@arg('-p','--product-code', help="The product code for the new product")
+@arg('-s','--system-code', help="The system code for the new product")
+def create_product(name, description=None, abbreviation=None, product_code=None, system_code=None):
+    "Create a new product"
+    product = _create_product_object(name, description, abbreviation, product_code, system_code)
+    response = pretty_format_response(ProductsApi(apiclient).createNew(body=product).json())
+    print(response)
 
 @arg('id', help='ID of the product to update')
 @arg('-n','--name', help="New name for the product")
