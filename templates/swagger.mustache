@@ -77,7 +77,7 @@ class ApiClient(object):
         if 'Set-Cookie' in result.headers:
             self.cookie = result.headers['Set-Cookie']
 
-        return result.json()
+        return result
 
     def toPathValue(self, obj):
         """Convert a string or object to a path-friendly value
