@@ -28,6 +28,9 @@ class BuildExecution(object):
         """
         self.swaggerTypes = {
             
+            'buildContentId': 'str',
+            
+            
             'buildSetContentId': 'str',
             
             
@@ -37,14 +40,13 @@ class BuildExecution(object):
             'projectName': 'str',
             
             
-            'buildExecutionType': 'BuildExecutionType',
-            
-            
-            'buildContentId': 'str'
+            'buildExecutionType': 'BuildExecutionType'
             
         }
 
         self.attributeMap = {
+            
+            'buildContentId': 'buildContentId',
             
             'buildSetContentId': 'buildSetContentId',
             
@@ -52,12 +54,13 @@ class BuildExecution(object):
             
             'projectName': 'projectName',
             
-            'buildExecutionType': 'buildExecutionType',
-            
-            'buildContentId': 'buildContentId'
+            'buildExecutionType': 'buildExecutionType'
             
         }       
 
+        
+        
+        self.buildContentId = None # str
         
         
         self.buildSetContentId = None # str
@@ -70,7 +73,4 @@ class BuildExecution(object):
         
         
         self.buildExecutionType = None # BuildExecutionType
-        
-        
-        self.buildContentId = None # str
         

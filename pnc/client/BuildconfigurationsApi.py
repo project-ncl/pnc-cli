@@ -535,10 +535,12 @@ class BuildconfigurationsApi(object):
             
             id, int: Build Configuration id (required)
             
+            callbackUrl, str: Optional Callback URL (required)
+            
         Returns: 
         """
 
-        allParams = ['id']
+        allParams = ['id', 'callbackUrl']
 
         params = locals()
         for (key, val) in params['kwargs'].iteritems():
@@ -557,6 +559,9 @@ class BuildconfigurationsApi(object):
         files = {}
         bodyParam = None
 
+        
+        if ('callbackUrl' in params):
+            queryParams['callbackUrl'] = self.apiClient.toPathValue(params['callbackUrl'])
         
 
         
@@ -602,6 +607,58 @@ class BuildconfigurationsApi(object):
         resourcePath = '/build-configurations/{id}/clone'
         resourcePath = resourcePath.replace('{format}', 'json')
         method = 'POST'
+
+        queryParams = {}
+        headerParams = {}
+        formParams = {}
+        files = {}
+        bodyParam = None
+
+        
+
+        
+
+        
+        if ('id' in params):
+            replacement = str(self.apiClient.toPathValue(params['id']))
+            replacement = urllib.quote(replacement)
+            resourcePath = resourcePath.replace('{' + 'id' + '}',
+                                                replacement)
+        
+
+        
+
+        
+
+        postData = (formParams if formParams else bodyParam)
+
+        response = self.apiClient.callAPI(resourcePath, method, queryParams,
+                                          postData, headerParams, files=files)
+	return response
+
+   
+    def getDependencies(self, **kwargs):
+        """Get associated dependencies of the specified Configuration
+
+        Args:
+            
+            id, int: Build configuration id (required)
+            
+        Returns: 
+        """
+
+        allParams = ['id']
+
+        params = locals()
+        for (key, val) in params['kwargs'].iteritems():
+            if key not in allParams:
+                raise TypeError("Got an unexpected keyword argument '%s' to method getDependencies" % key)
+            params[key] = val
+        del params['kwargs']
+
+        resourcePath = '/build-configurations/{id}/dependencies'
+        resourcePath = resourcePath.replace('{format}', 'json')
+        method = 'GET'
 
         queryParams = {}
         headerParams = {}
@@ -749,6 +806,58 @@ class BuildconfigurationsApi(object):
 	return response
 
    
+    def getProductVersions(self, **kwargs):
+        """Get associated Product Versions of the specified Configuration
+
+        Args:
+            
+            id, int: Build configuration id (required)
+            
+        Returns: 
+        """
+
+        allParams = ['id']
+
+        params = locals()
+        for (key, val) in params['kwargs'].iteritems():
+            if key not in allParams:
+                raise TypeError("Got an unexpected keyword argument '%s' to method getProductVersions" % key)
+            params[key] = val
+        del params['kwargs']
+
+        resourcePath = '/build-configurations/{id}/product-versions'
+        resourcePath = resourcePath.replace('{format}', 'json')
+        method = 'GET'
+
+        queryParams = {}
+        headerParams = {}
+        formParams = {}
+        files = {}
+        bodyParam = None
+
+        
+
+        
+
+        
+        if ('id' in params):
+            replacement = str(self.apiClient.toPathValue(params['id']))
+            replacement = urllib.quote(replacement)
+            resourcePath = resourcePath.replace('{' + 'id' + '}',
+                                                replacement)
+        
+
+        
+
+        
+
+        postData = (formParams if formParams else bodyParam)
+
+        response = self.apiClient.callAPI(resourcePath, method, queryParams,
+                                          postData, headerParams, files=files)
+	return response
+
+   
     def addProductVersion(self, **kwargs):
         """Associates a product version to the specified config
 
@@ -852,6 +961,118 @@ class BuildconfigurationsApi(object):
             replacement = str(self.apiClient.toPathValue(params['productVersionId']))
             replacement = urllib.quote(replacement)
             resourcePath = resourcePath.replace('{' + 'productVersionId' + '}',
+                                                replacement)
+        
+
+        
+
+        
+
+        postData = (formParams if formParams else bodyParam)
+
+        response = self.apiClient.callAPI(resourcePath, method, queryParams,
+                                          postData, headerParams, files=files)
+	return response
+
+   
+    def getRevisions(self, **kwargs):
+        """Gets audited revisions of this build configuration
+
+        Args:
+            
+            id, int: Build configuration id (required)
+            
+        Returns: 
+        """
+
+        allParams = ['id']
+
+        params = locals()
+        for (key, val) in params['kwargs'].iteritems():
+            if key not in allParams:
+                raise TypeError("Got an unexpected keyword argument '%s' to method getRevisions" % key)
+            params[key] = val
+        del params['kwargs']
+
+        resourcePath = '/build-configurations/{id}/revisions'
+        resourcePath = resourcePath.replace('{format}', 'json')
+        method = 'GET'
+
+        queryParams = {}
+        headerParams = {}
+        formParams = {}
+        files = {}
+        bodyParam = None
+
+        
+
+        
+
+        
+        if ('id' in params):
+            replacement = str(self.apiClient.toPathValue(params['id']))
+            replacement = urllib.quote(replacement)
+            resourcePath = resourcePath.replace('{' + 'id' + '}',
+                                                replacement)
+        
+
+        
+
+        
+
+        postData = (formParams if formParams else bodyParam)
+
+        response = self.apiClient.callAPI(resourcePath, method, queryParams,
+                                          postData, headerParams, files=files)
+	return response
+
+   
+    def getRevisions(self, **kwargs):
+        """Get specific audited revision of this build configuration
+
+        Args:
+            
+            id, int: Build configuration id (required)
+            
+            rev, int: Build configuration rev (required)
+            
+        Returns: 
+        """
+
+        allParams = ['id', 'rev']
+
+        params = locals()
+        for (key, val) in params['kwargs'].iteritems():
+            if key not in allParams:
+                raise TypeError("Got an unexpected keyword argument '%s' to method getRevisions" % key)
+            params[key] = val
+        del params['kwargs']
+
+        resourcePath = '/build-configurations/{id}/revisions/{rev}'
+        resourcePath = resourcePath.replace('{format}', 'json')
+        method = 'GET'
+
+        queryParams = {}
+        headerParams = {}
+        formParams = {}
+        files = {}
+        bodyParam = None
+
+        
+
+        
+
+        
+        if ('id' in params):
+            replacement = str(self.apiClient.toPathValue(params['id']))
+            replacement = urllib.quote(replacement)
+            resourcePath = resourcePath.replace('{' + 'id' + '}',
+                                                replacement)
+        
+        if ('rev' in params):
+            replacement = str(self.apiClient.toPathValue(params['rev']))
+            replacement = urllib.quote(replacement)
+            resourcePath = resourcePath.replace('{' + 'rev' + '}',
                                                 replacement)
         
 

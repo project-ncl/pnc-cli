@@ -43,9 +43,6 @@ class ProductRelease(object):
             'productVersionId': 'int',
             
             
-            'buildRecordSetId': 'int',
-            
-            
             'productMilestoneId': 'int',
             
             
@@ -64,8 +61,6 @@ class ProductRelease(object):
             'downloadUrl': 'downloadUrl',
             
             'productVersionId': 'productVersionId',
-            
-            'buildRecordSetId': 'buildRecordSetId',
             
             'productMilestoneId': 'productMilestoneId',
             
@@ -88,9 +83,6 @@ class ProductRelease(object):
         
         
         self.productVersionId = None # int
-        
-        
-        self.buildRecordSetId = None # int
         
         
         self.productMilestoneId = None # int

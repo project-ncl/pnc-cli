@@ -49,7 +49,10 @@ class ProductMilestone(object):
             'productVersionId': 'int',
             
             
-            'buildRecordSetId': 'int',
+            'performedBuildRecordSetId': 'int',
+            
+            
+            'distributedBuildRecordSetId': 'int',
             
             
             'productReleaseId': 'int'
@@ -72,7 +75,9 @@ class ProductMilestone(object):
             
             'productVersionId': 'productVersionId',
             
-            'buildRecordSetId': 'buildRecordSetId',
+            'performedBuildRecordSetId': 'performedBuildRecordSetId',
+            
+            'distributedBuildRecordSetId': 'distributedBuildRecordSetId',
             
             'productReleaseId': 'productReleaseId'
             
@@ -101,7 +106,10 @@ class ProductMilestone(object):
         self.productVersionId = None # int
         
         
-        self.buildRecordSetId = None # int
+        self.performedBuildRecordSetId = None # int
+        
+        
+        self.distributedBuildRecordSetId = None # int
         
         
         self.productReleaseId = None # int

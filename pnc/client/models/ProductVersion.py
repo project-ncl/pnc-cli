@@ -37,13 +37,16 @@ class ProductVersion(object):
             'productId': 'int',
             
             
+            'currentProductMilestoneId': 'int',
+            
+            
             'productMilestones': 'list[int]',
             
             
-            'productReleases': 'list[int]',
+            'buildConfigurationSetIds': 'list[int]',
             
             
-            'buildConfigurationSetIds': 'list[int]'
+            'productReleases': 'list[int]'
             
         }
 
@@ -55,11 +58,13 @@ class ProductVersion(object):
             
             'productId': 'productId',
             
+            'currentProductMilestoneId': 'currentProductMilestoneId',
+            
             'productMilestones': 'productMilestones',
             
-            'productReleases': 'productReleases',
+            'buildConfigurationSetIds': 'buildConfigurationSetIds',
             
-            'buildConfigurationSetIds': 'buildConfigurationSetIds'
+            'productReleases': 'productReleases'
             
         }       
 
@@ -74,11 +79,14 @@ class ProductVersion(object):
         self.productId = None # int
         
         
+        self.currentProductMilestoneId = None # int
+        
+        
         self.productMilestones = None # list[int]
         
         
-        self.productReleases = None # list[int]
-        
-        
         self.buildConfigurationSetIds = None # list[int]
+        
+        
+        self.productReleases = None # list[int]
         

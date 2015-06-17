@@ -43,7 +43,7 @@ class ProductsApi(object):
             
             q, str: RSQL query (required)
             
-        Returns: list[Product]
+        Returns: 
         """
 
         allParams = ['pageIndex', 'pageSize', 'sort', 'q']
@@ -101,7 +101,7 @@ class ProductsApi(object):
             
             body, Product:  (required)
             
-        Returns: Product
+        Returns: 
         """
 
         allParams = ['body']
@@ -150,7 +150,7 @@ class ProductsApi(object):
             
             id, int: Product id (required)
             
-        Returns: Product
+        Returns: 
         """
 
         allParams = ['id']
@@ -204,7 +204,7 @@ class ProductsApi(object):
             
             body, Product:  (required)
             
-        Returns: Product
+        Returns: 
         """
 
         allParams = ['id', 'body']

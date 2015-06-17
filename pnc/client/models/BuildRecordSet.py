@@ -31,10 +31,10 @@ class BuildRecordSet(object):
             'id': 'int',
             
             
-            'productMilestoneId': 'int',
+            'performedInProductMilestoneId': 'int',
             
             
-            'productReleaseId': 'int',
+            'distributedInProductMilestoneId': 'int',
             
             
             'buildRecordIds': 'list[int]'
@@ -45,9 +45,9 @@ class BuildRecordSet(object):
             
             'id': 'id',
             
-            'productMilestoneId': 'productMilestoneId',
+            'performedInProductMilestoneId': 'performedInProductMilestoneId',
             
-            'productReleaseId': 'productReleaseId',
+            'distributedInProductMilestoneId': 'distributedInProductMilestoneId',
             
             'buildRecordIds': 'buildRecordIds'
             
@@ -58,10 +58,10 @@ class BuildRecordSet(object):
         self.id = None # int
         
         
-        self.productMilestoneId = None # int
+        self.performedInProductMilestoneId = None # int
         
         
-        self.productReleaseId = None # int
+        self.distributedInProductMilestoneId = None # int
         
         
         self.buildRecordIds = None # list[int]

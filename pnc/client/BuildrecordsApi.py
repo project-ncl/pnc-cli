@@ -362,6 +362,58 @@ class BuildrecordsApi(object):
 	return response
 
    
+    def getBuildConfigurationAudited(self, **kwargs):
+        """Gets the audited build configuration for specific build record
+
+        Args:
+            
+            id, int: BuildRecord id (required)
+            
+        Returns: 
+        """
+
+        allParams = ['id']
+
+        params = locals()
+        for (key, val) in params['kwargs'].iteritems():
+            if key not in allParams:
+                raise TypeError("Got an unexpected keyword argument '%s' to method getBuildConfigurationAudited" % key)
+            params[key] = val
+        del params['kwargs']
+
+        resourcePath = '/build-records/{id}/build-configuration-audited'
+        resourcePath = resourcePath.replace('{format}', 'json')
+        method = 'GET'
+
+        queryParams = {}
+        headerParams = {}
+        formParams = {}
+        files = {}
+        bodyParam = None
+
+        
+
+        
+
+        
+        if ('id' in params):
+            replacement = str(self.apiClient.toPathValue(params['id']))
+            replacement = urllib.quote(replacement)
+            resourcePath = resourcePath.replace('{' + 'id' + '}',
+                                                replacement)
+        
+
+        
+
+        
+
+        postData = (formParams if formParams else bodyParam)
+
+        response = self.apiClient.callAPI(resourcePath, method, queryParams,
+                                          postData, headerParams, files=files)
+	return response
+
+   
     def getLogs(self, **kwargs):
         """Gets logs for specific Build Record
 

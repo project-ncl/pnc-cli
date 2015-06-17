@@ -151,7 +151,7 @@ class RunningbuildrecordsApi(object):
 
         Args:
             
-            id, int: BuildRecord id (required)
+            id, int: RunningBuild id (required)
             
         Returns: 
         """

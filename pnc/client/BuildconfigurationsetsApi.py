@@ -311,10 +311,12 @@ class BuildconfigurationsetsApi(object):
             
             id, int: Build Configuration Set id (required)
             
+            callbackUrl, str: Optional Callback URL (required)
+            
         Returns: 
         """
 
-        allParams = ['id']
+        allParams = ['id', 'callbackUrl']
 
         params = locals()
         for (key, val) in params['kwargs'].iteritems():
@@ -333,6 +335,9 @@ class BuildconfigurationsetsApi(object):
         files = {}
         bodyParam = None
 
+        
+        if ('callbackUrl' in params):
+            queryParams['callbackUrl'] = self.apiClient.toPathValue(params['callbackUrl'])
         
 
         

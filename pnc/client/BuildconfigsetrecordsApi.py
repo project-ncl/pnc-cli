@@ -31,7 +31,7 @@ class BuildconfigsetrecordsApi(object):
 
     
     def getAll(self, **kwargs):
-        """Gets all Build Records
+        """Gets all build config set execution records
 
         Args:
             
@@ -95,7 +95,7 @@ class BuildconfigsetrecordsApi(object):
 
    
     def getSpecific(self, **kwargs):
-        """Gets specific Build Record
+        """Gets specific build config set execution record
 
         Args:
             
