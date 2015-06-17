@@ -214,6 +214,7 @@ def list_build_configurations():
 @arg('-n', '--name', help='Name of the build configuration to trigger')
 @arg('-i', '--id', help='ID of the build configuration to trigger')
 def trigger_build(name=None,id=None):
+    "Trigger a build giving either the name or ID of the build configuration."
     if id:
         if (_find_build_configuration_by_id(id)):
             print(pretty_format_response(BuildconfigurationsApi(apiclient).trigger(id=id).json()))
