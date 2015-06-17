@@ -2,20 +2,20 @@
 # PYTHON_ARGCOMPLETE_OK
 import argh, json
 from argh import arg
-from client import swagger
+import client.swagger
 from client.BuildconfigurationsApi import BuildconfigurationsApi
 from client.LicensesApi import LicensesApi
 from client.ProductsApi import ProductsApi
 from client.ProjectsApi import ProjectsApi
 from client.models.Configuration import Configuration
 from client.models.License import License
-from client.models.Product import Product
+import client.models.Product
 
 from pnc_help_formatter import PNCFormatter
 
 #TODO: load this from a config file
 base_pnc_url = 'http://localhost:8080/pnc-rest/rest'
-client = swagger.ApiClient(base_pnc_url)
+apiclient = client.swagger.ApiClient(base_pnc_url)
 
 def _create_product_object(name, description, abbreviation, product_code, system_code):
     """
@@ -27,7 +27,7 @@ def _create_product_object(name, description, abbreviation, product_code, system
     :param system_code:
     :return: new Product instance
     """
-    created_product = Product()
+    created_product = client.models.Product.Product()
     created_product.name = name
     #TODO: better way to do this?
     if description: created_product.description = description
@@ -47,7 +47,7 @@ def _create_project_object(name, configuration_ids, description, issue_url, proj
     :param license_id:
     :return: new Project instance
     """
-    created_project = client.Project()
+    created_project = client.models.Project.Project()
     created_project.name = name
     if configuration_ids: created_project.configurationIds = configuration_ids
     if description: created_project.description = description
@@ -92,7 +92,7 @@ def pretty_format_response(input_json):
 def create_product(name, description=None, abbreviation=None, product_code=None, system_code=None):
     "Create a new product"
     product = _create_product_object(name, description, abbreviation, product_code, system_code)
-    response = pretty_format_response(ProductsApi(client).createNew(body=product))
+    response = pretty_format_response(ProductsApi(apiclient).createNew(body=product))
     print(response)
 
 
@@ -105,7 +105,7 @@ def create_product(name, description=None, abbreviation=None, product_code=None,
 def create_project(name, configuration_ids=None, description=None, issue_url=None, project_url=None, license_id=None):
     "Create a new project "
     project = _create_project_object(name, configuration_ids, description, issue_url, project_url, license_id)
-    response = pretty_format_response(ProjectsApi(client).createNew(body=project))
+    response = pretty_format_response(ProjectsApi(apiclient).createNew(body=project))
     print(response)
 
 @arg('name', help='Name for the new license')
@@ -116,38 +116,38 @@ def create_project(name, configuration_ids=None, description=None, issue_url=Non
 def create_license(name, content, reference_url=None, abbreviation=None, project_ids=None):
     "Create a new license"
     license = _create_license_object(name, content, reference_url, abbreviation, project_ids)
-    response = pretty_format_response(LicensesApi(client).createNew(body=license))
+    response = pretty_format_response(LicensesApi(apiclient).createNew(body=license))
     print(response)
 
 def list_licenses():
     "Get a JSON object containing existing licenses"
-    response = pretty_format_response(LicensesApi(client).getAll())
+    response = pretty_format_response(LicensesApi(apiclient).getAll())
     print(response)
 
 def list_products():
     "Get a JSON object containing existing products"
-    response = pretty_format_response(ProductsApi(client).getAll())
+    response = pretty_format_response(ProductsApi(apiclient).getAll())
     print(response)
 
 def list_projects():
     "Get a JSON object containing existing projects"
-    response = pretty_format_response(ProjectsApi(client).getAll())
+    response = pretty_format_response(ProjectsApi(apiclient).getAll())
     print(response)
 
 def list_build_configurations():
     "Get a JSON object containing existing build configurations"
-    response = pretty_format_response(BuildconfigurationsApi(client).getAll())
+    response = pretty_format_response(BuildconfigurationsApi(apiclient).getAll())
     print(response)
 
 def find_build_configuration_by_name(name):
-    response = BuildconfigurationsApi(client).getAll()
+    response = BuildconfigurationsApi(apiclient).getAll()
     for config in response:
         if config['name'] == name:
             return config['id']
     return None
 
 def _build_configuration_exists(id):
-    response = BuildconfigurationsApi(client).getAll()
+    response = BuildconfigurationsApi(apiclient).getAll()
     for config in response:
         if config['id'] == int(id):
             return True
@@ -157,13 +157,13 @@ def _build_configuration_exists(id):
 def trigger_build(name=None,id=None):
     if id:
         if (_build_configuration_exists(id)):
-            print(pretty_format_response(BuildconfigurationsApi(client).trigger(id=id)))
+            print(pretty_format_response(BuildconfigurationsApi(apiclient).trigger(id=id)))
         else:
             print 'There is no build configuration with id {0}'.format(id)
     elif name:
         build_id = find_build_configuration_by_name(name)
         if build_id:
-            print(pretty_format_response(BuildconfigurationsApi(client).trigger(id=build_id)))
+            print(pretty_format_response(BuildconfigurationsApi(apiclient).trigger(id=build_id)))
         else:
             print 'There is no build configuration with name {0}'.format(name)
     else:
@@ -174,7 +174,7 @@ def create_build_configuration(name, project_id, environment, description='', sc
                                build_script=''):
     #check for existing project_ids, fail out if the project id doesn't exist
     build_configuration = _create_build_configuration(name, project_id, environment, description, scm_url, scm_revision, patches_url, build_script)
-    response = pretty_format_response(BuildconfigurationsApi(client).createNew(body=build_configuration))
+    response = pretty_format_response(BuildconfigurationsApi(apiclient).createNew(body=build_configuration))
     print(response)
 
 parser = argh.ArghParser()
