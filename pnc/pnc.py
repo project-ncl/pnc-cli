@@ -72,29 +72,33 @@ def _create_build_configuration(name, project_id, environment, description, scm_
     created_build_configuration.name = name
     created_build_configuration.projecId = project_id
 
+def _remove_nulls(input_json):
+     keys = input_json.keys()
+     if keys:
+         for k in keys:
+             if input_json[k] == None:
+                  del input_json[k]
 
 def pretty_format_response(input_json):
     """
-    Pretty formats the input json for printing to the user
+    prints the json dump in a more readable format.
+    does not print null values
     :param input_json:
     :return:
     """
-    return json.dumps(input_json, indent=4, separators=[',',': '])
+    if type(input_json) is list:
+        for item in input_json:
+            _remove_nulls(item)
+    else:
+        _remove_nulls(input_json)
+    return json.dumps(input_json, indent=4, separators=[',',': '], sort_keys=True)
 
 
-#localize?
-#refine text
-@arg('name', help='Name for the product')
-@arg('-d','--description', help="Detailed description of the new product")
-@arg('-a','--abbreviation', help="The abbreviation or \"short name\" of the new product")
-@arg('-p','--product-code', help="The product code for the new product")
-@arg('-s','--system-code', help="The system code for the new product")
-def create_product(name, description=None, abbreviation=None, product_code=None, system_code=None):
-    "Create a new product"
-    product = _create_product_object(name, description, abbreviation, product_code, system_code)
-    response = pretty_format_response(ProductsApi(apiclient).createNew(body=product).json())
-    print(response)
-
+def _find_product_by_name(search_name):
+    response = ProductsApi(apiclient).getAll()
+    for config in response.json():
+        if config['name'] == search_name:
+            return config['id']
 
 def _find_product_by_id(search_id):
     response = ProductsApi(apiclient).getAll()
