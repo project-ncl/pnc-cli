@@ -150,6 +150,22 @@ def update_product(id, name=None, description=None, abbreviation=None, product_c
     else:
         print('There is no product with id {0}.').format(id)
 
+@arg('-n','--name', help="Name of the product to retrieve")
+@arg('-i','--id', help="ID of the product to retrieve")
+def get_product(name=None, id=None):
+    if id:
+        if (_find_product_by_id(id)):
+            print(pretty_format_response(BuildconfigurationsApi(apiclient).trigger(id=id).json()))
+        else:
+            print 'There is no product with id {0}.'.format(id)
+    elif name:
+        build_id = _find_product_by_name(name)
+        if build_id:
+            print(pretty_format_response(BuildconfigurationsApi(apiclient).trigger(id=build_id).json()))
+        else:
+            print 'There is no product with name {0}.'.format(name)
+    else:
+        print 'Trigger build requires either a name or an ID of a build configuration to trigger.'
 
 
 @arg('name', help='Name for the project')
@@ -221,7 +237,7 @@ def create_build_configuration(name, project_id, environment, description='', sc
     print(response)
 
 parser = argh.ArghParser()
-parser.add_commands([create_product,update_product,create_project,create_license,list_products,list_projects,list_licenses,list_build_configurations,trigger_build], func_kwargs={'formatter_class': PNCFormatter})
+parser.add_commands([create_product,update_product,get_product,create_project,create_license,list_products,list_projects,list_licenses,list_build_configurations,trigger_build], func_kwargs={'formatter_class': PNCFormatter})
 parser.autocomplete()
 
 if __name__ == '__main__':
