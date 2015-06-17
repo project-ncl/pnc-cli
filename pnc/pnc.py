@@ -87,13 +87,53 @@ def pretty_format_response(input_json):
 @arg('name', help='Name for the product')
 @arg('-d','--description', help="Detailed description of the new product")
 @arg('-a','--abbreviation', help="The abbreviation or \"short name\" of the new product")
-@arg('-p','--product_code', help="The product code for the new product")
-@arg('-s','--system_code', help="The system code for the new product")
+@arg('-p','--product-code', help="The product code for the new product")
+@arg('-s','--system-code', help="The system code for the new product")
 def create_product(name, description=None, abbreviation=None, product_code=None, system_code=None):
     "Create a new product"
     product = _create_product_object(name, description, abbreviation, product_code, system_code)
-    response = pretty_format_response(ProductsApi(apiclient).createNew(body=product))
+    response = pretty_format_response(ProductsApi(apiclient).createNew(body=product).json())
     print(response)
+
+
+def _find_product_by_id(search_id):
+    response = ProductsApi(apiclient).getAll()
+    for config in response.json():
+        if config['id'] == int(search_id):
+            return True
+
+def _find_build_configuration_by_name(name):
+    response = BuildconfigurationsApi(apiclient).getAll()
+    for config in response.json():
+        if config['name'] == name:
+            return config['id']
+    return None
+
+def _find_build_configuration_by_id(search_id):
+    response = BuildconfigurationsApi(apiclient).getAll()
+    for config in response.json():
+        if config['id'] == int(search_id):
+            return True
+
+
+@arg('id', help='ID of the product to update')
+@arg('-n','--name', help="New name for the product")
+@arg('-d','--description', help="New product description")
+@arg('-a','--abbreviation', help="New abbreviation")
+@arg('-p','--product-code', help="New product code")
+@arg('-s','--system-code', help="New system code")
+def update_product(id, name=None, description=None, abbreviation=None, product_code=None, system_code=None):
+    "Update a product. Only provide values that need updating."
+    product = _create_product_object(name, description, abbreviation, product_code, system_code)
+    if _find_product_by_id(id):
+        response = ProductsApi(apiclient).update(id=id,body=product)
+        if response.status_code == 200:
+            print('Product id: {0} successfully updated.').format(id)
+        else:
+            print('Updating product: {0} failed').format(id)
+    else:
+        print('There is no product with id {0}.').format(id)
+
 
 
 @arg('name', help='Name for the project')
@@ -105,7 +145,7 @@ def create_product(name, description=None, abbreviation=None, product_code=None,
 def create_project(name, configuration_ids=None, description=None, issue_url=None, project_url=None, license_id=None):
     "Create a new project "
     project = _create_project_object(name, configuration_ids, description, issue_url, project_url, license_id)
-    response = pretty_format_response(ProjectsApi(apiclient).createNew(body=project))
+    response = pretty_format_response(ProjectsApi(apiclient).createNew(body=project).json())
     print(response)
 
 @arg('name', help='Name for the new license')
@@ -116,69 +156,56 @@ def create_project(name, configuration_ids=None, description=None, issue_url=Non
 def create_license(name, content, reference_url=None, abbreviation=None, project_ids=None):
     "Create a new license"
     license = _create_license_object(name, content, reference_url, abbreviation, project_ids)
-    response = pretty_format_response(LicensesApi(apiclient).createNew(body=license))
+    response = pretty_format_response(LicensesApi(apiclient).createNew(body=license).json())
     print(response)
 
 def list_licenses():
     "Get a JSON object containing existing licenses"
-    response = pretty_format_response(LicensesApi(apiclient).getAll())
+    response = pretty_format_response(LicensesApi(apiclient).getAll().json())
     print(response)
 
 def list_products():
     "Get a JSON object containing existing products"
-    response = pretty_format_response(ProductsApi(apiclient).getAll())
+    response = pretty_format_response(ProductsApi(apiclient).getAll().json())
     print(response)
 
 def list_projects():
     "Get a JSON object containing existing projects"
-    response = pretty_format_response(ProjectsApi(apiclient).getAll())
+    response = pretty_format_response(ProjectsApi(apiclient).getAll().json())
     print(response)
 
 def list_build_configurations():
     "Get a JSON object containing existing build configurations"
-    response = pretty_format_response(BuildconfigurationsApi(apiclient).getAll())
+    response = pretty_format_response(BuildconfigurationsApi(apiclient).getAll().json())
     print(response)
-
-def find_build_configuration_by_name(name):
-    response = BuildconfigurationsApi(apiclient).getAll()
-    for config in response:
-        if config['name'] == name:
-            return config['id']
-    return None
-
-def _build_configuration_exists(id):
-    response = BuildconfigurationsApi(apiclient).getAll()
-    for config in response:
-        if config['id'] == int(id):
-            return True
 
 @arg('-n', '--name', help='Name of the build configuration to trigger')
 @arg('-i', '--id', help='ID of the build configuration to trigger')
 def trigger_build(name=None,id=None):
     if id:
-        if (_build_configuration_exists(id)):
-            print(pretty_format_response(BuildconfigurationsApi(apiclient).trigger(id=id)))
+        if (_find_build_configuration_by_id(id)):
+            print(pretty_format_response(BuildconfigurationsApi(apiclient).trigger(id=id).json()))
         else:
-            print 'There is no build configuration with id {0}'.format(id)
+            print 'There is no build configuration with id {0}.'.format(id)
     elif name:
-        build_id = find_build_configuration_by_name(name)
+        build_id = _find_build_configuration_by_name(name)
         if build_id:
-            print(pretty_format_response(BuildconfigurationsApi(apiclient).trigger(id=build_id)))
+            print(pretty_format_response(BuildconfigurationsApi(apiclient).trigger(id=build_id).json()))
         else:
-            print 'There is no build configuration with name {0}'.format(name)
+            print 'There is no build configuration with name {0}.'.format(name)
     else:
-        print 'Trigger build requires either a name or on ID of a configuration to trigger'
+        print 'Trigger build requires either a name or an ID of a build configuration to trigger.'
 
 
 def create_build_configuration(name, project_id, environment, description='', scm_url='', scm_revision='', patches_url='',
                                build_script=''):
     #check for existing project_ids, fail out if the project id doesn't exist
     build_configuration = _create_build_configuration(name, project_id, environment, description, scm_url, scm_revision, patches_url, build_script)
-    response = pretty_format_response(BuildconfigurationsApi(apiclient).createNew(body=build_configuration))
+    response = pretty_format_response(BuildconfigurationsApi(apiclient).createNew(body=build_configuration).json())
     print(response)
 
 parser = argh.ArghParser()
-parser.add_commands([create_product,create_project,create_license,list_products,list_projects,list_licenses,list_build_configurations,trigger_build], func_kwargs={'formatter_class': PNCFormatter})
+parser.add_commands([create_product,update_product,create_project,create_license,list_products,list_projects,list_licenses,list_build_configurations,trigger_build], func_kwargs={'formatter_class': PNCFormatter})
 parser.autocomplete()
 
 if __name__ == '__main__':
