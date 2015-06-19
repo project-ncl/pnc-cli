@@ -464,7 +464,7 @@ def build(name=None,id=None):
 
 def create_build_configuration(name, project_id, environment, description="", scm_url="", scm_revision="", patches_url="",
                                build_script=""):
-    #check for existing project_ids, fail out if the project id doesn"t exist
+    #check for existing project_ids, fail out if the project id doesn't exist
     build_configuration = _create_build_configuration(name, project_id, environment, description, scm_url, scm_revision, patches_url, build_script)
     response = pretty_format_response(BuildconfigurationsApi(apiclient).createNew(body=build_configuration).json())
     print(response)
