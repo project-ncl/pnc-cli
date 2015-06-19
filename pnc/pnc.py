@@ -122,7 +122,7 @@ def _product_exists(search_id):
     :return: True if a product with search_id exists
     """
     response = ProductsApi(apiclient).getSpecific(id=search_id)
-    if (response.status_code == 200):
+    if (response.ok):
         return True
     return False
 
@@ -145,7 +145,7 @@ def _project_exists(search_id):
     :return: True if a project with search_id exists
     """
     response = ProjectsApi(apiclient).getSpecific(id=search_id)
-    if (response.status_code == 200):
+    if (response.ok):
         return True
     return False
 
