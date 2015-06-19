@@ -155,13 +155,13 @@ def update_product(id, name=None, description=None, abbreviation=None, product_c
 def get_product(name=None, id=None):
     if id:
         if (_find_product_by_id(id)):
-            print(pretty_format_response(BuildconfigurationsApi(apiclient).trigger(id=id).json()))
+            print(pretty_format_response(ProductsApi(apiclient).getSpecific(id=id).json()))
         else:
             print 'There is no product with id {0}.'.format(id)
     elif name:
         build_id = _find_product_by_name(name)
         if build_id:
-            print(pretty_format_response(BuildconfigurationsApi(apiclient).trigger(id=build_id).json()))
+            print(pretty_format_response(ProductsApi(apiclient).getSpecific(id=build_id).json()))
         else:
             print 'There is no product with name {0}.'.format(name)
     else:
