@@ -168,92 +168,138 @@ def _build_configuration_exists(search_id):
     :return: True if a build configuration with search_id exists
     """
     response = BuildconfigurationsApi(apiclient).getSpecific(id=search_id)
-    if response.status_code == 200:
+    if response.ok:
+        return True
+    return False
+
+def _license_exists(id):
+    response = LicensesApi(apiclient).getSpecific(id=id)
+    if response.ok:
+        return True
+    return False
+
+def _get_license_id_by_name(name):
+    response = LicensesApi(apiclient).getAll()
+    for config in response.json():
+        if config["fullName"] == name:
+            return config["id"]
+    return None
+
+def _environment_exists(search_id):
+    response = EnvironmentsApi(apiclient).getSpecific(id=search_id)
+    if response.ok:
         return True
     return False
 
 #localize?
 #refine text
-@arg('name', help='Name for the product')
-@arg('-d','--description', help="Detailed description of the new product")
-@arg('-a','--abbreviation', help="The abbreviation or \"short name\" of the new product")
-@arg('-p','--product-code', help="The product code for the new product")
-@arg('-s','--system-code', help="The system code for the new product")
+@arg("name", help="Name for the product")
+@arg("-d","--description", help="Detailed description of the new product")
+@arg("-a","--abbreviation", help="The abbreviation or \"short name\" of the new product")
+@arg("-p","--product-code", help="The product code for the new product")
+@arg("-s","--system-code", help="The system code for the new product")
 def create_product(name, description=None, abbreviation=None, product_code=None, system_code=None):
     "Define a new product"
     product = _create_product_object(name, description, abbreviation, product_code, system_code)
     response = pretty_format_response(ProductsApi(apiclient).createNew(body=product).json())
     print(response)
 
-@arg('id', help='ID of the product to update')
-@arg('-n','--name', help="New name for the product")
-@arg('-d','--description', help="New product description")
-@arg('-a','--abbreviation', help="New abbreviation")
-@arg('-p','--product-code', help="New product code")
-@arg('-s','--system-code', help="New system code")
+@arg("id", help="ID of the product to update")
+@arg("-n","--name", help="New name for the product")
+@arg("-d","--description", help="New product description")
+@arg("-a","--abbreviation", help="New abbreviation")
+@arg("-p","--product-code", help="New product code")
+@arg("-s","--system-code", help="New system code")
 def update_product(id, name=None, description=None, abbreviation=None, product_code=None, system_code=None):
     "Update a product with the given id. Only provide values to update."
     product = _create_product_object(name, description, abbreviation, product_code, system_code)
     if _product_exists(id):
         response = ProductsApi(apiclient).update(id=id,body=product)
-        if response.status_code == 200:
-            print('Product {0} successfully updated.').format(id)
+        if response.ok:
+            print("Product {0} successfully updated.").format(id)
         else:
-            print('Updating product {0} failed').format(id)
+            print("Updating product {0} failed").format(id)
     else:
-        print('There is no product with id {0}.').format(id)
+        print("There is no product with id {0}.").format(id)
 
-@arg('-n','--name', help="Name of the product to retrieve")
-@arg('-i','--id', help="ID of the product to retrieve")
+@arg("-n","--name", help="Name of the product to retrieve")
+@arg("-i","--id", help="ID of the product to retrieve")
 def get_product(name=None, id=None):
     "List information on a specific product."
     if id:
         response = ProductsApi(apiclient).getSpecific(id=id)
-        if (response.status_code == 200):
+        if response.ok:
             print(pretty_format_response(response.json()))
         else:
-            print 'There is no product with id {0}.'.format(id)
+            print "No product with id {0} exists.".format(id)
     elif name:
         product_id = _get_product_id_by_name(name)
         if product_id:
             print(pretty_format_response(ProductsApi(apiclient).getSpecific(id=product_id).json()))
         else:
-            print 'There is no product with name {0}.'.format(name)
+            print "No product with name {0} exists.".format(name)
     else:
-        print 'Either a product name or ID is required.'
+        print "Either a product name or ID is required."
 
 def list_products():
     "List all products."
     response = pretty_format_response(ProductsApi(apiclient).getAll().json())
     print(response)
 
-@arg('name', help='Name for the project')
-@arg('-c','--configuration-ids', help="List of configuration IDs this project should be associated with")
-@arg('-d','--description', help="Detailed description of the new project")
-@arg('-p','--project_url', help="SCM Url for the project")
-@arg('-i','--issue_url', help="Issue tracker URL for the new project")
-@arg('-l','--license_id', help="License ID for the new project")
+@arg("name", help="Name for the project")
+@arg("-c","--configuration-ids", help="List of configuration IDs this project should be associated with")
+@arg("-d","--description", help="Detailed description of the new project")
+@arg("-p","--project_url", help="SCM Url for the project")
+@arg("-i","--issue_url", help="Issue tracker URL for the new project")
+@arg("-l","--license_id", help="License ID for the new project")
 def create_project(name, configuration_ids=None, description=None, issue_url=None, project_url=None, license_id=None):
     "Create a new project"
-    project = _create_project_object(name, configuration_ids, description, issue_url, project_url, license_id)
+    project = _create_project_object(name, description, issue_url, project_url, configuration_ids,license_id)
     response = pretty_format_response(ProjectsApi(apiclient).createNew(body=project).json())
     print(response)
 
-def update_project(id, name=None, description=None, issue_tracker_url=None, project_url=None, configuration_ids=None,license_id=None):
-    project = _create_project_object(name, description, issue_tracker_url, project_url, configuration_ids, license_id)
+@arg("id", help="ID for the project that will be updated")
+@arg("-n","--name", help="Name for the project")
+@arg("-cids","--configuration-ids", help="List of configuration IDs this project should be associated with")
+@arg("-desc","--description", help="Detailed description of the new project")
+@arg("-purl","--project_url", help="SCM Url for the project")
+@arg("-iurl","--issue_url", help="Issue tracker URL for the new project")
+@arg("-l","--license_id", help="License ID for the new project")
+def update_project(id, name=None, description=None, issue_url=None, project_url=None, configuration_ids=None,license_id=None):
+    project = _create_project_object(name, description, issue_url, project_url, configuration_ids, license_id)
     if _project_exists(id):
         response = ProjectsApi(apiclient).update(id=id,body=project)
-        if response.status_code == 200:
-            print('Project {0} successfully updated.').format(id)
+        if response.ok:
+            print("Project {0} successfully updated.").format(id)
         else:
-            print('Updating project with id {0} failed').format(id)
+            print("Updating project with id {0} failed").format(id)
     else:
-        print('There is no project with id {0}.').format(id)
+        print("No project with id {0} exists.").format(id)
 
+@arg("-id","--id",help="ID of the project to retrieve")
+@arg("-n","--name", help="Name of the project to retrieve")
+def get_project(id=None, name=None):
+    if id:
+        response = ProjectsApi(apiclient).getSpecific(id=id)
+        if response.ok:
+            print(pretty_format_response(response.json()))
+        else:
+            print("No project with id {0} exists.").format(id)
+    elif name:
+        response = ProjectsApi(apiclient).getSpecific(id=_get_project_id_by_name(name))
+        if response.ok:
+            print(pretty_format_response(response.json()))
+        else:
+            print("No project with name {0} exists.").format(name)
+    else:
+        print("Either a project name or id is required")
+
+@arg("-id","--id", help="ID of the project to delete")
+@arg("-n","--name", help="Name of the project to delete")
 def delete_project(id=None, name=None):
     if id:
         if not _project_exists(id):
-            print("There is no project with id {0}.").format(id)
+            print("No project with id {0} exists.").format(id)
             return
         project_id = id
     elif name:
@@ -266,22 +312,73 @@ def delete_project(id=None, name=None):
         return
 
     response = ProjectsApi(apiclient).deleteSpecific(id=project_id)
-    if (response.status_code == 200):
+    if (response.ok):
         print("Project {0} successfully deleted.").format(project_id)
     else:
         print("Failed to delete Project {0}").format(project_id)
 
 
-@arg('name', help='Name for the new license')
-@arg('content', help='Full textual content of the new license')
-@arg('-r','--reference-url', help='URL containing a reference for the license')
-@arg('-a','--abbreviation', help='Abbreviation or \"short name\" for the license')
-@arg('-p','--project-ids', help='List of project ids that should be associated with the new license. IDs must denote existing projects')
+@arg("name", help="Name for the new license")
+@arg("content", help="Full textual content of the new license")
+@arg("-r","--reference-url", help="URL containing a reference for the license")
+@arg("-abbr","--abbreviation", help="Abbreviation or \"short name\" for the license")
+@arg("-pid","--project-ids", help="List of project ids that should be associated with the new license. IDs must denote existing projects")
 def create_license(name, content, reference_url=None, abbreviation=None, project_ids=None):
     "Create a new license"
     license = _create_license_object(name, content, reference_url, abbreviation, project_ids)
     response = LicensesApi(apiclient).createNew(body=license)
     print(pretty_format_response(response.json()))
+
+@arg("-id","--id", help="ID for the license to retrieve")
+@arg("-n","--name", help="Name for the license to retrieve")
+def get_license(id=None, name=None):
+    if id:
+        search_id = id
+    elif name:
+        search_id = _get_license_id_by_name(name)
+        if not search_id:
+            print("No license with name {0} exists.").format(name)
+            return
+    response = LicensesApi(apiclient).getSpecific(id=search_id)
+    if response.ok:
+        print(pretty_format_response(response.json()))
+    else:
+        print("No license with id {0} exists.").format(id)
+    pass
+
+
+@arg("id", help="ID of the license to delete")
+def delete_license(id):
+    if id:
+        response = LicensesApi(apiclient).delete(id=id)
+        if response.ok:
+            print("License {0} successfully deleted.").format(id)
+        else:
+            print("Deleting license {0} failed.").format(id)
+            print(response)
+            print(response._content)
+    else:
+        print("No license id specified.")
+
+@arg("id", help="ID of the license to update")
+@arg("-n","--name", help="Name for the new license")
+@arg("-c","--content", help="Full textual content of the new license")
+@arg("-refurl","--reference-url", help="URL containing a reference for the license")
+@arg("-abbr","--abbreviation", help="Abbreviation or \"short name\" for the license")
+@arg("-pid","--project-ids", help="List of project ids that should be associated with the new license. IDs must denote existing projects")
+def update_license(id, name=None, content=None, reference_url=None, abbreviation=None, project_ids=None):
+    updated_license = _create_license_object(name, content, reference_url, abbreviation, project_ids)
+    if id:
+        if _license_exists(id):
+            response = LicensesApi(apiclient).update(id=id,body=updated_license)
+            if response.ok:
+                print("Succesfully updated license {0}.").format(id)
+            else:
+                print("Failed to update license {0}.").format(id)
+        else:
+            print("No license with id {0} exists.").format(id)
+    else:
+        print("The license ID is required to perform an update")
 
 def list_licenses():
     "Get a JSON object containing existing licenses"
@@ -380,20 +477,24 @@ parser.add_commands([create_product,
                      create_project,
                      delete_project,
                      update_project,
-                    # get_project,
+                     get_project,
                      list_projects,
                      create_license,
-                     #update_license,
-                    # get_license,
+                     update_license,
+                     delete_license,
+                     get_license,
                      list_licenses,
                      create_build_configuration,
                    #  update_build_configuration,
                      list_build_configurations,
-                     list_environments,
                      create_environment,
+                     update_environment,
+                     delete_environment,
+                     get_environment,
+                     list_environments,
                      build],
-                    func_kwargs={'formatter_class': PNCFormatter})
+                    func_kwargs={"formatter_class": PNCFormatter})
 parser.autocomplete()
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     parser.dispatch()
