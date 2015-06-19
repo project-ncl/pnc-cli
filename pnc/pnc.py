@@ -76,9 +76,9 @@ def _create_build_configuration(name, project_id, environment, description, scm_
     created_build_configuration.projectId = project_id
 
 def _create_environment_object(build_type, operational_system):
-    created_environment = EnvironmentRest()
-    created_environment.buildType = build_type
-    created_environment.operationalSystem = operational_system
+    created_environment = Environment()
+    if build_type: created_environment.buildType = build_type
+    if operational_system: created_environment.operationalSystem = operational_system
     return created_environment
 
 
