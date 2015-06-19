@@ -1027,7 +1027,7 @@ class BuildconfigurationsApi(object):
 	return response
 
    
-    def getRevisions(self, **kwargs):
+    def getRevision(self, **kwargs):
         """Get specific audited revision of this build configuration
 
         Args:
@@ -1044,7 +1044,7 @@ class BuildconfigurationsApi(object):
         params = locals()
         for (key, val) in params['kwargs'].iteritems():
             if key not in allParams:
-                raise TypeError("Got an unexpected keyword argument '%s' to method getRevisions" % key)
+                raise TypeError("Got an unexpected keyword argument '%s' to method getRevision" % key)
             params[key] = val
         del params['kwargs']
 

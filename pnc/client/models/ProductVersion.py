@@ -43,10 +43,10 @@ class ProductVersion(object):
             'productMilestones': 'list[int]',
             
             
-            'buildConfigurationSetIds': 'list[int]',
+            'productReleases': 'list[int]',
             
             
-            'productReleases': 'list[int]'
+            'buildConfigurationSetIds': 'list[int]'
             
         }
 
@@ -62,9 +62,9 @@ class ProductVersion(object):
             
             'productMilestones': 'productMilestones',
             
-            'buildConfigurationSetIds': 'buildConfigurationSetIds',
+            'productReleases': 'productReleases',
             
-            'productReleases': 'productReleases'
+            'buildConfigurationSetIds': 'buildConfigurationSetIds'
             
         }       
 
@@ -85,8 +85,8 @@ class ProductVersion(object):
         self.productMilestones = None # list[int]
         
         
-        self.buildConfigurationSetIds = None # list[int]
-        
-        
         self.productReleases = None # list[int]
+        
+        
+        self.buildConfigurationSetIds = None # list[int]
         
