@@ -101,7 +101,7 @@ def pretty_format_response(input_json):
             _remove_nulls(item)
     else:
         _remove_nulls(input_json)
-    return json.dumps(input_json, indent=4, separators=[',',': '], sort_keys=True)
+    return json.dumps(input_json, indent=4, separators=[",",": "], sort_keys=True)
 
 def _get_product_id_by_name(search_name):
     """
@@ -111,8 +111,8 @@ def _get_product_id_by_name(search_name):
     """
     response = ProductsApi(apiclient).getAll()
     for config in response.json():
-        if config['name'] == search_name or config['abbreviation'] == search_name:
-            return config['id']
+        if config["name"] == search_name or config["abbreviation"] == search_name:
+            return config["id"]
     return None
 
 def _product_exists(search_id):
@@ -133,9 +133,9 @@ def _get_project_id_by_name(search_name):
     :return: id of the matching project, or None if no match found
     """
     response = ProjectsApi(apiclient).getAll()
-    for config in response:
-        if config['name'] == search_name:
-            return config['id']
+    for config in response.json():
+        if config["name"] == search_name:
+            return config["id"]
     return None
 
 def _project_exists(search_id):
@@ -157,8 +157,8 @@ def _get_build_configuration_id_by_name(name):
     """
     response = BuildconfigurationsApi(apiclient).getAll()
     for config in response.json():
-        if config['name'] == name:
-            return config['id']
+        if config["name"] == name:
+            return config["id"]
     return None
 
 def _build_configuration_exists(search_id):
@@ -306,41 +306,68 @@ def create_environment(build_type, operating_system):
     response = EnvironmentsApi(apiclient).createNew(body=environment)
     print(pretty_format_response(response.json()))
 
-def update_environment():
-    pass
 
-def delete_environment():
-    pass
+@arg("id", help="ID of the environment to replace")
+@arg("-bt","--build-type", help="Type of build for the new environment")
+@arg("-os","--operating-system", help="Operating system for the new environment")
+def update_environment(id, build_type=None, operating_system=None):
+    environment = _create_environment_object(build_type, operating_system)
+    if _environment_exists(id):
+        response = EnvironmentsApi(apiclient).update(id=id, body=environment)
+        if (response.ok):
+            print("Successfully updated environment {0}.").format(id)
+        else:
+            print("Updating environment {0} failed.").format(id)
+    else:
+        print("No environment with id {0} exists.").format(id)
 
-def get_environment():
-    pass
+@arg("id", help="ID of the environment to delete")
+def delete_environment(id):
+    if not _environment_exists(id):
+        print("No environment with id {0} exists.").format(id)
+        return
+
+    response = EnvironmentsApi(apiclient).delete(id=id)
+    if (response.ok):
+        print("Environment {0} succesfully deleted.")
+    else:
+        print("Failed to delete environment {0}").format(id)
+        print(response)
+
+@arg("id", help="ID of the environment to retrieve")
+def get_environment(id):
+    response = EnvironmentsApi(apiclient).getSpecific(id=id)
+    if (response.ok):
+        print(pretty_format_response(response.json()))
+    else:
+        print("No environment with id {0} exists.").format(id)
 
 def list_environments():
     response = EnvironmentsApi(apiclient).getAll()
     print(pretty_format_response(response.json()))
 
-@arg('-n', '--name', help='Name of the build configuration to trigger')
-@arg('-i', '--id', help='ID of the build configuration to trigger')
+@arg("-n", "--name", help="Name of the build configuration to trigger")
+@arg("-i", "--id", help="ID of the build configuration to trigger")
 def build(name=None,id=None):
     "Trigger a build configuration giving either the name or ID."
     if id:
         if (_build_configuration_exists(id)):
             print(pretty_format_response(BuildconfigurationsApi(apiclient).trigger(id=id).json()))
         else:
-            print 'There is no build configuration with id {0}.'.format(id)
+            print "There is no build configuration with id {0}.".format(id)
     elif name:
         build_id = _get_build_configuration_id_by_name(name)
         if build_id:
             print(pretty_format_response(BuildconfigurationsApi(apiclient).trigger(id=build_id).json()))
         else:
-            print 'There is no build configuration with name {0}.'.format(name)
+            print "There is no build configuration with name {0}.".format(name)
     else:
-        print 'Build requires either a name or an ID of a build configuration to trigger.'
+        print "Build requires either a name or an ID of a build configuration to trigger."
 
 
-def create_build_configuration(name, project_id, environment, description='', scm_url='', scm_revision='', patches_url='',
-                               build_script=''):
-    #check for existing project_ids, fail out if the project id doesn't exist
+def create_build_configuration(name, project_id, environment, description="", scm_url="", scm_revision="", patches_url="",
+                               build_script=""):
+    #check for existing project_ids, fail out if the project id doesn"t exist
     build_configuration = _create_build_configuration(name, project_id, environment, description, scm_url, scm_revision, patches_url, build_script)
     response = pretty_format_response(BuildconfigurationsApi(apiclient).createNew(body=build_configuration).json())
     print(response)
