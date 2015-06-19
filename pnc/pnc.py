@@ -39,7 +39,7 @@ def _create_product_object(name, description, abbreviation, product_code, system
     return created_product
 
 #TODO: Error checking configuration_ids is necessary, since it must consist of a list of valid build_configuration ids
-def _create_project_object(name, description, configuration_ids, issue_url, project_url, license_id):
+def _create_project_object(name, description, issue_url, project_url, configuration_ids, license_id):
     """
     Create an instance of the Project object
     :param name:
