@@ -11,12 +11,12 @@ from client.models.Configuration import Configuration
 from client.models.License import License
 import client.models.Product
 from client.EnvironmentsApi import EnvironmentsApi
-from client.models.EnvironmentRest import EnvironmentRest
+from client.models.Environment import Environment
 
 from pnc_help_formatter import PNCFormatter
 
 #TODO: load this from a config file
-base_pnc_url = 'http://localhost:8080/pnc-rest/rest'
+base_pnc_url = "http://localhost:8080/pnc-rest/rest"
 apiclient = client.swagger.ApiClient(base_pnc_url)
 
 def _create_product_object(name, description, abbreviation, product_code, system_code):
