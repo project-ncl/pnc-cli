@@ -99,7 +99,7 @@ class EnvironmentsApi(object):
 
         Args:
             
-            body, Environment:  (required)
+            body, EnvironmentRest:  (required)
             
         Returns: 
         """
@@ -202,7 +202,7 @@ class EnvironmentsApi(object):
             
             id, int: Environment id (required)
             
-            body, Environment:  (required)
+            body, EnvironmentRest:  (required)
             
         Returns: 
         """
@@ -253,11 +253,11 @@ class EnvironmentsApi(object):
 
    
     def delete(self, **kwargs):
-        """Deletes an existing Environment
+        """Deletes an existing Product
 
         Args:
             
-            id, int: Environment id (required)
+            id, int: License id (required)
             
         Returns: 
         """

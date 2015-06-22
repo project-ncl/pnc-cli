@@ -52,7 +52,7 @@ class Configuration(object):
             'lastModificationTime': 'Timestamp',
             
             
-            'buildStatus': 'str',
+            'buildStatus': 'BuildStatus',
             
             
             'repositories': 'str',
@@ -129,7 +129,7 @@ class Configuration(object):
         self.lastModificationTime = None # Timestamp
         
         
-        self.buildStatus = None # str
+        self.buildStatus = None # BuildStatus
         
         
         self.repositories = None # str

@@ -252,3 +252,75 @@ class ProductsApi(object):
 	return response
 
    
+    def getAllProductVersions(self, **kwargs):
+        """Get all versions for a Product
+
+        Args:
+            
+            pageIndex, int: Page index (required)
+            
+            pageSize, int: Pagination size (required)
+            
+            sort, str: Sorting RSQL (required)
+            
+            q, str: RSQL query (required)
+            
+            productId, int: Product id (required)
+            
+        Returns: 
+        """
+
+        allParams = ['pageIndex', 'pageSize', 'sort', 'q', 'productId']
+
+        params = locals()
+        for (key, val) in params['kwargs'].iteritems():
+            if key not in allParams:
+                raise TypeError("Got an unexpected keyword argument '%s' to method getAllProductVersions" % key)
+            params[key] = val
+        del params['kwargs']
+
+        resourcePath = '/products/{productId}/product-versions'
+        resourcePath = resourcePath.replace('{format}', 'json')
+        method = 'GET'
+
+        queryParams = {}
+        headerParams = {}
+        formParams = {}
+        files = {}
+        bodyParam = None
+
+        
+        if ('pageIndex' in params):
+            queryParams['pageIndex'] = self.apiClient.toPathValue(params['pageIndex'])
+        
+        if ('pageSize' in params):
+            queryParams['pageSize'] = self.apiClient.toPathValue(params['pageSize'])
+        
+        if ('sort' in params):
+            queryParams['sort'] = self.apiClient.toPathValue(params['sort'])
+        
+        if ('q' in params):
+            queryParams['q'] = self.apiClient.toPathValue(params['q'])
+        
+
+        
+
+        
+        if ('productId' in params):
+            replacement = str(self.apiClient.toPathValue(params['productId']))
+            replacement = urllib.quote(replacement)
+            resourcePath = resourcePath.replace('{' + 'productId' + '}',
+                                                replacement)
+        
+
+        
+
+        
+
+        postData = (formParams if formParams else bodyParam)
+
+        response = self.apiClient.callAPI(resourcePath, method, queryParams,
+                                          postData, headerParams, files=files)
+	return response
+
+   

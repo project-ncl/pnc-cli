@@ -528,6 +528,58 @@ class BuildconfigurationsApi(object):
 	return response
 
    
+    def getAllDependencies(self, **kwargs):
+        """Get the full list of both direct and indirect dependencies of the specified configuration
+
+        Args:
+            
+            id, int: Build configuration id (required)
+            
+        Returns: 
+        """
+
+        allParams = ['id']
+
+        params = locals()
+        for (key, val) in params['kwargs'].iteritems():
+            if key not in allParams:
+                raise TypeError("Got an unexpected keyword argument '%s' to method getAllDependencies" % key)
+            params[key] = val
+        del params['kwargs']
+
+        resourcePath = '/build-configurations/{id}/all-dependencies'
+        resourcePath = resourcePath.replace('{format}', 'json')
+        method = 'GET'
+
+        queryParams = {}
+        headerParams = {}
+        formParams = {}
+        files = {}
+        bodyParam = None
+
+        
+
+        
+
+        
+        if ('id' in params):
+            replacement = str(self.apiClient.toPathValue(params['id']))
+            replacement = urllib.quote(replacement)
+            resourcePath = resourcePath.replace('{' + 'id' + '}',
+                                                replacement)
+        
+
+        
+
+        
+
+        postData = (formParams if formParams else bodyParam)
+
+        response = self.apiClient.callAPI(resourcePath, method, queryParams,
+                                          postData, headerParams, files=files)
+	return response
+
+   
     def trigger(self, **kwargs):
         """Triggers the build of a specific Build Configuration
 
@@ -638,7 +690,7 @@ class BuildconfigurationsApi(object):
 
    
     def getDependencies(self, **kwargs):
-        """Get associated dependencies of the specified Configuration
+        """Get the direct dependencies of the specified configuration
 
         Args:
             
