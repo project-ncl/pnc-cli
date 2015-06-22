@@ -265,12 +265,12 @@ class ProductsApi(object):
             
             q, str: RSQL query (required)
             
-            productId, int: Product id (required)
+            id, int: Product id (required)
             
         Returns: 
         """
 
-        allParams = ['pageIndex', 'pageSize', 'sort', 'q', 'productId']
+        allParams = ['pageIndex', 'pageSize', 'sort', 'q', 'id']
 
         params = locals()
         for (key, val) in params['kwargs'].iteritems():
@@ -279,7 +279,7 @@ class ProductsApi(object):
             params[key] = val
         del params['kwargs']
 
-        resourcePath = '/products/{productId}/product-versions'
+        resourcePath = '/products/{id}/product-versions'
         resourcePath = resourcePath.replace('{format}', 'json')
         method = 'GET'
 
@@ -306,15 +306,72 @@ class ProductsApi(object):
         
 
         
-        if ('productId' in params):
-            replacement = str(self.apiClient.toPathValue(params['productId']))
+        if ('id' in params):
+            replacement = str(self.apiClient.toPathValue(params['id']))
             replacement = urllib.quote(replacement)
-            resourcePath = resourcePath.replace('{' + 'productId' + '}',
+            resourcePath = resourcePath.replace('{' + 'id' + '}',
                                                 replacement)
         
 
         
 
+        
+
+        postData = (formParams if formParams else bodyParam)
+
+        response = self.apiClient.callAPI(resourcePath, method, queryParams,
+                                          postData, headerParams, files=files)
+	return response
+
+   
+    def createNewProductVersion(self, **kwargs):
+        """Create a new ProductVersion for a Product
+
+        Args:
+            
+            id, int: Product id (required)
+            
+            body, ProductVersion:  (required)
+            
+        Returns: 
+        """
+
+        allParams = ['id', 'body']
+
+        params = locals()
+        for (key, val) in params['kwargs'].iteritems():
+            if key not in allParams:
+                raise TypeError("Got an unexpected keyword argument '%s' to method createNewProductVersion" % key)
+            params[key] = val
+        del params['kwargs']
+
+        resourcePath = '/products/{id}/product-versions'
+        resourcePath = resourcePath.replace('{format}', 'json')
+        method = 'POST'
+
+        queryParams = {}
+        headerParams = {}
+        formParams = {}
+        files = {}
+        bodyParam = None
+
+        
+
+        
+
+        
+        if ('id' in params):
+            replacement = str(self.apiClient.toPathValue(params['id']))
+            replacement = urllib.quote(replacement)
+            resourcePath = resourcePath.replace('{' + 'id' + '}',
+                                                replacement)
+        
+
+        
+
+        
+        if ('body' in params):
+            bodyParam = params['body']
         
 
         postData = (formParams if formParams else bodyParam)

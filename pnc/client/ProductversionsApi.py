@@ -94,63 +94,6 @@ class ProductversionsApi(object):
 	return response
 
    
-    def createNew(self, **kwargs):
-        """Creates a new Product Version
-
-        Args:
-            
-            productId, int: Product id (required)
-            
-            body, ProductVersion:  (required)
-            
-        Returns: 
-        """
-
-        allParams = ['productId', 'body']
-
-        params = locals()
-        for (key, val) in params['kwargs'].iteritems():
-            if key not in allParams:
-                raise TypeError("Got an unexpected keyword argument '%s' to method createNew" % key)
-            params[key] = val
-        del params['kwargs']
-
-        resourcePath = '/product-versions'
-        resourcePath = resourcePath.replace('{format}', 'json')
-        method = 'POST'
-
-        queryParams = {}
-        headerParams = {}
-        formParams = {}
-        files = {}
-        bodyParam = None
-
-        
-
-        
-
-        
-        if ('productId' in params):
-            replacement = str(self.apiClient.toPathValue(params['productId']))
-            replacement = urllib.quote(replacement)
-            resourcePath = resourcePath.replace('{' + 'productId' + '}',
-                                                replacement)
-        
-
-        
-
-        
-        if ('body' in params):
-            bodyParam = params['body']
-        
-
-        postData = (formParams if formParams else bodyParam)
-
-        response = self.apiClient.callAPI(resourcePath, method, queryParams,
-                                          postData, headerParams, files=files)
-	return response
-
-   
     def getSpecific(self, **kwargs):
         """Gets specific Product Version
 
