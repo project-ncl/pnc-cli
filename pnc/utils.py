@@ -23,15 +23,18 @@ def pretty_format_response(function, input_json):
     :return:
     """
     if function is None:
-        if type(input_json) is list:
-            for item in input_json:
-                _remove_nulls(item)
-        else:
-            _remove_nulls(input_json)
-        return json.dumps(input_json, indent=4, separators=[",", ": "], sort_keys=True)
+        return pretty_format_response(input_json)
     else:
         return function(input_json)
 
+
+def pretty_format_response(input_json):
+    if type(input_json) is list:
+        for item in input_json:
+            _remove_nulls(item)
+    else:
+        _remove_nulls(input_json)
+    return json.dumps(input_json, indent=4, separators=[",", ": "], sort_keys=True)
 
 def get_api_client():
     return apiclient
