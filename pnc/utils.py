@@ -1,5 +1,5 @@
 import json
-import client
+import client.swagger
 
 __author__ = 'thauser'
 
