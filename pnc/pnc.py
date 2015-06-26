@@ -1,12 +1,7 @@
 #!/usr/bin/env python
 # PYTHON_ARGCOMPLETE_OK
 import argh
-
-import client.swagger
 from pnc_help_formatter import PNCFormatter
-
-
-#TODO: load this from a config file
 import products
 import projects
 import builds
