@@ -16,7 +16,7 @@ def _get_build_configuration_id_by_name(name):
     :param name: name of build configuration
     :return: id of the matching build configuration, or None if no match found
     """
-    response = client.BuildconfigurationsApi(utils.get_api_client()).getAll()
+    response = BuildconfigurationsApi(utils.get_api_client()).getAll()
     for config in response.json():
         if config["name"] == name:
             return config["id"]
@@ -39,7 +39,7 @@ def build(name=None,id=None):
     "Trigger a build configuration giving either the name or ID."
     if id:
         if (_build_configuration_exists(id)):
-            print(BuildconfigurationsApi(utils.get_api_client()).trigger(id=id))
+            print(utils.pretty_format_response(BuildconfigurationsApi(utils.get_api_client()).trigger(id=id).json()))
         else:
             print "There is no build configuration with id {0}.".format(id)
     elif name:
