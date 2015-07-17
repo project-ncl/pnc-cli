@@ -11,7 +11,7 @@ def _remove_nulls(input_json):
     keys = input_json.keys()
     if keys:
         for k in keys:
-            if input_json[k] == None:
+            if input_json[k] is None:
                 del input_json[k]
 
 
