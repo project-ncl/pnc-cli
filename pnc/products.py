@@ -101,6 +101,23 @@ def get_product(name=None, id=None):
 def create_product_version():
     pass
 
+@arg("-n","--name", help="Name of the product to retrieve versions from")
+@arg("-i","--id", help="ID of the product to retrieve versions from")
+def list_product_versions(name=None, id=None):
+    if id:
+        response = ProductsApi(utils.get_api_client()).getProductVersions(id=id)
+        if response.ok:
+            print(utils.pretty_format_response(response.json()))
+        else:
+            print("No product with id {0} exists.".format(id))
+    elif name:
+        found_id = _get_product_id_by_name(name)
+        if found_id:
+            print(utils.pretty_format_response(ProductsApi(utils.get_api_client()).getProductVersions(id=found_id)))
+        else:
+            print("No product with name {0} exists.".format(name))
+    else:
+        print("Either a product name or ID is required.")
 
 def list_products():
     """List all products."""
