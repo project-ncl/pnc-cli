@@ -35,18 +35,18 @@ def _build_configuration_exists(search_id):
     return False
 
 @arg("-n", "--name", help="Name of the build configuration to trigger")
-@arg("build_id","-i", "--id", help="ID of the build configuration to trigger")
-def build(name=None,build_id=None):
+@arg("-i", "--id", help="ID of the build configuration to trigger")
+def build(name=None,id=None):
     """Trigger a build configuration giving either the name or ID."""
-    if build_id:
-        if _build_configuration_exists(build_id):
-            print(utils.pretty_format_response(BuildconfigurationsApi(utils.get_api_client()).trigger(id=build_id).json()))
+    if id:
+        if _build_configuration_exists(id):
+            print(utils.pretty_format_response(BuildconfigurationsApi(utils.get_api_client()).trigger(id=id).json()))
         else:
-            print("There is no build configuration with id {0}.".format(build_id))
+            print("There is no build configuration with id {0}.".format(id))
     elif name:
-        build_id = _get_build_configuration_id_by_name(name)
-        if build_id:
-            print(utils.pretty_format_response(BuildconfigurationsApi(utils.get_api_client()).trigger(id=build_id).json()))
+        id = _get_build_configuration_id_by_name(name)
+        if id:
+            print(utils.pretty_format_response(BuildconfigurationsApi(utils.get_api_client()).trigger(id=id).json()))
         else:
             print("There is no build configuration with name {0}.".format(name))
     else:
