@@ -3,6 +3,7 @@
 import argh
 from pnc_help_formatter import PNCFormatter
 import products
+import productversions
 import projects
 import builds
 import licenses
@@ -13,8 +14,10 @@ parser.add_commands([products.create_product,
                      products.update_product,
                      products.get_product,
                      products.list_products,
-                     products.list_product_versions,
+                     products.list_versions_for_product,
                      products.create_product_version,
+                     productversions.list_product_versions,
+                     productversions.get_product_version,
                      projects.create_project,
                      projects.delete_project,
                      projects.update_project,
