@@ -24,6 +24,25 @@ def _create_product_object(name, description, abbreviation, product_code, system
     if system_code: created_product.pgmSystemName = system_code
     return created_product
 
+def _create_product_version_object(version, current_milestone_id, product_milestones, build_config_sets, product_releases):
+    """
+    Create an instance of the ProductVersion object
+    :param version:
+    :param product_id:
+    :param current_milestone_id:
+    :param product_milestones:
+    :param build_config_sets:
+    :param product_releases:
+    :return:
+    """
+    created_version = client.models.ProductVersion.ProductVersion()
+    created_version.version = version
+    if current_milestone_id: created_version.currentProductMilestoneId = current_milestone_id
+    if product_milestones: created_version.productMilestones = product_milestones
+    if build_config_sets: created_version.buildConfigurationSetIds = build_config_sets
+    if product_releases: created_version.productReleases = product_releases
+    return created_version
+
 def _get_product_id_by_name(search_name):
     """
     Returns the id of the product in which name or abbreviation matches search_name
@@ -98,8 +117,20 @@ def get_product(name=None, id=None):
     else:
         print("Either a product name or ID is required.")
 
-def create_product_version():
-    pass
+@arg("product-id", help="ID of product to add a version to")
+@arg("version", help="Version to add")
+@arg("-cm", "--current-milestone", help="ID of the milestone this version should be on")
+@arg("-pm", "--product-milestones", help="List of milestone IDs to associate with the new version")
+@arg("-bc", "--build-configuration-sets", help="List of build configuration set IDs to associate with the new version")
+@arg("-pr", "--product-releases", help="List of release IDs to associate with this version")
+
+def create_product_version(product_id, version, current_milestone=None, product_milestones=None, build_configuration_sets=None, product_releases=None):
+    version = _create_product_version_object(version, current_milestone, product_milestones, build_configuration_sets, product_releases)
+    response = ProductsApi(utils.get_api_client()).createNewProductVersion(id=product_id, body=version)
+    if response.ok:
+        print(utils.pretty_format_response(response.json()))
+    else:
+        print(response)
 
 @arg("-n","--name", help="Name of the product to retrieve versions from")
 @arg("-i","--id", help="ID of the product to retrieve versions from")
