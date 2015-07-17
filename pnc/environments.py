@@ -24,40 +24,40 @@ def create_environment(build_type, operating_system):
     response = EnvironmentsApi(utils.get_api_client()).createNew(body=environment)
     print(utils.pretty_format_response(response.json()))
 
-@arg("id", help="ID of the environment to replace")
+@arg("env-id", help="ID of the environment to replace")
 @arg("-bt","--build-type", help="Type of build for the new environment")
 @arg("-os","--operating-system", help="Operating system for the new environment")
-def update_environment(id, build_type=None, operating_system=None):
+def update_environment(env_id, build_type=None, operating_system=None):
     environment = _create_environment_object(build_type, operating_system)
-    if _environment_exists(id):
-        response = EnvironmentsApi(utils.get_api_client()).update(id=id, body=environment)
-        if (response.ok):
-            print("Successfully updated environment {0}.").format(id)
+    if _environment_exists(env_id):
+        response = EnvironmentsApi(utils.get_api_client()).update(id=env_id, body=environment)
+        if response.ok:
+            print("Successfully updated environment {0}.").format(env_id)
         else:
-            print("Updating environment {0} failed.").format(id)
+            print("Updating environment {0} failed.").format(env_id)
     else:
-        print("No environment with id {0} exists.").format(id)
+        print("No environment with id {0} exists.").format(env_id)
 
-@arg("id", help="ID of the environment to delete")
-def delete_environment(id):
-    if not _environment_exists(id):
-        print("No environment with id {0} exists.").format(id)
+@arg("env-id", help="ID of the environment to delete")
+def delete_environment(env_id):
+    if not _environment_exists(env_id):
+        print("No environment with id {0} exists.").format(env_id)
         return
 
-    response = EnvironmentsApi(utils.get_api_client()).delete(id=id)
-    if (response.ok):
-        print("Environment {0} succesfully deleted.")
+    response = EnvironmentsApi(utils.get_api_client()).delete(id=env_id)
+    if response.ok:
+        print("Environment {0} successfully deleted.")
     else:
-        print("Failed to delete environment {0}").format(id)
+        print("Failed to delete environment {0}").format(env_id)
         print(response)
 
-@arg("id", help="ID of the environment to retrieve")
-def get_environment(id):
-    response = EnvironmentsApi(utils.get_api_client()).getSpecific(id=id)
-    if (response.ok):
+@arg("env-id", help="ID of the environment to retrieve")
+def get_environment(env_id):
+    response = EnvironmentsApi(utils.get_api_client()).getSpecific(id=env_id)
+    if response.ok:
         print(utils.pretty_format_response(response.json()))
     else:
-        print("No environment with id {0} exists.").format(id)
+        print("No environment with id {0} exists.").format(env_id)
 
 def list_environments():
     response = EnvironmentsApi(utils.get_api_client()).getAll()
