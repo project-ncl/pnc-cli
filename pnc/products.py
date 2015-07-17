@@ -43,7 +43,7 @@ def _product_exists(search_id):
     :return: True if a product with search_id exists
     """
     response = ProductsApi(utils.get_api_client()).getSpecific(id=search_id)
-    if (response.ok):
+    if response.ok:
         return True
     return False
 
@@ -55,33 +55,34 @@ def _product_exists(search_id):
 @arg("-p","--product-code", help="The product code for the new product")
 @arg("-s","--system-code", help="The system code for the new product")
 def create_product(name, description=None, abbreviation=None, product_code=None, system_code=None):
-    "Define a new product"
+    """Define a new product"""
     product = _create_product_object(name, description, abbreviation, product_code, system_code)
     response = utils.pretty_format_response(ProductsApi(utils.get_api_client()).createNew(body=product).json())
     print(response)
 
-@arg("id", help="ID of the product to update")
+@arg("product-id", help="ID of the product to update")
 @arg("-n","--name", help="New name for the product")
 @arg("-d","--description", help="New product description")
 @arg("-a","--abbreviation", help="New abbreviation")
 @arg("-p","--product-code", help="New product code")
 @arg("-s","--system-code", help="New system code")
-def update_product(id, name=None, description=None, abbreviation=None, product_code=None, system_code=None):
-    "Update a product with the given id. Only provide values to update."
+def update_product(product_id, name=None, description=None, abbreviation=None, product_code=None, system_code=None):
+    """Update a product with the given id. Only provide values to update."""
     product = _create_product_object(name, description, abbreviation, product_code, system_code)
-    if _product_exists(id):
-        response = ProductsApi(utils.get_api_client()).update(id=id,body=product)
+    if _product_exists(product_id):
+        response = ProductsApi(utils.get_api_client()).update(id=product_id,body=product)
         if response.ok:
-            print("Product {0} successfully updated.").format(id)
+            print("Product {0} successfully updated.").format(product_id)
         else:
-            print("Updating product {0} failed").format(id)
+            print("Updating product {0} failed").format(product_id)
     else:
-        print("There is no product with id {0}.").format(id)
+        print("There is no product with id {0}.").format(product_id)
 
 @arg("-n","--name", help="Name of the product to retrieve")
 @arg("-i","--id", help="ID of the product to retrieve")
 def get_product(name=None, id=None):
-    "List information on a specific product."
+
+    """List information on a specific product."""
     if id:
         response = ProductsApi(utils.get_api_client()).getSpecific(id=id)
         if response.ok:
@@ -89,16 +90,19 @@ def get_product(name=None, id=None):
         else:
             print("No product with id {0} exists.".format(id))
     elif name:
-        product_id = _get_product_id_by_name(name)
-        if product_id:
-            print(utils.pretty_format_response(ProductsApi(utils.get_api_client()).getSpecific(id=product_id).json()))
+        id = _get_product_id_by_name(name)
+        if id:
+            print(utils.pretty_format_response(ProductsApi(utils.get_api_client()).getSpecific(id=id).json()))
         else:
             print("No product with name {0} exists.".format(name))
     else:
         print("Either a product name or ID is required.")
 
+def create_product_version():
+    pass
+
 
 def list_products():
-    "List all products."
+    """List all products."""
     response = utils.pretty_format_response(ProductsApi(utils.get_api_client()).getAll().json())
     print(response)
