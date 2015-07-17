@@ -9,6 +9,7 @@ def _create_build_configuration(name, project_id, environment, description, scm_
     created_build_configuration = client.models.Configuration.Configuration()
     created_build_configuration.name = name
     created_build_configuration.projectId = project_id
+    return created_build_configuration
 
 def _get_build_configuration_id_by_name(name):
     """
@@ -34,14 +35,14 @@ def _build_configuration_exists(search_id):
     return False
 
 @arg("-n", "--name", help="Name of the build configuration to trigger")
-@arg("-i", "--id", help="ID of the build configuration to trigger")
-def build(name=None,id=None):
-    "Trigger a build configuration giving either the name or ID."
-    if id:
-        if (_build_configuration_exists(id)):
-            print(utils.pretty_format_response(BuildconfigurationsApi(utils.get_api_client()).trigger(id=id).json()))
+@arg("build_id","-i", "--id", help="ID of the build configuration to trigger")
+def build(name=None,build_id=None):
+    """Trigger a build configuration giving either the name or ID."""
+    if build_id:
+        if _build_configuration_exists(build_id):
+            print(utils.pretty_format_response(BuildconfigurationsApi(utils.get_api_client()).trigger(id=build_id).json()))
         else:
-            print("There is no build configuration with id {0}.".format(id))
+            print("There is no build configuration with id {0}.".format(build_id))
     elif name:
         build_id = _get_build_configuration_id_by_name(name)
         if build_id:
@@ -62,6 +63,6 @@ def create_build_configuration(name, project_id, environment, description="", sc
 
 
 def list_build_configurations():
-    "Get a JSON object containing existing build configurations"
+    """Get a JSON object containing existing build configurations"""
     response = BuildconfigurationsApi(utils.get_api_client()).getAll()
     print(utils.pretty_format_response(response.json()))
