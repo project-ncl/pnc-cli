@@ -45,10 +45,7 @@ def _product_exists(search_id):
     :param search_id: The id to test for
     :return: True if a product with search_id exists
     """
-    response = ProductsApi(utils.get_api_client()).getSpecific(id=search_id)
-    if response.ok:
-        return True
-    return False
+    return ProductsApi(utils.get_api_client()).getSpecific(id=search_id).ok
 
 #localize?
 #refine text
