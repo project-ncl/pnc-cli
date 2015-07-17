@@ -87,15 +87,16 @@ def get_product(name=None, id=None):
         if response.ok:
             print(utils.pretty_format_response(response.json()))
         else:
-            print "No product with id {0} exists.".format(id)
+            print("No product with id {0} exists.".format(id))
     elif name:
         product_id = _get_product_id_by_name(name)
         if product_id:
             print(utils.pretty_format_response(ProductsApi(utils.get_api_client()).getSpecific(id=product_id).json()))
         else:
-            print "No product with name {0} exists.".format(name)
+            print("No product with name {0} exists.".format(name))
     else:
-        print "Either a product name or ID is required."
+        print("Either a product name or ID is required.")
+
 
 def list_products():
     "List all products."

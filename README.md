@@ -12,7 +12,6 @@ and that the base_pnc_url in pnc.py is modified to your specific setup.
     - pip install argh
 
 Coming Soon:
-
  * Configuration files
  * Full REST API coverage
  * Command format refinement

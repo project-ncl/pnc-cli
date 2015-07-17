@@ -41,15 +41,15 @@ def build(name=None,id=None):
         if (_build_configuration_exists(id)):
             print(utils.pretty_format_response(BuildconfigurationsApi(utils.get_api_client()).trigger(id=id).json()))
         else:
-            print "There is no build configuration with id {0}.".format(id)
+            print("There is no build configuration with id {0}.".format(id))
     elif name:
         build_id = _get_build_configuration_id_by_name(name)
         if build_id:
             print(utils.pretty_format_response(BuildconfigurationsApi(utils.get_api_client()).trigger(id=build_id).json()))
         else:
-            print "There is no build configuration with name {0}.".format(name)
+            print("There is no build configuration with name {0}.".format(name))
     else:
-        print "Build requires either a name or an ID of a build configuration to trigger."
+        print("Build requires either a name or an ID of a build configuration to trigger.")
 
 
 def create_build_configuration(name, project_id, environment, description="", scm_url="", scm_revision="", patches_url="",
