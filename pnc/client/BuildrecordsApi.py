@@ -26,8 +26,8 @@ from models import *
 
 class BuildrecordsApi(object):
 
-    def __init__(self, apiClient):
-      self.apiClient = apiClient
+    def __init__(self, api_client):
+      self.api_client = api_client
 
     
     def getAll(self, **kwargs):
@@ -46,52 +46,52 @@ class BuildrecordsApi(object):
         Returns: 
         """
 
-        allParams = ['pageIndex', 'pageSize', 'sort', 'q']
+        all_params = ['pageIndex', 'pageSize', 'sort', 'q']
 
         params = locals()
         for (key, val) in params['kwargs'].iteritems():
-            if key not in allParams:
+            if key not in all_params:
                 raise TypeError("Got an unexpected keyword argument '%s' to method getAll" % key)
             params[key] = val
         del params['kwargs']
 
-        resourcePath = '/build-records'
-        resourcePath = resourcePath.replace('{format}', 'json')
+        resource_path = '/build-records'
+        resource_path = resource_path.replace('{format}', 'json')
         method = 'GET'
 
-        queryParams = {}
-        headerParams = {}
-        formParams = {}
+        query_params = {}
+        header_params = {}
+        form_params = {}
         files = {}
-        bodyParam = None
+        body_param = None
 
         
-        if ('pageIndex' in params):
-            queryParams['pageIndex'] = self.apiClient.toPathValue(params['pageIndex'])
+        if 'pageIndex' in params:
+            query_params['pageIndex'] = self.api_client.to_path_value(params['pageIndex'])
         
-        if ('pageSize' in params):
-            queryParams['pageSize'] = self.apiClient.toPathValue(params['pageSize'])
+        if 'pageSize' in params:
+            query_params['pageSize'] = self.api_client.to_path_value(params['pageSize'])
         
-        if ('sort' in params):
-            queryParams['sort'] = self.apiClient.toPathValue(params['sort'])
+        if 'sort' in params:
+            query_params['sort'] = self.api_client.to_path_value(params['sort'])
         
-        if ('q' in params):
-            queryParams['q'] = self.apiClient.toPathValue(params['q'])
-        
-
-        
-
+        if 'q' in params:
+            query_params['q'] = self.api_client.to_path_value(params['q'])
         
 
         
 
         
 
-        postData = (formParams if formParams else bodyParam)
+        
 
-        response = self.apiClient.callAPI(resourcePath, method, queryParams,
-                                          postData, headerParams, files=files)
-	return response
+        
+
+        post_data = (form_params if form_params else body_param)
+
+        response = self.api_client.callAPI(resource_path, method, query_params,
+                                          post_data, header_params, files=files)
+        return response
 
    
     def getAllForBuildConfiguration(self, **kwargs):
@@ -112,46 +112,46 @@ class BuildrecordsApi(object):
         Returns: 
         """
 
-        allParams = ['pageIndex', 'pageSize', 'sort', 'q', 'configurationId']
+        all_params = ['pageIndex', 'pageSize', 'sort', 'q', 'configurationId']
 
         params = locals()
         for (key, val) in params['kwargs'].iteritems():
-            if key not in allParams:
+            if key not in all_params:
                 raise TypeError("Got an unexpected keyword argument '%s' to method getAllForBuildConfiguration" % key)
             params[key] = val
         del params['kwargs']
 
-        resourcePath = '/build-records/build-configurations/{configurationId}'
-        resourcePath = resourcePath.replace('{format}', 'json')
+        resource_path = '/build-records/build-configurations/{configurationId}'
+        resource_path = resource_path.replace('{format}', 'json')
         method = 'GET'
 
-        queryParams = {}
-        headerParams = {}
-        formParams = {}
+        query_params = {}
+        header_params = {}
+        form_params = {}
         files = {}
-        bodyParam = None
+        body_param = None
 
         
-        if ('pageIndex' in params):
-            queryParams['pageIndex'] = self.apiClient.toPathValue(params['pageIndex'])
+        if 'pageIndex' in params:
+            query_params['pageIndex'] = self.api_client.to_path_value(params['pageIndex'])
         
-        if ('pageSize' in params):
-            queryParams['pageSize'] = self.apiClient.toPathValue(params['pageSize'])
+        if 'pageSize' in params:
+            query_params['pageSize'] = self.api_client.to_path_value(params['pageSize'])
         
-        if ('sort' in params):
-            queryParams['sort'] = self.apiClient.toPathValue(params['sort'])
+        if 'sort' in params:
+            query_params['sort'] = self.api_client.to_path_value(params['sort'])
         
-        if ('q' in params):
-            queryParams['q'] = self.apiClient.toPathValue(params['q'])
-        
-
+        if 'q' in params:
+            query_params['q'] = self.api_client.to_path_value(params['q'])
         
 
         
-        if ('configurationId' in params):
-            replacement = str(self.apiClient.toPathValue(params['configurationId']))
+
+        
+        if 'configurationId' in params:
+            replacement = str(self.api_client.to_path_value(params['configurationId']))
             replacement = urllib.quote(replacement)
-            resourcePath = resourcePath.replace('{' + 'configurationId' + '}',
+            resource_path = resource_path.replace('{' + 'configurationId' + '}',
                                                 replacement)
         
 
@@ -159,11 +159,11 @@ class BuildrecordsApi(object):
 
         
 
-        postData = (formParams if formParams else bodyParam)
+        post_data = (form_params if form_params else body_param)
 
-        response = self.apiClient.callAPI(resourcePath, method, queryParams,
-                                          postData, headerParams, files=files)
-	return response
+        response = self.api_client.callAPI(resource_path, method, query_params,
+                                          post_data, header_params, files=files)
+        return response
 
    
     def getAllForProject(self, **kwargs):
@@ -184,46 +184,46 @@ class BuildrecordsApi(object):
         Returns: 
         """
 
-        allParams = ['pageIndex', 'pageSize', 'sort', 'projectId', 'q']
+        all_params = ['pageIndex', 'pageSize', 'sort', 'projectId', 'q']
 
         params = locals()
         for (key, val) in params['kwargs'].iteritems():
-            if key not in allParams:
+            if key not in all_params:
                 raise TypeError("Got an unexpected keyword argument '%s' to method getAllForProject" % key)
             params[key] = val
         del params['kwargs']
 
-        resourcePath = '/build-records/projects/{projectId}'
-        resourcePath = resourcePath.replace('{format}', 'json')
+        resource_path = '/build-records/projects/{projectId}'
+        resource_path = resource_path.replace('{format}', 'json')
         method = 'GET'
 
-        queryParams = {}
-        headerParams = {}
-        formParams = {}
+        query_params = {}
+        header_params = {}
+        form_params = {}
         files = {}
-        bodyParam = None
+        body_param = None
 
         
-        if ('pageIndex' in params):
-            queryParams['pageIndex'] = self.apiClient.toPathValue(params['pageIndex'])
+        if 'pageIndex' in params:
+            query_params['pageIndex'] = self.api_client.to_path_value(params['pageIndex'])
         
-        if ('pageSize' in params):
-            queryParams['pageSize'] = self.apiClient.toPathValue(params['pageSize'])
+        if 'pageSize' in params:
+            query_params['pageSize'] = self.api_client.to_path_value(params['pageSize'])
         
-        if ('sort' in params):
-            queryParams['sort'] = self.apiClient.toPathValue(params['sort'])
+        if 'sort' in params:
+            query_params['sort'] = self.api_client.to_path_value(params['sort'])
         
-        if ('q' in params):
-            queryParams['q'] = self.apiClient.toPathValue(params['q'])
-        
-
+        if 'q' in params:
+            query_params['q'] = self.api_client.to_path_value(params['q'])
         
 
         
-        if ('projectId' in params):
-            replacement = str(self.apiClient.toPathValue(params['projectId']))
+
+        
+        if 'projectId' in params:
+            replacement = str(self.api_client.to_path_value(params['projectId']))
             replacement = urllib.quote(replacement)
-            resourcePath = resourcePath.replace('{' + 'projectId' + '}',
+            resource_path = resource_path.replace('{' + 'projectId' + '}',
                                                 replacement)
         
 
@@ -231,11 +231,11 @@ class BuildrecordsApi(object):
 
         
 
-        postData = (formParams if formParams else bodyParam)
+        post_data = (form_params if form_params else body_param)
 
-        response = self.apiClient.callAPI(resourcePath, method, queryParams,
-                                          postData, headerParams, files=files)
-	return response
+        response = self.api_client.callAPI(resource_path, method, query_params,
+                                          post_data, header_params, files=files)
+        return response
 
    
     def getSpecific(self, **kwargs):
@@ -248,34 +248,34 @@ class BuildrecordsApi(object):
         Returns: 
         """
 
-        allParams = ['id']
+        all_params = ['id']
 
         params = locals()
         for (key, val) in params['kwargs'].iteritems():
-            if key not in allParams:
+            if key not in all_params:
                 raise TypeError("Got an unexpected keyword argument '%s' to method getSpecific" % key)
             params[key] = val
         del params['kwargs']
 
-        resourcePath = '/build-records/{id}'
-        resourcePath = resourcePath.replace('{format}', 'json')
+        resource_path = '/build-records/{id}'
+        resource_path = resource_path.replace('{format}', 'json')
         method = 'GET'
 
-        queryParams = {}
-        headerParams = {}
-        formParams = {}
+        query_params = {}
+        header_params = {}
+        form_params = {}
         files = {}
-        bodyParam = None
+        body_param = None
 
         
 
         
 
         
-        if ('id' in params):
-            replacement = str(self.apiClient.toPathValue(params['id']))
+        if 'id' in params:
+            replacement = str(self.api_client.to_path_value(params['id']))
             replacement = urllib.quote(replacement)
-            resourcePath = resourcePath.replace('{' + 'id' + '}',
+            resource_path = resource_path.replace('{' + 'id' + '}',
                                                 replacement)
         
 
@@ -283,11 +283,11 @@ class BuildrecordsApi(object):
 
         
 
-        postData = (formParams if formParams else bodyParam)
+        post_data = (form_params if form_params else body_param)
 
-        response = self.apiClient.callAPI(resourcePath, method, queryParams,
-                                          postData, headerParams, files=files)
-	return response
+        response = self.api_client.callAPI(resource_path, method, query_params,
+                                          post_data, header_params, files=files)
+        return response
 
    
     def getArtifacts(self, **kwargs):
@@ -308,46 +308,46 @@ class BuildrecordsApi(object):
         Returns: 
         """
 
-        allParams = ['id', 'pageIndex', 'pageSize', 'sort', 'q']
+        all_params = ['id', 'pageIndex', 'pageSize', 'sort', 'q']
 
         params = locals()
         for (key, val) in params['kwargs'].iteritems():
-            if key not in allParams:
+            if key not in all_params:
                 raise TypeError("Got an unexpected keyword argument '%s' to method getArtifacts" % key)
             params[key] = val
         del params['kwargs']
 
-        resourcePath = '/build-records/{id}/artifacts'
-        resourcePath = resourcePath.replace('{format}', 'json')
+        resource_path = '/build-records/{id}/artifacts'
+        resource_path = resource_path.replace('{format}', 'json')
         method = 'GET'
 
-        queryParams = {}
-        headerParams = {}
-        formParams = {}
+        query_params = {}
+        header_params = {}
+        form_params = {}
         files = {}
-        bodyParam = None
+        body_param = None
 
         
-        if ('pageIndex' in params):
-            queryParams['pageIndex'] = self.apiClient.toPathValue(params['pageIndex'])
+        if 'pageIndex' in params:
+            query_params['pageIndex'] = self.api_client.to_path_value(params['pageIndex'])
         
-        if ('pageSize' in params):
-            queryParams['pageSize'] = self.apiClient.toPathValue(params['pageSize'])
+        if 'pageSize' in params:
+            query_params['pageSize'] = self.api_client.to_path_value(params['pageSize'])
         
-        if ('sort' in params):
-            queryParams['sort'] = self.apiClient.toPathValue(params['sort'])
+        if 'sort' in params:
+            query_params['sort'] = self.api_client.to_path_value(params['sort'])
         
-        if ('q' in params):
-            queryParams['q'] = self.apiClient.toPathValue(params['q'])
-        
-
+        if 'q' in params:
+            query_params['q'] = self.api_client.to_path_value(params['q'])
         
 
         
-        if ('id' in params):
-            replacement = str(self.apiClient.toPathValue(params['id']))
+
+        
+        if 'id' in params:
+            replacement = str(self.api_client.to_path_value(params['id']))
             replacement = urllib.quote(replacement)
-            resourcePath = resourcePath.replace('{' + 'id' + '}',
+            resource_path = resource_path.replace('{' + 'id' + '}',
                                                 replacement)
         
 
@@ -355,11 +355,11 @@ class BuildrecordsApi(object):
 
         
 
-        postData = (formParams if formParams else bodyParam)
+        post_data = (form_params if form_params else body_param)
 
-        response = self.apiClient.callAPI(resourcePath, method, queryParams,
-                                          postData, headerParams, files=files)
-	return response
+        response = self.api_client.callAPI(resource_path, method, query_params,
+                                          post_data, header_params, files=files)
+        return response
 
    
     def getBuildConfigurationAudited(self, **kwargs):
@@ -372,34 +372,34 @@ class BuildrecordsApi(object):
         Returns: 
         """
 
-        allParams = ['id']
+        all_params = ['id']
 
         params = locals()
         for (key, val) in params['kwargs'].iteritems():
-            if key not in allParams:
+            if key not in all_params:
                 raise TypeError("Got an unexpected keyword argument '%s' to method getBuildConfigurationAudited" % key)
             params[key] = val
         del params['kwargs']
 
-        resourcePath = '/build-records/{id}/build-configuration-audited'
-        resourcePath = resourcePath.replace('{format}', 'json')
+        resource_path = '/build-records/{id}/build-configuration-audited'
+        resource_path = resource_path.replace('{format}', 'json')
         method = 'GET'
 
-        queryParams = {}
-        headerParams = {}
-        formParams = {}
+        query_params = {}
+        header_params = {}
+        form_params = {}
         files = {}
-        bodyParam = None
+        body_param = None
 
         
 
         
 
         
-        if ('id' in params):
-            replacement = str(self.apiClient.toPathValue(params['id']))
+        if 'id' in params:
+            replacement = str(self.api_client.to_path_value(params['id']))
             replacement = urllib.quote(replacement)
-            resourcePath = resourcePath.replace('{' + 'id' + '}',
+            resource_path = resource_path.replace('{' + 'id' + '}',
                                                 replacement)
         
 
@@ -407,11 +407,11 @@ class BuildrecordsApi(object):
 
         
 
-        postData = (formParams if formParams else bodyParam)
+        post_data = (form_params if form_params else body_param)
 
-        response = self.apiClient.callAPI(resourcePath, method, queryParams,
-                                          postData, headerParams, files=files)
-	return response
+        response = self.api_client.callAPI(resource_path, method, query_params,
+                                          post_data, header_params, files=files)
+        return response
 
    
     def getLogs(self, **kwargs):
@@ -424,34 +424,34 @@ class BuildrecordsApi(object):
         Returns: 
         """
 
-        allParams = ['id']
+        all_params = ['id']
 
         params = locals()
         for (key, val) in params['kwargs'].iteritems():
-            if key not in allParams:
+            if key not in all_params:
                 raise TypeError("Got an unexpected keyword argument '%s' to method getLogs" % key)
             params[key] = val
         del params['kwargs']
 
-        resourcePath = '/build-records/{id}/log'
-        resourcePath = resourcePath.replace('{format}', 'json')
+        resource_path = '/build-records/{id}/log'
+        resource_path = resource_path.replace('{format}', 'json')
         method = 'GET'
 
-        queryParams = {}
-        headerParams = {}
-        formParams = {}
+        query_params = {}
+        header_params = {}
+        form_params = {}
         files = {}
-        bodyParam = None
+        body_param = None
 
         
 
         
 
         
-        if ('id' in params):
-            replacement = str(self.apiClient.toPathValue(params['id']))
+        if 'id' in params:
+            replacement = str(self.api_client.to_path_value(params['id']))
             replacement = urllib.quote(replacement)
-            resourcePath = resourcePath.replace('{' + 'id' + '}',
+            resource_path = resource_path.replace('{' + 'id' + '}',
                                                 replacement)
         
 
@@ -459,10 +459,10 @@ class BuildrecordsApi(object):
 
         
 
-        postData = (formParams if formParams else bodyParam)
+        post_data = (form_params if form_params else body_param)
 
-        response = self.apiClient.callAPI(resourcePath, method, queryParams,
-                                          postData, headerParams, files=files)
-	return response
+        response = self.api_client.callAPI(resource_path, method, query_params,
+                                          post_data, header_params, files=files)
+        return response
 
    

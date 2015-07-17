@@ -26,10 +26,59 @@ from models import *
 
 class TestApi(object):
 
-    def __init__(self, apiClient):
-      self.apiClient = apiClient
+    def __init__(self, api_client):
+      self.api_client = api_client
 
     
+    def sendBuildSetStatusChangedEvent(self, **kwargs):
+        """Sends BuildSetStatusChangedEvent just like it was from Core, useful for testing WebSockets
+
+        Args:
+            
+            body, BuildSetStatusChangedEvent:  (required)
+            
+        Returns: 
+        """
+
+        all_params = ['body']
+
+        params = locals()
+        for (key, val) in params['kwargs'].iteritems():
+            if key not in all_params:
+                raise TypeError("Got an unexpected keyword argument '%s' to method sendBuildSetStatusChangedEvent" % key)
+            params[key] = val
+        del params['kwargs']
+
+        resource_path = '/test/build-set-status/notify'
+        resource_path = resource_path.replace('{format}', 'json')
+        method = 'POST'
+
+        query_params = {}
+        header_params = {}
+        form_params = {}
+        files = {}
+        body_param = None
+
+        
+
+        
+
+        
+
+        
+
+        
+        if 'body' in params:
+            body_param = params['body']
+        
+
+        post_data = (form_params if form_params else body_param)
+
+        response = self.api_client.callAPI(resource_path, method, query_params,
+                                          post_data, header_params, files=files)
+        return response
+
+   
     def sendBuildStatusChangedEvent(self, **kwargs):
         """Sends BuildStatusChangedEvent just like it was from Core, useful for testing WebSockets
 
@@ -40,24 +89,24 @@ class TestApi(object):
         Returns: 
         """
 
-        allParams = ['body']
+        all_params = ['body']
 
         params = locals()
         for (key, val) in params['kwargs'].iteritems():
-            if key not in allParams:
+            if key not in all_params:
                 raise TypeError("Got an unexpected keyword argument '%s' to method sendBuildStatusChangedEvent" % key)
             params[key] = val
         del params['kwargs']
 
-        resourcePath = '/test/buildstatus/notify'
-        resourcePath = resourcePath.replace('{format}', 'json')
+        resource_path = '/test/build-status/notify'
+        resource_path = resource_path.replace('{format}', 'json')
         method = 'POST'
 
-        queryParams = {}
-        headerParams = {}
-        formParams = {}
+        query_params = {}
+        header_params = {}
+        form_params = {}
         files = {}
-        bodyParam = None
+        body_param = None
 
         
 
@@ -68,14 +117,14 @@ class TestApi(object):
         
 
         
-        if ('body' in params):
-            bodyParam = params['body']
+        if 'body' in params:
+            body_param = params['body']
         
 
-        postData = (formParams if formParams else bodyParam)
+        post_data = (form_params if form_params else body_param)
 
-        response = self.apiClient.callAPI(resourcePath, method, queryParams,
-                                          postData, headerParams, files=files)
-	return response
+        response = self.api_client.callAPI(resource_path, method, query_params,
+                                          post_data, header_params, files=files)
+        return response
 
    

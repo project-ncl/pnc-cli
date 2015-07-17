@@ -26,8 +26,8 @@ from models import *
 
 class ProductversionsApi(object):
 
-    def __init__(self, apiClient):
-      self.apiClient = apiClient
+    def __init__(self, api_client):
+      self.api_client = api_client
 
     
     def getAll(self, **kwargs):
@@ -46,52 +46,52 @@ class ProductversionsApi(object):
         Returns: 
         """
 
-        allParams = ['pageIndex', 'pageSize', 'sort', 'q']
+        all_params = ['pageIndex', 'pageSize', 'sort', 'q']
 
         params = locals()
         for (key, val) in params['kwargs'].iteritems():
-            if key not in allParams:
+            if key not in all_params:
                 raise TypeError("Got an unexpected keyword argument '%s' to method getAll" % key)
             params[key] = val
         del params['kwargs']
 
-        resourcePath = '/product-versions'
-        resourcePath = resourcePath.replace('{format}', 'json')
+        resource_path = '/product-versions'
+        resource_path = resource_path.replace('{format}', 'json')
         method = 'GET'
 
-        queryParams = {}
-        headerParams = {}
-        formParams = {}
+        query_params = {}
+        header_params = {}
+        form_params = {}
         files = {}
-        bodyParam = None
+        body_param = None
 
         
-        if ('pageIndex' in params):
-            queryParams['pageIndex'] = self.apiClient.toPathValue(params['pageIndex'])
+        if 'pageIndex' in params:
+            query_params['pageIndex'] = self.api_client.to_path_value(params['pageIndex'])
         
-        if ('pageSize' in params):
-            queryParams['pageSize'] = self.apiClient.toPathValue(params['pageSize'])
+        if 'pageSize' in params:
+            query_params['pageSize'] = self.api_client.to_path_value(params['pageSize'])
         
-        if ('sort' in params):
-            queryParams['sort'] = self.apiClient.toPathValue(params['sort'])
+        if 'sort' in params:
+            query_params['sort'] = self.api_client.to_path_value(params['sort'])
         
-        if ('q' in params):
-            queryParams['q'] = self.apiClient.toPathValue(params['q'])
-        
-
-        
-
+        if 'q' in params:
+            query_params['q'] = self.api_client.to_path_value(params['q'])
         
 
         
 
         
 
-        postData = (formParams if formParams else bodyParam)
+        
 
-        response = self.apiClient.callAPI(resourcePath, method, queryParams,
-                                          postData, headerParams, files=files)
-	return response
+        
+
+        post_data = (form_params if form_params else body_param)
+
+        response = self.api_client.callAPI(resource_path, method, query_params,
+                                          post_data, header_params, files=files)
+        return response
 
    
     def getSpecific(self, **kwargs):
@@ -104,34 +104,34 @@ class ProductversionsApi(object):
         Returns: 
         """
 
-        allParams = ['id']
+        all_params = ['id']
 
         params = locals()
         for (key, val) in params['kwargs'].iteritems():
-            if key not in allParams:
+            if key not in all_params:
                 raise TypeError("Got an unexpected keyword argument '%s' to method getSpecific" % key)
             params[key] = val
         del params['kwargs']
 
-        resourcePath = '/product-versions/{id}'
-        resourcePath = resourcePath.replace('{format}', 'json')
+        resource_path = '/product-versions/{id}'
+        resource_path = resource_path.replace('{format}', 'json')
         method = 'GET'
 
-        queryParams = {}
-        headerParams = {}
-        formParams = {}
+        query_params = {}
+        header_params = {}
+        form_params = {}
         files = {}
-        bodyParam = None
+        body_param = None
 
         
 
         
 
         
-        if ('id' in params):
-            replacement = str(self.apiClient.toPathValue(params['id']))
+        if 'id' in params:
+            replacement = str(self.api_client.to_path_value(params['id']))
             replacement = urllib.quote(replacement)
-            resourcePath = resourcePath.replace('{' + 'id' + '}',
+            resource_path = resource_path.replace('{' + 'id' + '}',
                                                 replacement)
         
 
@@ -139,19 +139,17 @@ class ProductversionsApi(object):
 
         
 
-        postData = (formParams if formParams else bodyParam)
+        post_data = (form_params if form_params else body_param)
 
-        response = self.apiClient.callAPI(resourcePath, method, queryParams,
-                                          postData, headerParams, files=files)
-	return response
+        response = self.api_client.callAPI(resource_path, method, query_params,
+                                          post_data, header_params, files=files)
+        return response
 
    
     def update(self, **kwargs):
         """Updates an existing Product Version
 
         Args:
-            
-            productId, int: Product id (required)
             
             id, int: Product Version id (required)
             
@@ -160,55 +158,49 @@ class ProductversionsApi(object):
         Returns: 
         """
 
-        allParams = ['productId', 'id', 'body']
+        all_params = ['id', 'body']
 
         params = locals()
         for (key, val) in params['kwargs'].iteritems():
-            if key not in allParams:
+            if key not in all_params:
                 raise TypeError("Got an unexpected keyword argument '%s' to method update" % key)
             params[key] = val
         del params['kwargs']
 
-        resourcePath = '/product-versions/{id}'
-        resourcePath = resourcePath.replace('{format}', 'json')
+        resource_path = '/product-versions/{id}'
+        resource_path = resource_path.replace('{format}', 'json')
         method = 'PUT'
 
-        queryParams = {}
-        headerParams = {}
-        formParams = {}
+        query_params = {}
+        header_params = {}
+        form_params = {}
         files = {}
-        bodyParam = None
+        body_param = None
 
         
 
         
 
         
-        if ('productId' in params):
-            replacement = str(self.apiClient.toPathValue(params['productId']))
+        if 'id' in params:
+            replacement = str(self.api_client.to_path_value(params['id']))
             replacement = urllib.quote(replacement)
-            resourcePath = resourcePath.replace('{' + 'productId' + '}',
-                                                replacement)
-        
-        if ('id' in params):
-            replacement = str(self.apiClient.toPathValue(params['id']))
-            replacement = urllib.quote(replacement)
-            resourcePath = resourcePath.replace('{' + 'id' + '}',
+            resource_path = resource_path.replace('{' + 'id' + '}',
                                                 replacement)
         
 
         
 
         
-        if ('body' in params):
-            bodyParam = params['body']
+        if 'body' in params:
+            body_param = params['body']
         
 
-        postData = (formParams if formParams else bodyParam)
+        post_data = (form_params if form_params else body_param)
 
-        response = self.apiClient.callAPI(resourcePath, method, queryParams,
-                                          postData, headerParams, files=files)
-	return response
+        response = self.api_client.callAPI(resource_path, method, query_params,
+                                          post_data, header_params, files=files)
+        return response
 
    
     def getBuildConfigurationSets(self, **kwargs):
@@ -224,59 +216,51 @@ class ProductversionsApi(object):
             
             q, str: RSQL query (required)
             
-            productId, int: Product id (required)
-            
             id, int: Product Version id (required)
             
         Returns: 
         """
 
-        allParams = ['pageIndex', 'pageSize', 'sort', 'q', 'productId', 'id']
+        all_params = ['pageIndex', 'pageSize', 'sort', 'q', 'id']
 
         params = locals()
         for (key, val) in params['kwargs'].iteritems():
-            if key not in allParams:
+            if key not in all_params:
                 raise TypeError("Got an unexpected keyword argument '%s' to method getBuildConfigurationSets" % key)
             params[key] = val
         del params['kwargs']
 
-        resourcePath = '/product-versions/{id}/build-configuration-sets'
-        resourcePath = resourcePath.replace('{format}', 'json')
+        resource_path = '/product-versions/{id}/build-configuration-sets'
+        resource_path = resource_path.replace('{format}', 'json')
         method = 'GET'
 
-        queryParams = {}
-        headerParams = {}
-        formParams = {}
+        query_params = {}
+        header_params = {}
+        form_params = {}
         files = {}
-        bodyParam = None
+        body_param = None
 
         
-        if ('pageIndex' in params):
-            queryParams['pageIndex'] = self.apiClient.toPathValue(params['pageIndex'])
+        if 'pageIndex' in params:
+            query_params['pageIndex'] = self.api_client.to_path_value(params['pageIndex'])
         
-        if ('pageSize' in params):
-            queryParams['pageSize'] = self.apiClient.toPathValue(params['pageSize'])
+        if 'pageSize' in params:
+            query_params['pageSize'] = self.api_client.to_path_value(params['pageSize'])
         
-        if ('sort' in params):
-            queryParams['sort'] = self.apiClient.toPathValue(params['sort'])
+        if 'sort' in params:
+            query_params['sort'] = self.api_client.to_path_value(params['sort'])
         
-        if ('q' in params):
-            queryParams['q'] = self.apiClient.toPathValue(params['q'])
-        
-
+        if 'q' in params:
+            query_params['q'] = self.api_client.to_path_value(params['q'])
         
 
         
-        if ('productId' in params):
-            replacement = str(self.apiClient.toPathValue(params['productId']))
+
+        
+        if 'id' in params:
+            replacement = str(self.api_client.to_path_value(params['id']))
             replacement = urllib.quote(replacement)
-            resourcePath = resourcePath.replace('{' + 'productId' + '}',
-                                                replacement)
-        
-        if ('id' in params):
-            replacement = str(self.apiClient.toPathValue(params['id']))
-            replacement = urllib.quote(replacement)
-            resourcePath = resourcePath.replace('{' + 'id' + '}',
+            resource_path = resource_path.replace('{' + 'id' + '}',
                                                 replacement)
         
 
@@ -284,10 +268,10 @@ class ProductversionsApi(object):
 
         
 
-        postData = (formParams if formParams else bodyParam)
+        post_data = (form_params if form_params else body_param)
 
-        response = self.apiClient.callAPI(resourcePath, method, queryParams,
-                                          postData, headerParams, files=files)
-	return response
+        response = self.api_client.callAPI(resource_path, method, query_params,
+                                          post_data, header_params, files=files)
+        return response
 
    

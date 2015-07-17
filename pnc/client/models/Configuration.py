@@ -46,13 +46,13 @@ class Configuration(object):
             'scmRevision': 'str',
             
             
-            'creationTime': 'Timestamp',
+            'creationTime': 'DateTime',
             
             
-            'lastModificationTime': 'Timestamp',
+            'lastModificationTime': 'DateTime',
             
             
-            'buildStatus': 'BuildStatus',
+            'buildStatus': 'str',
             
             
             'repositories': 'str',
@@ -123,13 +123,13 @@ class Configuration(object):
         self.scmRevision = None # str
         
         
-        self.creationTime = None # Timestamp
+        self.creationTime = None # DateTime
         
         
-        self.lastModificationTime = None # Timestamp
+        self.lastModificationTime = None # DateTime
         
         
-        self.buildStatus = None # BuildStatus
+        self.buildStatus = None # str
         
         
         self.repositories = None # str

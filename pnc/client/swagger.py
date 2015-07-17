@@ -19,14 +19,14 @@ class ApiClient(object):
 
     Attributes:
       host: The base path for the server to call
-      headerName: a header to pass when making calls to the API
-      headerValue: a header value to pass when making calls to the API
+      header_name: a header to pass when making calls to the API
+      header_value: a header value to pass when making calls to the API
     """
 
-    def __init__(self, host=None, headerName=None, headerValue=None):
+    def __init__(self, host=None, header_name=None, header_value=None):
         self.defaultHeaders = {}
-        if (headerName is not None):
-            self.defaultHeaders[headerName] = headerValue
+        if header_name is not None:
+            self.defaultHeaders[header_name] = header_value
         self.host = host
         self.cookie = None
         self.boundary = ''.join(random.choice(string.ascii_letters + string.digits) for _ in range(30))
@@ -41,10 +41,10 @@ class ApiClient(object):
     def user_agent(self, value):
         self.defaultHeaders['User-Agent'] = value
 
-    def setDefaultHeader(self, headerName, headerValue):
-        self.defaultHeaders[headerName] = headerValue
+    def setDefaultHeader(self, header_name, header_value):
+        self.defaultHeaders[header_name] = header_value
 
-    def callAPI(self, resourcePath, method, queryParams, postData,
+    def callAPI(self, resourcePath, method, queryParams, post_data,
                 headerParams=None, files=None):
 
         url = self.host + resourcePath
@@ -54,13 +54,12 @@ class ApiClient(object):
         headers = {}
         if mergedHeaderParams:
             for param, value in mergedHeaderParams.iteritems():
-                headers[param] = ApiClient.sanitizeForSerialization(value)
+                headers[param] = ApiClient.sanitize_for_serialization(value)
 
         if self.cookie:
-            headers['Cookie'] = ApiClient.sanitizeForSerialization(self.cookie)
+            headers['Cookie'] = ApiClient.sanitize_for_serialization(self.cookie)
 
-        data = self.convertPostData(headers, postData, files)
-        result = None
+        data = self.convert_post_data(headers, post_data, files)
 
         if method in ['GET']:
             # Options to add statements later on and for compatibility
@@ -79,7 +78,7 @@ class ApiClient(object):
 
         return result
 
-    def toPathValue(self, obj):
+    def to_path_value(self, obj):
         """Convert a string or object to a path-friendly value
         Args:
             obj -- object or string value
@@ -91,22 +90,22 @@ class ApiClient(object):
         else:
             return str(obj)
 
-    def convertPostData(self, headers, postData, files):
+    def convert_post_data(self, headers, post_data, files):
         data = None
-        if postData:
-            postData = ApiClient.sanitizeForSerialization(postData)
+        if post_data:
+            post_data = ApiClient.sanitize_for_serialization(post_data)
             if 'Content-Type' not in headers or headers['Content-Type'] == 'application/json':
                 headers['Content-Type'] = 'application/json'
-                data = json.dumps(postData)
+                data = json.dumps(post_data)
             elif headers['Content-Type'] == 'multipart/form-data':
-                data = ApiClient.buildMultipartFormData(postData, files)
+                data = ApiClient.buildMultipartFormData(post_data, files)
                 headers['Content-Type'] = 'multipart/form-data; boundary={0}'.format(self.boundary)
                 headers['Content-length'] = str(len(data))
         return data
 
 
     @staticmethod
-    def sanitizeForSerialization(obj):
+    def sanitize_for_serialization(obj):
         """
         Sanitize an object for Request.
 
@@ -122,7 +121,7 @@ class ApiClient(object):
         elif isinstance(obj, (str, int, long, float, bool, file)):
             return obj
         elif isinstance(obj, list):
-            return [ApiClient.sanitizeForSerialization(subObj) for subObj in obj]
+            return [ApiClient.sanitize_for_serialization(subObj) for subObj in obj]
         elif isinstance(obj, (datetime.datetime, datetime.date)):
             return obj.isoformat()
         else:
@@ -135,17 +134,17 @@ class ApiClient(object):
                 objDict = {obj.attributeMap[key]: val
                            for key, val in obj.__dict__.iteritems()
                            if key != 'swaggerTypes' and key != 'attributeMap' and val is not None}
-            return {key: ApiClient.sanitizeForSerialization(val)
+            return {key: ApiClient.sanitize_for_serialization(val)
                     for (key, val) in objDict.iteritems()}
 
     @staticmethod
-    def buildMultipartFormData(self, postData, files):
+    def build_multipart_form_data(self, post_data, files):
         def escape_quotes(s):
             return s.replace('"', '\\"')
 
         lines = []
 
-        for name, value in postData.items():
+        for name, value in post_data.items():
             lines.extend((
                 '--{0}'.format(self.boundary),
                 'Content-Disposition: form-data; name="{0}"'.format(escape_quotes(name)),
@@ -190,7 +189,7 @@ class ApiClient(object):
                 subClass = match.group(1)
                 return [self.deserialize(subObj, subClass) for subObj in obj]
 
-            if (objClass in ['int', 'float', 'long', 'dict', 'list', 'str', 'bool', 'datetime']):
+            if objClass in ['int', 'float', 'long', 'dict', 'list', 'str', 'bool', 'datetime']:
                 objClass = eval(objClass)
             else:  # not a native type, must be model class
                 objClass = eval(objClass + '.' + objClass)
@@ -214,7 +213,7 @@ class ApiClient(object):
                     except TypeError:
                         value = value
                     setattr(instance, attr, value)
-                elif (attrType == 'datetime'):
+                elif attrType == 'datetime':
                     setattr(instance, attr, self.__parse_string_to_datetime(value))
                 elif 'list[' in attrType:
                     match = re.match('list\[(.*)\]', attrType)
@@ -231,6 +230,7 @@ class ApiClient(object):
 
         return instance
 
+    @staticmethod
     def __parse_string_to_datetime(self, string):
         """
         Parse datetime in string to datetime.
