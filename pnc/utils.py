@@ -39,5 +39,12 @@ def pretty_format_response(input_json):
         _remove_nulls(input_json)
     return json.dumps(input_json, indent=4, separators=[",", ": "], sort_keys=True)
 
+def retrieve_keys(input_json, keys):
+    if type(input_json) is list:
+        final_dict = [{key : r[key] for key in keys} for r in input_json]
+    else:
+        final_dict = {key : input_json[key] for key in keys}
+    return final_dict
+
 def get_api_client():
     return apiclient
