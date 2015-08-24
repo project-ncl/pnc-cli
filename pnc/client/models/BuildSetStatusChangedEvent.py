@@ -28,49 +28,49 @@ class BuildSetStatusChangedEvent(object):
         """
         self.swaggerTypes = {
             
-            'userId': 'int',
-            
-            
             'newStatus': 'BuildSetStatus',
-            
-            
-            'buildSetConfigurationId': 'int',
             
             
             'buildSetTaskId': 'int',
             
             
-            'oldStatus': 'BuildSetStatus'
+            'oldStatus': 'BuildSetStatus',
+            
+            
+            'buildSetConfigurationId': 'int',
+            
+            
+            'userId': 'int'
             
         }
 
         self.attributeMap = {
             
-            'userId': 'userId',
-            
             'newStatus': 'newStatus',
-            
-            'buildSetConfigurationId': 'buildSetConfigurationId',
             
             'buildSetTaskId': 'buildSetTaskId',
             
-            'oldStatus': 'oldStatus'
+            'oldStatus': 'oldStatus',
+            
+            'buildSetConfigurationId': 'buildSetConfigurationId',
+            
+            'userId': 'userId'
             
         }       
 
         
         
-        self.userId = None # int
-        
-        
         self.newStatus = None # BuildSetStatus
-        
-        
-        self.buildSetConfigurationId = None # int
         
         
         self.buildSetTaskId = None # int
         
         
         self.oldStatus = None # BuildSetStatus
+        
+        
+        self.buildSetConfigurationId = None # int
+        
+        
+        self.userId = None # int
         

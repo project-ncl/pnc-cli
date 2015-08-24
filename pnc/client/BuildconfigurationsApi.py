@@ -43,7 +43,7 @@ class BuildconfigurationsApi(object):
             
             q, str: RSQL query (required)
             
-        Returns: 
+        Returns: list[Configuration]
         """
 
         all_params = ['pageIndex', 'pageSize', 'sort', 'q']
@@ -101,7 +101,7 @@ class BuildconfigurationsApi(object):
             
             body, Configuration:  (required)
             
-        Returns: 
+        Returns: Configuration
         """
 
         all_params = ['body']
@@ -158,7 +158,7 @@ class BuildconfigurationsApi(object):
             
             productId, int: Product id (required)
             
-        Returns: 
+        Returns: list[Configuration]
         """
 
         all_params = ['pageIndex', 'pageSize', 'sort', 'q', 'productId']
@@ -232,7 +232,7 @@ class BuildconfigurationsApi(object):
             
             versionId, int: Product Version id (required)
             
-        Returns: 
+        Returns: list[Configuration]
         """
 
         all_params = ['pageIndex', 'pageSize', 'sort', 'q', 'productId', 'versionId']
@@ -310,7 +310,7 @@ class BuildconfigurationsApi(object):
             
             projectId, int: Project id (required)
             
-        Returns: 
+        Returns: list[Configuration]
         """
 
         all_params = ['pageIndex', 'pageSize', 'sort', 'q', 'projectId']
@@ -374,7 +374,7 @@ class BuildconfigurationsApi(object):
             
             id, int: Build Configuration id (required)
             
-        Returns: 
+        Returns: Configuration
         """
 
         all_params = ['id']
@@ -535,7 +535,7 @@ class BuildconfigurationsApi(object):
             
             id, int: Build configuration id (required)
             
-        Returns: 
+        Returns: list[Configuration]
         """
 
         all_params = ['id']
@@ -652,7 +652,7 @@ class BuildconfigurationsApi(object):
             
             id, int: Build configuration id (required)
             
-        Returns: 
+        Returns: list[BuildRecord]
         """
 
         all_params = ['pageIndex', 'pageSize', 'sort', 'q', 'id']
@@ -716,7 +716,7 @@ class BuildconfigurationsApi(object):
             
             id, int: Build configuration id (required)
             
-        Returns: 
+        Returns: BuildRecord
         """
 
         all_params = ['id']
@@ -768,7 +768,7 @@ class BuildconfigurationsApi(object):
             
             id, int: Build Configuration id (required)
             
-        Returns: 
+        Returns: Configuration
         """
 
         all_params = ['id']
@@ -820,7 +820,7 @@ class BuildconfigurationsApi(object):
             
             id, int: Build configuration id (required)
             
-        Returns: 
+        Returns: list[Configuration]
         """
 
         all_params = ['id']
@@ -989,7 +989,7 @@ class BuildconfigurationsApi(object):
             
             id, int: Build configuration id (required)
             
-        Returns: 
+        Returns: list[ProductVersion]
         """
 
         all_params = ['id']
@@ -1158,7 +1158,7 @@ class BuildconfigurationsApi(object):
             
             id, int: Build configuration id (required)
             
-        Returns: 
+        Returns: list[BuildConfigurationAudited]
         """
 
         all_params = ['id']
@@ -1212,7 +1212,7 @@ class BuildconfigurationsApi(object):
             
             rev, int: Build configuration rev (required)
             
-        Returns: 
+        Returns: BuildConfigurationAudited
         """
 
         all_params = ['id', 'rev']

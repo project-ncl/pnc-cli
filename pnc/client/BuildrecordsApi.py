@@ -43,7 +43,7 @@ class BuildrecordsApi(object):
             
             q, str: RSQL query (required)
             
-        Returns: 
+        Returns: list[BuildRecord]
         """
 
         all_params = ['pageIndex', 'pageSize', 'sort', 'q']
@@ -109,7 +109,7 @@ class BuildrecordsApi(object):
             
             configurationId, int: Build Configuration id (required)
             
-        Returns: 
+        Returns: list[BuildRecord]
         """
 
         all_params = ['pageIndex', 'pageSize', 'sort', 'q', 'configurationId']
@@ -181,7 +181,7 @@ class BuildrecordsApi(object):
             
             q, str: RSQL query (required)
             
-        Returns: 
+        Returns: list[BuildRecord]
         """
 
         all_params = ['pageIndex', 'pageSize', 'sort', 'projectId', 'q']
@@ -245,7 +245,7 @@ class BuildrecordsApi(object):
             
             id, int: BuildRecord id (required)
             
-        Returns: 
+        Returns: BuildRecord
         """
 
         all_params = ['id']
@@ -305,7 +305,7 @@ class BuildrecordsApi(object):
             
             q, str: RSQL query (required)
             
-        Returns: 
+        Returns: list[Artifact]
         """
 
         all_params = ['id', 'pageIndex', 'pageSize', 'sort', 'q']
@@ -369,7 +369,7 @@ class BuildrecordsApi(object):
             
             id, int: BuildRecord id (required)
             
-        Returns: 
+        Returns: BuildConfigurationAudited
         """
 
         all_params = ['id']
@@ -421,7 +421,7 @@ class BuildrecordsApi(object):
             
             id, int: BuildRecord id (required)
             
-        Returns: 
+        Returns: str
         """
 
         all_params = ['id']

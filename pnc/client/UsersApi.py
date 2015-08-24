@@ -43,7 +43,7 @@ class UsersApi(object):
             
             q, str: RSQL query (required)
             
-        Returns: 
+        Returns: list[User]
         """
 
         all_params = ['pageIndex', 'pageSize', 'sort', 'q']
@@ -101,7 +101,7 @@ class UsersApi(object):
             
             body, User:  (required)
             
-        Returns: 
+        Returns: User
         """
 
         all_params = ['body']
@@ -150,7 +150,7 @@ class UsersApi(object):
             
             id, int: User id (required)
             
-        Returns: 
+        Returns: User
         """
 
         all_params = ['id']

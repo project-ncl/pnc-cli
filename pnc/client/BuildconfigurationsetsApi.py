@@ -43,7 +43,7 @@ class BuildconfigurationsetsApi(object):
             
             q, str: RSQL query (required)
             
-        Returns: 
+        Returns: list[BuildConfigurationSet]
         """
 
         all_params = ['pageIndex', 'pageSize', 'sort', 'q']
@@ -101,7 +101,7 @@ class BuildconfigurationsetsApi(object):
             
             body, BuildConfigurationSet:  (required)
             
-        Returns: 
+        Returns: BuildConfigurationSet
         """
 
         all_params = ['body']
@@ -150,7 +150,7 @@ class BuildconfigurationsetsApi(object):
             
             id, int: Build Configuration Set id (required)
             
-        Returns: 
+        Returns: BuildConfigurationSet
         """
 
         all_params = ['id']
@@ -368,7 +368,7 @@ class BuildconfigurationsetsApi(object):
             
             id, int: Build Configuration Set id (required)
             
-        Returns: 
+        Returns: list[Configuration]
         """
 
         all_params = ['id']
@@ -545,7 +545,7 @@ class BuildconfigurationsetsApi(object):
             
             q, str: RSQL query (required)
             
-        Returns: 
+        Returns: list[BuildRecord]
         """
 
         all_params = ['id', 'pageIndex', 'pageSize', 'sort', 'q']

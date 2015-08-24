@@ -43,7 +43,7 @@ class ProjectsApi(object):
             
             q, str: RSQL query (required)
             
-        Returns: 
+        Returns: list[Project]
         """
 
         all_params = ['pageIndex', 'pageSize', 'sort', 'q']
@@ -101,7 +101,7 @@ class ProjectsApi(object):
             
             body, Project:  (required)
             
-        Returns: 
+        Returns: Project
         """
 
         all_params = ['body']
@@ -150,7 +150,7 @@ class ProjectsApi(object):
             
             id, int: Project id (required)
             
-        Returns: 
+        Returns: Project
         """
 
         all_params = ['id']

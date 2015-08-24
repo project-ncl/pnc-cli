@@ -43,7 +43,7 @@ class ProductsApi(object):
             
             q, str: RSQL query (required)
             
-        Returns: 
+        Returns: list[Product]
         """
 
         all_params = ['pageIndex', 'pageSize', 'sort', 'q']
@@ -101,7 +101,7 @@ class ProductsApi(object):
             
             body, Product:  (required)
             
-        Returns: 
+        Returns: Product
         """
 
         all_params = ['body']
@@ -150,7 +150,7 @@ class ProductsApi(object):
             
             id, int: Product id (required)
             
-        Returns: 
+        Returns: Product
         """
 
         all_params = ['id']
@@ -267,7 +267,7 @@ class ProductsApi(object):
             
             id, int: Product id (required)
             
-        Returns: 
+        Returns: list[ProductVersion]
         """
 
         all_params = ['pageIndex', 'pageSize', 'sort', 'q', 'id']
@@ -315,63 +315,6 @@ class ProductsApi(object):
 
         
 
-        
-
-        post_data = (form_params if form_params else body_param)
-
-        response = self.api_client.callAPI(resource_path, method, query_params,
-                                          post_data, header_params, files=files)
-        return response
-
-   
-    def createNewProductVersion(self, **kwargs):
-        """Create a new ProductVersion for a Product
-
-        Args:
-            
-            id, int: Product id (required)
-            
-            body, ProductVersion:  (required)
-            
-        Returns: 
-        """
-
-        all_params = ['id', 'body']
-
-        params = locals()
-        for (key, val) in params['kwargs'].iteritems():
-            if key not in all_params:
-                raise TypeError("Got an unexpected keyword argument '%s' to method createNewProductVersion" % key)
-            params[key] = val
-        del params['kwargs']
-
-        resource_path = '/products/{id}/product-versions'
-        resource_path = resource_path.replace('{format}', 'json')
-        method = 'POST'
-
-        query_params = {}
-        header_params = {}
-        form_params = {}
-        files = {}
-        body_param = None
-
-        
-
-        
-
-        
-        if 'id' in params:
-            replacement = str(self.api_client.to_path_value(params['id']))
-            replacement = urllib.quote(replacement)
-            resource_path = resource_path.replace('{' + 'id' + '}',
-                                                replacement)
-        
-
-        
-
-        
-        if 'body' in params:
-            body_param = params['body']
         
 
         post_data = (form_params if form_params else body_param)

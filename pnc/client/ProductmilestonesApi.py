@@ -43,7 +43,7 @@ class ProductmilestonesApi(object):
             
             q, str: RSQL query (required)
             
-        Returns: 
+        Returns: list[ProductMilestone]
         """
 
         all_params = ['pageIndex', 'pageSize', 'sort', 'q']
@@ -94,6 +94,55 @@ class ProductmilestonesApi(object):
         return response
 
    
+    def createNew(self, **kwargs):
+        """Creates a new Product Milestone for the Specified Product Version
+
+        Args:
+            
+            body, ProductMilestone:  (required)
+            
+        Returns: ProductMilestone
+        """
+
+        all_params = ['body']
+
+        params = locals()
+        for (key, val) in params['kwargs'].iteritems():
+            if key not in all_params:
+                raise TypeError("Got an unexpected keyword argument '%s' to method createNew" % key)
+            params[key] = val
+        del params['kwargs']
+
+        resource_path = '/product-milestones'
+        resource_path = resource_path.replace('{format}', 'json')
+        method = 'POST'
+
+        query_params = {}
+        header_params = {}
+        form_params = {}
+        files = {}
+        body_param = None
+
+        
+
+        
+
+        
+
+        
+
+        
+        if 'body' in params:
+            body_param = params['body']
+        
+
+        post_data = (form_params if form_params else body_param)
+
+        response = self.api_client.callAPI(resource_path, method, query_params,
+                                          post_data, header_params, files=files)
+        return response
+
+   
     def getAllByProductVersionId(self, **kwargs):
         """Gets all Product Milestones of the Specified Product Version
 
@@ -109,7 +158,7 @@ class ProductmilestonesApi(object):
             
             versionId, int: Product Version id (required)
             
-        Returns: 
+        Returns: list[ProductMilestone]
         """
 
         all_params = ['pageIndex', 'pageSize', 'sort', 'q', 'versionId']
@@ -166,63 +215,6 @@ class ProductmilestonesApi(object):
         return response
 
    
-    def createNew(self, **kwargs):
-        """Creates a new Product Milestone for the Specified Product Version
-
-        Args:
-            
-            versionId, int: Product Version id (required)
-            
-            body, ProductMilestone:  (required)
-            
-        Returns: 
-        """
-
-        all_params = ['versionId', 'body']
-
-        params = locals()
-        for (key, val) in params['kwargs'].iteritems():
-            if key not in all_params:
-                raise TypeError("Got an unexpected keyword argument '%s' to method createNew" % key)
-            params[key] = val
-        del params['kwargs']
-
-        resource_path = '/product-milestones/product-versions/{versionId}'
-        resource_path = resource_path.replace('{format}', 'json')
-        method = 'POST'
-
-        query_params = {}
-        header_params = {}
-        form_params = {}
-        files = {}
-        body_param = None
-
-        
-
-        
-
-        
-        if 'versionId' in params:
-            replacement = str(self.api_client.to_path_value(params['versionId']))
-            replacement = urllib.quote(replacement)
-            resource_path = resource_path.replace('{' + 'versionId' + '}',
-                                                replacement)
-        
-
-        
-
-        
-        if 'body' in params:
-            body_param = params['body']
-        
-
-        post_data = (form_params if form_params else body_param)
-
-        response = self.api_client.callAPI(resource_path, method, query_params,
-                                          post_data, header_params, files=files)
-        return response
-
-   
     def getSpecific(self, **kwargs):
         """Gets specific Product Milestone
 
@@ -230,7 +222,7 @@ class ProductmilestonesApi(object):
             
             id, int: Product Milestone id (required)
             
-        Returns: 
+        Returns: ProductMilestone
         """
 
         all_params = ['id']

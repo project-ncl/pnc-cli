@@ -43,7 +43,7 @@ class BuildconfigsetrecordsApi(object):
             
             q, str: RSQL query (required)
             
-        Returns: 
+        Returns: list[BuildRecord]
         """
 
         all_params = ['pageIndex', 'pageSize', 'sort', 'q']
@@ -101,7 +101,7 @@ class BuildconfigsetrecordsApi(object):
             
             id, int: BuildConfigSetRecord id (required)
             
-        Returns: 
+        Returns: BuildRecord
         """
 
         all_params = ['id']
@@ -161,7 +161,7 @@ class BuildconfigsetrecordsApi(object):
             
             id, int: Build Config set record id (required)
             
-        Returns: 
+        Returns: list[BuildRecord]
         """
 
         all_params = ['pageIndex', 'pageSize', 'sort', 'q', 'id']

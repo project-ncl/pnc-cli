@@ -43,7 +43,7 @@ class RunningbuildrecordsApi(object):
             
             q, str: RSQL query (required)
             
-        Returns: 
+        Returns: list[BuildRecord]
         """
 
         all_params = ['pageIndex', 'pageSize', 'sort', 'q']
@@ -101,7 +101,7 @@ class RunningbuildrecordsApi(object):
             
             id, int: BuildRecord id (required)
             
-        Returns: 
+        Returns: BuildRecord
         """
 
         all_params = ['id']
@@ -114,58 +114,6 @@ class RunningbuildrecordsApi(object):
         del params['kwargs']
 
         resource_path = '/running-build-records/{id}'
-        resource_path = resource_path.replace('{format}', 'json')
-        method = 'GET'
-
-        query_params = {}
-        header_params = {}
-        form_params = {}
-        files = {}
-        body_param = None
-
-        
-
-        
-
-        
-        if 'id' in params:
-            replacement = str(self.api_client.to_path_value(params['id']))
-            replacement = urllib.quote(replacement)
-            resource_path = resource_path.replace('{' + 'id' + '}',
-                                                replacement)
-        
-
-        
-
-        
-
-        post_data = (form_params if form_params else body_param)
-
-        response = self.api_client.callAPI(resource_path, method, query_params,
-                                          post_data, header_params, files=files)
-        return response
-
-   
-    def getLogs(self, **kwargs):
-        """Gets specific log of a Running Build Record
-
-        Args:
-            
-            id, int: RunningBuild id (required)
-            
-        Returns: 
-        """
-
-        all_params = ['id']
-
-        params = locals()
-        for (key, val) in params['kwargs'].iteritems():
-            if key not in all_params:
-                raise TypeError("Got an unexpected keyword argument '%s' to method getLogs" % key)
-            params[key] = val
-        del params['kwargs']
-
-        resource_path = '/running-build-records/{id}/log'
         resource_path = resource_path.replace('{format}', 'json')
         method = 'GET'
 

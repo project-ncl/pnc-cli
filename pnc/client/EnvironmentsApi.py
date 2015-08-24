@@ -43,7 +43,7 @@ class EnvironmentsApi(object):
             
             q, str: RSQL query (required)
             
-        Returns: 
+        Returns: list[Environment]
         """
 
         all_params = ['pageIndex', 'pageSize', 'sort', 'q']
@@ -101,7 +101,7 @@ class EnvironmentsApi(object):
             
             body, Environment:  (required)
             
-        Returns: 
+        Returns: Environment
         """
 
         all_params = ['body']
@@ -150,7 +150,7 @@ class EnvironmentsApi(object):
             
             id, int: Environment id (required)
             
-        Returns: 
+        Returns: Environment
         """
 
         all_params = ['id']

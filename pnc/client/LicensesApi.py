@@ -43,7 +43,7 @@ class LicensesApi(object):
             
             q, str: RSQL query (required)
             
-        Returns: 
+        Returns: list[License]
         """
 
         all_params = ['pageIndex', 'pageSize', 'sort', 'q']
@@ -101,7 +101,7 @@ class LicensesApi(object):
             
             body, License:  (required)
             
-        Returns: 
+        Returns: License
         """
 
         all_params = ['body']
@@ -150,7 +150,7 @@ class LicensesApi(object):
             
             id, int: License id (required)
             
-        Returns: 
+        Returns: License
         """
 
         all_params = ['id']

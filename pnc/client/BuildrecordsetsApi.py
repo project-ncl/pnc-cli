@@ -43,7 +43,7 @@ class BuildrecordsetsApi(object):
             
             q, str: RSQL query (required)
             
-        Returns: 
+        Returns: list[BuildRecordSet]
         """
 
         all_params = ['pageIndex', 'pageSize', 'sort', 'q']
@@ -101,7 +101,7 @@ class BuildrecordsetsApi(object):
             
             body, BuildRecordSet:  (required)
             
-        Returns: 
+        Returns: BuildRecordSet
         """
 
         all_params = ['body']
@@ -158,7 +158,7 @@ class BuildrecordsetsApi(object):
             
             recordId, int: BuildRecord id (required)
             
-        Returns: 
+        Returns: list[BuildRecordSet]
         """
 
         all_params = ['pageIndex', 'pageSize', 'sort', 'q', 'recordId']
@@ -230,7 +230,7 @@ class BuildrecordsetsApi(object):
             
             versionId, int: Product Version id (required)
             
-        Returns: 
+        Returns: list[BuildRecordSet]
         """
 
         all_params = ['pageIndex', 'pageSize', 'sort', 'q', 'versionId']
@@ -294,7 +294,7 @@ class BuildrecordsetsApi(object):
             
             id, int: BuildRecordSet id (required)
             
-        Returns: 
+        Returns: BuildRecordSet
         """
 
         all_params = ['id']

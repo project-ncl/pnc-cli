@@ -43,7 +43,7 @@ class ProductversionsApi(object):
             
             q, str: RSQL query (required)
             
-        Returns: 
+        Returns: list[ProductVersion]
         """
 
         all_params = ['pageIndex', 'pageSize', 'sort', 'q']
@@ -94,6 +94,55 @@ class ProductversionsApi(object):
         return response
 
    
+    def createNewProductVersion(self, **kwargs):
+        """Create a new ProductVersion for a Product
+
+        Args:
+            
+            body, ProductVersion:  (required)
+            
+        Returns: ProductVersion
+        """
+
+        all_params = ['body']
+
+        params = locals()
+        for (key, val) in params['kwargs'].iteritems():
+            if key not in all_params:
+                raise TypeError("Got an unexpected keyword argument '%s' to method createNewProductVersion" % key)
+            params[key] = val
+        del params['kwargs']
+
+        resource_path = '/product-versions'
+        resource_path = resource_path.replace('{format}', 'json')
+        method = 'POST'
+
+        query_params = {}
+        header_params = {}
+        form_params = {}
+        files = {}
+        body_param = None
+
+        
+
+        
+
+        
+
+        
+
+        
+        if 'body' in params:
+            body_param = params['body']
+        
+
+        post_data = (form_params if form_params else body_param)
+
+        response = self.api_client.callAPI(resource_path, method, query_params,
+                                          post_data, header_params, files=files)
+        return response
+
+   
     def getSpecific(self, **kwargs):
         """Gets specific Product Version
 
@@ -101,7 +150,7 @@ class ProductversionsApi(object):
             
             id, int: Product Version id (required)
             
-        Returns: 
+        Returns: ProductVersion
         """
 
         all_params = ['id']
@@ -218,7 +267,7 @@ class ProductversionsApi(object):
             
             id, int: Product Version id (required)
             
-        Returns: 
+        Returns: list[BuildConfigurationSet]
         """
 
         all_params = ['pageIndex', 'pageSize', 'sort', 'q', 'id']
