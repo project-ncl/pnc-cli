@@ -1,11 +1,14 @@
+import ConfigParser
 import json
 import client.swagger
 
 __author__ = 'thauser'
 
-base_pnc_url = "http://localhost:8080/pnc-rest/rest"
-apiclient = client.swagger.ApiClient(base_pnc_url)
 
+config = ConfigParser.ConfigParser()
+config.read("pnc-cli.conf")
+base_pnc_url = config.get('PNC','restEndpoint')
+apiclient = client.swagger.ApiClient(base_pnc_url)
 
 def _remove_nulls(input_json):
     keys = input_json.keys()
