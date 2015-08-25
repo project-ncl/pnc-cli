@@ -6,8 +6,8 @@ import utils
 __author__ = 'thauser'
 def _create_environment_object(build_type, operational_system):
     created_environment = client.models.Environment.Environment()
-    if build_type: created_environment.buildType = build_type
-    if operational_system: created_environment.operationalSystem = operational_system
+    if build_type: created_environment.buildType = build_type.upper()
+    if operational_system: created_environment.operationalSystem = operational_system.upper()
     return created_environment
 
 
@@ -22,11 +22,18 @@ def _environment_exists(search_id):
 def create_environment(build_type, operating_system):
     environment = _create_environment_object(build_type, operating_system)
     response = EnvironmentsApi(utils.get_api_client()).createNew(body=environment)
-    print(utils.pretty_format_response(response.json()))
+    if not response.ok:
+        print("Operation failed: " + response)
+        return
+
+    new_env = response.json()
+    utils.print_by_key(new_env)
+    return response.json()
 
 @arg("env-id", help="ID of the environment to replace")
 @arg("-bt","--build-type", help="Type of build for the new environment")
 @arg("-os","--operating-system", help="Operating system for the new environment")
+#TODO: check provided parameters for membership of the enum (expose this type in the swagger docs?)
 def update_environment(env_id, build_type=None, operating_system=None):
     environment = _create_environment_object(build_type, operating_system)
     if _environment_exists(env_id):
@@ -54,15 +61,23 @@ def delete_environment(env_id):
 @arg("env-id", help="ID of the environment to retrieve")
 def get_environment(env_id):
     response = EnvironmentsApi(utils.get_api_client()).getSpecific(id=env_id)
-    if response.ok:
-        print(utils.pretty_format_response(response.json()))
-    else:
+    if not response.ok:
         print("No environment with id {0} exists.").format(env_id)
+        return
+
+    env = response.json();
+    utils.print_by_key(env)
+    return env
 
 @arg("-a", "--attributes", help="Comma separated list of attributes to return about each environment")
 def list_environments(attributes=None):
-    environments = EnvironmentsApi(utils.get_api_client()).getAll().json()
+    response = EnvironmentsApi(utils.get_api_client()).getAll()
+    if not response.ok:
+        print('Operation failed: '.join(response))
+        return
+    environments = response.json()
     if attributes is not None:
         utils.print_matching_attribute(environments, attributes, client.models.Environment.Environment().attributeMap)
     else:
         utils.print_by_key(environments)
+    return environments

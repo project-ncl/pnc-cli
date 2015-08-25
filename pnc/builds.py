@@ -9,6 +9,7 @@ def _create_build_configuration(name, project_id, environment, description, scm_
     created_build_configuration = client.models.Configuration.Configuration()
     created_build_configuration.name = name
     created_build_configuration.projectId = project_id
+    created_build_configuration.environmentId = environment
     return created_build_configuration
 
 def _get_build_configuration_id_by_name(name):
@@ -40,31 +41,48 @@ def build(name=None,id=None):
     """Trigger a build configuration giving either the name or ID."""
     if id:
         if _build_configuration_exists(id):
-            print(utils.pretty_format_response(BuildconfigurationsApi(utils.get_api_client()).trigger(id=id).json()))
+            response = BuildconfigurationsApi(utils.get_api_client()).trigger(id=id)
         else:
             print("There is no build configuration with id {0}.".format(id))
+            return
     elif name:
         id = _get_build_configuration_id_by_name(name)
         if id:
-            print(utils.pretty_format_response(BuildconfigurationsApi(utils.get_api_client()).trigger(id=id).json()))
+            response = BuildconfigurationsApi(utils.get_api_client()).trigger(id=id)
         else:
             print("There is no build configuration with name {0}.".format(name))
+            return
     else:
         print("Build requires either a name or an ID of a build configuration to trigger.")
+        return
 
+    if not response.ok:
+        print("Operation failed: ".join(response))
+
+    triggered_build = response.json()
+    utils.print_by_key(triggered_build)
+    return triggered_build
 
 def create_build_configuration(name, project_id, environment, description="", scm_url="", scm_revision="", patches_url="",
                                build_script=""):
     #check for existing project_ids, fail out if the project id doesn't exist
     build_configuration = _create_build_configuration(name, project_id, environment, description, scm_url, scm_revision, patches_url, build_script)
-    response = utils.pretty_format_response(BuildconfigurationsApi(utils.get_api_client()).createNew(body=build_configuration).json())
-    print(response)
+    response = BuildconfigurationsApi(utils.get_api_client()).createNew(body=build_configuration)
+    new_bc = response.json()
+    utils.print_by_key(new_bc)
+    return new_bc
 
 
 @arg("-a", "--attributes", help="List of attributes to retrieve. Will print given attributes separated by whitespace.")
 def list_build_configurations(attributes=None):
-    build_configurations = BuildconfigurationsApi(utils.get_api_client()).getAll().json()
+    response = BuildconfigurationsApi(utils.get_api_client()).getAll()
+    if not response.ok:
+        print('Operation failed: '.join(response))
+        return
+
+    build_configurations = response.json()
     if attributes is not None:
         utils.print_matching_attribute(build_configurations, attributes, client.models.Configuration.Configuration().attributeMap)
     else:
         utils.print_by_key(build_configurations)
+    return build_configurations

@@ -1,13 +1,21 @@
 import ConfigParser
 import json
 import client.swagger
+import os
 
 __author__ = 'thauser'
 
 
 config = ConfigParser.ConfigParser()
-config.read("pnc-cli.conf")
-base_pnc_url = config.get('PNC','restEndpoint')
+configfilename = os.path.expanduser("~")+ "/.config/pnc-cli/pnc-cli.conf"
+found = config.read(os.path.join(configfilename))
+if not found:
+    print('wat')
+    config.add_section('PNC')
+    config.set('PNC', 'restEndpoint', 'http://localhost:8080/pnc-rest/rest')
+    with open(os.path.join(configfilename),'wb') as configfile:
+        config.write(configfile)
+base_pnc_url = config.get('PNC', 'restEndpoint')
 apiclient = client.swagger.ApiClient(base_pnc_url)
 
 def _remove_nulls(input_json):
@@ -56,10 +64,13 @@ def print_by_key(json):
     :param json:
     :return:
     """
-    for item in json:
-        print('\n'.join(key +": "+ str(item[key]) for key in item.keys()))
+    if type(json) is list:
+        for item in json:
+            print('\n'.join(key + ": " + str(item[key]) for key in item.keys()))
+            print('\n')
+    else:
+        print('\n'.join(key + ": " + str(json[key]) for key in json.keys()))
         print('\n')
-
 
 def retrieve_keys(input_json, keys):
     if type(input_json) is list:

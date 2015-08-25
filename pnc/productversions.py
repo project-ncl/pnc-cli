@@ -5,7 +5,7 @@ import utils
 
 __author__ = 'thauser'
 
-def create_product_version_object(version, current_milestone_id, product_milestones, build_config_sets, product_releases):
+def create_product_version_object(version, product_id, current_milestone_id, product_milestones, build_config_sets, product_releases):
     """
     Create an instance of the ProductVersion object
     :param version:
@@ -18,6 +18,7 @@ def create_product_version_object(version, current_milestone_id, product_milesto
     """
     created_version = client.models.ProductVersion.ProductVersion()
     created_version.version = version
+    if product_id: created_version.productId = product_id
     if current_milestone_id: created_version.currentProductMilestoneId = current_milestone_id
     if product_milestones: created_version.productMilestones = product_milestones
     if build_config_sets: created_version.buildConfigurationSetIds = build_config_sets

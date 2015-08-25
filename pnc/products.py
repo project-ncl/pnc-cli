@@ -1,6 +1,7 @@
 from argh import arg
 import client
 from client.ProductsApi import ProductsApi
+from client.ProductversionsApi import ProductversionsApi
 import utils
 import productversions
 
@@ -106,12 +107,12 @@ def get_product(name=None, id=None):
 @arg("-pr", "--product-releases", help="List of release IDs to associate with this version")
 
 def create_product_version(product_id, version, current_milestone=None, product_milestones=None, build_configuration_sets=None, product_releases=None):
-    version = productversions.create_product_version_object(version, current_milestone, product_milestones, build_configuration_sets, product_releases)
-    response = ProductsApi(utils.get_api_client()).createNewProductVersion(id=product_id, body=version)
-    if response.ok:
-        print(utils.pretty_format_response(response.json()))
+    version = productversions.create_product_version_object(version, product_id, current_milestone, product_milestones, build_configuration_sets, product_releases)
+    new_product = ProductversionsApi(utils.get_api_client()).createNewProductVersion(body=version)
+    if new_product.ok:
+        print(utils.print_by_key(new_product.json()))
     else:
-        print(response)
+        print(new_product)
 
 @arg("-n","--name", help="Name of the product to retrieve versions from")
 @arg("-i","--id", help="ID of the product to retrieve versions from")

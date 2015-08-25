@@ -38,7 +38,12 @@ def create_license(name, content, reference_url=None, abbreviation=None, project
     """Create a new license"""
     license = _create_license_object(name, content, reference_url, abbreviation, project_ids)
     response = LicensesApi(utils.get_api_client()).createNew(body=license)
-    print(utils.pretty_format_response(response.json()))
+    if not response.ok:
+        print("Operation failed: ") + response
+        return
+    l = response.json()
+    utils.print_by_key(l)
+    return l
 
 @arg("-i","--id", help="ID for the license to retrieve")
 @arg("-n","--name", help="Name for the license to retrieve")
@@ -55,10 +60,12 @@ def get_license(id=None, name=None):
         return
     response = LicensesApi(utils.get_api_client()).getSpecific(id=search_id)
     if response.ok:
-        print(utils.pretty_format_response(response.json()))
+        license = response.json()
+        print(utils.print_by_key(license))
     else:
         print("No license with id {0} exists.").format(id)
-    pass
+        return
+    return license
 
 
 @arg("license_id", help="ID of the license to delete")
@@ -95,11 +102,17 @@ def update_license(license_id, name=None, content=None, reference_url=None, abbr
 
 @arg("-a","--attributes", help="Comma separated list of attributes to print for each license")
 def list_licenses(attributes=None):
-    licenses = LicensesApi(utils.get_api_client()).getAll().json()
+    response = LicensesApi(utils.get_api_client()).getAll()
+    if not response.ok:
+        print("Operation failed: " + response)
+        return
+
+    licenses = response.json()
     if attributes is not None:
         utils.print_matching_attribute(licenses, attributes, client.models.License.License().attributeMap)
     else:
         utils.print_by_key(licenses)
+    return licenses
 
 
 
