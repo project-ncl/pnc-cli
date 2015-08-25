@@ -27,12 +27,13 @@ def create_product_version_object(version, current_milestone_id, product_milesto
 def _version_exists(version_id):
     return ProductversionsApi(utils.get_api_client()).getSpecific(id=version_id).ok
 
-def list_product_versions():
-    """
-    :return: list all product versions
-    """
-    json = utils.pretty_format_response(ProductversionsApi(utils.get_api_client()).getAll().json())
-    print(json)
+@arg("-a","--attributes", help="Comma separated list of attributes to print for each product-version")
+def list_product_versions(attributes=None):
+    product_versions = ProductversionsApi(utils.get_api_client()).getAll().json()
+    if attributes is not None:
+        utils.print_matching_attribute(product_versions, attributes, client.models.ProductVersion.ProductVersion().attributeMap)
+    else:
+        utils.print_by_key(product_versions)
 
 # TODO: allow resolution / search by version
 @arg("id", help="ID of the product version to retrieve")

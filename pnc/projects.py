@@ -118,7 +118,10 @@ def delete_project(id=None, name=None):
     else:
         print("Failed to delete Project {0}").format(id)
 
-def list_projects():
-    """Get a JSON object containing existing projects"""
-    response = ProjectsApi(utils.get_api_client()).getAll()
-    print(utils.pretty_format_response(response.json()))
+@arg("-a","--attributes", help="Comma separated list of attributes to print for each project")
+def list_projects(attributes=None):
+    projects = ProjectsApi(utils.get_api_client()).getAll().json()
+    if attributes is not None:
+        utils.print_matching_attribute(projects, attributes, client.models.Project.Project().attributeMap)
+    else:
+        utils.print_by_key(projects)

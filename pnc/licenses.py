@@ -93,7 +93,13 @@ def update_license(license_id, name=None, content=None, reference_url=None, abbr
     else:
         print("The license ID is required to perform an update")
 
-def list_licenses():
-    """Get a JSON object containing existing licenses"""
-    response = LicensesApi(utils.get_api_client()).getAll()
-    print(utils.pretty_format_response(response.json()))
+@arg("-a","--attributes", help="Comma separated list of attributes to print for each license")
+def list_licenses(attributes=None):
+    licenses = LicensesApi(utils.get_api_client()).getAll().json()
+    if attributes is not None:
+        utils.print_matching_attribute(licenses, attributes, client.models.License.License().attributeMap)
+    else:
+        utils.print_by_key(licenses)
+
+
+

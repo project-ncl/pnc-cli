@@ -43,11 +43,23 @@ def print_matching_attribute(json, attributes, valid_attributes):
     attr_list = attributes.split(",")
     for a in attr_list:
         if a not in valid_attributes:
-            print('Please choose attribute(s) from the following list:')
+            print("Invalid attribute. Choose from the following list:")
             print('\n'.join(key for key in valid_attributes))
             return
     result = retrieve_keys(json, attr_list)
     print('\n'.join(str(r[attr]) for r in result for attr in attr_list))
+
+
+def print_by_key(json):
+    """
+    print json objects in the form "key: dict[key]" on each line for each key
+    :param json:
+    :return:
+    """
+    for item in json:
+        print('\n'.join(key +": "+ str(item[key]) for key in item.keys()))
+        print('\n')
+
 
 def retrieve_keys(input_json, keys):
     if type(input_json) is list:

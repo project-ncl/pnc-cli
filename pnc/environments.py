@@ -59,6 +59,10 @@ def get_environment(env_id):
     else:
         print("No environment with id {0} exists.").format(env_id)
 
-def list_environments():
-    response = EnvironmentsApi(utils.get_api_client()).getAll()
-    print(utils.pretty_format_response(response.json()))
+@arg("-a", "--attributes", help="Comma separated list of attributes to return about each environment")
+def list_environments(attributes=None):
+    environments = EnvironmentsApi(utils.get_api_client()).getAll().json()
+    if attributes is not None:
+        utils.print_matching_attribute(environments, attributes, client.models.Environment.Environment().attributeMap)
+    else:
+        utils.print_by_key(environments)

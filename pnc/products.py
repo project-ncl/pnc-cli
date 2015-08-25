@@ -115,23 +115,36 @@ def create_product_version(product_id, version, current_milestone=None, product_
 
 @arg("-n","--name", help="Name of the product to retrieve versions from")
 @arg("-i","--id", help="ID of the product to retrieve versions from")
-def list_versions_for_product(name=None, id=None):
+@arg("-a","--attributes", help="Comma separated list of attributes to print for each product version")
+def list_versions_for_product(name=None, id=None, attributes=None):
+    valid_attributes = client.models.ProductVersion.ProductVersion().attributeMap
     if id:
         response = ProductsApi(utils.get_api_client()).getProductVersions(id=id)
         if response.ok:
-            print(utils.pretty_format_response(response.json()))
+            product_versions = response.json()
+            if attributes is not None:
+                utils.print_matching_attribute(product_versions, attributes, valid_attributes)
+            else:
+                utils.print_by_key(product_versions)
         else:
             print("No product with id {0} exists.".format(id))
     elif name:
         found_id = _get_product_id_by_name(name)
         if found_id:
-            print(utils.pretty_format_response(ProductsApi(utils.get_api_client()).getProductVersions(id=found_id)))
+            product_versions = ProductsApi(utils.get_api_client()).getProductVersions(id=found_id).json()
+            if attributes is not None:
+                utils.print_matching_attribute(product_versions, attributes, valid_attributes)
+            else:
+                utils.print_by_key(product_versions)
         else:
             print("No product with name {0} exists.".format(name))
     else:
         print("Either a product name or ID is required.")
 
-def list_products():
-    """List all products."""
-    response = utils.pretty_format_response(ProductsApi(utils.get_api_client()).getAll().json())
-    print(response)
+@arg("-a","--attributes", help="Comma separated list of attributes to print for each product")
+def list_products(attributes=None):
+    products = ProductsApi(utils.get_api_client()).getAll().json()
+    if attributes is not None:
+        utils.print_matching_attribute(products, attributes, client.models.Product.Product().attributeMap)
+    else:
+        utils.print_by_key(products)
