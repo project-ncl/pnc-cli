@@ -39,6 +39,16 @@ def pretty_format_response(input_json):
         _remove_nulls(input_json)
     return json.dumps(input_json, indent=4, separators=[",", ": "], sort_keys=True)
 
+def print_matching_attribute(json, attributes, valid_attributes):
+    attr_list = attributes.split(",")
+    for a in attr_list:
+        if a not in valid_attributes:
+            print('Please choose attribute(s) from the following list:')
+            print('\n'.join(key for key in valid_attributes))
+            return
+    result = retrieve_keys(json, attr_list)
+    print('\n'.join(str(r[attr]) for r in result for attr in attr_list))
+
 def retrieve_keys(input_json, keys):
     if type(input_json) is list:
         final_dict = [{key : r[key] for key in keys} for r in input_json]

@@ -64,20 +64,11 @@ def create_build_configuration(name, project_id, environment, description="", sc
 @arg("-a", "--attributes", help="List of attributes to retrieve. Will print given attributes separated by whitespace.")
 def list_build_configurations(attributes=None):
     response = BuildconfigurationsApi(utils.get_api_client()).getAll()
-
     if attributes is not None:
-        attr_list = attributes.split(",")
-        for a in attr_list:
-            if a not in client.models.Configuration.Configuration().attributeMap:
-                print('Please choose attribute(s) from the following list:')
-                print('\n'.join(key for key in client.models.Configuration.Configuration().attributeMap))
-                return
-        result = utils.retrieve_keys(response.json(), attr_list)
-        print('\n'.join(str(r[attr]) for r in result for attr in attr_list))
+        utils.print_matching_attribute(response.json(), attributes, client.models.Configuration.Configuration().attributeMap)
     else:
         build_configurations = response.json()
         for bc in build_configurations:
-            print('-------------------------')
             print ('\n'.join(key + ": " +str(bc[key])  for key in bc.keys()))
-            print('-------------------------')
+            print ('\n')
 
