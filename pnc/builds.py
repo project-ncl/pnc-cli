@@ -35,7 +35,6 @@ def _build_configuration_exists(search_id):
         return True
     return False
 
-
 @arg("-n", "--name", help="Name of the build configuration to trigger")
 @arg("-i", "--id", help="ID of the build configuration to trigger")
 def build(name=None,id=None):
@@ -65,9 +64,6 @@ def build(name=None,id=None):
     triggered_build = response.json()
     utils.print_by_key(triggered_build)
 
-def trigger(id):
-    return BuildconfigurationsApi(utils.get_api_client()).trigger(id=id)
-
 def create_build_configuration(name, project_id, environment, description=None, scm_url=None, scm_revision=None, patches_url=None,
                                build_script=None):
     build_configuration = _create_build_conf_object(name, project_id, environment, description, scm_url, scm_revision, patches_url, build_script)
@@ -75,9 +71,6 @@ def create_build_configuration(name, project_id, environment, description=None, 
     new_bc = response.json()
     utils.print_by_key(new_bc)
     return new_bc
-
-def create(build_configuration):
-    return BuildconfigurationsApi(utils.get_api_client()).createNew(body=build_configuration)
 
 @arg("-a", "--attributes", help="List of attributes to retrieve. Will print given attributes separated by whitespace.")
 def list_build_configurations(attributes=None):
@@ -94,3 +87,9 @@ def list_build_configurations(attributes=None):
 
 def get_all():
     return BuildconfigurationsApi(utils.get_api_client()).getAll()
+
+def create(build_configuration):
+    return BuildconfigurationsApi(utils.get_api_client()).createNew(body=build_configuration)
+
+def trigger(id):
+    return BuildconfigurationsApi(utils.get_api_client()).trigger(id=id)
