@@ -32,7 +32,6 @@ def test_update_environment():
     new_env = _create_env()
     environments.update_environment(new_env['id'], "DOCKER", "WINDOWS")
     updated_env = environments.get_environment(new_env['id'])
-    assert updated_env['buildType'] == 'DOCKER'
-    assert updated_env['operationalSystem'] == 'WINDOWS'
+    assert (updated_env['buildType'] == 'DOCKER') and (updated_env['operationalSystem'] == 'WINDOWS')
 
 

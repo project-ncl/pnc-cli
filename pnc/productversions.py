@@ -36,6 +36,25 @@ def list_product_versions(attributes=None):
     else:
         utils.print_by_key(product_versions)
 
+
+@arg("product-id", help="ID of product to add a version to")
+@arg("version", help="Version to add")
+@arg("-cm", "--current-milestone", help="ID of the milestone this version should be on")
+@arg("-pm", "--product-milestones", help="List of milestone IDs to associate with the new version")
+@arg("-bc", "--build-configuration-sets", help="List of build configuration set IDs to associate with the new version")
+@arg("-pr", "--product-releases", help="List of release IDs to associate with this version")
+
+def create_product_version(product_id, version, current_milestone=None, product_milestones=None, build_configuration_sets=None, product_releases=None):
+    version = create_product_version_object(version, product_id, current_milestone, product_milestones, build_configuration_sets, product_releases)
+    response = ProductversionsApi(utils.get_api_client()).createNewProductVersion(body=version)
+    if not response.ok:
+        print("Create product-version failed: ".join(response))
+        return
+
+    new_version = response.json()
+    utils.print_by_key(new_version)
+    return new_version
+
 # TODO: allow resolution / search by version
 @arg("id", help="ID of the product version to retrieve")
 def get_product_version(id):

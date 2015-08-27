@@ -58,8 +58,13 @@ def _product_exists(search_id):
 def create_product(name, description=None, abbreviation=None, product_code=None, system_code=None):
     """Define a new product"""
     product = _create_product_object(name, description, abbreviation, product_code, system_code)
-    response = utils.pretty_format_response(ProductsApi(utils.get_api_client()).createNew(body=product).json())
-    print(response)
+    response = ProductsApi(utils.get_api_client()).createNew(body=product)
+    if not response.ok:
+        print("Operation failed: ".join(response))
+        return
+    new_product = response.json()
+    utils.print_by_key(new_product)
+    return new_product
 
 @arg("product-id", help="ID of the product to update")
 @arg("-n","--name", help="New name for the product")
@@ -98,21 +103,6 @@ def get_product(name=None, id=None):
             print("No product with name {0} exists.".format(name))
     else:
         print("Either a product name or ID is required.")
-
-@arg("product-id", help="ID of product to add a version to")
-@arg("version", help="Version to add")
-@arg("-cm", "--current-milestone", help="ID of the milestone this version should be on")
-@arg("-pm", "--product-milestones", help="List of milestone IDs to associate with the new version")
-@arg("-bc", "--build-configuration-sets", help="List of build configuration set IDs to associate with the new version")
-@arg("-pr", "--product-releases", help="List of release IDs to associate with this version")
-
-def create_product_version(product_id, version, current_milestone=None, product_milestones=None, build_configuration_sets=None, product_releases=None):
-    version = productversions.create_product_version_object(version, product_id, current_milestone, product_milestones, build_configuration_sets, product_releases)
-    new_product = ProductversionsApi(utils.get_api_client()).createNewProductVersion(body=version)
-    if new_product.ok:
-        print(utils.print_by_key(new_product.json()))
-    else:
-        print(new_product)
 
 @arg("-n","--name", help="Name of the product to retrieve versions from")
 @arg("-i","--id", help="ID of the product to retrieve versions from")
