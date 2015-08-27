@@ -39,7 +39,7 @@ def create_license(name, content, reference_url=None, abbreviation=None, project
     license = _create_license_object(name, content, reference_url, abbreviation, project_ids)
     response = LicensesApi(utils.get_api_client()).createNew(body=license)
     if not response.ok:
-        print("Operation failed: ") + response
+        utils.print_error(__name__,response)
         return
     l = response.json()
     utils.print_by_key(l)
@@ -104,7 +104,7 @@ def update_license(license_id, name=None, content=None, reference_url=None, abbr
 def list_licenses(attributes=None):
     response = LicensesApi(utils.get_api_client()).getAll()
     if not response.ok:
-        print("Operation failed: " + response)
+        utils.print_error(__name__,response)
         return
 
     licenses = response.json()

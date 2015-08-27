@@ -60,7 +60,7 @@ def create_product(name, description=None, abbreviation=None, product_code=None,
     product = _create_product_object(name, description, abbreviation, product_code, system_code)
     response = ProductsApi(utils.get_api_client()).createNew(body=product)
     if not response.ok:
-        print("Operation failed: ".join(response))
+        utils.print_error(__name__,response)
         return
     new_product = response.json()
     utils.print_by_key(new_product)
@@ -146,7 +146,7 @@ def list_versions_for_product(name=None, id=None, attributes=None):
 def list_products(attributes=None):
     response = ProductsApi(utils.get_api_client()).getAll()
     if not response.ok:
-        print("list_products failed: " + response)
+        utils.print_error(__name__,response)
         return
     products = response.json()
     if attributes is not None:

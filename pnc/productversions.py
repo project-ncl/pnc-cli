@@ -48,7 +48,7 @@ def create_product_version(product_id, version, current_milestone=None, product_
     version = create_product_version_object(version, product_id, current_milestone, product_milestones, build_configuration_sets, product_releases)
     response = ProductversionsApi(utils.get_api_client()).createNewProductVersion(body=version)
     if not response.ok:
-        print("Create product-version failed: ".join(response))
+        utils.print_error(__name__,response)
         return
 
     new_version = response.json()
@@ -94,5 +94,5 @@ def update_product_version(id, version=None, current_product_milestone=None, pro
             print("Update of version with id {0} successful.".format(id))
             print(response)
         else:
-            print("Updating version with id {0} failed:".format(id))
+            utils.print_error(__name__,response)
             print(response)

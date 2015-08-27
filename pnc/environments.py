@@ -23,7 +23,7 @@ def create_environment(build_type, operating_system):
     environment = _create_environment_object(build_type, operating_system)
     response = EnvironmentsApi(utils.get_api_client()).createNew(body=environment)
     if not response.ok:
-        print("Operation failed: " + response)
+        utils.print_error(__name__,response)
         return
 
     new_env = response.json()
@@ -73,7 +73,7 @@ def get_environment(env_id):
 def list_environments(attributes=None):
     response = EnvironmentsApi(utils.get_api_client()).getAll()
     if not response.ok:
-        print('Operation failed: '.join(response))
+        utils.print_error(__name__,response)
         return
     environments = response.json()
     if attributes is not None:

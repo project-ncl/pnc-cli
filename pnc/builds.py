@@ -57,7 +57,9 @@ def build(name=None,id=None):
         return
 
     if not response.ok:
-        print("Operation failed: ".join(response))
+        utils.print_failure()
+        utils.print_error(__name__,response)
+        return
 
     triggered_build = response.json()
     utils.print_by_key(triggered_build)
@@ -77,7 +79,7 @@ def create_build_configuration(name, project_id, environment, description="", sc
 def list_build_configurations(attributes=None):
     response = BuildconfigurationsApi(utils.get_api_client()).getAll()
     if not response.ok:
-        print('Operation failed: '.join(response))
+        utils.print_error(__name__, response)
         return
 
     build_configurations = response.json()
