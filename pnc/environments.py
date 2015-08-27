@@ -1,4 +1,5 @@
 from argh import arg
+import sys
 import client
 from client.EnvironmentsApi import EnvironmentsApi
 import utils
@@ -23,7 +24,7 @@ def create_environment(build_type, operating_system):
     environment = _create_environment_object(build_type, operating_system)
     response = EnvironmentsApi(utils.get_api_client()).createNew(body=environment)
     if not response.ok:
-        utils.print_error(__name__,response)
+        utils.print_error(sys._getframe().f_code.co_name,response)
         return
 
     new_env = response.json()
@@ -58,26 +59,40 @@ def delete_environment(env_id):
         print("Failed to delete environment {0}").format(env_id)
         print(response)
 
-@arg("env-id", help="ID of the environment to retrieve")
-def get_environment(env_id):
-    response = EnvironmentsApi(utils.get_api_client()).getSpecific(id=env_id)
+@arg("-i", "--id", help="ID of the environment to retrieve")
+@arg("-n", "--name", help="ID of the environment to retrieve")
+def get_environment(name=None, id=None):
+    response = get_specific(id)
     if not response.ok:
-        print("No environment with id {0} exists.").format(env_id)
+        utils.print_error(sys._getframe().f_code.co_name, response)
         return
 
     env = response.json();
     utils.print_by_key(env)
-    return env
 
 @arg("-a", "--attributes", help="Comma separated list of attributes to return about each environment")
 def list_environments(attributes=None):
-    response = EnvironmentsApi(utils.get_api_client()).getAll()
+    response = get_all()
     if not response.ok:
-        utils.print_error(__name__,response)
+        utils.print_error("list_environments",response)
         return
     environments = response.json()
     if attributes is not None:
         utils.print_matching_attribute(environments, attributes, client.models.Environment.Environment().attributeMap)
     else:
         utils.print_by_key(environments)
-    return environments
+
+def get_all():
+    return EnvironmentsApi(utils.get_api_client()).getAll()
+
+def get_specific(env_id):
+    return EnvironmentsApi(utils.get_api_client()).getSpecific(id=env_id)
+
+def create(environment):
+    pass
+
+def delete(env_id):
+    pass
+
+def update(env_id):
+    pass

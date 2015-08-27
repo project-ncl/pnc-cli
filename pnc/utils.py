@@ -80,7 +80,8 @@ def retrieve_keys(input_json, keys):
     return final_dict
 
 def print_error(func_name, reason):
-    print(func_name + " failed:".join(reason))
+    print(func_name + " failed: " + str(reason))
+
 
 def get_api_client():
     return apiclient
