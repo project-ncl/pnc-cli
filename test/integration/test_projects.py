@@ -5,40 +5,37 @@ from pnc import projects
 
 def _create_project():
     randname = ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(10))
-    new_project = projects.create_project(randname)
-    return new_project
+    project = projects._create_project_object(randname, None, None, None, None, None)
+    created_project = projects.create(project).json()
+    return created_project
 
-def test_list_projects():
-    projs = projects.list_projects()
+def test_get_project_list():
+    projs = projects.get_project_list().json()
     assert projs is not None
 
-def test_list_projects_attributes():
-    projs = projects.list_projects(attributes='name,description')
-    assert projs is not None
-
-def test_create_project():
+def test_create():
     new_proj = _create_project()
-    proj_ids = [x['id'] for x in projects.list_projects()]
+    proj_ids = [x['id'] for x in projects.get_project_list().json()]
     assert new_proj['id'] in proj_ids
 
-def test_get_project():
+def test_get_specific():
     new_proj = _create_project()
-    assert projects.get_project(new_proj['id']) is not None
+    assert projects.get_specific(new_proj['id']) is not None
 
 @pytest.mark.xfail(reason='currently server gives 409 error upon executing projects.update_project')
-def test_update_project():
+def test_update():
     new_proj = _create_project()
     projects.update_project(new_proj['id'], "updated project", "updated description")
-    updated_proj = projects.get_project(new_proj['id'])
+    updated_proj = projects.get_specific(new_proj['id'])
     assert updated_proj['name'] == 'updated project' and updated_proj['description'] == 'updated description'
 
-def test_delete_project():
+def test_delete():
     new_proj = _create_project()
-    proj_ids = [x['id'] for x in projects.list_projects()]
+    proj_ids = [x['id'] for x in projects.get_project_list().json()]
     # new project exists in the projects list
     assert new_proj['id'] in proj_ids
-    projects.delete_project(id=new_proj['id'])
-    proj_ids = [x['id'] for x in projects.list_projects()]
+    projects.delete(new_proj['id'])
+    proj_ids = [x['id'] for x in projects.get_project_list().json()]
     # new project is missing from the projects list
     assert new_proj['id'] not in proj_ids
 

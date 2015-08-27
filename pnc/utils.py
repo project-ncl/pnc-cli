@@ -79,5 +79,9 @@ def retrieve_keys(input_json, keys):
         final_dict = {key : input_json[key] for key in keys}
     return final_dict
 
+def print_error(func_name, reason):
+    print(func_name + " failed:".join(reason))
+
 def get_api_client():
     return apiclient
+
