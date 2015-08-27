@@ -10,12 +10,12 @@ def _create_project():
     return created_project
 
 def test_get_project_list():
-    projs = projects.get_project_list().json()
+    projs = projects.get_all().json()
     assert projs is not None
 
 def test_create():
     new_proj = _create_project()
-    proj_ids = [x['id'] for x in projects.get_project_list().json()]
+    proj_ids = [x['id'] for x in projects.get_all().json()]
     assert new_proj['id'] in proj_ids
 
 def test_get_specific():
@@ -31,11 +31,11 @@ def test_update():
 
 def test_delete():
     new_proj = _create_project()
-    proj_ids = [x['id'] for x in projects.get_project_list().json()]
+    proj_ids = [x['id'] for x in projects.get_all().json()]
     # new project exists in the projects list
     assert new_proj['id'] in proj_ids
     projects.delete(new_proj['id'])
-    proj_ids = [x['id'] for x in projects.get_project_list().json()]
+    proj_ids = [x['id'] for x in projects.get_all().json()]
     # new project is missing from the projects list
     assert new_proj['id'] not in proj_ids
 

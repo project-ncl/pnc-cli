@@ -143,7 +143,7 @@ def delete(id):
 
 @arg("-a","--attributes", help="Comma separated list of attributes to print for each project")
 def list_projects(attributes=None):
-    response = get_project_list()
+    response = get_all()
     if not response.ok:
         utils.print_error(__name__,response)
         return
@@ -153,6 +153,6 @@ def list_projects(attributes=None):
     else:
         utils.print_by_key(projects)
 
-def get_project_list():
+def get_all():
     return ProjectsApi(utils.get_api_client()).getAll()
 
