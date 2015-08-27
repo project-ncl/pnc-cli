@@ -77,10 +77,12 @@ def update_product(product_id, name=None, description=None, abbreviation=None, p
     product = _create_product_object(name, description, abbreviation, product_code, system_code)
     if _product_exists(product_id):
         response = ProductsApi(utils.get_api_client()).update(id=product_id,body=product)
-        if response.ok:
-            print("Product {0} successfully updated.").format(product_id)
-        else:
+        if not response.ok:
             print("Updating product {0} failed").format(product_id)
+            print(response)
+            return
+
+        print("Product {0} successfully updated.").format(product_id)
     else:
         print("There is no product with id {0}.").format(product_id)
 
@@ -91,16 +93,21 @@ def get_product(name=None, id=None):
     """List information on a specific product."""
     if id:
         response = ProductsApi(utils.get_api_client()).getSpecific(id=id)
-        if response.ok:
-            print(utils.pretty_format_response(response.json()))
-        else:
+        if not response.ok:
             print("No product with id {0} exists.".format(id))
+            return
+        product = response.json()
+        utils.print_by_key(product)
+        return product
     elif name:
         id = _get_product_id_by_name(name)
-        if id:
-            print(utils.pretty_format_response(ProductsApi(utils.get_api_client()).getSpecific(id=id).json()))
-        else:
+        if not id:
             print("No product with name {0} exists.".format(name))
+            return
+
+        product = ProductsApi(utils.get_api_client()).getSpecific(id=id).json()
+        utils.print_by_key(product)
+        return product
     else:
         print("Either a product name or ID is required.")
 
@@ -117,16 +124,19 @@ def list_versions_for_product(name=None, id=None, attributes=None):
                 utils.print_matching_attribute(product_versions, attributes, valid_attributes)
             else:
                 utils.print_by_key(product_versions)
+            return product_versions
         else:
             print("No product with id {0} exists.".format(id))
     elif name:
         found_id = _get_product_id_by_name(name)
+        response = ProductsApi(utils.get_api_client()).getProductVersions(id=found_id)
         if found_id:
-            product_versions = ProductsApi(utils.get_api_client()).getProductVersions(id=found_id).json()
+            product_versions = response.json()
             if attributes is not None:
                 utils.print_matching_attribute(product_versions, attributes, valid_attributes)
             else:
                 utils.print_by_key(product_versions)
+            return product_versions
         else:
             print("No product with name {0} exists.".format(name))
     else:
@@ -134,8 +144,13 @@ def list_versions_for_product(name=None, id=None, attributes=None):
 
 @arg("-a","--attributes", help="Comma separated list of attributes to print for each product")
 def list_products(attributes=None):
-    products = ProductsApi(utils.get_api_client()).getAll().json()
+    response = ProductsApi(utils.get_api_client()).getAll()
+    if not response.ok:
+        print("list_products failed: " + response)
+        return
+    products = response.json()
     if attributes is not None:
         utils.print_matching_attribute(products, attributes, client.models.Product.Product().attributeMap)
     else:
         utils.print_by_key(products)
+    return products
