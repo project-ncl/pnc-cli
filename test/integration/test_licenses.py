@@ -36,3 +36,5 @@ def test_update_license():
     licenses.update_license(new_license['id'], 'PNC-CLI updated license', 'updated content')
     updated_license = licenses.get_license(new_license['id'])
     assert updated_license['fullName'] == 'PNC-CLI updated license' and updated_license['fullContent'] == 'updated content'
+
+
