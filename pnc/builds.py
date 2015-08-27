@@ -4,8 +4,8 @@ from client.BuildconfigurationsApi import BuildconfigurationsApi
 import utils
 
 __author__ = 'thauser'
-def _create_build_configuration(name, project_id, environment, description, scm_url, scm_revision, patches_url,
-                                build_script):
+def _create_build_conf_object(name, project_id, environment, description=None, scm_url=None, scm_revision=None, patches_url=None,
+                                build_script=None):
     created_build_configuration = client.models.Configuration.Configuration()
     created_build_configuration.name = name
     created_build_configuration.projectId = project_id
@@ -35,26 +35,27 @@ def _build_configuration_exists(search_id):
         return True
     return False
 
+
 @arg("-n", "--name", help="Name of the build configuration to trigger")
 @arg("-i", "--id", help="ID of the build configuration to trigger")
 def build(name=None,id=None):
     """Trigger a build configuration giving either the name or ID."""
     if id:
-        if _build_configuration_exists(id):
-            response = BuildconfigurationsApi(utils.get_api_client()).trigger(id=id)
-        else:
+        if not _build_configuration_exists(id):
             print("There is no build configuration with id {0}.".format(id))
             return
+        trigger_id = id
     elif name:
-        id = _get_build_configuration_id_by_name(name)
-        if id:
-            response = BuildconfigurationsApi(utils.get_api_client()).trigger(id=id)
-        else:
+        search_id = _get_build_configuration_id_by_name(name)
+        if not search_id:
             print("There is no build configuration with name {0}.".format(name))
             return
+        trigger_id = search_id
     else:
         print("Build requires either a name or an ID of a build configuration to trigger.")
         return
+
+    response = trigger(trigger_id)
 
     if not response.ok:
         utils.print_failure()
@@ -63,28 +64,33 @@ def build(name=None,id=None):
 
     triggered_build = response.json()
     utils.print_by_key(triggered_build)
-    return triggered_build
 
-def create_build_configuration(name, project_id, environment, description="", scm_url="", scm_revision="", patches_url="",
-                               build_script=""):
-    #check for existing project_ids, fail out if the project id doesn't exist
-    build_configuration = _create_build_configuration(name, project_id, environment, description, scm_url, scm_revision, patches_url, build_script)
-    response = BuildconfigurationsApi(utils.get_api_client()).createNew(body=build_configuration)
+def trigger(id):
+    return BuildconfigurationsApi(utils.get_api_client()).trigger(id=id)
+
+def create_build_configuration(name, project_id, environment, description=None, scm_url=None, scm_revision=None, patches_url=None,
+                               build_script=None):
+    build_configuration = _create_build_conf_object(name, project_id, environment, description, scm_url, scm_revision, patches_url, build_script)
+    response = create(build_configuration)
     new_bc = response.json()
     utils.print_by_key(new_bc)
     return new_bc
 
+def create(build_configuration):
+    return BuildconfigurationsApi(utils.get_api_client()).createNew(body=build_configuration)
 
 @arg("-a", "--attributes", help="List of attributes to retrieve. Will print given attributes separated by whitespace.")
 def list_build_configurations(attributes=None):
-    response = BuildconfigurationsApi(utils.get_api_client()).getAll()
+    response = get_all()
     if not response.ok:
         utils.print_error(__name__, response)
         return
-
     build_configurations = response.json()
     if attributes is not None:
         utils.print_matching_attribute(build_configurations, attributes, client.models.Configuration.Configuration().attributeMap)
     else:
         utils.print_by_key(build_configurations)
     return build_configurations
+
+def get_all():
+    return BuildconfigurationsApi(utils.get_api_client()).getAll()

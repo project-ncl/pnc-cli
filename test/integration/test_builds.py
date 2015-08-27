@@ -4,20 +4,16 @@ from pnc import builds
 
 def _add_config():
     randname = ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(10))
-    return builds.create_build_configuration(randname, 1, 1)
+    return builds.create(builds._create_build_conf_object(randname, 1, 1)).json()
 
 def test_create_build_configuration():
     new_config = _add_config()
-    bcs = builds.list_build_configurations(attributes="name")
+    bcs = builds.get_all().json()
     bc_names = [bc['name'] for bc in bcs]
     assert new_config['name'] in bc_names
 
-def test_list_build_configurations():
-    build_configurations = builds.list_build_configurations()
-    assert build_configurations is not None
-
-def test_list_build_configurations_attribute():
-    build_configurations = builds.list_build_configurations(attributes="name")
+def test_get_all():
+    build_configurations = builds.get_all()
     assert build_configurations is not None
 
 def test_build_trigger():
