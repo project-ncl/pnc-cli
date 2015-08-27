@@ -56,8 +56,13 @@ def _project_exists(search_id):
 def create_project(name, configuration_ids=None, description=None, issue_url=None, project_url=None, license_id=None):
     """Create a new project"""
     project = _create_project_object(name, description, issue_url, project_url, configuration_ids,license_id)
-    response = utils.pretty_format_response(ProjectsApi(utils.get_api_client()).createNew(body=project).json())
-    print(response)
+    response = ProjectsApi(utils.get_api_client()).createNew(body=project)
+    if not response.ok:
+        print("create-project failed: " + response)
+        return
+    p = response.json()
+    utils.print_by_key(p)
+    return p
 
 @arg("project-id", help="ID for the project that will be updated")
 @arg("-n","--name", help="Name for the project")
@@ -74,26 +79,31 @@ def update_project(project_id, name=None, description=None, issue_url=None, proj
             print("Project {0} successfully updated.").format(project_id)
         else:
             print("Updating project with id {0} failed").format(project_id)
+            print(response)
     else:
         print("No project with id {0} exists.").format(project_id)
 
 @arg("-id","--id",help="ID of the project to retrieve")
 @arg("-n","--name", help="Name of the project to retrieve")
 def get_project(id=None, name=None):
+    if not id and not name:
+        print("Either a project name or id is required")
+        return
+
     if id:
         response = ProjectsApi(utils.get_api_client()).getSpecific(id=id)
-        if response.ok:
-            print(utils.pretty_format_response(response.json()))
-        else:
+        if not response.ok:
             print("No project with id {0} exists.").format(id)
+            return
     elif name:
         response = ProjectsApi(utils.get_api_client()).getSpecific(id=_get_project_id_by_name(name))
-        if response.ok:
-            print(utils.pretty_format_response(response.json()))
-        else:
+        if not response.ok:
             print("No project with name {0} exists.").format(name)
-    else:
-        print("Either a project name or id is required")
+            return
+    project = response.json()
+    utils.print_by_key(project)
+    return project
+
 
 @arg("-id","--id", help="ID of the project to delete")
 @arg("-n","--name", help="Name of the project to delete")
@@ -120,8 +130,13 @@ def delete_project(id=None, name=None):
 
 @arg("-a","--attributes", help="Comma separated list of attributes to print for each project")
 def list_projects(attributes=None):
-    projects = ProjectsApi(utils.get_api_client()).getAll().json()
+    response = ProjectsApi(utils.get_api_client()).getAll()
+    if not response.ok:
+        print("list-projects failed: " + response)
+        return
+    projects = response.json()
     if attributes is not None:
         utils.print_matching_attribute(projects, attributes, client.models.Project.Project().attributeMap)
     else:
         utils.print_by_key(projects)
+    return projects
