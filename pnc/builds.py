@@ -19,7 +19,7 @@ def _get_build_configuration_id_by_name(name):
     :param name: name of build configuration
     :return: id of the matching build configuration, or None if no match found
     """
-    response = BuildconfigurationsApi(utils.get_api_client()).getAll()
+    response = get_all()
     for config in response.json():
         if config["name"] == name:
             return config["id"]
@@ -31,7 +31,7 @@ def _build_configuration_exists(search_id):
     :param search_id: id to test for
     :return: True if a build configuration with search_id exists
     """
-    response = BuildconfigurationsApi(utils.get_api_client()).getSpecific(id=search_id)
+    response = get_specific(search_id)
     if response.ok:
         return True
     return False
@@ -87,6 +87,9 @@ def list_build_configurations(attributes=None):
 
 def get_all():
     return BuildconfigurationsApi(utils.get_api_client()).getAll()
+
+def get_specific(id):
+    return BuildconfigurationsApi(utils.get_api_client()).getSpecific(id=id)
 
 def create(build_configuration):
     return BuildconfigurationsApi(utils.get_api_client()).createNew(body=build_configuration)
