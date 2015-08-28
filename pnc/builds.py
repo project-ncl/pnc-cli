@@ -1,4 +1,5 @@
 from argh import arg
+import sys
 import client
 from client.BuildconfigurationsApi import BuildconfigurationsApi
 import utils
@@ -57,8 +58,7 @@ def build(name=None,id=None):
     response = trigger(trigger_id)
 
     if not response.ok:
-        utils.print_failure()
-        utils.print_error(__name__,response)
+        utils.print_error(sys._getframe().f_code.co_name,response)
         return
 
     triggered_build = response.json()
@@ -76,7 +76,7 @@ def create_build_configuration(name, project_id, environment, description=None, 
 def list_build_configurations(attributes=None):
     response = get_all()
     if not response.ok:
-        utils.print_error(__name__, response)
+        utils.print_error(sys._getframe().f_code.co_name, response)
         return
     build_configurations = response.json()
     if attributes is not None:
