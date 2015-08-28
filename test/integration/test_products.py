@@ -2,45 +2,37 @@ import random
 import string
 from pnc import products, productversions
 
+def _create_product_obj(name, desc=None):
+    return products._create_product_object(name,desc)
+
 def _create_product():
     randname = ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(10))
-    return products.create_product(randname)
+    return products.create(_create_product_obj(randname)).json()
 
 def test_list_products():
-    p = products.list_products()
-    assert p is not None
-
-def test_list_products_attribute():
-    p = products.list_products(attributes="name")
+    p = products.get_all().json()
     assert p is not None
 
 def test_create_product():
     new_prod = _create_product()
-    prod_ids = [x['id'] for x in products.list_products()]
+    prod_ids = [x['id'] for x in products.get_all().json()]
     assert new_prod['id'] in prod_ids
 
 def test_get_product():
     new_prod = _create_product()
-    assert products.get_product(id=new_prod['id']) is not None
+    assert products.get_specific(new_prod['id']).json() is not None
 
 def test_update_product():
     new_prod = _create_product()
-    products.update_product(new_prod['id'], 'updated product name', 'updated description')
-    updated_prod = products.get_product(id=new_prod['id'])
+    products.update(new_prod['id'], _create_product_obj('updated product name', 'updated description'))
+    updated_prod = products.get_specific(new_prod['id']).json()
     assert updated_prod['name'] == 'updated product name' and updated_prod['description'] == 'updated description'
 
 def test_list_versions_for_product():
     randversion = random.choice(string.digits)+'.'+random.choice(string.digits)
     new_prod = _create_product()
     productversions.create_product_version(new_prod['id'], randversion)
-    versions = [x['version'] for x in products.list_versions_for_product(id=new_prod['id'])]
-    assert versions is not None and randversion in versions
-
-def test_list_versions_for_product_attributes():
-    randversion = random.choice(string.digits)+'.'+random.choice(string.digits)
-    new_prod = _create_product()
-    productversions.create_product_version(new_prod['id'], randversion)
-    versions = [x['version'] for x in products.list_versions_for_product(id=new_prod['id'])]
+    versions = [x['version'] for x in products.get_product_versions(new_prod['id']).json()]
     assert versions is not None and randversion in versions
 
 def test_product_exists():
