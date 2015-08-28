@@ -13,7 +13,7 @@ def _create_environment_object(build_type, operational_system):
 
 
 def _environment_exists(search_id):
-    response = EnvironmentsApi(utils.get_api_client()).getSpecific(id=search_id)
+    response = get_specific(search_id)
     if response.ok:
         return True
     return False
@@ -22,14 +22,13 @@ def _environment_exists(search_id):
 @arg("operating-system", help="Operating system for this build environment")
 def create_environment(build_type, operating_system):
     environment = _create_environment_object(build_type, operating_system)
-    response = EnvironmentsApi(utils.get_api_client()).createNew(body=environment)
+    response = create(environment)
+
     if not response.ok:
         utils.print_error(sys._getframe().f_code.co_name,response)
         return
-
     new_env = response.json()
     utils.print_by_key(new_env)
-    return response.json()
 
 @arg("env-id", help="ID of the environment to replace")
 @arg("-bt","--build-type", help="Type of build for the new environment")
@@ -38,7 +37,7 @@ def create_environment(build_type, operating_system):
 def update_environment(env_id, build_type=None, operating_system=None):
     environment = _create_environment_object(build_type, operating_system)
     if _environment_exists(env_id):
-        response = EnvironmentsApi(utils.get_api_client()).update(id=env_id, body=environment)
+        response = update(env_id, environment)
         if response.ok:
             print("Successfully updated environment {0}.").format(env_id)
         else:
@@ -51,13 +50,11 @@ def delete_environment(env_id):
     if not _environment_exists(env_id):
         print("No environment with id {0} exists.").format(env_id)
         return
-
-    response = EnvironmentsApi(utils.get_api_client()).delete(id=env_id)
+    response = delete(env_id)
     if response.ok:
         print("Environment {0} successfully deleted.")
     else:
-        print("Failed to delete environment {0}").format(env_id)
-        print(response)
+        utils.print_error(sys._getframe().f_code.co_name,response)
 
 @arg("-i", "--id", help="ID of the environment to retrieve")
 @arg("-n", "--name", help="ID of the environment to retrieve")
@@ -66,7 +63,6 @@ def get_environment(name=None, id=None):
     if not response.ok:
         utils.print_error(sys._getframe().f_code.co_name, response)
         return
-
     env = response.json();
     utils.print_by_key(env)
 
@@ -89,10 +85,10 @@ def get_specific(env_id):
     return EnvironmentsApi(utils.get_api_client()).getSpecific(id=env_id)
 
 def create(environment):
-    pass
+    return EnvironmentsApi(utils.get_api_client()).createNew(body=environment)
 
 def delete(env_id):
-    pass
+    return EnvironmentsApi(utils.get_api_client()).delete(id=env_id)
 
-def update(env_id):
-    pass
+def update(env_id, environment):
+    return EnvironmentsApi(utils.get_api_client()).update(id=env_id,body=environment)

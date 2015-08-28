@@ -68,8 +68,7 @@ def print_by_key(json):
         for item in json:
             print('\n'.join(key + ": " + str(item[key]) for key in item.keys()))+"\n"
     else:
-        print('\n'.join(key + ": " + str(json[key]) for key in json.keys()))
-        print('\n')
+        print('\n'.join(key + ": " + str(json[key]) for key in json.keys()))+'\n'
 
 def retrieve_keys(input_json, keys):
     if type(input_json) is list:
