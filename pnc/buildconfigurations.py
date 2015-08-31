@@ -70,7 +70,6 @@ def create_build_configuration(name, project_id, environment, description=None, 
     response = create(build_configuration)
     new_bc = response.json()
     utils.print_by_key(new_bc)
-    return new_bc
 
 @arg("-a", "--attributes", help="List of attributes to retrieve. Will print given attributes separated by whitespace.")
 def list_build_configurations(attributes=None):
@@ -83,7 +82,6 @@ def list_build_configurations(attributes=None):
         utils.print_matching_attribute(build_configurations, attributes, client.models.Configuration.Configuration().attributeMap)
     else:
         utils.print_by_key(build_configurations)
-    return build_configurations
 
 def get_all():
     return BuildconfigurationsApi(utils.get_api_client()).getAll()

@@ -5,7 +5,7 @@ from pnc_help_formatter import PNCFormatter
 import products
 import productversions
 import projects
-import builds
+import buildconfigurations
 import licenses
 import environments
 
@@ -29,10 +29,10 @@ parser.add_commands([products.create_product,
                      licenses.delete_license,
                      licenses.get_license,
                      licenses.list_licenses,
-                     builds.create_build_configuration,
-                     builds.build,
+                     buildconfigurations.create_build_configuration,
+                     buildconfigurations.build,
                    #  update_build_configuration,
-                     builds.list_build_configurations,
+                     buildconfigurations.list_build_configurations,
                      environments.create_environment,
                      environments.update_environment,
                      environments.delete_environment,
