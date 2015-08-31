@@ -141,7 +141,6 @@ def list_products(attributes=None):
         utils.print_matching_attribute(products, attributes, client.models.Product.Product().attributeMap)
     else:
         utils.print_by_key(products)
-    return products
 
 def get_all():
     return ProductsApi(utils.get_api_client()).getAll()
