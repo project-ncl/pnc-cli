@@ -470,7 +470,7 @@ class BuildconfigurationsetsApi(object):
         return response
 
    
-    def addConfiguration(self, **kwargs):
+    def addConfigurationjj(self, **kwargs):
         """Removes a configuration from the specified config set
 
         Args:
