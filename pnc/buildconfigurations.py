@@ -5,7 +5,8 @@ from client.BuildconfigurationsApi import BuildconfigurationsApi
 import utils
 
 __author__ = 'thauser'
-def _create_build_conf_object(name, project_id, environment, description=None, scm_url=None, scm_revision=None, patches_url=None,
+#must be a better way to do this.
+def create_build_conf_object(name, project_id, environment, description=None, scm_url=None, scm_revision=None, patches_url=None,
                                 build_script=None):
     created_build_configuration = client.models.Configuration.Configuration()
     created_build_configuration.name = name
@@ -13,7 +14,7 @@ def _create_build_conf_object(name, project_id, environment, description=None, s
     created_build_configuration.environmentId = environment
     return created_build_configuration
 
-def _get_build_configuration_id_by_name(name):
+def get_build_configuration_id_by_name(name):
     """
     Returns the id of the build configuration matching name
     :param name: name of build configuration
@@ -25,7 +26,7 @@ def _get_build_configuration_id_by_name(name):
             return config["id"]
     return None
 
-def _build_configuration_exists(search_id):
+def build_configuration_exists(search_id):
     """
     Test if a build configuration matching search_id exists
     :param search_id: id to test for
@@ -41,12 +42,12 @@ def _build_configuration_exists(search_id):
 def build(name=None,id=None):
     """Trigger a build configuration giving either the name or ID."""
     if id:
-        if not _build_configuration_exists(id):
+        if not build_configuration_exists(id):
             print("There is no build configuration with id {0}.".format(id))
             return
         trigger_id = id
     elif name:
-        search_id = _get_build_configuration_id_by_name(name)
+        search_id = get_build_configuration_id_by_name(name)
         if not search_id:
             print("There is no build configuration with name {0}.".format(name))
             return
@@ -66,7 +67,7 @@ def build(name=None,id=None):
 
 def create_build_configuration(name, project_id, environment, description=None, scm_url=None, scm_revision=None, patches_url=None,
                                build_script=None):
-    build_configuration = _create_build_conf_object(name, project_id, environment, description, scm_url, scm_revision, patches_url, build_script)
+    build_configuration = create_build_conf_object(name, project_id, environment, description, scm_url, scm_revision, patches_url, build_script)
     response = create(build_configuration)
     new_bc = response.json()
     utils.print_by_key(new_bc)

@@ -4,7 +4,7 @@ from pnc import buildconfigurations
 
 def _add_config():
     randname = ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(10))
-    return buildconfigurations.create(buildconfigurations._create_build_conf_object(randname, 1, 1)).json()
+    return buildconfigurations.create(buildconfigurations.create_build_conf_object(randname, 1, 1)).json()
 
 def test_create_build_configuration():
     new_config = _add_config()
@@ -24,8 +24,8 @@ def test_build_trigger():
 def test_build_configuration_exists():
     randname = ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(10))
     created_bc = buildconfigurations.create_build_configuration(randname, 1, 1)
-    assert buildconfigurations._build_configuration_exists(created_bc['id']) is True
+    assert buildconfigurations.build_configuration_exists(created_bc['id']) is True
 
 def test_get_build_configuration_id_by_name():
     created_bc = _add_config()
-    assert buildconfigurations._get_build_configuration_id_by_name(name=created_bc['name']) == created_bc['id']
+    assert buildconfigurations.get_build_configuration_id_by_name(name=created_bc['name']) == created_bc['id']

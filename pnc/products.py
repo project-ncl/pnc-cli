@@ -26,19 +26,19 @@ def _create_product_object(name, description=None, abbreviation=None, product_co
 
 
 
-def _get_product_id_by_name(search_name):
+def get_product_id_by_name(search_name):
     """
     Returns the id of the product in which name or abbreviation matches search_name
     :param search_name: the name or abbreviation to search for
     :return: the ID of the matching product
     """
-    response = ProductsApi(utils.get_api_client()).getAll()
+    response = get_all()
     for config in response.json():
         if config["name"] == search_name or config["abbreviation"] == search_name:
             return config["id"]
     return None
 
-def _product_exists(search_id):
+def product_exists(search_id):
     """
     Test if product with id equal to search_id exists
     :param search_id: The id to test for

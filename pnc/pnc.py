@@ -6,6 +6,7 @@ import products
 import productversions
 import projects
 import buildconfigurations
+import buildconfigurationsets
 import licenses
 import environments
 
@@ -37,7 +38,12 @@ parser.add_commands([products.create_product,
                      environments.update_environment,
                      environments.delete_environment,
                      environments.get_environment,
-                     environments.list_environments],
+                     environments.list_environments,
+                     buildconfigurationsets.list_build_configuration_sets,
+                     #buildconfigurationsets.add_build_configuration_to_set,
+                     buildconfigurationsets.create_build_config_set,
+                     buildconfigurationsets.get_build_config_set,
+                     buildconfigurationsets.update_build_config_set],
                     func_kwargs={"formatter_class": PNCFormatter})
 parser.autocomplete()
 

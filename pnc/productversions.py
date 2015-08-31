@@ -27,10 +27,8 @@ def create_product_version_object(version, product_id=None, current_milestone_id
     if product_releases: created_version.productReleases = product_releases
     return created_version
 
-
-def _version_exists(version_id):
+def version_exists(version_id):
     return get_specific(version_id).ok
-
 
 @arg("-a", "--attributes", help="Comma separated list of attributes to print for each product-version")
 def list_product_versions(attributes=None):
@@ -40,7 +38,6 @@ def list_product_versions(attributes=None):
                                        client.models.ProductVersion.ProductVersion().attributeMap)
     else:
         utils.print_by_key(product_versions)
-
 
 @arg("product-id", help="ID of product to add a version to")
 @arg("version", help="Version to add")
@@ -90,7 +87,7 @@ def update_product_version(id, version=None, current_product_milestone=None, pro
     :param product_releases: list of product release ids
     :return:
     """
-    if not _version_exists(id):
+    if not version_exists(id):
         print("A product version with id {0} doesn't exist.".format(id))
         return
 
