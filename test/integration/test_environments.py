@@ -28,7 +28,7 @@ def test_update():
     new_env = _create_env()
     updated_env = environments._create_environment_object(buildType="DOCKER",operationalSystem="WINDOWS")
     environments.update(new_env['id'], updated_env)
-    updated_env = environments.get_specific(new_env['id']).json()
-    assert (updated_env['buildType'] == 'DOCKER') and (updated_env['operationalSystem'] == 'WINDOWS')
+    retrieved_env = environments.get_specific(new_env['id']).json()
+    assert (retrieved_env['buildType'] == 'DOCKER') and (retrieved_env['operationalSystem'] == 'WINDOWS')
 
 

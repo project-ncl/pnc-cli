@@ -13,7 +13,7 @@ def create_product_release_object(**kwargs):
 @arg("-a", "--attributes", help="Comma separated list of attributes to print.")
 def list_product_releases(attributes=None):
     response = get_all()
-    utils.print_json_result(sys._getframe().f_code.co_name,response,
+    utils.print_json_result(sys._getframe().f_code.co_name,
                             response,
                             attributes,
                             client.models.ProductRelease.ProductRelease().attributeMap)

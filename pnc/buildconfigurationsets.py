@@ -86,7 +86,7 @@ def update_build_config_set(id=None, name=None, updated_name=None, product_versi
     if build_configurations:
         build_configs = build_configurations.split(',')
 
-    updated_build_config_set = _create_build_config_set_object(updated_name, product_version_id, build_configs)
+    updated_build_config_set = _create_build_config_set_object(name=updated_name, productVersionId=product_version_id, buildConfigurationIds=build_configs)
     response = update(set_id, updated_build_config_set)
 
     if not response.ok:
@@ -130,7 +130,7 @@ def get_set_id(id, name):
 
 @arg("-i", "--id", help="ID of the build configuration set to build.")
 @arg("-n", "--name", help="Name of the build configuration set to build.")
-def trigger_build_config_set(id=None, name=None):
+def build_set(id=None, name=None):
     set_id = get_set_id(id,name)
     if not set_id:
         return
