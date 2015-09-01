@@ -53,41 +53,45 @@ def get_config_id(id,name):
         return
     return config_id
 
-@arg("-i", "--id", help="ID of the build configuration to trigger")
-@arg("-n", "--name", help="Name of the build configuration to trigger")
-def build(id=None,name=None):
+@arg("-i", "--id", help="ID of the build configuration to trigger.")
+@arg("-n", "--name", help="Name of the build configuration to trigger.")
+@arg("-a", "--attributes", help="Comma separated list of attributes to print.")
+def build(id=None,name=None, attributes=None):
     """Trigger a build configuration giving either the name or ID."""
     trigger_id = get_config_id(id,name)
     if not trigger_id:
         return
-
     response = trigger(trigger_id)
+    utils.print_json_result(sys._getframe().f_code.co_name,
+                            response,
+                            attributes,
+                            client.models.Configuration.Configuration().attributeMap)
 
-    if not response.ok:
-        utils.print_error(sys._getframe().f_code.co_name,response)
-        return
-
-    triggered_build = response.json()
-    utils.print_by_key(triggered_build)
-
+@arg("name", help="")
+@arg("projectId", help="")
+@arg("environment", help="")
+@arg("-d", "--description" , help="")
+@arg("-surl", "--scm-url", help="")
+@arg("-rurl", "--scm-revision", help="")
+@arg("-p", "--patches-url", help="")
+@arg("-bs", "--build-script", help="")
+@arg("-a", "--attributes", help="Comma separated list of attributes to print.")
 def create_build_configuration(name, project_id, environment, description=None, scm_url=None, scm_revision=None, patches_url=None,
-                               build_script=None):
+                               build_script=None, attributes=None):
     build_configuration = create_build_conf_object(name, project_id, environment, description, scm_url, scm_revision, patches_url, build_script)
     response = create(build_configuration)
-    new_bc = response.json()
-    utils.print_by_key(new_bc)
+    utils.print_json_result(sys._getframe().f_code.co_name,
+                            response,
+                            attributes,
+                            client.models.Configuration.Configuration().attributeMap)
 
 @arg("-a", "--attributes", help="List of attributes to retrieve. Will print given attributes separated by whitespace.")
 def list_build_configurations(attributes=None):
     response = get_all()
-    if not response.ok:
-        utils.print_error(sys._getframe().f_code.co_name, response)
-        return
-    build_configurations = response.json()
-    if attributes is not None:
-        utils.print_matching_attribute(build_configurations, attributes, client.models.Configuration.Configuration().attributeMap)
-    else:
-        utils.print_by_key(build_configurations)
+    utils.print_json_result(sys._getframe().f_code.co_name,
+                            response,
+                            attributes,
+                            client.models.Configuration.Configuration().attributeMap)
 
 def get_all():
     return BuildconfigurationsApi(utils.get_api_client()).getAll()
