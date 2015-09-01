@@ -13,8 +13,8 @@ if not found:
     config.set('PNC', 'restEndpoint', 'http://localhost:8080/pnc-rest/rest')
     with open(os.path.join(configfilename),'wb') as configfile:
         config.write(configfile)
-base_pnc_url = config.get('PNC', 'restEndpoint')
-apiclient = client.swagger.ApiClient(base_pnc_url)
+pnc_rest_url = config.get('PNC', 'restEndpoint')
+apiclient = client.swagger.ApiClient(pnc_rest_url)
 
 def print_json_result(caller, response, attributes=None, valid_attributes=None):
     if not response.ok:
