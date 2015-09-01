@@ -2,6 +2,7 @@ from argh import arg
 import client
 from client.ProductversionsApi import ProductversionsApi
 import utils
+import sys
 
 __author__ = 'thauser'
 
@@ -32,12 +33,11 @@ def version_exists(version_id):
 
 @arg("-a", "--attributes", help="Comma separated list of attributes to print for each product-version")
 def list_product_versions(attributes=None):
-    product_versions = get_all().json()
-    if attributes is not None:
-        utils.print_matching_attribute(product_versions, attributes,
-                                       client.models.ProductVersion.ProductVersion().attributeMap)
-    else:
-        utils.print_by_key(product_versions)
+    response = get_all()
+    utils.print_json_result(sys._getframe().f_code.co_name,
+                            response,
+                            attributes,
+                            client.models.ProductVersion.ProductVersion().attributeMap)
 
 @arg("product-id", help="ID of product to add a version to")
 @arg("version", help="Version to add")
@@ -50,14 +50,12 @@ def create_product_version(product_id, version, current_milestone=None, product_
     version = create_product_version_object(version, product_id, current_milestone, product_milestones,
                                             build_configuration_sets, product_releases)
     response = create(version)
-    if not response.ok:
-        utils.print_error(__name__, response)
-        return
-    utils.print_by_key(response.json())
+    utils.print_json_result(sys._getframe().f_code.co_name,response)
 
 # TODO: allow resolution / search by version
 @arg("id", help="ID of the product version to retrieve")
-def get_product_version(id):
+@arg("-a", "--attributes", help="Comma separated list of attributes to print.")
+def get_product_version(id, attributes=None):
     """
     List information about a specific product version
     :param id: the id of the product version
@@ -65,10 +63,10 @@ def get_product_version(id):
     """
     if id:
         response = get_specific(id)
-        if not response.ok:
-            utils.print_error(__name__,response)
-            return
-        print(utils.print_by_key(response.json()))
+        utils.print_json_result(sys._getframe().f_code.co_name,
+                                response,
+                                attributes,
+                                client.models.ProductVersion.ProductVersion().attributeMap)
     else:
         print("A product version id is required")
 
@@ -95,24 +93,19 @@ def update_product_version(id, version=None, current_product_milestone=None, pro
                                             build_config_sets, product_releases)
     response = update(id, updated_version)
     if not response.ok:
-        utils.print_error(__name__, response)
+        utils.print_json_result(sys._getframe().f_code.co_name,response)
         return
 
     print("Update of version with id {0} successful.".format(id))
 
-
-
 def get_all():
     return ProductversionsApi(utils.get_api_client()).getAll()
-
 
 def get_specific(version_id):
     return ProductversionsApi(utils.get_api_client()).getSpecific(id=version_id)
 
-
 def create(version):
     return ProductversionsApi(utils.get_api_client()).createNewProductVersion(body=version)
-
 
 def update(version_id, version):
     return ProductversionsApi(utils.get_api_client()).update(id=version_id, body=version)
