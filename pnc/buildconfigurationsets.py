@@ -71,10 +71,10 @@ def create_build_config_set(name, product_version_id=None, build_configurations=
 @arg("-n", "--name", help="Name of the build configuration set to retrieve")
 @arg("-a", "--attributes", help="Comma separated list of attributes to print")
 def get_build_config_set(id=None, name=None, attributes=None):
-    set_id = _get_set_id(id,name)
+    set_id = get_set_id(id,name)
     if not set_id:
         return
-    
+
     response = get_specific(set_id)
 
     if not response.ok:
@@ -94,7 +94,7 @@ def get_build_config_set(id=None, name=None, attributes=None):
 @arg("-bc", "--build-configurations", help="Comma separated list of build configurations to include in the updated set.")
 def update_build_config_set(id=None, name=None, updated_name=None, product_version_id=None, build_configurations=None):
     build_configs = None
-    set_id = _get_set_id(id,name)
+    set_id = get_set_id(id,name)
     if not set_id:
         return
 
@@ -115,7 +115,7 @@ def update_build_config_set(id=None, name=None, updated_name=None, product_versi
 #TODO: in order to delete a config set successfully, any buildconfigsetrecords must be deleted first
 #TODO: it may be impossible / undesireable to remove buildconfigsetrecords. so perhaps just check and abort
 def delete_build_config_set(id=None, name=None):
-    set_id = _get_set_id(id,name)
+    set_id = get_set_id(id,name)
     if not set_id:
         return
 
@@ -127,7 +127,7 @@ def delete_build_config_set(id=None, name=None):
 
     print("Successfully deleted build configuration set with ID {0}.").format(set_id)
 
-def _get_set_id(id, name):
+def get_set_id(id, name):
     if id:
         set_id = id
         if not build_config_set_exists(set_id):
@@ -146,7 +146,7 @@ def _get_set_id(id, name):
 @arg("-i", "--id", help="ID of the build configuration set to build.")
 @arg("-n", "--name", help="Name of the build configuration set to build.")
 def trigger_build_config_set(id=None, name=None):
-    set_id = _get_set_id(id,name)
+    set_id = get_set_id(id,name)
     if not set_id:
         return
 
@@ -162,7 +162,7 @@ def trigger_build_config_set(id=None, name=None):
 @arg("-i", "--id", help="ID of the build configuration set to build.")
 @arg("-n", "--name", help="Name of the build configuration set to build.")
 def list_build_configurations_for_set(id=None, name=None):
-    set_id = _get_set_id(id,name)
+    set_id = get_set_id(id,name)
     if not set_id:
         return
 
@@ -179,7 +179,7 @@ def list_build_configurations_for_set(id=None, name=None):
 @arg("-cid", "--config-id", help="ID of the build configuration to add to the given set")
 @arg("-cn", "--config-name", help="Name of the build configuration to add to the given set")
 def add_build_configuration_to_set(set_id=None, set_name=None, config_id=None, config_name=None):
-    config_set_id = _get_set_id(set_id,set_name)
+    config_set_id = get_set_id(set_id,set_name)
     if not config_set_id:
         return
 

@@ -24,6 +24,29 @@ def _create_project_object(name, description, issue_url, project_url, configurat
     if license_id: created_project.licenseId = license_id
     return created_project
 
+def get_project_id(id,name):
+    """
+    Confirms the existence of a project ID and / or finds an existing ID for a project from a name
+    Prints errors if nothing useful was found.
+    :param id: id to check existence
+    :param name: name to resolve to ID
+    :return: a valid ID of a project
+    """
+    if id:
+        proj_id = id
+        if not _project_exists(proj_id):
+            print("No project with ID {0} exists.").format(proj_id)
+            return
+    elif name:
+        proj_id =_get_project_id_by_name(name)
+        if not proj_id:
+            print("No project with name {0} exists.").format(name)
+            return
+    else:
+        print("Either a project name or id is required")
+        return
+
+
 def _get_project_id_by_name(search_name):
     """
     Returns the id of the project in which name matches search_name
@@ -61,46 +84,32 @@ def create_project(name, configuration_ids=None, description=None, issue_url=Non
         return
     utils.print_by_key(response.json())
 
-def create(new_project):
-    return ProjectsApi(utils.get_api_client()).createNew(body=new_project)
-
-@arg("project-id", help="ID for the project that will be updated")
-@arg("-n","--name", help="Name for the project")
-@arg("-cids","--configuration-ids", help="List of configuration IDs this project should be associated with")
-@arg("-desc","--description", help="Detailed description of the new project")
-@arg("-purl","--project_url", help="SCM Url for the project")
+@arg("-id", "--id", help="ID for the project that will be updated.")
+@arg("-n","--name", help="Name for the project that will be updated.")
+@arg("-bc","--build-configurations", help="Comma separated list of build configuration IDs this project should be associated with.")
+@arg("-desc","--description", help="Detailed description of the new project.")
+@arg("-purl","--project_url", help="SCM Url for the project.")
 @arg("-iurl","--issue_url", help="Issue tracker URL for the new project")
 @arg("-l","--license_id", help="License ID for the new project")
-#todo allow to update via name
-def update_project(project_id, name=None, description=None, issue_url=None, project_url=None, configuration_ids=None,license_id=None):
-    if not _project_exists(project_id):
-        print("No project with id {0} exists.").format(project_id)
+def update_project(id=None, name=None, updated_name=None, description=None, issue_url=None, project_url=None, build_configurations=None,license_id=None):
+    proj_id = get_project_id(id,name)
+    if not proj_id:
         return
 
-    updated_project = _create_project_object(name, description, issue_url, project_url, configuration_ids, license_id)
-    response = update(project_id, updated_project)
+    updated_project = _create_project_object(updated_name, description, issue_url, project_url, build_configurations, license_id)
+    response = update(proj_id, updated_project)
 
     if response.ok:
-        print("Project {0} successfully updated.").format(project_id)
+        print("Project {0} successfully updated.").format(proj_id)
     else:
         utils.print_error(__name__,response)
-
-def update(project_id, updated_project):
-    return ProjectsApi(utils.get_api_client()).update(id=project_id,body=updated_project)
 
 @arg("-id","--id",help="ID of the project to retrieve")
 @arg("-n","--name", help="Name of the project to retrieve")
 def get_project(id=None, name=None):
-    if not id and not name:
-        print("Either a project name or id is required")
+    proj_id = get_project_id(id,name)
+    if not proj_id:
         return
-    if id:
-        proj_id = id
-    if name:
-        proj_id =_get_project_id_by_name(name)
-        if not proj_id:
-            print("No project with name {0} exists.").format(name)
-            return
 
     response = get_specific(proj_id)
     if not response.ok:
@@ -138,9 +147,6 @@ def delete_project(id=None, name=None):
         format = proj_id
     print("Project {0} successfully deleted.").format(format)
 
-def delete(id):
-    return ProjectsApi(utils.get_api_client()).deleteSpecific(id=id)
-
 @arg("-a","--attributes", help="Comma separated list of attributes to print for each project")
 def list_projects(attributes=None):
     response = get_all()
@@ -155,4 +161,13 @@ def list_projects(attributes=None):
 
 def get_all():
     return ProjectsApi(utils.get_api_client()).getAll()
+
+def create(new_project):
+    return ProjectsApi(utils.get_api_client()).createNew(body=new_project)
+
+def update(project_id, updated_project):
+    return ProjectsApi(utils.get_api_client()).update(id=project_id,body=updated_project)
+
+def delete(id):
+    return ProjectsApi(utils.get_api_client()).deleteSpecific(id=id)
 

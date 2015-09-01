@@ -7,6 +7,7 @@ import productversions
 import projects
 import buildconfigurations
 import buildconfigurationsets
+import buildrecords
 import licenses
 import environments
 

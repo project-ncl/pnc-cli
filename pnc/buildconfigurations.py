@@ -37,23 +37,28 @@ def build_configuration_exists(search_id):
         return True
     return False
 
-@arg("-n", "--name", help="Name of the build configuration to trigger")
-@arg("-i", "--id", help="ID of the build configuration to trigger")
-def build(name=None,id=None):
-    """Trigger a build configuration giving either the name or ID."""
+def get_config_id(id,name):
     if id:
-        if not build_configuration_exists(id):
-            print("There is no build configuration with id {0}.".format(id))
+        config_id = id
+        if not build_configuration_exists(config_id):
+            print("There is no build configuration with id {0}.".format(config_id))
             return
-        trigger_id = id
     elif name:
-        search_id = get_build_configuration_id_by_name(name)
-        if not search_id:
+        config_id = get_build_configuration_id_by_name(name)
+        if not config_id:
             print("There is no build configuration with name {0}.".format(name))
             return
-        trigger_id = search_id
     else:
-        print("Build requires either a name or an ID of a build configuration to trigger.")
+        print("Either a name or an ID of a build configuration is required.")
+        return
+    return config_id
+
+@arg("-i", "--id", help="ID of the build configuration to trigger")
+@arg("-n", "--name", help="Name of the build configuration to trigger")
+def build(id=None,name=None):
+    """Trigger a build configuration giving either the name or ID."""
+    trigger_id = get_config_id(id,name)
+    if not trigger_id:
         return
 
     response = trigger(trigger_id)
