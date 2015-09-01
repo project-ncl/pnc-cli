@@ -16,7 +16,7 @@ if not found:
 base_pnc_url = config.get('PNC', 'restEndpoint')
 apiclient = client.swagger.ApiClient(base_pnc_url)
 
-def print_json_result(caller, response, attributes, valid_attributes):
+def print_json_result(caller, response, attributes=None, valid_attributes=None):
     if not response.ok:
         print_error(caller, response)
         return
