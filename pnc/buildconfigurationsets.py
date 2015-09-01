@@ -26,14 +26,10 @@ def build_config_set_exists(search_id):
 @arg("-a","--attributes", help="Comma separated list to specify attributes to print")
 def list_build_configuration_sets(attributes=None):
     response = get_all()
-    if not response.ok:
-        utils.print_error(sys._getframe().f_code.co_name, response)
-        return
-    if attributes:
-        valid_attributes = client.models.BuildConfigurationSet.BuildConfigurationSet().attributeMap
-        utils.print_matching_attribute(response.json(), attributes, valid_attributes)
-    else:
-        utils.print_by_key(response.json())
+    utils.print_json_result(sys._getframe().f_code.co_name,
+                            response,
+                            attributes,
+                            client.models.BuildConfigurationSet.BuildConfigurationSet().attributeMap)
 
 @arg("name", help="Name for the new build configuration set.")
 @arg("-pvi", "--product-version-id", help="ID of the product version to associate this build configuration set.")
@@ -62,10 +58,7 @@ def create_build_config_set(name, product_version_id=None, build_configurations=
     config_set = _create_build_config_set_object(name, product_version_id, build_configs)
 
     response = create(config_set)
-    if not response.ok:
-        utils.print_error(sys._getframe().f_code.co_name, response)
-        return
-    utils.print_by_key(response.json())
+    utils.print_json_result(sys._getframe().f_code.co_name, response)
 
 @arg("-id", "--id", help="ID of the build configuration set to retrieve")
 @arg("-n", "--name", help="Name of the build configuration set to retrieve")
@@ -74,18 +67,11 @@ def get_build_config_set(id=None, name=None, attributes=None):
     set_id = get_set_id(id,name)
     if not set_id:
         return
-
     response = get_specific(set_id)
-
-    if not response.ok:
-        utils.print_error(sys._getframe().f_code.co_name, response)
-        return
-
-    if attributes:
-        valid_attributes = client.model.BuildConfigurationSet.BuildConfigurationSet().attributeMap
-        utils.print_matching_attribute(response.json(), attributes, valid_attributes)
-    else:
-        utils.print_by_key(response.json())
+    utils.print_json_result(sys._getframe().f_code.co_name,
+                            response,
+                            attributes,
+                            client.model.BuildConfigurationSet.BuildConfigurationSet().attributeMap)
 
 @arg("-i", "--id", help="ID of the build configuration set to update.")
 @arg("-n", "--name", help="Name for the build configuration set to update.")
@@ -101,7 +87,7 @@ def update_build_config_set(id=None, name=None, updated_name=None, product_versi
     if build_configurations:
         build_configs = build_configurations.split(',')
 
-    updated_build_config_set = _create_build_config_set_object(name, product_version_id, build_configs)
+    updated_build_config_set = _create_build_config_set_object(updated_name, product_version_id, build_configs)
     response = update(set_id, updated_build_config_set)
 
     if not response.ok:
@@ -149,30 +135,26 @@ def trigger_build_config_set(id=None, name=None):
     set_id = get_set_id(id,name)
     if not set_id:
         return
-
     #callbackUrl?
     response = trigger(set_id)
-
     if not response.ok:
         utils.print_error(sys._getframe().f_code.co_name, response)
         return
-
     print("Successfully triggered build of build configuration set with ID {0}.").format(set_id)
 
 @arg("-i", "--id", help="ID of the build configuration set to build.")
 @arg("-n", "--name", help="Name of the build configuration set to build.")
-def list_build_configurations_for_set(id=None, name=None):
+@arg("-a", "--attributes", help="Comma separated list of attributes to print")
+def list_build_configurations_for_set(id=None, name=None, attributes=None):
     set_id = get_set_id(id,name)
     if not set_id:
         return
-
     response = get_configurations(set_id)
+    utils.print_json_result(sys._getframe().f_code.co_name,
+                            response,
+                            attributes,
+                            client.models.BuildConfigurationSet.BuildConfigurationSet().attributeMap)
 
-    if not response.ok:
-        utils.print_error(sys._getframe().f_code.co_name, response)
-        return
-
-    utils.print_by_key(response.json())
 
 @arg("-sid", "--set-id", help="ID of the build configuration set to add to")
 @arg("-sn", "--set-name", help="Name of the build configuration set to add to")
@@ -183,16 +165,8 @@ def add_build_configuration_to_set(set_id=None, set_name=None, config_id=None, c
     if not config_set_id:
         return
 
-    if config_id:
-        build_config_id = config_id
-    elif config_name:
-        build_config_id = buildconfigurations.get_build_configuration_id_by_name(config_name)
-    else:
-        print("A build configuration ID or name is required to add to the build configuration set.")
-        return
-
-    if not buildconfigurations.build_configuration_exists(build_config_id):
-        print("No build configuration with that name or id exists.")
+    build_config_id = buildconfigurations.get_config_id(config_id, config_name)
+    if not build_config_id:
         return
 
     bc_response = buildconfigurations.get_specific(build_config_id)
@@ -214,27 +188,14 @@ def add_build_configuration_to_set(set_id=None, set_name=None, config_id=None, c
 @arg("-n", "--name", help="name of the build configuration set")
 @arg("-a", "--attributes", help="Comma separated list of attributes to print")
 def list_build_records(id=None, name=None, attributes=None):
-    valid_attributes = client.models.BuildConfigurationSet.BuildConfigurationSet().attributeMap
-    if id:
-        search_id = id
-    elif name:
-        search_id = get_build_config_set_id_by_name(name)
-    else:
-        print("Either a build configuration set ID or name is required.")
+    set_id = get_set_id(id,name)
+    if not set_id:
         return
-
-    response = get_build_records(search_id)
-
-    if not response.ok:
-        utils.print_error(sys._getframe().f_code.co_name,response)
-        return
-
-    build_records = response.json()
-    if attributes is not None:
-        utils.print_matching_attribute(build_records, attributes, valid_attributes)
-    else:
-        utils.print_by_key(build_records)
-
+    response = get_build_records(set_id)
+    utils.print_json_result(sys._getframe().f_code.co_name,
+                            response,
+                            attributes,
+                            client.models.BuildConfigurationSet.BuildConfigurationSet().attributeMap)
 def get_all():
     return BuildconfigurationsetsApi(utils.get_api_client()).getAll()
 
