@@ -22,8 +22,7 @@ def test_build_trigger():
     buildconfigurations.build(name=randname)
 
 def test_build_configuration_exists():
-    randname = ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(10))
-    created_bc = buildconfigurations.create_build_configuration(randname, 1, 1)
+    created_bc = _add_config()
     assert buildconfigurations.build_configuration_exists(created_bc['id']) is True
 
 def test_get_build_configuration_id_by_name():

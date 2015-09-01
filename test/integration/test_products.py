@@ -37,9 +37,9 @@ def test_list_versions_for_product():
 
 def test_product_exists():
     new_prod = _create_product()
-    assert products._product_exists(new_prod['id'])
+    assert products.product_exists(new_prod['id'])
 
 def test_get_product_id_by_name():
     new_prod = _create_product()
-    assert products._product_exists(products._get_product_id_by_name(new_prod['name']))
+    assert products.product_exists(products.get_product_id_by_name(new_prod['name']))
 
