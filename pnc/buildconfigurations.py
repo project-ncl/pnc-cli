@@ -5,7 +5,6 @@ from client.BuildconfigurationsApi import BuildconfigurationsApi
 import utils
 
 __author__ = 'thauser'
-#must be a better way to do this.
 def create_build_conf_object(**kwargs):
     created_build_configuration = client.models.Configuration.Configuration()
     for key, value in kwargs.iteritems():
