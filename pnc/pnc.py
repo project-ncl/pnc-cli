@@ -47,7 +47,14 @@ parser.add_commands([products.create_product,
                      buildconfigurationsets.update_build_config_set,
                      buildconfigurationsets.delete_build_config_set,
                      buildconfigurationsets.list_build_configurations_for_set,
-                     buildconfigurationsets.trigger_build_config_set],
+                     buildconfigurationsets.trigger_build_config_set,
+                     buildrecords.list_build_records,
+                     buildrecords.list_records_for_build_config,
+                     buildrecords.list_records_for_project,
+                     buildrecords.get_logs_for_record,
+                     buildrecords.get_audited_config_for_record,
+                     buildrecords.get_build_artifacts,
+                     buildrecords.get_build_record],
                     func_kwargs={"formatter_class": PNCFormatter})
 parser.autocomplete()
 
