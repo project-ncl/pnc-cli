@@ -65,16 +65,14 @@ def build(id=None,name=None, attributes=None):
                             client.models.Configuration.Configuration().attributeMap)
 
 @arg("name", help="")
-@arg("projectId", help="")
+@arg("project-id", help="")
 @arg("environment", help="")
 @arg("-d", "--description" , help="")
 @arg("-surl", "--scm-url", help="")
 @arg("-rurl", "--scm-revision", help="")
-@arg("-p", "--patches-url", help="")
 @arg("-bs", "--build-script", help="")
 @arg("-a", "--attributes", help="Comma separated list of attributes to print.")
-def create_build_configuration(name, project_id, environment, description=None, scm_url=None, scm_revision=None, patches_url=None,
-                               build_script=None, attributes=None):
+def create_build_configuration(name, project_id, environment, description=None, scm_url=None, scm_revision=None, build_script=None, attributes=None):
     build_configuration = create_build_conf_object(name=name,
                                                    projectId=project_id,
                                                    environmentId=environment,
