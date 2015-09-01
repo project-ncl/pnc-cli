@@ -11,6 +11,7 @@ import buildrecords
 import licenses
 import environments
 import runningbuilds
+import productreleases
 
 parser = argh.ArghParser()
 parser.add_commands([products.create_product,
@@ -57,7 +58,13 @@ parser.add_commands([products.create_product,
                      buildrecords.get_build_artifacts,
                      buildrecords.get_build_record,
                      runningbuilds.list_running_builds,
-                     runningbuilds.get_running_build],
+                     runningbuilds.get_running_build,
+                     productreleases.list_product_releases,
+                     productreleases.create_product_release,
+                     productreleases.list_release_support_levels(),
+                     productreleases.list_releases_for_version,
+                     productreleases.get_product_release,
+                     productreleases.update_product_release],
                     func_kwargs={"formatter_class": PNCFormatter})
 parser.autocomplete()
 
