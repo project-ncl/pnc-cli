@@ -28,7 +28,7 @@ def list_product_releases(attributes=None):
 @arg("product-version-id", help="ID of the product version this release is associated with.")
 @arg("product-milestone-id", help="Milestone which is the basis of this release")
 @arg("support-level", help="Level of support comitted to for this release.")
-def create_product_release(version, release_date, download_url, product_version_id, product_milestone_id, support_level):
+def create_release(version, release_date, download_url, product_version_id, product_milestone_id, support_level):
     created_release = create_product_release_object(version,
                                                     release_date,
                                                     download_url,
@@ -49,7 +49,7 @@ def list_release_support_levels():
     utils.print_json_result(sys._getframe().f_code.co_name, response)
 
 @arg("id", help="Product version to retrieve.")
-def get_product_release(id):
+def get_release(id):
     response = get_specific(id)
     utils.print_json_result(sys._getframe().f_code.co_name, response)
 
@@ -60,11 +60,12 @@ def get_product_release(id):
 @arg("-pvid", "--product-version-id", help="ID of the product version this release is associated with.")
 @arg("-msid","--product-milestone-id", help="Milestone which is the basis of this release")
 @arg("-sl", "--support-level", help="Level of support comitted to for this release.")
-def update_product_release(id, version=None, release_date=None, download_url=None, product_version_id=None, product_milestone_id=None, support_level=None):
+def update_release(id, version=None, release_date=None, download_url=None, product_version_id=None, product_milestone_id=None, support_level=None):
     #get the existing product_release
     existing = get_specific(id)
     if not existing.ok:
         print("No release with ID {0} exists.").format(id)
+        return
 
     existing_release = existing.json()
     if version: existing_release['version'] = version

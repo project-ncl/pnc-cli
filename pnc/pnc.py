@@ -60,11 +60,11 @@ parser.add_commands([products.create_product,
                      runningbuilds.list_running_builds,
                      runningbuilds.get_running_build,
                      productreleases.list_product_releases,
-                     productreleases.create_product_release,
+                     productreleases.create_release,
                      productreleases.list_release_support_levels(),
                      productreleases.list_releases_for_version,
-                     productreleases.get_product_release,
-                     productreleases.update_product_release],
+                     productreleases.get_release,
+                     productreleases.update_release],
                     func_kwargs={"formatter_class": PNCFormatter})
 parser.autocomplete()
 
