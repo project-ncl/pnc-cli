@@ -23,12 +23,7 @@ def _environment_exists(search_id):
 def create_environment(build_type, operating_system):
     environment = _create_environment_object(build_type, operating_system)
     response = create(environment)
-
-    if not response.ok:
-        utils.print_error(sys._getframe().f_code.co_name,response)
-        return
-    new_env = response.json()
-    utils.print_by_key(new_env)
+    utils.print_json_result(sys._getframe().f_code.co_name, response)
 
 @arg("env-id", help="ID of the environment to replace")
 @arg("-bt","--build-type", help="Type of build for the new environment")
@@ -51,33 +46,27 @@ def delete_environment(env_id):
         print("No environment with id {0} exists.").format(env_id)
         return
     response = delete(env_id)
-    if response.ok:
-        print("Environment {0} successfully deleted.")
-    else:
-        utils.print_error(sys._getframe().f_code.co_name,response)
-
-@arg("-i", "--id", help="ID of the environment to retrieve")
-@arg("-n", "--name", help="ID of the environment to retrieve")
-def get_environment(name=None, id=None):
-    response = get_specific(id)
     if not response.ok:
-        utils.print_error(sys._getframe().f_code.co_name, response)
+        utils.print_error(sys._getframe().f_code.co_name,response)
         return
-    env = response.json();
-    utils.print_by_key(env)
+    print("Environment {0} successfully deleted.")
 
-@arg("-a", "--attributes", help="Comma separated list of attributes to return about each environment")
+@arg("id", help="ID of the environment to retrieve")
+@arg("-a", "--attributes", help="Comma separated list of attributes to print.")
+def get_environment(id, attributes=None):
+    response = get_specific(id)
+    utils.print_json_result(sys._getframe().f_code.co_name,
+                            response,
+                            attributes,
+                            client.models.Environment.Environment().attributeMap)
+
+@arg("-a", "--attributes", help="Comma separated list of attributes to print.")
 def list_environments(attributes=None):
     response = get_all()
-    if not response.ok:
-        utils.print_error("list_environments",response)
-        return
-    environments = response.json()
-    if attributes is not None:
-        utils.print_matching_attribute(environments, attributes, client.models.Environment.Environment().attributeMap)
-    else:
-        utils.print_by_key(environments)
-
+    utils.print_json_result(sys._getframe().f_code.co_name,
+                            response,
+                            attributes,
+                            client.models.Environment.Environment().attributeMap)
 def get_all():
     return EnvironmentsApi(utils.get_api_client()).getAll()
 
