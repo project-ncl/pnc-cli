@@ -1,10 +1,8 @@
 import ConfigParser
-import json
 import client.swagger
 import os
 
 __author__ = 'thauser'
-
 
 config = ConfigParser.ConfigParser()
 configfilename = os.path.expanduser("~")+ "/.config/pnc-cli/pnc-cli.conf"
@@ -18,34 +16,14 @@ if not found:
 base_pnc_url = config.get('PNC', 'restEndpoint')
 apiclient = client.swagger.ApiClient(base_pnc_url)
 
-def _remove_nulls(input_json):
-    keys = input_json.keys()
-    if keys:
-        for k in keys:
-            if input_json[k] is None:
-                del input_json[k]
-
-
-def pretty_format_response(function, input_json):
-    """
-    prints the json dump in a more readable format.
-    does not print null values
-    :param input_json:
-    :return:
-    """
-    if function is None:
-        return pretty_format_response(input_json)
+def print_json_result(caller, response, attributes, valid_attributes):
+    if not response.ok:
+        print_error(caller, response)
+        return
+    if attributes:
+        print_matching_attribute(response.json(), attributes, valid_attributes)
     else:
-        return function(input_json)
-
-
-def pretty_format_response(input_json):
-    if type(input_json) is list:
-        for item in input_json:
-            _remove_nulls(item)
-    else:
-        _remove_nulls(input_json)
-    return json.dumps(input_json, indent=4, separators=[",", ": "], sort_keys=True)
+        print_by_key(response.json())
 
 def print_matching_attribute(json, attributes, valid_attributes):
     attr_list = attributes.split(",")
@@ -79,7 +57,6 @@ def retrieve_keys(input_json, keys):
 
 def print_error(func_name, reason):
     print(func_name + " failed: " + str(reason))
-
 
 def get_api_client():
     return apiclient

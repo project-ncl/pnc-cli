@@ -9,15 +9,10 @@ import projects
 @arg("-a", "--attributes", help="Comma separated list of attributes to print.")
 def list_build_records(attributes=None):
     response = get_all()
-    if not response.ok:
-        utils.print_error(sys._getframe().f_code.co_name,response)
-        return
-
-    if attributes:
-        valid_attributes = client.models.BuildRecord.BuildRecord().attributeMap
-        utils.print_matching_attribute(response.json(), attributes, valid_attributes)
-    else:
-        utils.print_by_key(response.json())
+    utils.print_json_result(sys._getframe().f_code.co_name,
+                            response,
+                            attributes,
+                            client.models.BuildRecord.BuildRecord().attributeMap)
 
 @arg("-i","--id", help="Build configuration ID to retrieve build records of.")
 @arg("-n","--name", help="Build configuration name to retrieve build records of.")
@@ -28,16 +23,10 @@ def list_records_for_build_config(id=None, name=None, attributes=None):
         return
 
     response = get_all_for_build_configuration(config_id)
-
-    if not response.ok:
-        utils.print_error(sys._getframe().f_code.co_name,response)
-        return
-
-    if attributes:
-        valid_attributes = client.models.BuildRecord.BuildRecord().attributeMap
-        utils.print_matching_attribute(response.json(), attributes, valid_attributes)
-    else:
-        utils.print_by_key(response.json())
+    utils.print_json_result(sys._getframe().f_code.co_name,
+                            response,
+                            attributes,
+                            client.models.BuildRecord.BuildRecord().attributeMap)
 
 @arg("-i","--id", help="Project ID to retrieve build records of.")
 @arg("-n","--name", help="Project name to retrieve build records of.")
@@ -48,69 +37,44 @@ def list_records_for_project(id=None, name=None, attributes=None):
         return
 
     response = get_all_for_project(project_id)
-
-    if not response.ok:
-        utils.print_error(sys._getframe().f_code.co_name,response)
-        return
-
-    if attributes:
-        valid_attributes = client.models.BuildRecord.BuildRecord().attributeMap
-        utils.print_matching_attribute(response.json(), attributes, valid_attributes)
-    else:
-        utils.print_by_key(response.json())
+    utils.print_json_result(sys._getframe().f_code.co_name,
+                            response,
+                            attributes,
+                            client.models.BuildRecord.BuildRecord().attributeMap)
 
 @arg("id", help="Build record ID to retrieve.")
 @arg("-a", "--attributes", help="Comma separated list of attributes to print.")
 def get_build_record(id, attributes=None):
     response = get_specific(id)
-
-    if not response.ok:
-        utils.print_error(sys._getframe().f_code.co_name,response)
-        return
-
-    if attributes:
-        valid_attributes = client.models.BuildRecord.BuildRecord().attributeMap
-        utils.print_matching_attribute(response.json(), attributes, valid_attributes)
-    else:
-        utils.print_by_key(response.json())
+    utils.print_json_result(sys._getframe().f_code.co_name,
+                            response,
+                            attributes,
+                            client.models.BuildRecord.BuildRecord().attributeMap)
 
 @arg("id", help="Build record ID to retrieve artifacts from.")
 @arg("-a", "--attributes", help="Comma separated list of attributes to print.")
 def get_build_artifacts(id, attributes=None):
     response = get_artifacts(id)
-
-    if not response.ok:
-        utils.print_error(sys._getframe().f_code.co_name,response)
-        return
-
-    if attributes:
-        valid_attributes = client.models.Artifact.Artifact().attributeMap
-        utils.print_matching_attribute(response.json(), attributes, valid_attributes)
-    else:
-        utils.print_by_key(response.json())
+    utils.print_json_result(sys._getframe().f_code.co_name,
+                            response,
+                            attributes,
+                            client.models.Artifact.Artifact().attributeMap)
 
 @arg("id", help="Build record ID to retrieve audited build configuration from.")
 @arg("-a", "--attributes", help="Comma separated list of attributes to print.")
 def get_audited_config_for_record(id, attributes=None):
     response = get_audited_build_configuration(id)
+    utils.print_json_result(sys._getframe().f_code.co_name,
+                       response,
+                       attributes,
+                       client.models.BuildConfigurationAudited.BuildConfigurationAudited().attributeMap)
 
-    if not response.ok:
-        utils.print_error(sys._getframe().f_code.co_name,response)
-        return
-
-    if attributes:
-        valid_attributes = client.models.BuildConfigurationAudited.BuildConfigurationAudited().attributeMap
-        utils.print_matching_attribute(response.json(), attributes, valid_attributes)
-    else:
-        utils.print_by_key(response.json())
-
+@arg("id", help="Build record ID to retrieve logs from.")
 def get_logs_for_record(id):
     response = get_logs(id)
-
     if not response.ok:
         utils.print_error(sys._getframe().f_code.co_name,response)
         return
-
     print response.text
 
 def get_all():
