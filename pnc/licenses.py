@@ -4,8 +4,6 @@ from client.LicensesApi import LicensesApi
 import utils
 import client as client
 
-from client.BuildconfigurationsApi import BuildconfigurationsApi
-
 __author__ = 'thauser'
 
 def _create_license_object(name, content, reference_url=None, abbreviation=None, project_ids=None):
@@ -16,6 +14,23 @@ def _create_license_object(name, content, reference_url=None, abbreviation=None,
     if abbreviation: created_license.shortName = abbreviation
     if project_ids: created_license.projectsIds = project_ids
     return created_license
+
+def get_license_id(id,name):
+    if id:
+        l_id = id
+        if not _license_exists(l_id):
+            print("No license with ID {0} exists.").format(l_id)
+            return
+    elif name:
+        l_id = _get_license_id_by_name(name)
+        if not l_id:
+            print("No license with name {0} exists.").format(name)
+            return
+    else:
+        print("A License ID or name is required.")
+        return
+    return l_id
+
 
 def _license_exists(license_id):
     response = get_specific(license_id)
@@ -39,32 +54,19 @@ def create_license(name, content, reference_url=None, abbreviation=None, project
     """Create a new license"""
     license = _create_license_object(name, content, reference_url, abbreviation, project_ids)
     response = create(license)
-    if not response.ok:
-        utils.print_error(sys._getframe().f_code.co_name,response)
-        return
-    utils.print_by_key(response.json())
-
+    utils.print_json_result(sys._getframe().f_code.co_name,
+                            response)
 
 @arg("-i","--id", help="ID for the license to retrieve")
 @arg("-n","--name", help="Name for the license to retrieve")
-def get_license(id=None, name=None):
-    if id:
-        search_id = id
-    elif name:
-        search_id = _get_license_id_by_name(name)
-        if not search_id:
-            print("No license with name {0} exists.").format(name)
-            return
-    else:
-        print("get-license requires either a license name or id.")
-        return
+@arg("-a","--attributes", help="Comma separated list of attributes to print for each license")
+def get_license(id=None, name=None, attributes=None):
+    search_id = get_license_id(id,name)
     response = get_specific(id=search_id)
-    if not response.ok:
-        utils.print_error(sys._getframe().f_code.co_name,response)
-        return
-    
-    utils.print_by_key(response.json())
-
+    utils.print_json_result(sys._getframe().f_code.co_name,
+                            response,
+                            attributes,
+                            client.models.License.License().attributeMap)
 
 @arg("license_id", help="ID of the license to delete")
 def delete_license(license_id):
@@ -85,30 +87,24 @@ def delete_license(license_id):
 @arg("-pid","--project-ids", help="List of project ids that should be associated with the new license. IDs must denote existing projects")
 def update_license(license_id, name=None, content=None, reference_url=None, abbreviation=None, project_ids=None):
     updated_license = _create_license_object(name, content, reference_url, abbreviation, project_ids)
-    if license_id:
-        if _license_exists(license_id):
-            response = update(license_id, updated_license)
-            if response.ok:
-                print("Succesfully updated license {0}.").format(license_id)
-            else:
-                utils.print_error(sys._getframe().f_code.co_name, response)
+    if _license_exists(license_id):
+        response = update(license_id, updated_license)
+        if response.ok:
+            print("Succesfully updated license {0}.").format(license_id)
         else:
-            print("No license with id {0} exists.").format(license_id)
+            utils.print_error(sys._getframe().f_code.co_name, response)
     else:
-        print("The license ID is required to perform an update")
+        print("No license with id {0} exists.").format(license_id)
+
 
 @arg("-a","--attributes", help="Comma separated list of attributes to print for each license")
 def list_licenses(attributes=None):
     response = get_all()
-    if not response.ok:
-        utils.print_error(sys._getframe().f_code.co_name,response)
-        return
-    licenses = response.json()
-    if attributes is not None:
-        utils.print_matching_attribute(licenses, attributes, client.models.License.License().attributeMap)
-    else:
-        utils.print_by_key(licenses)
-
+    utils.print_json_result(sys._getframe().f_code.co_name,
+                            response,
+                            attributes,
+                            client.models.License.License().attributeMap)
+    
 def get_all():
     return LicensesApi(utils.get_api_client()).getAll()
 
