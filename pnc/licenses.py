@@ -6,13 +6,10 @@ import client as client
 
 __author__ = 'thauser'
 
-def _create_license_object(name, content, reference_url=None, abbreviation=None, project_ids=None):
+def _create_license_object(**kwargs):
     created_license = client.models.License.License()
-    created_license.fullName = name
-    created_license.fullContent = content
-    if reference_url: created_license.refUrl = reference_url
-    if abbreviation: created_license.shortName = abbreviation
-    if project_ids: created_license.projectsIds = project_ids
+    for key, value in kwargs.iteritems():
+        setattr(created_license, key, value)
     return created_license
 
 def get_license_id(id,name):

@@ -1,13 +1,7 @@
 from pnc import environments
 
-def _create_env_object(os, bt):
-    return environments._create_environment_object(os,bt)
-
-def _create_env(env=None):
-    if env is None:
-        return environments.create(_create_env_object("java","linux")).json()
-    else:
-        return environments.create(env).json()
+def _create_env(bt="java", os="linux"):
+    return environments.create(environments._create_environment_object(buildType=bt.upper(),operationalSystem=os.upper())).json()
 
 def test_get_all():
     envs = environments.get_all().json()
@@ -32,7 +26,7 @@ def test_delete():
 
 def test_update():
     new_env = _create_env()
-    updated_env = _create_env_object("DOCKER","WINDOWS")
+    updated_env = environments._create_environment_object(buildType="DOCKER",operationalSystem="WINDOWS")
     environments.update(new_env['id'], updated_env)
     updated_env = environments.get_specific(new_env['id']).json()
     assert (updated_env['buildType'] == 'DOCKER') and (updated_env['operationalSystem'] == 'WINDOWS')

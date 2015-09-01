@@ -6,26 +6,10 @@ import sys
 
 __author__ = 'thauser'
 
-
-def create_product_version_object(version, product_id=None, current_milestone_id=None, product_milestones=None,
-                                  build_config_sets=None, product_releases=None):
-    """
-    Create an instance of the ProductVersion object
-    :param version:
-    :param product_id:
-    :param current_milestone_id:
-    :param product_milestones:
-    :param build_config_sets:
-    :param product_releases:
-    :return:
-    """
+def create_product_version_object(**kwargs):
     created_version = client.models.ProductVersion.ProductVersion()
-    created_version.version = version
-    if product_id: created_version.productId = product_id
-    if current_milestone_id: created_version.currentProductMilestoneId = current_milestone_id
-    if product_milestones: created_version.productMilestones = product_milestones
-    if build_config_sets: created_version.buildConfigurationSetIds = build_config_sets
-    if product_releases: created_version.productReleases = product_releases
+    for key, value in kwargs.iteritems():
+        setattr(created_version, key, value)
     return created_version
 
 def version_exists(version_id):

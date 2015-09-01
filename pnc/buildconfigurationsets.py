@@ -6,11 +6,10 @@ import buildconfigurations
 import productversions
 from client.BuildconfigurationsetsApi import BuildconfigurationsetsApi
 
-def _create_build_config_set_object(name, product_version_id, build_config_ids):
+def _create_build_config_set_object(**kwargs):
     created_build_config_set = client.models.BuildConfigurationSet.BuildConfigurationSet()
-    created_build_config_set.name = name
-    if product_version_id: created_build_config_set.productVersionId = product_version_id
-    if build_config_ids:  created_build_config_set.buildConfigurationIds = build_config_ids
+    for key, value in kwargs.iteritems():
+        setattr(created_build_config_set, key, value)
     return created_build_config_set
 
 def get_build_config_set_id_by_name(search_name):

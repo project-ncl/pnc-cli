@@ -6,12 +6,10 @@ import utils
 
 __author__ = 'thauser'
 #must be a better way to do this.
-def create_build_conf_object(name, project_id, environment, description=None, scm_url=None, scm_revision=None, patches_url=None,
-                                build_script=None):
+def create_build_conf_object(**kwargs):
     created_build_configuration = client.models.Configuration.Configuration()
-    created_build_configuration.name = name
-    created_build_configuration.projectId = project_id
-    created_build_configuration.environmentId = environment
+    for key, value in kwargs.iteritems():
+        setattr(created_build_configuration, key, value)
     return created_build_configuration
 
 def get_build_configuration_id_by_name(name):
@@ -78,7 +76,13 @@ def build(id=None,name=None, attributes=None):
 @arg("-a", "--attributes", help="Comma separated list of attributes to print.")
 def create_build_configuration(name, project_id, environment, description=None, scm_url=None, scm_revision=None, patches_url=None,
                                build_script=None, attributes=None):
-    build_configuration = create_build_conf_object(name, project_id, environment, description, scm_url, scm_revision, patches_url, build_script)
+    build_configuration = create_build_conf_object(name=name,
+                                                   projectId=project_id,
+                                                   environmentId=environment,
+                                                   description=description,
+                                                   scmRepoUrl=scm_url,
+                                                   scmRevision=scm_revision,
+                                                   buildScript=build_script)
     response = create(build_configuration)
     utils.print_json_result(sys._getframe().f_code.co_name,
                             response,

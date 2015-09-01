@@ -4,24 +4,10 @@ from client.ProjectsApi import ProjectsApi
 import utils
 
 __author__ = 'thauser'
-def _create_project_object(name, description, issue_url, project_url, configuration_ids, license_id):
-    """
-    Create an instance of the Project object
-    :param name:
-    :param configuration_ids:
-    :param description:
-    :param issue_url:
-    :param project_url:
-    :param license_id:
-    :return: new Project instance
-    """
+def _create_project_object(**kwargs):
     created_project = client.models.Project.Project()
-    created_project.name = name
-    if configuration_ids: created_project.configurationIds = configuration_ids
-    if description: created_project.description = description
-    if issue_url: created_project.issueTrackerUrl = issue_url
-    if project_url: created_project.projectUrl = project_url
-    if license_id: created_project.licenseId = license_id
+    for key, value in kwargs.iteritems():
+        setattr(created_project, key, value)
     return created_project
 
 def get_project_id(id,name):

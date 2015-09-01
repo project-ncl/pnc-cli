@@ -2,12 +2,9 @@ import random
 import string
 from pnc import products, productversions
 
-def _create_product_obj(name, desc=None):
-    return products._create_product_object(name,desc)
-
 def _create_product():
     randname = ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(10))
-    return products.create(_create_product_obj(randname)).json()
+    return products.create(products._create_product_object(name=randname)).json()
 
 def test_list_products():
     p = products.get_all().json()
@@ -24,14 +21,14 @@ def test_get_product():
 
 def test_update_product():
     new_prod = _create_product()
-    products.update(new_prod['id'], _create_product_obj('updated product name', 'updated description'))
+    products.update(new_prod['id'], products._create_product_object(name='updated product name', description='updated description'))
     updated_prod = products.get_specific(new_prod['id']).json()
     assert updated_prod['name'] == 'updated product name' and updated_prod['description'] == 'updated description'
 
 def test_list_versions_for_product():
     randversion = random.choice(string.digits)+'.'+random.choice(string.digits)
     new_prod = _create_product()
-    productversions.create_product_version(new_prod['id'], randversion)
+    productversions.create(productversions.create_product_version_object(productId=new_prod['id'],version=randversion))
     versions = [x['version'] for x in products.get_product_versions(new_prod['id']).json()]
     assert versions is not None and randversion in versions
 

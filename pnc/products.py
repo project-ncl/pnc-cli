@@ -5,23 +5,10 @@ from client.ProductsApi import ProductsApi
 import utils
 
 __author__ = 'thauser'
-def _create_product_object(name, description=None, abbreviation=None, product_code=None, system_code=None):
-    """
-    Create an instance of the Product object
-    :param name:
-    :param description:
-    :param abbreviation:
-    :param product_code:
-    :param system_code:
-    :return: new Product instance
-    """
+def _create_product_object(**kwargs):
     created_product = client.models.Product.Product()
-    created_product.name = name
-    #TODO: better way to do this?
-    if description: created_product.description = description
-    if abbreviation: created_product.abbreviation = abbreviation
-    if product_code: created_product.productCode = product_code
-    if system_code: created_product.pgmSystemName = system_code
+    for key, value in kwargs.iteritems():
+        setattr(created_product, key, value)
     return created_product
 
 def get_product_id(id,name):

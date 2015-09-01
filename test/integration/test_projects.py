@@ -5,7 +5,7 @@ from pnc import projects
 
 def _create_project():
     randname = ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(10))
-    project = projects._create_project_object(randname, None, None, None, None, None)
+    project = projects._create_project_object(name=randname)
     created_project = projects.create(project).json()
     return created_project
 

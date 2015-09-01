@@ -5,10 +5,10 @@ from client.EnvironmentsApi import EnvironmentsApi
 import utils
 
 __author__ = 'thauser'
-def _create_environment_object(build_type, operational_system):
+def _create_environment_object(**kwargs):
     created_environment = client.models.Environment.Environment()
-    if build_type: created_environment.buildType = build_type.upper()
-    if operational_system: created_environment.operationalSystem = operational_system.upper()
+    for key, value in kwargs.iteritems():
+        setattr(created_environment, key, value)
     return created_environment
 
 

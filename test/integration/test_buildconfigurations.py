@@ -4,7 +4,7 @@ from pnc import buildconfigurations
 
 def _add_config():
     randname = ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(10))
-    return buildconfigurations.create(buildconfigurations.create_build_conf_object(randname, 1, 1)).json()
+    return buildconfigurations.create(buildconfigurations.create_build_conf_object(name=randname, projectId=1, environmentId=1)).json()
 
 def test_create_build_configuration():
     new_config = _add_config()
