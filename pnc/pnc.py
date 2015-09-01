@@ -10,6 +10,7 @@ import buildconfigurationsets
 import buildrecords
 import licenses
 import environments
+import runningbuilds
 
 parser = argh.ArghParser()
 parser.add_commands([products.create_product,
@@ -54,7 +55,9 @@ parser.add_commands([products.create_product,
                      buildrecords.get_logs_for_record,
                      buildrecords.get_audited_config_for_record,
                      buildrecords.get_build_artifacts,
-                     buildrecords.get_build_record],
+                     buildrecords.get_build_record,
+                     runningbuilds.list_running_builds,
+                     runningbuilds.get_running_build],
                     func_kwargs={"formatter_class": PNCFormatter})
 parser.autocomplete()
 
