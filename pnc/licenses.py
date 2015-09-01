@@ -104,7 +104,7 @@ def list_licenses(attributes=None):
                             response,
                             attributes,
                             client.models.License.License().attributeMap)
-    
+
 def get_all():
     return LicensesApi(utils.get_api_client()).getAll()
 
