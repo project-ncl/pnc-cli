@@ -71,14 +71,10 @@ def create_build_config_set(name, product_version_id=None, build_configurations=
 @arg("-n", "--name", help="Name of the build configuration set to retrieve")
 @arg("-a", "--attributes", help="Comma separated list of attributes to print")
 def get_build_config_set(id=None, name=None, attributes=None):
-    if id:
-        set_id = id
-    elif name:
-        set_id = get_build_config_set_id_by_name(name)
-        if not set_id:
-            print("No build configuration set with name {0} exists.".format(name))
-            return
-
+    set_id = _get_set_id(id,name)
+    if not set_id:
+        return
+    
     response = get_specific(set_id)
 
     if not response.ok:
@@ -91,51 +87,100 @@ def get_build_config_set(id=None, name=None, attributes=None):
     else:
         utils.print_by_key(response.json())
 
-@arg("id", help="ID of the build configuration set to modify.")
-@arg("-n", "--name", help="New name for the build configuration set.")
-@arg("-pvi", "--product-version-id", help="New product version ID for the build configuration set.")
-@arg("-bc", "--build-configurations", help="Comma separated list of build-configurations to include in the set.")
-def update_build_config_set(id, name=None, product_version_id=None, build_configurations=None):
+@arg("-i", "--id", help="ID of the build configuration set to update.")
+@arg("-n", "--name", help="Name for the build configuration set to update.")
+@arg("-un", "--updated-name", help="Updated name for the build configuration set.")
+@arg("-pvi", "--product-version-id", help="Updated product version ID for the build configuration set.")
+@arg("-bc", "--build-configurations", help="Comma separated list of build configurations to include in the updated set.")
+def update_build_config_set(id=None, name=None, updated_name=None, product_version_id=None, build_configurations=None):
     build_configs = None
-    if not build_config_set_exists(id):
-        print("No build configuration set with ID {0} exists.").format(id)
+    set_id = _get_set_id(id,name)
+    if not set_id:
         return
 
     if build_configurations:
         build_configs = build_configurations.split(',')
 
     updated_build_config_set = _create_build_config_set_object(name, product_version_id, build_configs)
-    response = update(id, updated_build_config_set)
+    response = update(set_id, updated_build_config_set)
+
     if not response.ok:
         utils.print_error(sys._getframe().f_code.co_name,response)
         return
 
     print("Update of build configuration set {0} successful").format(id)
 
-def delete_build_config_set():
-    pass
+@arg("-i", "--id", help="ID of the build configuration set to delete.")
+@arg("-n", "--name", help="Name of the build configuration set to delete.")
+#TODO: in order to delete a config set successfully, any buildconfigsetrecords must be deleted first
+#TODO: it may be impossible / undesireable to remove buildconfigsetrecords. so perhaps just check and abort
+def delete_build_config_set(id=None, name=None):
+    set_id = _get_set_id(id,name)
+    if not set_id:
+        return
 
-def trigger_build_config_set():
-    pass
+    response = delete_specific(set_id)
 
-def list_build_configurations_for_set():
-    pass
+    if not response.ok:
+        utils.print_error(sys._getframe().f_code.co_name, response)
+        return
+
+    print("Successfully deleted build configuration set with ID {0}.").format(set_id)
+
+def _get_set_id(id, name):
+    if id:
+        set_id = id
+        if not build_config_set_exists(set_id):
+            print("No build configuration set with ID {0} exists.").format(set_id)
+            return
+    elif name:
+        set_id = get_build_config_set_id_by_name(name)
+        if not build_config_set_exists(set_id):
+            print("No build configuration set with name {0} exists.").format(name)
+            return
+    else:
+        print("Either a build configuration set ID or name is required.")
+        return
+    return set_id
+
+@arg("-i", "--id", help="ID of the build configuration set to build.")
+@arg("-n", "--name", help="Name of the build configuration set to build.")
+def trigger_build_config_set(id=None, name=None):
+    set_id = _get_set_id(id,name)
+    if not set_id:
+        return
+
+    #callbackUrl?
+    response = trigger(set_id)
+
+    if not response.ok:
+        utils.print_error(sys._getframe().f_code.co_name, response)
+        return
+
+    print("Successfully triggered build of build configuration set with ID {0}.").format(set_id)
+
+@arg("-i", "--id", help="ID of the build configuration set to build.")
+@arg("-n", "--name", help="Name of the build configuration set to build.")
+def list_build_configurations_for_set(id=None, name=None):
+    set_id = _get_set_id(id,name)
+    if not set_id:
+        return
+
+    response = get_configurations(set_id)
+
+    if not response.ok:
+        utils.print_error(sys._getframe().f_code.co_name, response)
+        return
+
+    utils.print_by_key(response.json())
 
 @arg("-sid", "--set-id", help="ID of the build configuration set to add to")
 @arg("-sn", "--set-name", help="Name of the build configuration set to add to")
 @arg("-cid", "--config-id", help="ID of the build configuration to add to the given set")
 @arg("-cn", "--config-name", help="Name of the build configuration to add to the given set")
 def add_build_configuration_to_set(set_id=None, set_name=None, config_id=None, config_name=None):
-    if set_id:
-        config_set_id = set_id
-    elif set_name:
-        config_set_id = get_build_config_set_id_by_name(set_name)
-    else:
-        print("Either a build configuration set ID or name is required.")
-        return
-
-    if not build_config_set_exists(config_set_id):
-        print("No build configuration set with that name or id exists.")
+    config_set_id = _get_set_id(set_id,set_name)
+    if not config_set_id:
         return
 
     if config_id:
@@ -156,6 +201,7 @@ def add_build_configuration_to_set(set_id=None, set_name=None, config_id=None, c
         utils.print_error(sys._getframe().f_code.co_name,bc_response)
         return
 
+    # todo: need to create a Configuration object here, not just pass json.
     bc = bc_response.json()
 
     response = add_configuration(config_set_id, bc)
