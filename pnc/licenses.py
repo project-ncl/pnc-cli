@@ -1,8 +1,11 @@
-from argh import arg
 import sys
+
+from argh import arg
+
 from client.LicensesApi import LicensesApi
 import utils
 import client as client
+
 
 __author__ = 'thauser'
 

@@ -1,10 +1,13 @@
-from argh import arg
-from client.BuildrecordsApi import BuildrecordsApi
 import sys
+
+from argh import arg
+
+from client.BuildrecordsApi import BuildrecordsApi
 import client
 import utils
 import buildconfigurations
 import projects
+
 
 @arg("-a", "--attributes", help="Comma separated list of attributes to print.")
 def list_build_records(attributes=None):

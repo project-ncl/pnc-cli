@@ -1,8 +1,9 @@
-from argh import arg
 import sys
-import client
-from client.ProductsApi import ProductsApi
+
+from argh import arg
+
 import utils
+
 
 __author__ = 'thauser'
 def _create_product_object(**kwargs):

@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # PYTHON_ARGCOMPLETE_OK
 import argh
+
 from pnc_help_formatter import PNCFormatter
 import products
 import productversions
@@ -12,6 +13,7 @@ import licenses
 import environments
 import runningbuilds
 import productreleases
+
 
 parser = argh.ArghParser()
 parser.add_commands([products.create_product,

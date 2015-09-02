@@ -1,8 +1,11 @@
-from client.ProductreleasesApi import ProductreleasesApi
-from argh import arg
-import utils
 import sys
+
+from argh import arg
+
+from client.ProductreleasesApi import ProductreleasesApi
+import utils
 import client
+
 
 def create_product_release_object(**kwargs):
     created_release = client.models.ProductRelease.ProductRelease()

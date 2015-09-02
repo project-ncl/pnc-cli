@@ -1,9 +1,12 @@
 __author__ = 'thauser'
+import sys
+
 from argh import arg
+
 import client
 from client.RunningbuildrecordsApi import RunningbuildrecordsApi
 import utils
-import sys
+
 
 @arg("-a", "--attributes", help="Comma separated list of attributes to print.")
 def list_running_builds(attributes=None):

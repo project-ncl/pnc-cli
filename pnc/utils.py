@@ -1,6 +1,6 @@
 import ConfigParser
-import client.swagger
 import os
+
 
 __author__ = 'thauser'
 

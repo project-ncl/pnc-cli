@@ -1,8 +1,11 @@
+import sys
+
 from argh import arg
+
 import client
 from client.ProductversionsApi import ProductversionsApi
 import utils
-import sys
+
 
 __author__ = 'thauser'
 

@@ -1,8 +1,11 @@
+import sys
+
+from argh import arg
+
 import client
 from client.ProductmilestonesApi import ProductmilestonesApi
-from argh import arg
 import utils
-import sys
+
 
 def create_milestone_object(**kwargs):
     created_milestone = client.models.ProductMilestone.ProductMilestone()

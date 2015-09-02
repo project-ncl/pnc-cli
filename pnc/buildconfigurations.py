@@ -1,14 +1,18 @@
-from argh import arg
 import sys
-import client
-from client.BuildconfigurationsApi import BuildconfigurationsApi
+
+from argh import arg
+
+import swagger_client
+from swagger_client.apis.buildconfigurations_api import BuildconfigurationsApi
 import utils
+
 
 __author__ = 'thauser'
 def create_build_conf_object(**kwargs):
     created_build_configuration = client.models.Configuration.Configuration()
     for key, value in kwargs.iteritems():
-        setattr(created_build_configuration, key, value)
+
+        setattr(created_build_configuration, str(key), value)
     return created_build_configuration
 
 def get_build_configuration_id_by_name(name):
@@ -92,7 +96,7 @@ def list_build_configurations(attributes=None):
     utils.print_json_result(sys._getframe().f_code.co_name,
                             response,
                             attributes,
-                            client.models.Configuration.Configuration().attributeMap)
+                            swagger_client.models.configuration.Configuration().attribute_map)
 
 def get_all():
     return BuildconfigurationsApi(utils.get_api_client()).getAll()
