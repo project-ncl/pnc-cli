@@ -5,6 +5,7 @@ import swagger_client
 from swagger_client.apis.products_api import ProductsApi
 import utils
 
+api = ProductsApi(utils.get_api_client())
 
 __author__ = 'thauser'
 def _create_product_object(**kwargs):
@@ -13,20 +14,14 @@ def _create_product_object(**kwargs):
         setattr(created_product, key, value)
     return created_product
 
-def get_product_id(id,name):
-    if id:
-        prod_id = id
-        if not product_exists(prod_id):
-            print("No product with id {0} exists.".format(prod_id))
-            return
+def get_product_id(prod_id, name):
+    if prod_id:
+        return prod_id
     elif name:
-        prod_id = get_product_id_by_name(name)
-        if not prod_id:
-            print("No product with name {0} exists.".format(name))
-            return
+        return get_product_id_by_name(name)
     else:
-        print("Either a product name or ID is required.")
-    return prod_id
+        print("Either a product ID or product name is required.")
+        return
 
 def get_product_id_by_name(search_name):
     """
@@ -34,102 +29,53 @@ def get_product_id_by_name(search_name):
     :param search_name: the name or abbreviation to search for
     :return: the ID of the matching product
     """
-    response = get_all()
+    response = api.get_all()
     for config in response.json():
-        if config["name"] == search_name or config["abbreviation"] == search_name:
+        if config["name"] == search_name:
             return config["id"]
     return None
 
-def product_exists(search_id):
-    """
-    Test if product with id equal to search_id exists
-    :param search_id: The id to test for
-    :return: True if a product with search_id exists
-    """
-    return get_specific(search_id).ok
-
-#localize?
-#refine text
 @arg("name", help="Name for the product")
 @arg("-d","--description", help="Detailed description of the new product")
 @arg("-a","--abbreviation", help="The abbreviation or \"short name\" of the new product")
 @arg("-p","--product-code", help="The product code for the new product")
-@arg("-s","--system-code", help="The system code for the new product")
-def create_product(name, description=None, abbreviation=None, product_code=None, system_code=None):
+@arg("-sn","--pgm-system-name", help="The system code for the new product")
+#@arg("--product-version-ids", type=int, nargs='+', help="Space separated list of associated product version ids.")
+def create_product(name, **kwargs):
     """Define a new product"""
-    product = _create_product_object(name, description, abbreviation, product_code, system_code)
-    response = create(product)
-    utils.print_json_result(sys._getframe().f_code.co_name,response)
+    kwargs['name'] = name
+    product = _create_product_object(**kwargs)
+    response = api.create_new(body=product)
+    print(response)
+    #utils.print_json_result(sys._getframe().f_code.co_name,response)
 
 @arg("product-id", help="ID of the product to update")
 @arg("-n","--name", help="New name for the product")
 @arg("-d","--description", help="New product description")
 @arg("-a","--abbreviation", help="New abbreviation")
 @arg("-p","--product-code", help="New product code")
-@arg("-s","--system-code", help="New system code")
-def update_product(product_id, name=None, description=None, abbreviation=None, product_code=None, system_code=None):
+@arg("-sn","--pgm-system-name", help="New system name")
+#@arg("--product-version-ids", type=int, nargs='+', help="Space separated list of associated product version ids.")
+def update_product(product_id, **kwargs):
     """Update a product with the given id. Only provide values to update."""
-    product = _create_product_object(name, description, abbreviation, product_code, system_code)
-    if product_exists(product_id):
-        response = update(product_id, product)
-        if not response.ok:
-            utils.print_error(sys._getframe().f_code.co_name,response)
-            return
-
-        print("Product {0} successfully updated.").format(product_id)
-    else:
-        print("There is no product with id {0}.").format(product_id)
+    product = _create_product_object(**kwargs)
+    api.update(id=product_id, body=product)
 
 @arg("-i","--id", help="ID of the product to retrieve")
 @arg("-n","--name", help="Name of the product to retrieve")
 def get_product(id=None, name=None):
     """List information on a specific product."""
-    if name:
-        prod_id = get_product_id_by_name(name)
-    else:
-        prod_id = id
-
-    response = get_specific(prod_id)
-    print(response)
-#    utils.print_json_result(sys._getframe().f_code.co_name,
-#                           response)
+    prod_id = get_product_id(id,name)
+    if not prod_id: return
+    print(api.get_specific(id=prod_id))
 
 @arg("-i","--id", help="ID of the product to retrieve versions from")
 @arg("-n","--name", help="Name of the product to retrieve versions from")
-@arg("-a","--attributes", help="Comma separated list of attributes to print for each product version")
-def list_versions_for_product(id=None, name=None, attributes=None):
+def list_versions_for_product(id=None, name=None):
     prod_id = get_product_id(id,name)
-    if not prod_id:
-        return
-    response = get_product_versions(prod_id)
-    utils.print_json_result(sys._getframe().f_code.co_name,
-                            response,
-                            attributes,
-                            swagger_client.models.product_version.ProductVersion().attribute_map)
+    if not prod_id: return
+    print(api.get_product_versions(id=prod_id))
 
-@arg("-a","--attributes", help="Comma separated list of attributes to print for each product")
-def list_products(attributes=None):
-    print (get_all())
-    #response = get_all()
-    #utils.print_json_result(sys._getframe().f_code.co_name,
-    #                        response,
-    #                        attributes,
-    #                        swagger_client.models.product.Product().attribute_map)
+def list_products():
+    print (api.get_all())
 
-def get_all():
-    return ProductsApi(utils.get_api_client()).get_all()
-
-def get_specific(prod_id):
-    return ProductsApi(utils.get_api_client()).get_specific(id=prod_id)
-
-def create(product):
-    return ProductsApi(utils.get_api_client()).create_new(body=product)
-
-def update(prod_id, product):
-    return ProductsApi(utils.get_api_client()).update(id=prod_id,body=product)
-
-def delete(prod_id):
-    return ProductsApi(utils.get_api_client()).delete(id=prod_id)
-
-def get_product_versions(prod_id):
-    return ProductsApi(utils.get_api_client()).get_product_versions(id=prod_id)
