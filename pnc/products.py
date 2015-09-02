@@ -30,9 +30,9 @@ def get_product_id_by_name(search_name):
     :return: the ID of the matching product
     """
     response = api.get_all()
-    for config in response.json():
-        if config["name"] == search_name:
-            return config["id"]
+    for config in response:
+        if config.name == search_name:
+            return config.id
     return None
 
 @arg("name", help="Name for the product")

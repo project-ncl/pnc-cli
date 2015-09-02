@@ -1,18 +1,22 @@
 import random
+import utils
 import string
-from pnc import products, productversions
+from pnc import products
+from swagger_client.apis.products_api import ProductsApi
+
+api = ProductsApi(utils.get_api_client())
 
 def _create_product():
     randname = ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(10))
-    return products.create(products._create_product_object(name=randname)).json()
+    return api.create_new(products._create_product_object(name=randname))
 
 def test_list_products():
-    p = products.get_all().json()
+    p = api.get_all().json()
     assert p is not None
 
 def test_create_product():
     new_prod = _create_product()
-    prod_ids = [x['id'] for x in products.get_all().json()]
+    prod_ids = [x['id'] for x in products.get_all()]
     assert new_prod['id'] in prod_ids
 
 def test_get_product():
