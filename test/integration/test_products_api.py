@@ -1,46 +1,45 @@
 import random
-import utils
 import string
 from pnc import products
-from swagger_client.apis.products_api import ProductsApi
+from pnc import productversions
+from pnc import utils
+from pnc.swagger_client.apis.products_api import ProductsApi
+from pnc.swagger_client.apis.productversions_api import ProductversionsApi
 
-api = ProductsApi(utils.get_api_client())
+product_api = ProductsApi(utils.get_api_client())
+versions_api = ProductversionsApi(utils.get_api_client())
 
 def _create_product():
     randname = ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(10))
-    return api.create_new(products._create_product_object(name=randname))
+    return product_api.create_new(body=products._create_product_object(name=randname))
 
-def test_list_products():
-    p = api.get_all().json()
+def test_get_all():
+    p = product_api.get_all()
     assert p is not None
 
-def test_create_product():
+def test_create_new():
     new_prod = _create_product()
-    prod_ids = [x['id'] for x in products.get_all()]
-    assert new_prod['id'] in prod_ids
+    prod_ids = [x.id for x in product_api.get_all()]
+    assert new_prod.id in prod_ids
 
-def test_get_product():
+def test_get_specific():
     new_prod = _create_product()
-    assert products.get_specific(new_prod['id']).json() is not None
+    assert product_api.get_specific(id=new_prod.id) is not None
 
 def test_update_product():
     new_prod = _create_product()
-    products.update(new_prod['id'], products._create_product_object(name='updated product name', description='updated description'))
-    updated_prod = products.get_specific(new_prod['id']).json()
-    assert updated_prod['name'] == 'updated product name' and updated_prod['description'] == 'updated description'
+    product_api.update(id=new_prod.id, body=products._create_product_object(name='updated product name', description='updated description'))
+    updated_prod = product_api.get_specific(id=new_prod.id)
+    assert updated_prod.name == 'updated product name' and updated_prod.description == 'updated description'
 
 def test_list_versions_for_product():
     randversion = random.choice(string.digits)+'.'+random.choice(string.digits)
     new_prod = _create_product()
-    productversions.create(productversions.create_product_version_object(productId=new_prod['id'],version=randversion))
-    versions = [x['version'] for x in products.get_product_versions(new_prod['id']).json()]
+    versions_api.create_new_product_version(body=productversions.create_product_version_object(product_id=new_prod.id,version=randversion))
+    versions = [x.version for x in product_api.get_product_versions(id=new_prod.id)]
     assert versions is not None and randversion in versions
-
-def test_product_exists():
-    new_prod = _create_product()
-    assert products.product_exists(new_prod['id'])
 
 def test_get_product_id_by_name():
     new_prod = _create_product()
-    assert products.product_exists(products.get_product_id_by_name(new_prod['name']))
+    assert product_api.get_specific(id=products.get_product_id_by_name(new_prod.name)).id == product_api.get_specific(id=new_prod.id).id
 
