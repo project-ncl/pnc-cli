@@ -309,7 +309,7 @@ class ProductreleasesApi(object):
 
         :param callback function: The callback function
             for asynchronous request. (optional)
-        :return: List[org.jboss.pnc.model.ProductRelease$SupportLevel]
+        :return: List[orgJbossPncModelProductRelease$SupportLevel]
                  If the method is called asynchronously,
                  returns the request thread.
         """
@@ -361,7 +361,7 @@ class ProductreleasesApi(object):
                                             body=body_params,
                                             post_params=form_params,
                                             files=files,
-                                            response_type='List[org.jboss.pnc.model.ProductRelease$SupportLevel]',
+                                            response_type='List[orgJbossPncModelProductRelease$SupportLevel]',
                                             auth_settings=auth_settings,
                                             callback=params.get('callback'))
         return response
