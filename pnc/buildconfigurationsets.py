@@ -2,15 +2,15 @@ import sys
 
 from argh import arg
 
-import client
+import swagger_client
 import utils
 import buildconfigurations
 import productversions
-from client.BuildconfigurationsetsApi import BuildconfigurationsetsApi
+from swagger_client.apis.buildconfigurationsets_api import BuildconfigurationsetsApi
 
 
 def _create_build_config_set_object(**kwargs):
-    created_build_config_set = client.models.BuildConfigurationSet.BuildConfigurationSet()
+    created_build_config_set = swagger_client.models.build_configuration_set.BuildConfigurationSet()
     for key, value in kwargs.iteritems():
         setattr(created_build_config_set, key, value)
     return created_build_config_set
@@ -31,7 +31,7 @@ def list_build_configuration_sets(attributes=None):
     utils.print_json_result(sys._getframe().f_code.co_name,
                             response,
                             attributes,
-                            client.models.BuildConfigurationSet.BuildConfigurationSet().attributeMap)
+                            swagger_client.models.build_configuration_set.BuildConfigurationSet().attribute_map)
 
 @arg("name", help="Name for the new build configuration set.")
 @arg("-pvi", "--product-version-id", help="ID of the product version to associate this build configuration set.")
@@ -73,7 +73,7 @@ def get_build_config_set(id=None, name=None, attributes=None):
     utils.print_json_result(sys._getframe().f_code.co_name,
                             response,
                             attributes,
-                            client.model.BuildConfigurationSet.BuildConfigurationSet().attributeMap)
+                            swagger_client.models.build_configuration_set.BuildConfigurationSet().attribute_map)
 
 @arg("-i", "--id", help="ID of the build configuration set to update.")
 @arg("-n", "--name", help="Name for the build configuration set to update.")
@@ -155,7 +155,7 @@ def list_build_configurations_for_set(id=None, name=None, attributes=None):
     utils.print_json_result(sys._getframe().f_code.co_name,
                             response,
                             attributes,
-                            client.models.BuildConfigurationSet.BuildConfigurationSet().attributeMap)
+                            swagger_client.models.build_configuration_set.BuildConfigurationSet().attribute_map)
 
 
 @arg("-sid", "--set-id", help="ID of the build configuration set to add to")
@@ -197,7 +197,7 @@ def list_build_records(id=None, name=None, attributes=None):
     utils.print_json_result(sys._getframe().f_code.co_name,
                             response,
                             attributes,
-                            client.models.BuildConfigurationSet.BuildConfigurationSet().attributeMap)
+                            swagger_client.models.build_configuration_set.BuildConfigurationSet().attribute_map)
 def get_all():
     return BuildconfigurationsetsApi(utils.get_api_client()).getAll()
 

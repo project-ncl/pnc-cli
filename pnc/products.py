@@ -1,13 +1,14 @@
 import sys
 
 from argh import arg
-
+import swagger_client
+from swagger_client.apis.products_api import ProductsApi
 import utils
 
 
 __author__ = 'thauser'
 def _create_product_object(**kwargs):
-    created_product = client.models.Product.Product()
+    created_product = swagger_client.models.product.Product()
     for key, value in kwargs.iteritems():
         setattr(created_product, key, value)
     return created_product
@@ -83,12 +84,15 @@ def update_product(product_id, name=None, description=None, abbreviation=None, p
 @arg("-n","--name", help="Name of the product to retrieve")
 def get_product(id=None, name=None):
     """List information on a specific product."""
-    prod_id = get_product_id(id,name)
-    if not prod_id:
-        return
+    if name:
+        prod_id = get_product_id_by_name(name)
+    else:
+        prod_id = id
+
     response = get_specific(prod_id)
-    utils.print_json_result(sys._getframe().f_code.co_name,
-                            response)
+    print(response)
+#    utils.print_json_result(sys._getframe().f_code.co_name,
+#                           response)
 
 @arg("-i","--id", help="ID of the product to retrieve versions from")
 @arg("-n","--name", help="Name of the product to retrieve versions from")
@@ -101,24 +105,25 @@ def list_versions_for_product(id=None, name=None, attributes=None):
     utils.print_json_result(sys._getframe().f_code.co_name,
                             response,
                             attributes,
-                            client.models.ProductVersion.ProductVersion().attributeMap)
+                            swagger_client.models.product_version.ProductVersion().attribute_map)
 
 @arg("-a","--attributes", help="Comma separated list of attributes to print for each product")
 def list_products(attributes=None):
-    response = get_all()
-    utils.print_json_result(sys._getframe().f_code.co_name,
-                            response,
-                            attributes,
-                            client.models.Product.Product().attributeMap)
+    print (get_all())
+    #response = get_all()
+    #utils.print_json_result(sys._getframe().f_code.co_name,
+    #                        response,
+    #                        attributes,
+    #                        swagger_client.models.product.Product().attribute_map)
 
 def get_all():
-    return ProductsApi(utils.get_api_client()).getAll()
+    return ProductsApi(utils.get_api_client()).get_all()
 
 def get_specific(prod_id):
-    return ProductsApi(utils.get_api_client()).getSpecific(id=prod_id)
+    return ProductsApi(utils.get_api_client()).get_specific(id=prod_id)
 
 def create(product):
-    return ProductsApi(utils.get_api_client()).createNew(body=product)
+    return ProductsApi(utils.get_api_client()).create_new(body=product)
 
 def update(prod_id, product):
     return ProductsApi(utils.get_api_client()).update(id=prod_id,body=product)
@@ -127,4 +132,4 @@ def delete(prod_id):
     return ProductsApi(utils.get_api_client()).delete(id=prod_id)
 
 def get_product_versions(prod_id):
-    return ProductsApi(utils.get_api_client()).getProductVersions(id=prod_id)
+    return ProductsApi(utils.get_api_client()).get_product_versions(id=prod_id)

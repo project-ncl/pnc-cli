@@ -1,6 +1,6 @@
 import ConfigParser
+import swagger_client
 import os
-
 
 __author__ = 'thauser'
 
@@ -14,7 +14,7 @@ if not found:
     with open(os.path.join(configfilename),'wb') as configfile:
         config.write(configfile)
 pnc_rest_url = config.get('PNC', 'restEndpoint')
-apiclient = client.swagger.ApiClient(pnc_rest_url)
+apiclient = swagger_client.api_client.ApiClient(pnc_rest_url)
 
 def print_json_result(caller, response, attributes=None, valid_attributes=None):
     if not response.ok:

@@ -2,13 +2,13 @@ import sys
 
 from argh import arg
 
-import client
-from client.ProductmilestonesApi import ProductmilestonesApi
+import swagger_client
+from swagger_client.apis.productmilestones_api import ProductmilestonesApi
 import utils
 
 
 def create_milestone_object(**kwargs):
-    created_milestone = client.models.ProductMilestone.ProductMilestone()
+    created_milestone = swagger_client.models.product_milestone.ProductMilestone()
     for key, value in kwargs.iteritems():
         setattr(created_milestone, key, value)
     return created_milestone
@@ -19,7 +19,7 @@ def list_product_milestones(attributes=None):
     utils.print_json_result(sys._getframe().f_code.co_name,
                             response,
                             attributes,
-                            client.models.ProductMilestone.ProductMilestone().attributeMap)
+                            swagger_client.models.product_milestone.ProductMilestone().attribute_map)
 
 @arg("id", help="ID of the milestone to retrieve.")
 @arg("-a", "--attributes", help="Comma separated list of attributes to print.")
@@ -28,7 +28,7 @@ def get_product_milestone(id, attributes=None):
     utils.print_json_result(sys._getframe().f_code.co_name,
                             response,
                             attributes,
-                            client.models.ProductMilestone.ProductMilestone().attributeMap)
+                            swagger_client.models.product_milestone.ProductMilestone().attribute_map)
 
 def create_product_milestone(version, start_date, planned_release_date):
     created_milestone = create_milestone_object(version=version, startingDate=start_date, plannedReleaseDate=planned_release_date)

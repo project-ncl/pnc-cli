@@ -9,7 +9,7 @@ import utils
 
 __author__ = 'thauser'
 def create_build_conf_object(**kwargs):
-    created_build_configuration = client.models.Configuration.Configuration()
+    created_build_configuration = swagger_client.models.configuration.Configuration()
     for key, value in kwargs.iteritems():
 
         setattr(created_build_configuration, str(key), value)
@@ -66,7 +66,7 @@ def build(id=None,name=None, attributes=None):
     utils.print_json_result(sys._getframe().f_code.co_name,
                             response,
                             attributes,
-                            client.models.Configuration.Configuration().attributeMap)
+                            swagger_client.models.configuration.Configuration().attribute_map)
 
 @arg("name", help="")
 @arg("project-id", help="")
@@ -88,7 +88,7 @@ def create_build_configuration(name, project_id, environment, description=None, 
     utils.print_json_result(sys._getframe().f_code.co_name,
                             response,
                             attributes,
-                            client.models.Configuration.Configuration().attributeMap)
+                            swagger_client.models.configuration.Configuration().attribute_map)
 
 @arg("-a", "--attributes", help="List of attributes to retrieve. Will print given attributes separated by whitespace.")
 def list_build_configurations(attributes=None):

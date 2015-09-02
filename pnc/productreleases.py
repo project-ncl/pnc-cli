@@ -2,13 +2,13 @@ import sys
 
 from argh import arg
 
-from client.ProductreleasesApi import ProductreleasesApi
+from swagger_client.apis.productreleases_api import ProductreleasesApi
 import utils
-import client
+import swagger_client
 
 
 def create_product_release_object(**kwargs):
-    created_release = client.models.ProductRelease.ProductRelease()
+    created_release = swagger_client.models.product_release.ProductRelease()
     for key, value in kwargs.iteritems():
         setattr(created_release, key ,value)
     return created_release
@@ -19,7 +19,7 @@ def list_product_releases(attributes=None):
     utils.print_json_result(sys._getframe().f_code.co_name,
                             response,
                             attributes,
-                            client.models.ProductRelease.ProductRelease().attributeMap)
+                            swagger_client.models.product_release.ProductRelease().attribute_map)
 
 # no more than one release per milestone
 # need product version id (version is not enough)

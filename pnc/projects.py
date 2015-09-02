@@ -1,13 +1,13 @@
 from argh import arg
 
-import client
-from client.ProjectsApi import ProjectsApi
+import swagger_client
+from swagger_client.apis.projects_api import ProjectsApi
 import utils
 
 
 __author__ = 'thauser'
 def _create_project_object(**kwargs):
-    created_project = client.models.Project.Project()
+    created_project = swagger_client.models.project.Project()
     for key, value in kwargs.iteritems():
         setattr(created_project, key, value)
     return created_project
@@ -143,7 +143,7 @@ def list_projects(attributes=None):
         return
     projects = response.json()
     if attributes is not None:
-        utils.print_matching_attribute(projects, attributes, client.models.Project.Project().attributeMap)
+        utils.print_matching_attribute(projects, attributes, swagger_client.models.project.Project().attribute_map)
     else:
         utils.print_by_key(projects)
 

@@ -2,14 +2,14 @@ import sys
 
 from argh import arg
 
-import client
-from client.EnvironmentsApi import EnvironmentsApi
+import swagger_client
+from swagger_client.apis.environments_api import EnvironmentsApi
 import utils
 
 
 __author__ = 'thauser'
 def _create_environment_object(**kwargs):
-    created_environment = client.models.Environment.Environment()
+    created_environment = swagger_client.models.environment.Environment()
     for key, value in kwargs.iteritems():
         setattr(created_environment, key, value)
     return created_environment
@@ -61,7 +61,7 @@ def get_environment(id, attributes=None):
     utils.print_json_result(sys._getframe().f_code.co_name,
                             response,
                             attributes,
-                            client.models.Environment.Environment().attributeMap)
+                            swagger_client.models.environment.Environment().attribute_map)
 
 @arg("-a", "--attributes", help="Comma separated list of attributes to print.")
 def list_environments(attributes=None):
@@ -69,7 +69,7 @@ def list_environments(attributes=None):
     utils.print_json_result(sys._getframe().f_code.co_name,
                             response,
                             attributes,
-                            client.models.Environment.Environment().attributeMap)
+                            swagger_client.models.environment.Environment().attribute_map)
 def get_all():
     return EnvironmentsApi(utils.get_api_client()).getAll()
 

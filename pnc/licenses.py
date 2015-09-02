@@ -2,15 +2,15 @@ import sys
 
 from argh import arg
 
-from client.LicensesApi import LicensesApi
+from swagger_client.apis.licenses_api import LicensesApi
 import utils
-import client as client
+import swagger_client
 
 
 __author__ = 'thauser'
 
 def _create_license_object(**kwargs):
-    created_license = client.models.License.License()
+    created_license = swagger_client.models.license.License()
     for key, value in kwargs.iteritems():
         setattr(created_license, key, value)
     return created_license
@@ -66,7 +66,7 @@ def get_license(id=None, name=None, attributes=None):
     utils.print_json_result(sys._getframe().f_code.co_name,
                             response,
                             attributes,
-                            client.models.License.License().attributeMap)
+                            swagger_client.models.license.License().attribute_map)
 
 @arg("license_id", help="ID of the license to delete")
 def delete_license(license_id):
@@ -103,7 +103,7 @@ def list_licenses(attributes=None):
     utils.print_json_result(sys._getframe().f_code.co_name,
                             response,
                             attributes,
-                            client.models.License.License().attributeMap)
+                            swagger_client.models.license.License().attribute_map)
 
 def get_all():
     return LicensesApi(utils.get_api_client()).getAll()

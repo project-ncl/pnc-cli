@@ -2,15 +2,15 @@ import sys
 
 from argh import arg
 
-import client
-from client.ProductversionsApi import ProductversionsApi
+import swagger_client
+from swagger_client.apis.productversions_api import ProductversionsApi
 import utils
 
 
 __author__ = 'thauser'
 
 def create_product_version_object(**kwargs):
-    created_version = client.models.ProductVersion.ProductVersion()
+    created_version = swagger_client.models.product_version.ProductVersion()
     for key, value in kwargs.iteritems():
         setattr(created_version, key, value)
     return created_version
@@ -24,7 +24,7 @@ def list_product_versions(attributes=None):
     utils.print_json_result(sys._getframe().f_code.co_name,
                             response,
                             attributes,
-                            client.models.ProductVersion.ProductVersion().attributeMap)
+                            swagger_client.models.product_version.ProductVersion().attribute_map)
 
 @arg("product-id", help="ID of product to add a version to")
 @arg("version", help="Version to add")
@@ -53,7 +53,7 @@ def get_product_version(id, attributes=None):
         utils.print_json_result(sys._getframe().f_code.co_name,
                                 response,
                                 attributes,
-                                client.models.ProductVersion.ProductVersion().attributeMap)
+                                swagger_client.models.product_version.ProductVersion().attribute_map)
     else:
         print("A product version id is required")
 

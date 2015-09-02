@@ -2,8 +2,8 @@ import sys
 
 from argh import arg
 
-from client.BuildrecordsApi import BuildrecordsApi
-import client
+from swagger_client.apis.buildrecords_api import BuildrecordsApi
+import swagger_client
 import utils
 import buildconfigurations
 import projects
@@ -15,7 +15,7 @@ def list_build_records(attributes=None):
     utils.print_json_result(sys._getframe().f_code.co_name,
                             response,
                             attributes,
-                            client.models.BuildRecord.BuildRecord().attributeMap)
+                            swagger_client.models.build_record.BuildRecord().attribute_map)
 
 @arg("-i","--id", help="Build configuration ID to retrieve build records of.")
 @arg("-n","--name", help="Build configuration name to retrieve build records of.")
@@ -29,7 +29,7 @@ def list_records_for_build_config(id=None, name=None, attributes=None):
     utils.print_json_result(sys._getframe().f_code.co_name,
                             response,
                             attributes,
-                            client.models.BuildRecord.BuildRecord().attributeMap)
+                            swagger_client.models.build_record.BuildRecord().attribute_map)
 
 @arg("-i","--id", help="Project ID to retrieve build records of.")
 @arg("-n","--name", help="Project name to retrieve build records of.")
@@ -43,7 +43,7 @@ def list_records_for_project(id=None, name=None, attributes=None):
     utils.print_json_result(sys._getframe().f_code.co_name,
                             response,
                             attributes,
-                            client.models.BuildRecord.BuildRecord().attributeMap)
+                            swagger_client.models.build_record.BuildRecord().attribute_map)
 
 @arg("id", help="Build record ID to retrieve.")
 @arg("-a", "--attributes", help="Comma separated list of attributes to print.")
@@ -52,7 +52,7 @@ def get_build_record(id, attributes=None):
     utils.print_json_result(sys._getframe().f_code.co_name,
                             response,
                             attributes,
-                            client.models.BuildRecord.BuildRecord().attributeMap)
+                            swagger_client.models.build_record.BuildRecord().attribute_map)
 
 @arg("id", help="Build record ID to retrieve artifacts from.")
 @arg("-a", "--attributes", help="Comma separated list of attributes to print.")
@@ -61,7 +61,7 @@ def get_build_artifacts(id, attributes=None):
     utils.print_json_result(sys._getframe().f_code.co_name,
                             response,
                             attributes,
-                            client.models.Artifact.Artifact().attributeMap)
+                            swagger_client.models.rtifact.Artifact().attribute_map)
 
 @arg("id", help="Build record ID to retrieve audited build configuration from.")
 @arg("-a", "--attributes", help="Comma separated list of attributes to print.")
@@ -70,7 +70,7 @@ def get_audited_config_for_record(id, attributes=None):
     utils.print_json_result(sys._getframe().f_code.co_name,
                        response,
                        attributes,
-                       client.models.BuildConfigurationAudited.BuildConfigurationAudited().attributeMap)
+                       swagger_client.models.BuildConfigurationAudited.BuildConfigurationAudited().attribute_map)
 
 @arg("id", help="Build record ID to retrieve logs from.")
 def get_logs_for_record(id):
