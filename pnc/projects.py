@@ -1,9 +1,10 @@
-from argh import arg
-
+from pprint import pprint
 import swagger_client
 from swagger_client.apis.projects_api import ProjectsApi
+from argh import arg
 import utils
 
+projects_api = ProjectsApi(utils.get_api_client())
 
 __author__ = 'thauser'
 def _create_project_object(**kwargs):
@@ -12,19 +13,14 @@ def _create_project_object(**kwargs):
         setattr(created_project, key, value)
     return created_project
 
-def get_project_id(id,name):
+def get_project_id(proj_id,name):
     """
-    Confirms the existence of a project ID and / or finds an existing ID for a project from a name
-    Prints errors if nothing useful was found.
-    :param id: id to check existence
+    :param proj_id: id to check existence
     :param name: name to resolve to ID
     :return: a valid ID of a project
     """
-    if id:
-        proj_id = id
-        if not _project_exists(proj_id):
-            print("No project with ID {0} exists.").format(proj_id)
-            return
+    if proj_id:
+        return proj_id
     elif name:
         proj_id =_get_project_id_by_name(name)
         if not proj_id:
@@ -34,17 +30,15 @@ def get_project_id(id,name):
         print("Either a project name or id is required")
         return
 
-
 def _get_project_id_by_name(search_name):
     """
     Returns the id of the project in which name matches search_name
     :param search_name: name of the project
     :return: id of the matching project, or None if no match found
     """
-    response = ProjectsApi(utils.get_api_client()).getAll()
-    for config in response.json():
-        if config["name"] == search_name:
-            return config["id"]
+    for project in projects_api.get_all():
+        if project.name == search_name:
+            return project.id
     return None
 
 def _project_exists(search_id):
@@ -53,10 +47,8 @@ def _project_exists(search_id):
     :param search_id: id to test for
     :return: True if a project with search_id exists
     """
-    response = ProjectsApi(utils.get_api_client()).getSpecific(id=search_id)
-    if response.ok:
-        return True
-    return False
+    existing_ids = [x.id for x in projects_api.get_all()]
+    return search_id in existing_ids
 
 @arg("name", help="Name for the project")
 @arg("-c","--configuration-ids", help="List of configuration IDs this project should be associated with")
@@ -64,98 +56,72 @@ def _project_exists(search_id):
 @arg("-p","--project_url", help="SCM Url for the project")
 @arg("-i","--issue_url", help="Issue tracker URL for the new project")
 @arg("-l","--license_id", help="License ID for the new project")
-def create_project(name, configuration_ids=None, description=None, issue_url=None, project_url=None, license_id=None):
-    project = _create_project_object(name, description, issue_url, project_url, configuration_ids,license_id)
-    response = create(project)
-    if not response.ok:
-        utils.print_error(__name__,response)
-        return
-    utils.print_by_key(response.json())
+def create_project(name, **kwargs):
+    """
+    Create a new project
+    :param name:
+    :param kwargs:
+    :return:
+    """
+    project = _create_project_object(name, **kwargs)
+    projects_api.create(body=project,callback=callback_function)
 
 @arg("-id", "--id", help="ID for the project that will be updated.")
-@arg("-n","--name", help="Name for the project that will be updated.")
+@arg("-n","--name", help="New name for the project that will be updated.")
 @arg("-bc","--build-configurations", help="Comma separated list of build configuration IDs this project should be associated with.")
 @arg("-desc","--description", help="Detailed description of the new project.")
 @arg("-purl","--project_url", help="SCM Url for the project.")
 @arg("-iurl","--issue_url", help="Issue tracker URL for the new project")
 @arg("-l","--license_id", help="License ID for the new project")
-def update_project(id=None, name=None, updated_name=None, description=None, issue_url=None, project_url=None, build_configurations=None,license_id=None):
-    proj_id = get_project_id(id,name)
-    if not proj_id:
-        return
-
-    updated_project = _create_project_object(updated_name, description, issue_url, project_url, build_configurations, license_id)
-    response = update(proj_id, updated_project)
-
-    if response.ok:
-        print("Project {0} successfully updated.").format(proj_id)
-    else:
-        utils.print_error(__name__,response)
+def update_project(id=None, **kwargs):
+    """
+    Update a project
+    :param id:
+    :param kwargs:
+    :return:
+    """
+    to_udpate = projects_api.get_specific(id=id)
+    for key, value in kwargs.iteritems():
+        setattr(to_udpate, key, value)
+    projects_api.update(id=id, body=to_udpate, callback=callback_function)
 
 @arg("-id","--id",help="ID of the project to retrieve")
 @arg("-n","--name", help="Name of the project to retrieve")
 def get_project(id=None, name=None):
+    """
+    Get a specific project by ID or name
+    :param id:
+    :param name:
+    :return:
+    """
     proj_id = get_project_id(id,name)
     if not proj_id:
         return
+    projects_api.get_specific(id=proj_id, callback=callback_function)
 
-    response = get_specific(proj_id)
-    if not response.ok:
-        utils.print_error(__name__, response)
-        return
-    utils.print_by_key(response.json())
-
-def get_specific(id):
-    return ProjectsApi(utils.get_api_client()).getSpecific(id=id)
 
 @arg("-id","--id", help="ID of the project to delete")
 @arg("-n","--name", help="Name of the project to delete")
 def delete_project(id=None, name=None):
-    if id:
-        if not _project_exists(id):
-            print("No project with id {0} exists.").format(id)
-            return
-        proj_id = id
-    elif name:
-        proj_id = _get_project_id_by_name(name)
-        if not proj_id:
-            print("There is no project with name {0}.").format(name)
-            return
-    else:
-        print("Either a project name or id is required.")
+    """
+    Delete a project by ID or name.
+    :param id: id of the project to delete
+    :param name: name of the project to delete
+    :return: errors upon failure
+    """
+    proj_id = get_project_id(id, name)
+    if not proj_id:
         return
-    response = delete(proj_id)
+    projects_api.delete(proj_id, callback=callback_function)
 
-    if not response.ok:
-        utils.print_error(__name__,response)
-        return
-    if name:
-        format = name
-    else:
-        format = proj_id
-    print("Project {0} successfully deleted.").format(format)
+def list_projects():
+    """
+    List all projects
+    :return: list of all projects
+    """
+    projects_api.get_all(callback=callback_function)
 
-@arg("-a","--attributes", help="Comma separated list of attributes to print for each project")
-def list_projects(attributes=None):
-    response = get_all()
-    if not response.ok:
-        utils.print_error(__name__,response)
-        return
-    projects = response.json()
-    if attributes is not None:
-        utils.print_matching_attribute(projects, attributes, swagger_client.models.project.Project().attribute_map)
-    else:
-        utils.print_by_key(projects)
-
-def get_all():
-    return ProjectsApi(utils.get_api_client()).getAll()
-
-def create(new_project):
-    return ProjectsApi(utils.get_api_client()).createNew(body=new_project)
-
-def update(project_id, updated_project):
-    return ProjectsApi(utils.get_api_client()).update(id=project_id,body=updated_project)
-
-def delete(id):
-    return ProjectsApi(utils.get_api_client()).deleteSpecific(id=id)
+def callback_function(response):
+    if response:
+        pprint(response)
 

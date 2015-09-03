@@ -1,3 +1,4 @@
+from pprint import pprint
 import sys
 
 from argh import arg
@@ -59,7 +60,10 @@ def create_product(name, **kwargs):
 def update_product(product_id, **kwargs):
     """Update a product with the given id. Only provide values to update."""
     product = _create_product_object(**kwargs)
-    api.update(id=product_id, body=product)
+    def callback(response):
+        if response:
+            pprint(response)
+    thread = api.update(id=product_id, body=product, callback=callback)
 
 @arg("-i","--id", help="ID of the product to retrieve")
 @arg("-n","--name", help="Name of the product to retrieve")
@@ -77,5 +81,11 @@ def list_versions_for_product(id=None, name=None):
     print(api.get_product_versions(id=prod_id))
 
 def list_products():
-    print (api.get_all())
+    """
+    List all products
+    :return:
+    """
+    def callback(response):
+        pprint(response)
+    thread = api.get_all(callback=callback)
 

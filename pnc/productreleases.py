@@ -1,11 +1,10 @@
-import sys
-
-from argh import arg
-
-from swagger_client.apis.productreleases_api import ProductreleasesApi
 import utils
 import swagger_client
+from argh import arg
+from swagger_client.apis.productreleases_api import ProductreleasesApi
+from pprint import pprint
 
+releases_api = ProductreleasesApi(utils.get_api_client())
 
 def create_product_release_object(**kwargs):
     created_release = swagger_client.models.product_release.ProductRelease()
@@ -13,13 +12,14 @@ def create_product_release_object(**kwargs):
         setattr(created_release, key ,value)
     return created_release
 
-@arg("-a", "--attributes", help="Comma separated list of attributes to print.")
+
 def list_product_releases(attributes=None):
-    response = get_all()
-    utils.print_json_result(sys._getframe().f_code.co_name,
-                            response,
-                            attributes,
-                            swagger_client.models.product_release.ProductRelease().attribute_map)
+    """
+    List all product releases
+    :param attributes:
+    :return:
+    """
+    releases_api.get_all(callback=callback_function)
 
 # no more than one release per milestone
 # need product version id (version is not enough)
@@ -32,29 +32,51 @@ def list_product_releases(attributes=None):
 @arg("product-milestone-id", help="Milestone which is the basis of this release")
 @arg("support-level", help="Level of support comitted to for this release.")
 def create_release(version, release_date, download_url, product_version_id, product_milestone_id, support_level):
-    created_release = create_product_release_object(version,
-                                                    release_date,
-                                                    download_url,
-                                                    product_version_id,
-                                                    product_milestone_id,
-                                                    support_level)
-    response = create(created_release)
-    utils.print_json_result(sys._getframe().f_code.co_name,
-                            response)
+    """
+    Create a new product release
+    :param version: version for the release (appended to associated product version)
+    :param release_date: release date for the release (duh!)
+    :param download_url: URL where built artifacts will be available
+    :param product_version_id: associated product version id
+    :param product_milestone_id: associated milestone id
+    :param support_level: support level for this release
+    :return: Resulting release
+    """
+    # TODO: better way to use dicts here maybe?
+    created_release = create_product_release_object(version=version,
+                                                    release_date=release_date,
+                                                    download_url=download_url,
+                                                    product_version_id=product_version_id,
+                                                    product_milestone_id=product_milestone_id,
+                                                    support_level=support_level)
+    releases_api.create(body=created_release, callback=callback_function)
+
 
 @arg("id", help="Product version ID to retrieve releases for.")
 def list_releases_for_version(id):
-    response = get_all_by_product_version_id(id)
-    utils.print_json_result(sys._getframe().f_code.co_name, response)
+    """
+    List all releases for a product version
+    :param id: id of the product version
+    :return: list of associated releases
+    """
+    releases_api.get_all_by_product_version_id(id=id,callback=callback_function)
+
 
 def list_release_support_levels():
-    response = get_all_support_level()
-    utils.print_json_result(sys._getframe().f_code.co_name, response)
+    """
+    List all possible support levels.
+    :return:
+    """
+    releases_api.get_all_support_level(callback=callback_function)
 
 @arg("id", help="Product version to retrieve.")
 def get_release(id):
-    response = get_specific(id)
-    utils.print_json_result(sys._getframe().f_code.co_name, response)
+    """
+    Get a specific product release.
+    :param id: id of the product release
+    :return:
+    """
+    releases_api.get_specific(id=id, callback=callback_function)
 
 @arg("id", help="ID of the release to update.")
 @arg("-v", "--version", help="Version of the release. Appended to the Product Version.")
@@ -63,46 +85,24 @@ def get_release(id):
 @arg("-pvid", "--product-version-id", help="ID of the product version this release is associated with.")
 @arg("-msid","--product-milestone-id", help="Milestone which is the basis of this release")
 @arg("-sl", "--support-level", help="Level of support comitted to for this release.")
-def update_release(id, version=None, release_date=None, download_url=None, product_version_id=None, product_milestone_id=None, support_level=None):
+def update_release(id, **kwargs):
+    """
+    Replace the product release with ID id with new information
+    :param id: id of the release to update
+    :param version: new version for release
+    :param release_date: new release date
+    :param download_url: new download url
+    :param product_version_id: new product version id for the release
+    :param product_milestone_id: new milestone id for the release
+    :param support_level: new support level for the release
+    :return: errors upon failure
+    """
     #get the existing product_release
-    existing = get_specific(id)
-    if not existing.ok:
-        print("No release with ID {0} exists.").format(id)
-        return
+    to_update = releases_api.get_specific(id=id)
+    for key, value in kwargs.iteritems():
+        setattr(to_update, key, value)
+    releases_api.update(id=id, body=to_update, callback=callback_function)
 
-    existing_release = existing.json()
-    if version: existing_release['version'] = version
-    if release_date: existing_release['releaseDate'] = release_date
-    if download_url: existing_release['downloadUrl'] = download_url
-    if product_version_id: existing_release['productVersionId'] = product_version_id
-    if product_milestone_id: existing_release['productMilestoneId'] = product_milestone_id
-    if support_level: existing_release['supportLevel'] = support_level
-
-    # create the new product_release from the modified dict
-    release_obj = create_product_release_object(existing_release)
-    response = update(id, release_obj)
-    if not response.ok:
-        utils.print_error(sys._getframe().f_code.co_name, response)
-        return
-    print("Successfully updated release with ID {0}.").format(id)
-
-
-def get_all():
-    return ProductreleasesApi(utils.get_api_client()).getAll()
-
-def create(product_release):
-    return ProductreleasesApi(utils.get_api_client()).createNew(body=product_release)
-
-def get_all_by_product_version_id(version_id):
-    return ProductreleasesApi(utils.get_api_client()).getAllByProductVersionId(versionId=version_id)
-
-def get_all_support_level():
-    return ProductreleasesApi(utils.get_api_client()).getAllSupportLevel()
-
-def get_specific(release_id):
-    return ProductreleasesApi(utils.get_api_client()).getSpecific(id=release_id)
-
-def update(release_id, updated_release):
-    return ProductreleasesApi(utils.get_api_client()).update(id=release_id, body=updated_release)
-
-
+def callback_function(response):
+    if response:
+        pprint(response)

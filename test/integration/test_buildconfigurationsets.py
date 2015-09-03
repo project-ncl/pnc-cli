@@ -6,7 +6,7 @@ import pytest
 __author__ = 'thauser'
 
 from pnc import buildconfigurationsets
-from test.integration import test_buildconfigurations
+from test.integration import test_buildconfigurations_api
 from pnc import buildconfigurations
 
 def create_set():
@@ -54,7 +54,7 @@ def test_get_configurations():
 
 def test_add_configuration():
     new_set = create_set()
-    new_config = test_buildconfigurations.create_config()
+    new_config = test_buildconfigurations_api.create_config()
     config_object = buildconfigurations.create_build_conf_object(**new_config)
     buildconfigurationsets.add_configuration(new_set['id'], config_object)
     set_configs = buildconfigurationsets.get_configurations(new_set['id']).json()

@@ -15,9 +15,6 @@ def create_product_version_object(**kwargs):
         setattr(created_version, key, value)
     return created_version
 
-def version_exists(version_id):
-    return get_specific(version_id).ok
-
 @arg("-a", "--attributes", help="Comma separated list of attributes to print for each product-version")
 def list_product_versions(attributes=None):
     response = get_all()

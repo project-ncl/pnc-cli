@@ -1,3 +1,4 @@
+from pprint import pprint
 import sys
 
 from argh import arg
@@ -7,7 +8,10 @@ import utils
 import buildconfigurations
 import productversions
 from swagger_client.apis.buildconfigurationsets_api import BuildconfigurationsetsApi
+from swagger_client.apis.buildconfigurations_api import BuildconfigurationsApi
 
+sets_api = BuildconfigurationsetsApi(utils.get_api_client())
+configs_api = BuildconfigurationsApi(utils.get_api_client())
 
 def _create_build_config_set_object(**kwargs):
     created_build_config_set = swagger_client.models.build_configuration_set.BuildConfigurationSet()
@@ -16,30 +20,23 @@ def _create_build_config_set_object(**kwargs):
     return created_build_config_set
 
 def get_build_config_set_id_by_name(search_name):
-    response = get_all()
+    response = sets_api.get_all()
     for set in response.json():
-        if set['name'] == search_name:
-            return set['id']
+        if set.name == search_name:
+            return set.id
     return None
-
-def build_config_set_exists(search_id):
-    return get_specific(search_id).ok
 
 @arg("-a","--attributes", help="Comma separated list to specify attributes to print")
 def list_build_configuration_sets(attributes=None):
-    response = get_all()
-    utils.print_json_result(sys._getframe().f_code.co_name,
-                            response,
-                            attributes,
-                            swagger_client.models.build_configuration_set.BuildConfigurationSet().attribute_map)
+    print(sets_api.get_all())
 
 @arg("name", help="Name for the new build configuration set.")
 @arg("-pvi", "--product-version-id", help="ID of the product version to associate this build configuration set.")
-@arg("-bc", "--build-configurations", help="Comma separated list of build-configurations to include in the set.")
+@arg("-bcs", "--build-configurations", type=int, nargs='+', help="Space separated list of build-configurations to include in the set.")
 def create_build_config_set(name, product_version_id=None, build_configurations=None):
     build_configs = None
 
-    if build_config_set_exists(get_build_config_set_id_by_name(name)):
+    if get_build_config_set_id_by_name(name):
         print("A build configuration set with name {0} already exists.").format(name)
         return
 
@@ -48,7 +45,6 @@ def create_build_config_set(name, product_version_id=None, build_configurations=
         return
 
     if build_configurations:
-        build_configs = build_configurations.split(',')
         failed = False
         for config in build_configs:
             if not buildconfigurations.build_configuration_exists(config):
@@ -59,7 +55,7 @@ def create_build_config_set(name, product_version_id=None, build_configurations=
 
     config_set = _create_build_config_set_object(name, product_version_id, build_configs)
 
-    response = create(config_set)
+    response = sets_api.create(config_set)
     utils.print_json_result(sys._getframe().f_code.co_name, response)
 
 @arg("-id", "--id", help="ID of the build configuration set to retrieve")
@@ -69,11 +65,7 @@ def get_build_config_set(id=None, name=None, attributes=None):
     set_id = get_set_id(id,name)
     if not set_id:
         return
-    response = get_specific(set_id)
-    utils.print_json_result(sys._getframe().f_code.co_name,
-                            response,
-                            attributes,
-                            swagger_client.models.build_configuration_set.BuildConfigurationSet().attribute_map)
+    print(sets_api.get_specific(set_id))
 
 @arg("-i", "--id", help="ID of the build configuration set to update.")
 @arg("-n", "--name", help="Name for the build configuration set to update.")
@@ -90,7 +82,7 @@ def update_build_config_set(id=None, name=None, updated_name=None, product_versi
         build_configs = build_configurations.split(',')
 
     updated_build_config_set = _create_build_config_set_object(name=updated_name, productVersionId=product_version_id, buildConfigurationIds=build_configs)
-    response = update(set_id, updated_build_config_set)
+    response = sets_api.update(set_id, updated_build_config_set)
 
     if not response.ok:
         utils.print_error(sys._getframe().f_code.co_name,response)
@@ -107,7 +99,7 @@ def delete_build_config_set(id=None, name=None):
     if not set_id:
         return
 
-    response = delete_specific(set_id)
+    response = sets_api.delete_specific(set_id)
 
     if not response.ok:
         utils.print_error(sys._getframe().f_code.co_name, response)
@@ -115,16 +107,13 @@ def delete_build_config_set(id=None, name=None):
 
     print("Successfully deleted build configuration set with ID {0}.").format(set_id)
 
-def get_set_id(id, name):
+def get_set_id(set_id, name):
     if id:
-        set_id = id
-        if not build_config_set_exists(set_id):
-            print("No build configuration set with ID {0} exists.").format(set_id)
-            return
+        return set_id
     elif name:
         set_id = get_build_config_set_id_by_name(name)
-        if not build_config_set_exists(set_id):
-            print("No build configuration set with name {0} exists.").format(name)
+        if not set_id:
+            print("There is no build configuration set with name {0}.").format(name)
             return
     else:
         print("Either a build configuration set ID or name is required.")
@@ -138,11 +127,7 @@ def build_set(id=None, name=None):
     if not set_id:
         return
     #callbackUrl?
-    response = trigger(set_id)
-    if not response.ok:
-        utils.print_error(sys._getframe().f_code.co_name, response)
-        return
-    print("Successfully triggered build of build configuration set with ID {0}.").format(set_id)
+    sets_api.build(id=set_id)
 
 @arg("-i", "--id", help="ID of the build configuration set to build.")
 @arg("-n", "--name", help="Name of the build configuration set to build.")
@@ -151,11 +136,7 @@ def list_build_configurations_for_set(id=None, name=None, attributes=None):
     set_id = get_set_id(id,name)
     if not set_id:
         return
-    response = get_configurations(set_id)
-    utils.print_json_result(sys._getframe().f_code.co_name,
-                            response,
-                            attributes,
-                            swagger_client.models.build_configuration_set.BuildConfigurationSet().attribute_map)
+    print(sets_api.get_configurations(id=set_id))
 
 
 @arg("-sid", "--set-id", help="ID of the build configuration set to add to")
@@ -171,56 +152,19 @@ def add_build_configuration_to_set(set_id=None, set_name=None, config_id=None, c
     if not build_config_id:
         return
 
-    bc_response = buildconfigurations.get_specific(build_config_id)
+    bc = configs_api.get_specific(build_config_id)
 
-    if not bc_response.ok:
-        utils.print_error(sys._getframe().f_code.co_name,bc_response)
-        return
-
-    # todo: need to create a Configuration object here, not just pass json.
-    bc = bc_response.json()
-
-    response = add_configuration(config_set_id, bc)
-    if not response.ok:
-        utils.print_error(sys._getframe().f_code.co_name,response)
-        return
-    print("Build configuration successfully added to build configuration set.")
+    def callback(response):
+        pprint(response)
+    thread = sets_api.add_configuration(id=config_set_id, body=bc, callback=callback)
 
 @arg("-i", "--id", help="ID of the build configuration set")
 @arg("-n", "--name", help="name of the build configuration set")
-@arg("-a", "--attributes", help="Comma separated list of attributes to print")
-def list_build_records(id=None, name=None, attributes=None):
+def list_build_records_for_set(id=None, name=None):
     set_id = get_set_id(id,name)
     if not set_id:
         return
-    response = get_build_records(set_id)
-    utils.print_json_result(sys._getframe().f_code.co_name,
-                            response,
-                            attributes,
-                            swagger_client.models.build_configuration_set.BuildConfigurationSet().attribute_map)
-def get_all():
-    return BuildconfigurationsetsApi(utils.get_api_client()).getAll()
+    def callback(response):
+        pprint(response)
 
-def create(build_config_set):
-    return BuildconfigurationsetsApi(utils.get_api_client()).createNew(body=build_config_set)
-
-def get_specific(set_id):
-    return BuildconfigurationsetsApi(utils.get_api_client()).getSpecific(id=set_id)
-
-def update(set_id, updated_config_set):
-    return BuildconfigurationsetsApi(utils.get_api_client()).update(id=set_id, body=updated_config_set)
-
-def delete_specific(set_id):
-    return BuildconfigurationsetsApi(utils.get_api_client()).deleteSpecific(id=set_id)
-
-def trigger(set_id, callback_url=None):
-    return BuildconfigurationsetsApi(utils.get_api_client()).build(id=set_id, callbackUrl=callback_url)
-
-def get_configurations(set_id):
-    return BuildconfigurationsetsApi(utils.get_api_client()).getConfigurations(id=set_id)
-
-def add_configuration(set_id, build_configuration):
-    return BuildconfigurationsetsApi(utils.get_api_client()).addConfiguration(id=set_id, body=build_configuration)
-
-def get_build_records(set_id):
-    return BuildconfigurationsetsApi(utils.get_api_client()).getBuildRecords(id=set_id)
+    response = sets_api.get_build_records(id=set_id,callback=callback)
