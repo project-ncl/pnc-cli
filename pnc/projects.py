@@ -6,7 +6,6 @@ import utils
 
 projects_api = ProjectsApi(utils.get_api_client())
 
-__author__ = 'thauser'
 def _create_project_object(**kwargs):
     created_project = swagger_client.models.project.Project()
     for key, value in kwargs.iteritems():

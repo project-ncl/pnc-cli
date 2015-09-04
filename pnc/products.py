@@ -6,7 +6,7 @@ import swagger_client
 from swagger_client.apis.products_api import ProductsApi
 import utils
 
-api = ProductsApi(utils.get_api_client())
+products_api = ProductsApi(utils.get_api_client())
 
 __author__ = 'thauser'
 def _create_product_object(**kwargs):
@@ -15,14 +15,24 @@ def _create_product_object(**kwargs):
         setattr(created_product, key, value)
     return created_product
 
+def _product_exists(prod_id):
+    existing_ids = [str(x.id) for x in products_api.get_all().content]
+    return prod_id in existing_ids
+
 def get_product_id(prod_id, name):
     if prod_id:
-        return prod_id
+        if not _product_exists(prod_id):
+            print("No product with id {0} exists.").format(prod_id)
+            return
     elif name:
-        return get_product_id_by_name(name)
+        prod_id = get_product_id_by_name(name)
+        if not prod_id:
+            print("No product with the name {0} exists.").format(name)
+            return
     else:
         print("Either a product ID or product name is required.")
         return
+    return prod_id
 
 def get_product_id_by_name(search_name):
     """
@@ -30,10 +40,10 @@ def get_product_id_by_name(search_name):
     :param search_name: the name or abbreviation to search for
     :return: the ID of the matching product
     """
-    response = api.get_all()
-    for config in response:
-        if config.name == search_name:
-            return config.id
+    products = products_api.get_all().content
+    for product in products:
+        if product.name == search_name:
+            return product.id
     return None
 
 @arg("name", help="Name for the product")
@@ -46,9 +56,7 @@ def create_product(name, **kwargs):
     """Define a new product"""
     kwargs['name'] = name
     product = _create_product_object(**kwargs)
-    response = api.create_new(body=product)
-    print(response)
-    #utils.print_json_result(sys._getframe().f_code.co_name,response)
+    products_api.create_new(body=product, callback=callback_function)
 
 @arg("product-id", help="ID of the product to update")
 @arg("-n","--name", help="New name for the product")
@@ -60,10 +68,7 @@ def create_product(name, **kwargs):
 def update_product(product_id, **kwargs):
     """Update a product with the given id. Only provide values to update."""
     product = _create_product_object(**kwargs)
-    def callback(response):
-        if response:
-            pprint(response)
-    thread = api.update(id=product_id, body=product, callback=callback)
+    products_api.update(id=product_id, body=product, callback=callback_function)
 
 @arg("-i","--id", help="ID of the product to retrieve")
 @arg("-n","--name", help="Name of the product to retrieve")
@@ -71,21 +76,23 @@ def get_product(id=None, name=None):
     """List information on a specific product."""
     prod_id = get_product_id(id,name)
     if not prod_id: return
-    print(api.get_specific(id=prod_id))
+    products_api.get_specific(id=prod_id,callback=callback_function)
 
 @arg("-i","--id", help="ID of the product to retrieve versions from")
 @arg("-n","--name", help="Name of the product to retrieve versions from")
 def list_versions_for_product(id=None, name=None):
     prod_id = get_product_id(id,name)
     if not prod_id: return
-    print(api.get_product_versions(id=prod_id))
+    products_api.get_product_versions(id=prod_id, callback=callback_function)
 
 def list_products():
     """
     List all products
     :return:
     """
-    def callback(response):
-        pprint(response)
-    thread = api.get_all(callback=callback)
+    products_api.get_all(callback=callback_function)
+
+def callback_function(response):
+    if response:
+        pprint(response.content)
 

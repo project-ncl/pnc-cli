@@ -64,7 +64,7 @@ class ProductversionsApi(object):
         :param int page_size: Pagination size
         :param str sort: Sorting RSQL
         :param str q: RSQL Query
-        :return: Page
+        :return: ProductVersionPage
                  If the method is called asynchronously,
                  returns the request thread.
         """
@@ -124,7 +124,7 @@ class ProductversionsApi(object):
                                             body=body_params,
                                             post_params=form_params,
                                             files=files,
-                                            response_type='Page',
+                                            response_type='ProductVersionPage',
                                             auth_settings=auth_settings,
                                             callback=params.get('callback'))
         return response
@@ -220,7 +220,7 @@ class ProductversionsApi(object):
         :param callback function: The callback function
             for asynchronous request. (optional)
         :param int id: Product Version id (required)
-        :return: Singleton
+        :return: ProductVersionSingleton
                  If the method is called asynchronously,
                  returns the request thread.
         """
@@ -277,7 +277,7 @@ class ProductversionsApi(object):
                                             body=body_params,
                                             post_params=form_params,
                                             files=files,
-                                            response_type='Singleton',
+                                            response_type='ProductVersionSingleton',
                                             auth_settings=auth_settings,
                                             callback=params.get('callback'))
         return response
@@ -383,7 +383,7 @@ class ProductversionsApi(object):
         :param int page_size: Pagination size
         :param str sort: Sorting RSQL
         :param str q: RSQL Query
-        :return: Page
+        :return: BuildConfigurationSetPage
                  If the method is called asynchronously,
                  returns the request thread.
         """
@@ -448,7 +448,7 @@ class ProductversionsApi(object):
                                             body=body_params,
                                             post_params=form_params,
                                             files=files,
-                                            response_type='Page',
+                                            response_type='BuildConfigurationSetPage',
                                             auth_settings=auth_settings,
                                             callback=params.get('callback'))
         return response

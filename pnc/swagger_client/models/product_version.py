@@ -42,8 +42,8 @@ class ProductVersion(object):
             'product_id': 'int',
             'current_product_milestone_id': 'int',
             'product_releases': 'list[int]',
-            'build_configuration_set_ids': 'list[int]',
-            'product_milestones': 'list[int]'
+            'product_milestones': 'list[int]',
+            'build_configuration_set_ids': 'list[int]'
         }
 
         self.attribute_map = {
@@ -52,8 +52,8 @@ class ProductVersion(object):
             'product_id': 'productId',
             'current_product_milestone_id': 'currentProductMilestoneId',
             'product_releases': 'productReleases',
-            'build_configuration_set_ids': 'buildConfigurationSetIds',
-            'product_milestones': 'productMilestones'
+            'product_milestones': 'productMilestones',
+            'build_configuration_set_ids': 'buildConfigurationSetIds'
         }
 
         self._id = None
@@ -61,8 +61,8 @@ class ProductVersion(object):
         self._product_id = None
         self._current_product_milestone_id = None
         self._product_releases = None
-        self._build_configuration_set_ids = None
         self._product_milestones = None
+        self._build_configuration_set_ids = None
 
     @property
     def id(self):
@@ -175,28 +175,6 @@ class ProductVersion(object):
         self._product_releases = product_releases
 
     @property
-    def build_configuration_set_ids(self):
-        """
-        Gets the build_configuration_set_ids of this ProductVersion.
-
-
-        :return: The build_configuration_set_ids of this ProductVersion.
-        :rtype: list[int]
-        """
-        return self._build_configuration_set_ids
-
-    @build_configuration_set_ids.setter
-    def build_configuration_set_ids(self, build_configuration_set_ids):
-        """
-        Sets the build_configuration_set_ids of this ProductVersion.
-
-
-        :param build_configuration_set_ids: The build_configuration_set_ids of this ProductVersion.
-        :type: list[int]
-        """
-        self._build_configuration_set_ids = build_configuration_set_ids
-
-    @property
     def product_milestones(self):
         """
         Gets the product_milestones of this ProductVersion.
@@ -217,6 +195,28 @@ class ProductVersion(object):
         :type: list[int]
         """
         self._product_milestones = product_milestones
+
+    @property
+    def build_configuration_set_ids(self):
+        """
+        Gets the build_configuration_set_ids of this ProductVersion.
+
+
+        :return: The build_configuration_set_ids of this ProductVersion.
+        :rtype: list[int]
+        """
+        return self._build_configuration_set_ids
+
+    @build_configuration_set_ids.setter
+    def build_configuration_set_ids(self, build_configuration_set_ids):
+        """
+        Sets the build_configuration_set_ids of this ProductVersion.
+
+
+        :param build_configuration_set_ids: The build_configuration_set_ids of this ProductVersion.
+        :type: list[int]
+        """
+        self._build_configuration_set_ids = build_configuration_set_ids
 
     def to_dict(self):
         """

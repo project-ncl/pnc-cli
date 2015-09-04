@@ -64,7 +64,7 @@ class BuildconfigurationsApi(object):
         :param int page_size: Pagination size
         :param str sort: Sorting RSQL
         :param str q: RSQL Query
-        :return: Page
+        :return: BuildConfigurationPage
                  If the method is called asynchronously,
                  returns the request thread.
         """
@@ -124,7 +124,7 @@ class BuildconfigurationsApi(object):
                                             body=body_params,
                                             post_params=form_params,
                                             files=files,
-                                            response_type='Page',
+                                            response_type='BuildConfigurationPage',
                                             auth_settings=auth_settings,
                                             callback=params.get('callback'))
         return response
@@ -144,8 +144,8 @@ class BuildconfigurationsApi(object):
 
         :param callback function: The callback function
             for asynchronous request. (optional)
-        :param Configuration body: 
-        :return: Singleton
+        :param GenericRestEntity body: 
+        :return: BuildConfigurationSingleton
                  If the method is called asynchronously,
                  returns the request thread.
         """
@@ -199,7 +199,7 @@ class BuildconfigurationsApi(object):
                                             body=body_params,
                                             post_params=form_params,
                                             files=files,
-                                            response_type='Singleton',
+                                            response_type='BuildConfigurationSingleton',
                                             auth_settings=auth_settings,
                                             callback=params.get('callback'))
         return response
@@ -224,7 +224,7 @@ class BuildconfigurationsApi(object):
         :param int page_size: Pagination size
         :param str sort: Sorting RSQL
         :param str q: RSQL Query
-        :return: Page
+        :return: BuildConfigurationPage
                  If the method is called asynchronously,
                  returns the request thread.
         """
@@ -289,7 +289,7 @@ class BuildconfigurationsApi(object):
                                             body=body_params,
                                             post_params=form_params,
                                             files=files,
-                                            response_type='Page',
+                                            response_type='BuildConfigurationPage',
                                             auth_settings=auth_settings,
                                             callback=params.get('callback'))
         return response
@@ -315,7 +315,7 @@ class BuildconfigurationsApi(object):
         :param int page_size: Pagination size
         :param str sort: Sorting RSQL
         :param str q: RSQL Query
-        :return: Page
+        :return: BuildConfigurationPage
                  If the method is called asynchronously,
                  returns the request thread.
         """
@@ -385,7 +385,7 @@ class BuildconfigurationsApi(object):
                                             body=body_params,
                                             post_params=form_params,
                                             files=files,
-                                            response_type='Page',
+                                            response_type='BuildConfigurationPage',
                                             auth_settings=auth_settings,
                                             callback=params.get('callback'))
         return response
@@ -410,7 +410,7 @@ class BuildconfigurationsApi(object):
         :param int page_size: Pagination size
         :param str sort: Sorting RSQL
         :param str q: RSQL Query
-        :return: Page
+        :return: BuildConfigurationPage
                  If the method is called asynchronously,
                  returns the request thread.
         """
@@ -475,7 +475,7 @@ class BuildconfigurationsApi(object):
                                             body=body_params,
                                             post_params=form_params,
                                             files=files,
-                                            response_type='Page',
+                                            response_type='BuildConfigurationPage',
                                             auth_settings=auth_settings,
                                             callback=params.get('callback'))
         return response
@@ -496,7 +496,7 @@ class BuildconfigurationsApi(object):
         :param callback function: The callback function
             for asynchronous request. (optional)
         :param int id: Build Configuration id (required)
-        :return: Singleton
+        :return: BuildConfigurationSingleton
                  If the method is called asynchronously,
                  returns the request thread.
         """
@@ -553,7 +553,7 @@ class BuildconfigurationsApi(object):
                                             body=body_params,
                                             post_params=form_params,
                                             files=files,
-                                            response_type='Singleton',
+                                            response_type='BuildConfigurationSingleton',
                                             auth_settings=auth_settings,
                                             callback=params.get('callback'))
         return response
@@ -575,7 +575,7 @@ class BuildconfigurationsApi(object):
             for asynchronous request. (optional)
         :param int id: Build Configuration id (required)
         :param GenericRestEntity body: 
-        :return: Singleton
+        :return: BuildConfigurationSingleton
                  If the method is called asynchronously,
                  returns the request thread.
         """
@@ -634,7 +634,7 @@ class BuildconfigurationsApi(object):
                                             body=body_params,
                                             post_params=form_params,
                                             files=files,
-                                            response_type='Singleton',
+                                            response_type='BuildConfigurationSingleton',
                                             auth_settings=auth_settings,
                                             callback=params.get('callback'))
         return response
@@ -734,7 +734,7 @@ class BuildconfigurationsApi(object):
             for asynchronous request. (optional)
         :param int id: Build Configuration id (required)
         :param str callback_url: Optional Callback URL
-        :return: Singleton
+        :return: BuildRecordSingleton
                  If the method is called asynchronously,
                  returns the request thread.
         """
@@ -793,7 +793,7 @@ class BuildconfigurationsApi(object):
                                             body=body_params,
                                             post_params=form_params,
                                             files=files,
-                                            response_type='Singleton',
+                                            response_type='BuildRecordSingleton',
                                             auth_settings=auth_settings,
                                             callback=params.get('callback'))
         return response
@@ -818,7 +818,7 @@ class BuildconfigurationsApi(object):
         :param int page_size: Pagination size
         :param str sort: Sorting RSQL
         :param str q: RSQL Query
-        :return: Page
+        :return: BuildRecordPage
                  If the method is called asynchronously,
                  returns the request thread.
         """
@@ -883,7 +883,7 @@ class BuildconfigurationsApi(object):
                                             body=body_params,
                                             post_params=form_params,
                                             files=files,
-                                            response_type='Page',
+                                            response_type='BuildRecordPage',
                                             auth_settings=auth_settings,
                                             callback=params.get('callback'))
         return response
@@ -904,7 +904,7 @@ class BuildconfigurationsApi(object):
         :param callback function: The callback function
             for asynchronous request. (optional)
         :param int id: Build configuration id (required)
-        :return: Singleton
+        :return: BuildRecordSingleton
                  If the method is called asynchronously,
                  returns the request thread.
         """
@@ -961,7 +961,7 @@ class BuildconfigurationsApi(object):
                                             body=body_params,
                                             post_params=form_params,
                                             files=files,
-                                            response_type='Singleton',
+                                            response_type='BuildRecordSingleton',
                                             auth_settings=auth_settings,
                                             callback=params.get('callback'))
         return response
@@ -982,7 +982,7 @@ class BuildconfigurationsApi(object):
         :param callback function: The callback function
             for asynchronous request. (optional)
         :param int id: Build Configuration id (required)
-        :return: Singleton
+        :return: BuildConfigurationSingleton
                  If the method is called asynchronously,
                  returns the request thread.
         """
@@ -1039,7 +1039,7 @@ class BuildconfigurationsApi(object):
                                             body=body_params,
                                             post_params=form_params,
                                             files=files,
-                                            response_type='Singleton',
+                                            response_type='BuildConfigurationSingleton',
                                             auth_settings=auth_settings,
                                             callback=params.get('callback'))
         return response
@@ -1064,7 +1064,7 @@ class BuildconfigurationsApi(object):
         :param int page_size: Pagination size
         :param str sort: Sorting RSQL
         :param str q: RSQL Query
-        :return: Page
+        :return: BuildConfigurationPage
                  If the method is called asynchronously,
                  returns the request thread.
         """
@@ -1129,7 +1129,7 @@ class BuildconfigurationsApi(object):
                                             body=body_params,
                                             post_params=form_params,
                                             files=files,
-                                            response_type='Page',
+                                            response_type='BuildConfigurationPage',
                                             auth_settings=auth_settings,
                                             callback=params.get('callback'))
         return response
@@ -1319,7 +1319,7 @@ class BuildconfigurationsApi(object):
         :param int page_size: Pagination size
         :param str sort: Sorting RSQL
         :param str q: RSQL Query
-        :return: Page
+        :return: ProductVersionPage
                  If the method is called asynchronously,
                  returns the request thread.
         """
@@ -1384,7 +1384,7 @@ class BuildconfigurationsApi(object):
                                             body=body_params,
                                             post_params=form_params,
                                             files=files,
-                                            response_type='Page',
+                                            response_type='ProductVersionPage',
                                             auth_settings=auth_settings,
                                             callback=params.get('callback'))
         return response
@@ -1573,7 +1573,7 @@ class BuildconfigurationsApi(object):
         :param int page_index: Page Index
         :param int page_size: Pagination size
         :param str sort: Sorting RSQL
-        :return: Page
+        :return: BuildConfigurationAuditedPage
                  If the method is called asynchronously,
                  returns the request thread.
         """
@@ -1636,7 +1636,7 @@ class BuildconfigurationsApi(object):
                                             body=body_params,
                                             post_params=form_params,
                                             files=files,
-                                            response_type='Page',
+                                            response_type='BuildConfigurationAuditedPage',
                                             auth_settings=auth_settings,
                                             callback=params.get('callback'))
         return response
@@ -1658,7 +1658,7 @@ class BuildconfigurationsApi(object):
             for asynchronous request. (optional)
         :param int id: Build configuration id (required)
         :param int rev: Build configuration rev (required)
-        :return: Singleton
+        :return: BuildConfigurationAuditedSingleton
                  If the method is called asynchronously,
                  returns the request thread.
         """
@@ -1720,7 +1720,7 @@ class BuildconfigurationsApi(object):
                                             body=body_params,
                                             post_params=form_params,
                                             files=files,
-                                            response_type='Singleton',
+                                            response_type='BuildConfigurationAuditedSingleton',
                                             auth_settings=auth_settings,
                                             callback=params.get('callback'))
         return response

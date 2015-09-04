@@ -64,7 +64,7 @@ class BuildconfigsetrecordsApi(object):
         :param int page_size: Pagination size
         :param str sort: Sorting RSQL
         :param str q: RSQL Query
-        :return: Page
+        :return: BuildConfigSetRecordPage
                  If the method is called asynchronously,
                  returns the request thread.
         """
@@ -124,7 +124,7 @@ class BuildconfigsetrecordsApi(object):
                                             body=body_params,
                                             post_params=form_params,
                                             files=files,
-                                            response_type='Page',
+                                            response_type='BuildConfigSetRecordPage',
                                             auth_settings=auth_settings,
                                             callback=params.get('callback'))
         return response
@@ -145,7 +145,7 @@ class BuildconfigsetrecordsApi(object):
         :param callback function: The callback function
             for asynchronous request. (optional)
         :param int id: BuildConfigSetRecord id (required)
-        :return: Singleton
+        :return: BuildConfigSetRecordSingleton
                  If the method is called asynchronously,
                  returns the request thread.
         """
@@ -202,7 +202,7 @@ class BuildconfigsetrecordsApi(object):
                                             body=body_params,
                                             post_params=form_params,
                                             files=files,
-                                            response_type='Singleton',
+                                            response_type='BuildConfigSetRecordSingleton',
                                             auth_settings=auth_settings,
                                             callback=params.get('callback'))
         return response
@@ -227,7 +227,7 @@ class BuildconfigsetrecordsApi(object):
         :param int page_size: Pagination size
         :param str sort: Sorting RSQL
         :param str q: RSQL Query
-        :return: Page
+        :return: BuildRecordPage
                  If the method is called asynchronously,
                  returns the request thread.
         """
@@ -292,7 +292,7 @@ class BuildconfigsetrecordsApi(object):
                                             body=body_params,
                                             post_params=form_params,
                                             files=files,
-                                            response_type='Page',
+                                            response_type='BuildRecordPage',
                                             auth_settings=auth_settings,
                                             callback=params.get('callback'))
         return response

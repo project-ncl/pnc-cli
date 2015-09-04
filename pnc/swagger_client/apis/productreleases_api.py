@@ -64,7 +64,7 @@ class ProductreleasesApi(object):
         :param int page_size: Pagination size
         :param str sort: Sorting RSQL
         :param str q: RSQL Query
-        :return: Page
+        :return: ProductReleasePage
                  If the method is called asynchronously,
                  returns the request thread.
         """
@@ -124,7 +124,7 @@ class ProductreleasesApi(object):
                                             body=body_params,
                                             post_params=form_params,
                                             files=files,
-                                            response_type='Page',
+                                            response_type='ProductReleasePage',
                                             auth_settings=auth_settings,
                                             callback=params.get('callback'))
         return response
@@ -145,7 +145,7 @@ class ProductreleasesApi(object):
         :param callback function: The callback function
             for asynchronous request. (optional)
         :param GenericRestEntity body: 
-        :return: Singleton
+        :return: ProductReleaseSingleton
                  If the method is called asynchronously,
                  returns the request thread.
         """
@@ -199,7 +199,7 @@ class ProductreleasesApi(object):
                                             body=body_params,
                                             post_params=form_params,
                                             files=files,
-                                            response_type='Singleton',
+                                            response_type='ProductReleaseSingleton',
                                             auth_settings=auth_settings,
                                             callback=params.get('callback'))
         return response
@@ -224,7 +224,7 @@ class ProductreleasesApi(object):
         :param int page_size: Pagination size
         :param str sort: Sorting RSQL
         :param str q: RSQL Query
-        :return: Page
+        :return: ProductReleasePage
                  If the method is called asynchronously,
                  returns the request thread.
         """
@@ -289,7 +289,7 @@ class ProductreleasesApi(object):
                                             body=body_params,
                                             post_params=form_params,
                                             files=files,
-                                            response_type='Page',
+                                            response_type='ProductReleasePage',
                                             auth_settings=auth_settings,
                                             callback=params.get('callback'))
         return response
@@ -309,7 +309,7 @@ class ProductreleasesApi(object):
 
         :param callback function: The callback function
             for asynchronous request. (optional)
-        :return: Page
+        :return: StringPage
                  If the method is called asynchronously,
                  returns the request thread.
         """
@@ -361,7 +361,7 @@ class ProductreleasesApi(object):
                                             body=body_params,
                                             post_params=form_params,
                                             files=files,
-                                            response_type='Page',
+                                            response_type='StringPage',
                                             auth_settings=auth_settings,
                                             callback=params.get('callback'))
         return response
@@ -382,7 +382,7 @@ class ProductreleasesApi(object):
         :param callback function: The callback function
             for asynchronous request. (optional)
         :param int id: Product Release id (required)
-        :return: Singleton
+        :return: ProductReleaseSingleton
                  If the method is called asynchronously,
                  returns the request thread.
         """
@@ -439,7 +439,7 @@ class ProductreleasesApi(object):
                                             body=body_params,
                                             post_params=form_params,
                                             files=files,
-                                            response_type='Singleton',
+                                            response_type='ProductReleaseSingleton',
                                             auth_settings=auth_settings,
                                             callback=params.get('callback'))
         return response

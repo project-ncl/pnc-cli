@@ -64,7 +64,7 @@ class BuildconfigurationsetsApi(object):
         :param int page_size: Pagination size
         :param str sort: Sorting RSQL
         :param str q: RSQL Query
-        :return: Page
+        :return: BuildConfigurationSetPage
                  If the method is called asynchronously,
                  returns the request thread.
         """
@@ -124,7 +124,7 @@ class BuildconfigurationsetsApi(object):
                                             body=body_params,
                                             post_params=form_params,
                                             files=files,
-                                            response_type='Page',
+                                            response_type='BuildConfigurationSetPage',
                                             auth_settings=auth_settings,
                                             callback=params.get('callback'))
         return response
@@ -145,7 +145,7 @@ class BuildconfigurationsetsApi(object):
         :param callback function: The callback function
             for asynchronous request. (optional)
         :param GenericRestEntity body: 
-        :return: Singleton
+        :return: BuildConfigurationSetSingleton
                  If the method is called asynchronously,
                  returns the request thread.
         """
@@ -199,7 +199,7 @@ class BuildconfigurationsetsApi(object):
                                             body=body_params,
                                             post_params=form_params,
                                             files=files,
-                                            response_type='Singleton',
+                                            response_type='BuildConfigurationSetSingleton',
                                             auth_settings=auth_settings,
                                             callback=params.get('callback'))
         return response
@@ -220,7 +220,7 @@ class BuildconfigurationsetsApi(object):
         :param callback function: The callback function
             for asynchronous request. (optional)
         :param int id: Build Configuration Set id (required)
-        :return: Singleton
+        :return: BuildConfigurationSetSingleton
                  If the method is called asynchronously,
                  returns the request thread.
         """
@@ -277,7 +277,7 @@ class BuildconfigurationsetsApi(object):
                                             body=body_params,
                                             post_params=form_params,
                                             files=files,
-                                            response_type='Singleton',
+                                            response_type='BuildConfigurationSetSingleton',
                                             auth_settings=auth_settings,
                                             callback=params.get('callback'))
         return response
@@ -542,7 +542,7 @@ class BuildconfigurationsetsApi(object):
         :param int page_size: Pagination size
         :param str sort: Sorting RSQL
         :param str q: RSQL Query
-        :return: Page
+        :return: BuildConfigurationPage
                  If the method is called asynchronously,
                  returns the request thread.
         """
@@ -607,7 +607,7 @@ class BuildconfigurationsetsApi(object):
                                             body=body_params,
                                             post_params=form_params,
                                             files=files,
-                                            response_type='Page',
+                                            response_type='BuildConfigurationPage',
                                             auth_settings=auth_settings,
                                             callback=params.get('callback'))
         return response
@@ -797,7 +797,7 @@ class BuildconfigurationsetsApi(object):
         :param int page_size: Pagination size
         :param str sort: Sorting RSQL
         :param str q: RSQL Query
-        :return: Page
+        :return: BuildRecordPage
                  If the method is called asynchronously,
                  returns the request thread.
         """
@@ -862,7 +862,7 @@ class BuildconfigurationsetsApi(object):
                                             body=body_params,
                                             post_params=form_params,
                                             files=files,
-                                            response_type='Page',
+                                            response_type='BuildRecordPage',
                                             auth_settings=auth_settings,
                                             callback=params.get('callback'))
         return response

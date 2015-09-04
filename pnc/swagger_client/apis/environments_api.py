@@ -64,7 +64,7 @@ class EnvironmentsApi(object):
         :param int page_size: Pagination size
         :param str sort: Sorting RSQL
         :param str q: RSQL Query
-        :return: Page
+        :return: EnvironmentPage
                  If the method is called asynchronously,
                  returns the request thread.
         """
@@ -124,7 +124,7 @@ class EnvironmentsApi(object):
                                             body=body_params,
                                             post_params=form_params,
                                             files=files,
-                                            response_type='Page',
+                                            response_type='EnvironmentPage',
                                             auth_settings=auth_settings,
                                             callback=params.get('callback'))
         return response
@@ -145,7 +145,7 @@ class EnvironmentsApi(object):
         :param callback function: The callback function
             for asynchronous request. (optional)
         :param Environment body: 
-        :return: Singleton
+        :return: EnvironmentSingleton
                  If the method is called asynchronously,
                  returns the request thread.
         """
@@ -199,7 +199,7 @@ class EnvironmentsApi(object):
                                             body=body_params,
                                             post_params=form_params,
                                             files=files,
-                                            response_type='Singleton',
+                                            response_type='EnvironmentSingleton',
                                             auth_settings=auth_settings,
                                             callback=params.get('callback'))
         return response
@@ -220,7 +220,7 @@ class EnvironmentsApi(object):
         :param callback function: The callback function
             for asynchronous request. (optional)
         :param int id: Environment id (required)
-        :return: Singleton
+        :return: EnvironmentSingleton
                  If the method is called asynchronously,
                  returns the request thread.
         """
@@ -277,7 +277,7 @@ class EnvironmentsApi(object):
                                             body=body_params,
                                             post_params=form_params,
                                             files=files,
-                                            response_type='Singleton',
+                                            response_type='EnvironmentSingleton',
                                             auth_settings=auth_settings,
                                             callback=params.get('callback'))
         return response
