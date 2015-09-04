@@ -5,10 +5,12 @@ from argh import arg
 
 import swagger_client
 from swagger_client.apis.productversions_api import ProductversionsApi
+from swagger_client.apis.products_api import ProductsApi
 import utils
 
 
 versions_api = ProductversionsApi(utils.get_api_client())
+products_api = ProductsApi(utils.get_api_client())
 
 __author__ = 'thauser'
 
@@ -22,6 +24,9 @@ def version_exists(id):
     version_ids = [str(x.id) for x in versions_api.get_all().content]
     return id in version_ids
 
+def version_exists_for_product(id, version):
+    return version in [x.version for x in [y for y in products_api.get_product_versions(id=id).content]]
+
 def list_product_versions():
     versions_api.get_all(callback=callback_function)
 
@@ -31,9 +36,14 @@ def list_product_versions():
 @arg("-pr", "--product-releases", type=int, nargs="+", help="List of product release IDs for this Product version")
 @arg("-pm", "--product-milestones", type=int, nargs="+", help="List of milestone IDs to associate with the new version")
 @arg("-bc", "--build-configuration-set-ids", type=int, nargs="+", help="List of build configuration set IDs to associate with the new version")
-def create_product_version(**kwargs):
-    version = create_product_version_object(**kwargs)
-    versions_api.create_new_product_version(body=version, callback=callback_function)
+def create_product_version(product_id, version, **kwargs):
+    if version_exists_for_product(product_id, version):
+        print("Version {0} already exists for product: {1}" ).format(version, products_api.get_specific(id=product_id).content.name)
+        return
+    kwargs['product_id'] = product_id
+    kwargs['version'] = version
+    product_version = create_product_version_object(**kwargs)
+    versions_api.create_new_product_version(body=product_version, callback=callback_function)
 
 @arg("id", help="ID of the product version to retrieve")
 def get_product_version(id, attributes=None):
@@ -76,4 +86,4 @@ def update_product_version(id, **kwargs):
 
 def callback_function(response):
     if response:
-        pprint(response)
+        pprint(response.content)

@@ -383,7 +383,7 @@ class ProductsApi(object):
         :param int page_size: Pagination size
         :param str sort: Sorting RSQL
         :param str q: RSQL Query
-        :return: ProductPage
+        :return: ProductVersionPage
                  If the method is called asynchronously,
                  returns the request thread.
         """
@@ -448,7 +448,7 @@ class ProductsApi(object):
                                             body=body_params,
                                             post_params=form_params,
                                             files=files,
-                                            response_type='ProductPage',
+                                            response_type='ProductVersionPage',
                                             auth_settings=auth_settings,
                                             callback=params.get('callback'))
         return response
