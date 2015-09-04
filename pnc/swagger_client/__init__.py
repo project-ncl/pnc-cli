@@ -8,12 +8,12 @@ from .models.product_milestone import ProductMilestone
 from .models.configuration import Configuration
 from .models.license import License
 from .models.product import Product
+from .models.page import Page
 from .models.product_version import ProductVersion
-from .models.build_record import BuildRecord
-from .models.artifact import Artifact
-from .models.build_configuration_set import BuildConfigurationSet
-from .models.build_configuration_audited import BuildConfigurationAudited
 from .models.project import Project
+from .models.build_configuration_set import BuildConfigurationSet
+from .models.generic_rest_entity import GenericRestEntity
+from .models.singleton import Singleton
 from .models.product_release import ProductRelease
 from .models.build_set_status_changed_event import BuildSetStatusChangedEvent
 from .models.environment import Environment

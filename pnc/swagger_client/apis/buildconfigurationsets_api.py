@@ -60,11 +60,11 @@ class BuildconfigurationsetsApi(object):
 
         :param callback function: The callback function
             for asynchronous request. (optional)
-        :param int page_index: Page index
+        :param int page_index: Page Index
         :param int page_size: Pagination size
         :param str sort: Sorting RSQL
-        :param str q: RSQL query
-        :return: list[BuildConfigurationSet]
+        :param str q: RSQL Query
+        :return: Page
                  If the method is called asynchronously,
                  returns the request thread.
         """
@@ -124,7 +124,7 @@ class BuildconfigurationsetsApi(object):
                                             body=body_params,
                                             post_params=form_params,
                                             files=files,
-                                            response_type='list[BuildConfigurationSet]',
+                                            response_type='Page',
                                             auth_settings=auth_settings,
                                             callback=params.get('callback'))
         return response
@@ -144,8 +144,8 @@ class BuildconfigurationsetsApi(object):
 
         :param callback function: The callback function
             for asynchronous request. (optional)
-        :param BuildConfigurationSet body: 
-        :return: BuildConfigurationSet
+        :param GenericRestEntity body: 
+        :return: Singleton
                  If the method is called asynchronously,
                  returns the request thread.
         """
@@ -199,7 +199,7 @@ class BuildconfigurationsetsApi(object):
                                             body=body_params,
                                             post_params=form_params,
                                             files=files,
-                                            response_type='BuildConfigurationSet',
+                                            response_type='Singleton',
                                             auth_settings=auth_settings,
                                             callback=params.get('callback'))
         return response
@@ -220,7 +220,7 @@ class BuildconfigurationsetsApi(object):
         :param callback function: The callback function
             for asynchronous request. (optional)
         :param int id: Build Configuration Set id (required)
-        :return: BuildConfigurationSet
+        :return: Singleton
                  If the method is called asynchronously,
                  returns the request thread.
         """
@@ -277,7 +277,7 @@ class BuildconfigurationsetsApi(object):
                                             body=body_params,
                                             post_params=form_params,
                                             files=files,
-                                            response_type='BuildConfigurationSet',
+                                            response_type='Singleton',
                                             auth_settings=auth_settings,
                                             callback=params.get('callback'))
         return response
@@ -298,7 +298,7 @@ class BuildconfigurationsetsApi(object):
         :param callback function: The callback function
             for asynchronous request. (optional)
         :param int id: Build Configuration Set id (required)
-        :param BuildConfigurationSet body: 
+        :param GenericRestEntity body: 
         :return: None
                  If the method is called asynchronously,
                  returns the request thread.
@@ -538,7 +538,11 @@ class BuildconfigurationsetsApi(object):
         :param callback function: The callback function
             for asynchronous request. (optional)
         :param int id: Build Configuration Set id (required)
-        :return: list[Configuration]
+        :param int page_index: Page Index
+        :param int page_size: Pagination size
+        :param str sort: Sorting RSQL
+        :param str q: RSQL Query
+        :return: Page
                  If the method is called asynchronously,
                  returns the request thread.
         """
@@ -546,7 +550,7 @@ class BuildconfigurationsetsApi(object):
         if id is None:
             raise ValueError("Missing the required parameter `id` when calling `get_configurations`")
 
-        all_params = ['id']
+        all_params = ['id', 'page_index', 'page_size', 'sort', 'q']
         all_params.append('callback')
 
         params = locals()
@@ -567,6 +571,14 @@ class BuildconfigurationsetsApi(object):
             path_params['id'] = params['id']
 
         query_params = {}
+        if 'page_index' in params:
+            query_params['pageIndex'] = params['page_index']
+        if 'page_size' in params:
+            query_params['pageSize'] = params['page_size']
+        if 'sort' in params:
+            query_params['sort'] = params['sort']
+        if 'q' in params:
+            query_params['q'] = params['q']
 
         header_params = {}
 
@@ -595,7 +607,7 @@ class BuildconfigurationsetsApi(object):
                                             body=body_params,
                                             post_params=form_params,
                                             files=files,
-                                            response_type='list[Configuration]',
+                                            response_type='Page',
                                             auth_settings=auth_settings,
                                             callback=params.get('callback'))
         return response
@@ -681,7 +693,7 @@ class BuildconfigurationsetsApi(object):
                                             callback=params.get('callback'))
         return response
 
-    def add_configuration_1(self, id, config_id, **kwargs):
+    def remove_configuration(self, id, config_id, **kwargs):
         """
         Removes a configuration from the specified config set
         
@@ -692,7 +704,7 @@ class BuildconfigurationsetsApi(object):
         >>> def callback_function(response):
         >>>     pprint(response)
         >>>
-        >>> thread = api.add_configuration_1(id, config_id, callback=callback_function)
+        >>> thread = api.remove_configuration(id, config_id, callback=callback_function)
 
         :param callback function: The callback function
             for asynchronous request. (optional)
@@ -704,10 +716,10 @@ class BuildconfigurationsetsApi(object):
         """
         # verify the required parameter 'id' is set
         if id is None:
-            raise ValueError("Missing the required parameter `id` when calling `add_configuration_1`")
+            raise ValueError("Missing the required parameter `id` when calling `remove_configuration`")
         # verify the required parameter 'config_id' is set
         if config_id is None:
-            raise ValueError("Missing the required parameter `config_id` when calling `add_configuration_1`")
+            raise ValueError("Missing the required parameter `config_id` when calling `remove_configuration`")
 
         all_params = ['id', 'config_id']
         all_params.append('callback')
@@ -717,7 +729,7 @@ class BuildconfigurationsetsApi(object):
             if key not in all_params:
                 raise TypeError(
                     "Got an unexpected keyword argument '%s'"
-                    " to method add_configuration_1" % key
+                    " to method remove_configuration" % key
                 )
             params[key] = val
         del params['kwargs']
@@ -781,11 +793,11 @@ class BuildconfigurationsetsApi(object):
         :param callback function: The callback function
             for asynchronous request. (optional)
         :param int id: Build configuration set id (required)
-        :param int page_index: Page index
+        :param int page_index: Page Index
         :param int page_size: Pagination size
         :param str sort: Sorting RSQL
-        :param str q: RSQL query
-        :return: list[BuildRecord]
+        :param str q: RSQL Query
+        :return: Page
                  If the method is called asynchronously,
                  returns the request thread.
         """
@@ -850,7 +862,7 @@ class BuildconfigurationsetsApi(object):
                                             body=body_params,
                                             post_params=form_params,
                                             files=files,
-                                            response_type='list[BuildRecord]',
+                                            response_type='Page',
                                             auth_settings=auth_settings,
                                             callback=params.get('callback'))
         return response

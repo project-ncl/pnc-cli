@@ -60,11 +60,11 @@ class RunningbuildrecordsApi(object):
 
         :param callback function: The callback function
             for asynchronous request. (optional)
-        :param int page_index: Page index
+        :param int page_index: Page Index
         :param int page_size: Pagination size
         :param str sort: Sorting RSQL
-        :param str q: RSQL query
-        :return: list[BuildRecord]
+        :param str q: RSQL Query
+        :return: Page
                  If the method is called asynchronously,
                  returns the request thread.
         """
@@ -124,7 +124,7 @@ class RunningbuildrecordsApi(object):
                                             body=body_params,
                                             post_params=form_params,
                                             files=files,
-                                            response_type='list[BuildRecord]',
+                                            response_type='Page',
                                             auth_settings=auth_settings,
                                             callback=params.get('callback'))
         return response
@@ -145,7 +145,7 @@ class RunningbuildrecordsApi(object):
         :param callback function: The callback function
             for asynchronous request. (optional)
         :param int id: BuildRecord id (required)
-        :return: BuildRecord
+        :return: Singleton
                  If the method is called asynchronously,
                  returns the request thread.
         """
@@ -202,7 +202,7 @@ class RunningbuildrecordsApi(object):
                                             body=body_params,
                                             post_params=form_params,
                                             files=files,
-                                            response_type='BuildRecord',
+                                            response_type='Singleton',
                                             auth_settings=auth_settings,
                                             callback=params.get('callback'))
         return response

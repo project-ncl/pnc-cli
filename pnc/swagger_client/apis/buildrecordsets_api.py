@@ -60,11 +60,11 @@ class BuildrecordsetsApi(object):
 
         :param callback function: The callback function
             for asynchronous request. (optional)
-        :param int page_index: Page index
+        :param int page_index: Page Index
         :param int page_size: Pagination size
         :param str sort: Sorting RSQL
-        :param str q: RSQL query
-        :return: list[BuildRecordSet]
+        :param str q: RSQL Query
+        :return: Page
                  If the method is called asynchronously,
                  returns the request thread.
         """
@@ -124,7 +124,7 @@ class BuildrecordsetsApi(object):
                                             body=body_params,
                                             post_params=form_params,
                                             files=files,
-                                            response_type='list[BuildRecordSet]',
+                                            response_type='Page',
                                             auth_settings=auth_settings,
                                             callback=params.get('callback'))
         return response
@@ -144,7 +144,7 @@ class BuildrecordsetsApi(object):
 
         :param callback function: The callback function
             for asynchronous request. (optional)
-        :param BuildRecordSet body: 
+        :param GenericRestEntity body: 
         :return: BuildRecordSet
                  If the method is called asynchronously,
                  returns the request thread.
@@ -220,11 +220,11 @@ class BuildrecordsetsApi(object):
         :param callback function: The callback function
             for asynchronous request. (optional)
         :param int record_id: BuildRecord id (required)
-        :param int page_index: Page index
+        :param int page_index: Page Index
         :param int page_size: Pagination size
         :param str sort: Sorting RSQL
-        :param str q: RSQL query
-        :return: list[BuildRecordSet]
+        :param str q: RSQL Query
+        :return: Page
                  If the method is called asynchronously,
                  returns the request thread.
         """
@@ -289,7 +289,7 @@ class BuildrecordsetsApi(object):
                                             body=body_params,
                                             post_params=form_params,
                                             files=files,
-                                            response_type='list[BuildRecordSet]',
+                                            response_type='Page',
                                             auth_settings=auth_settings,
                                             callback=params.get('callback'))
         return response
@@ -310,11 +310,11 @@ class BuildrecordsetsApi(object):
         :param callback function: The callback function
             for asynchronous request. (optional)
         :param int version_id: Product Version id (required)
-        :param int page_index: Page index
+        :param int page_index: Page Index
         :param int page_size: Pagination size
         :param str sort: Sorting RSQL
-        :param str q: RSQL query
-        :return: list[BuildRecordSet]
+        :param str q: RSQL Query
+        :return: Page
                  If the method is called asynchronously,
                  returns the request thread.
         """
@@ -379,7 +379,7 @@ class BuildrecordsetsApi(object):
                                             body=body_params,
                                             post_params=form_params,
                                             files=files,
-                                            response_type='list[BuildRecordSet]',
+                                            response_type='Page',
                                             auth_settings=auth_settings,
                                             callback=params.get('callback'))
         return response
@@ -400,7 +400,7 @@ class BuildrecordsetsApi(object):
         :param callback function: The callback function
             for asynchronous request. (optional)
         :param int id: BuildRecordSet id (required)
-        :return: BuildRecordSet
+        :return: Singleton
                  If the method is called asynchronously,
                  returns the request thread.
         """
@@ -457,7 +457,7 @@ class BuildrecordsetsApi(object):
                                             body=body_params,
                                             post_params=form_params,
                                             files=files,
-                                            response_type='BuildRecordSet',
+                                            response_type='Singleton',
                                             auth_settings=auth_settings,
                                             callback=params.get('callback'))
         return response
