@@ -50,6 +50,6 @@ def get_logs_for_record(id):
 
 def callback_function(response):
     if response:
-        pprint(response)
+        pprint(response.content)
 
 

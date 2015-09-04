@@ -65,6 +65,6 @@ def update_milestone(id, **kwargs):
 
 def callback_function(response):
     if response:
-        pprint(response)
+        pprint(response.content)
 
 

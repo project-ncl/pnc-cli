@@ -122,5 +122,5 @@ def list_projects():
 
 def callback_function(response):
     if response:
-        pprint(response)
+        pprint(response.content)
 

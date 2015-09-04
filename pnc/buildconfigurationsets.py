@@ -98,14 +98,7 @@ def delete_build_config_set(id=None, name=None):
     set_id = get_set_id(id,name)
     if not set_id:
         return
-
-    response = sets_api.delete_specific(set_id)
-
-    if not response.ok:
-        utils.print_error(sys._getframe().f_code.co_name, response)
-        return
-
-    print("Successfully deleted build configuration set with ID {0}.").format(set_id)
+    sets_api.delete_specific(id=set_id, callback=callback_function)
 
 def get_set_id(set_id, name):
     if id:
@@ -127,7 +120,7 @@ def build_set(id=None, name=None):
     if not set_id:
         return
     #callbackUrl?
-    sets_api.build(id=set_id)
+    sets_api.build(id=set_id,callback=callback_function)
 
 @arg("-i", "--id", help="ID of the build configuration set to build.")
 @arg("-n", "--name", help="Name of the build configuration set to build.")
@@ -137,7 +130,6 @@ def list_build_configurations_for_set(id=None, name=None, attributes=None):
     if not set_id:
         return
     print(sets_api.get_configurations(id=set_id))
-
 
 @arg("-sid", "--set-id", help="ID of the build configuration set to add to")
 @arg("-sn", "--set-name", help="Name of the build configuration set to add to")
@@ -154,9 +146,7 @@ def add_build_configuration_to_set(set_id=None, set_name=None, config_id=None, c
 
     bc = configs_api.get_specific(build_config_id)
 
-    def callback(response):
-        pprint(response)
-    thread = sets_api.add_configuration(id=config_set_id, body=bc, callback=callback)
+    sets_api.add_configuration(id=config_set_id, body=bc, callback=callback_function)
 
 @arg("-i", "--id", help="ID of the build configuration set")
 @arg("-n", "--name", help="name of the build configuration set")
@@ -164,7 +154,8 @@ def list_build_records_for_set(id=None, name=None):
     set_id = get_set_id(id,name)
     if not set_id:
         return
-    def callback(response):
-        pprint(response)
+    sets_api.get_build_records(id=set_id,callback=callback_function)
 
-    response = sets_api.get_build_records(id=set_id,callback=callback)
+def callback_function(response):
+    if response:
+        pprint(response.content)

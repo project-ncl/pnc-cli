@@ -145,7 +145,7 @@ class ProductversionsApi(object):
         :param callback function: The callback function
             for asynchronous request. (optional)
         :param ProductVersion body: 
-        :return: ProductVersion
+        :return: ProductVersionSingleton
                  If the method is called asynchronously,
                  returns the request thread.
         """
@@ -199,7 +199,7 @@ class ProductversionsApi(object):
                                             body=body_params,
                                             post_params=form_params,
                                             files=files,
-                                            response_type='ProductVersion',
+                                            response_type='ProductVersionSingleton',
                                             auth_settings=auth_settings,
                                             callback=params.get('callback'))
         return response
