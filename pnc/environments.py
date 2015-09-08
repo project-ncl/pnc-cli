@@ -77,8 +77,9 @@ def list_environments():
     List all environments
     :return:
     """
-    response = envs_api.get_all(callback=callback_function)
+    envs_api.get_all(callback=callback_function)
 
 def callback_function(response):
     if response:
+        pprint(response)
         pprint(response.content)

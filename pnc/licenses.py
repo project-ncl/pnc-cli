@@ -37,15 +37,13 @@ def _get_license_id_by_name(name):
             return license.id
     return None
 
-@arg("name", help="Name for the new license")
-@arg("content", help="Full textual content of the new license")
+@arg("full_name", help="Name for the new license")
+@arg("full_content", help="Full textual content of the new license")
 @arg("-r","--ref-url", help="URL containing a reference for the license")
 @arg("-sn","--short_name", help="Abbreviation or \"short name\" for the license")
 @arg("-pids","--projects-ids", type=int, nargs='+', help="List of project ids that should be associated with the new license. IDs must denote existing projects")
-def create_license(name, content, **kwargs):
+def create_license(**kwargs):
     """Create a new license"""
-    kwargs['full_name'] = name
-    kwargs['full_content'] = content
     license = _create_license_object(**kwargs)
     licenses_api.create_new(body=license, callback=callback_function)
 
@@ -96,7 +94,7 @@ def list_licenses():
     List all licenses
     :return:
     """
-    licenses_api.get_all()
+    licenses_api.get_all(callback=callback_function)
 
 def callback_function(response):
     if response:

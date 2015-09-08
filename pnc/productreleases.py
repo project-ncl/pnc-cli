@@ -49,7 +49,7 @@ def create_release(version, release_date, download_url, product_version_id, prod
                                                     product_version_id=product_version_id,
                                                     product_milestone_id=product_milestone_id,
                                                     support_level=support_level)
-    releases_api.create(body=created_release, callback=callback_function)
+    releases_api.create_new(body=created_release, callback=callback_function)
 
 
 @arg("id", help="Product version ID to retrieve releases for.")

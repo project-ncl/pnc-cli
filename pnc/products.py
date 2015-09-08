@@ -94,5 +94,7 @@ def list_products():
 
 def callback_function(response):
     if response:
-        pprint(response.content)
+        pprint(response)
+        if hasattr(response, "content"):
+            pprint(response.content)
 
