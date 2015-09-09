@@ -1,37 +1,38 @@
 import random
 import string
 from pnc import licenses
+from pnc.swagger_client.apis.licenses_api import LicensesApi
+from pnc import utils
+licenses_api = LicensesApi(utils.get_api_client())
 
 def _create_license():
     randname = ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(10))
-    new_license = licenses._create_license_object(fullName=randname, fullContent="pnc-cli test license")
-    return licenses.create(new_license).json()
+    return licenses_api.create_new(body=licenses._create_license_object(full_name=randname, full_content="pnc-cli test license")).content
 
 def test_get_all():
-    l = licenses.get_all().json()
+    # empty at first. create one to test.
+    l = licenses_api.get_all().content
     assert l is not None
 
 def test_create_license():
     new_license = _create_license()
-    l = licenses.get_all().json()
-    license_ids = [x['id'] for x in l]
-    assert new_license['id'] in license_ids
+    license_ids = [x.id for x in licenses_api.get_all().content]
+    assert new_license.id in license_ids
 
 def test_get_specific():
     new_license = _create_license()
-    assert licenses.get_specific(new_license['id']) is not None
+    assert licenses_api.get_specific(new_license.id) is not None
 
 def test_delete():
     new_license = _create_license()
-    licenses.delete(new_license['id'])
-    l = licenses.get_all().json()
-    l_ids = [x['id'] for x in l]
-    assert new_license['id'] not in l_ids
+    licenses_api.delete(new_license.id)
+    l_ids = [x.id for x in licenses_api.get_all().content]
+    assert new_license.id not in l_ids
 
 def test_update():
     new_license = _create_license()
-    licenses.update(new_license['id'], licenses._create_license_object(fullName='PNC-CLI updated license', fullContent='updated content'))
-    updated_license = licenses.get_specific(new_license['id']).json()
-    assert updated_license['fullName'] == 'PNC-CLI updated license' and updated_license['fullContent'] == 'updated content'
+    licenses_api.update(id=new_license.id, body=licenses._create_license_object(full_name='PNC-CLI updated license', full_content='updated content'))
+    updated_license = licenses_api.get_specific(new_license.id).content
+    assert updated_license.full_name == 'PNC-CLI updated license' and updated_license.full_content == 'updated content'
 
 

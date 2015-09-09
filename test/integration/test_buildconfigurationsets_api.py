@@ -15,7 +15,7 @@ sets_api = BuildconfigurationsetsApi(utils.get_api_client())
 
 def create_set():
     randname = ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(10))
-    return sets_api.create_new(body=buildconfigurationsets._create_build_config_set_object(name=randname, productVersionId=1))
+    return sets_api.create_new(body=buildconfigurationsets._create_build_config_set_object(name=randname, productVersionId=1)).content
 
 def test_get_all():
     sets = sets_api.get_all().content

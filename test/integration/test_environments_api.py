@@ -5,9 +5,7 @@ from pnc import utils
 envs_api = EnvironmentsApi(utils.get_api_client())
 
 def _create_env(bt="java", os="linux"):
-    env_object = environments._create_environment_object(build_type=bt.upper(),operational_system=os.upper())
-    response = envs_api.create_new(body=env_object)
-    return env_object
+    return envs_api.create_new(body=environments._create_environment_object(build_type=bt.upper(),operational_system=os.upper())).content
 
 def test_get_all():
     envs = envs_api.get_all().content
