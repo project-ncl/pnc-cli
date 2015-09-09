@@ -61,14 +61,6 @@ def list_releases_for_version(id):
     """
     releases_api.get_all_by_product_version_id(id=id,callback=callback_function)
 
-
-def list_release_support_levels():
-    """
-    List all possible support levels.
-    :return:
-    """
-    releases_api.get_all_support_level(callback=callback_function)
-
 @arg("id", help="Product version to retrieve.")
 def get_release(id):
     """
