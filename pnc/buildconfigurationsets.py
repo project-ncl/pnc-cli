@@ -47,7 +47,7 @@ def create_build_config_set(name, product_version_id=None, build_configurations=
     if build_configurations:
         failed = False
         for config in build_configs:
-            if not buildconfigurations.build_configuration_exists(config):
+            if not buildconfigurations.config_id_exists(config):
                 print("No build configuration with id {0} exists.".format(config))
                 failed = True
         if failed:

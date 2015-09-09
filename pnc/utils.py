@@ -10,7 +10,6 @@ config = ConfigParser.ConfigParser()
 configfilename = os.path.expanduser("~")+ "/.config/pnc-cli/pnc-cli.conf"
 found = config.read(os.path.join(configfilename))
 if not found:
-    print('wat')
     config.add_section('PNC')
     config.set('PNC', 'restEndpoint', 'http://localhost:8080/pnc-rest/rest')
     with open(os.path.join(configfilename),'wb') as configfile:

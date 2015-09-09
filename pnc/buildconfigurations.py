@@ -1,14 +1,17 @@
+from pprint import pprint
 import utils
 import swagger_client
 from swagger_client.apis.buildconfigurations_api import BuildconfigurationsApi
 from argh import arg
 
-api = BuildconfigurationsApi(utils.get_api_client())
+configs_api = BuildconfigurationsApi(utils.get_api_client())
 
 def create_build_conf_object(**kwargs):
     created_build_configuration = swagger_client.models.configuration.Configuration()
     for key, value in kwargs.iteritems():
         setattr(created_build_configuration, str(key), value)
+    if "build_status" not in kwargs.keys():
+        setattr(created_build_configuration, "build_status", "UNKNOWN")
     return created_build_configuration
 
 def get_build_configuration_id_by_name(name):
@@ -17,31 +20,41 @@ def get_build_configuration_id_by_name(name):
     :param name: name of build configuration
     :return: id of the matching build configuration, or None if no match found
     """
-    response = api.get_all()
-    for config in response.json():
-        if config["name"] == name:
-            return config["id"]
+    for config in configs_api.get_all().content:
+        if config.name == name:
+            return config.id
     return None
 
-def build_configuration_exists(search_id):
+def config_id_exists(search_id):
     """
     Test if a build configuration matching search_id exists
     :param search_id: id to test for
     :return: True if a build configuration with search_id exists
     """
-    response = api.get_specific(id=search_id)
-    if response.ok:
-        return True
-    return False
+    existing_ids = [str(x.id) for x in configs_api.get_all().content]
+    return search_id in existing_ids
 
-def get_config_id(config_id,name):
+def get_config_id(search_id,name):
+    """
+    Given an ID or name, checks for existence then returns an ID
+    :param search_id: ID to check for existence
+    :param name: name to map to ID
+    :return: Valid ID if it exists. None otherwise
+    """
     if id:
-        return config_id
+        if not config_id_exists(search_id):
+            print("No build configuration with ID {} exists.").format(search_id)
+            return
+        config_id = search_id
     elif name:
-        return get_build_configuration_id_by_name(name)
+        config_id = get_build_configuration_id_by_name(name)
+        if not config_id:
+            print("No build configuration with the name {} exists.").format(name)
+            return
     else:
         print("Either a name or an ID of a build configuration is required.")
         return
+    return config_id
 
 @arg("-i", "--id", help="ID of the build configuration to trigger.")
 @arg("-n", "--name", help="Name of the build configuration to trigger.")
@@ -50,7 +63,7 @@ def build(id=None,name=None, attributes=None):
     trigger_id = get_config_id(id,name)
     if not trigger_id:
         return
-    print(api.trigger(id=trigger_id))
+    configs_api.trigger(id=trigger_id,callback=callback_function)
 
 @arg("name", help="Name for the new build configuration")
 @arg("project-id", help="ID of the project to associate the build configuration with.")
@@ -59,13 +72,15 @@ def build(id=None,name=None, attributes=None):
 @arg("-surl", "--scm-url", help="URL to the sources of the build")
 @arg("-rurl", "--scm-revision", help="Revision of the sources in scm-url to build")
 @arg("-bs", "--build-script", help="Script to execute for the build")
-def create_build_configuration(name, project_id, environment, **kwargs):
-    kwargs['name'] = name
-    kwargs['project_id'] = project_id
-    kwargs['environment'] = environment
+def create_build_configuration(**kwargs):
     build_configuration = create_build_conf_object(**kwargs)
-    response = api.create(build_configuration)
-    print (response)
+    configs_api.create_new(body=build_configuration, callback=callback_function)
 
 def list_build_configurations():
-    print(api.get_all())
+    configs_api.get_all(callback=callback_function)
+
+def callback_function(response):
+    if response:
+        pprint(response)
+        if response.content:
+            pprint(response.content)
