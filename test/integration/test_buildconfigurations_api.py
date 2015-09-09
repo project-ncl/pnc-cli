@@ -7,11 +7,10 @@ from pnc import utils
 builds_api = BuildconfigurationsApi(utils.get_api_client())
 
 def create_config():
-    randname = ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(10))
-    return builds_api.create_new(body=buildconfigurations.create_build_conf_object(name=randname, project_id=1, environment_id=1))
+    return builds_api.create_new(body=buildconfigurations.create_build_conf_object(name=utils.gen_random_name(), project_id=1, environment_id=1, build_status="SUCCESS")).content
 
 def test_get_all():
-    build_configurations = builds_api.get_all()
+    build_configurations = builds_api.get_all().content
     assert build_configurations is not None
 
 def test_create_build_configuration():
