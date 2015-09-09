@@ -38,6 +38,7 @@ class BuildRecord(object):
         """
         self.swagger_types = {
             'id': 'int',
+            'submit_time': 'datetime',
             'start_time': 'datetime',
             'end_time': 'datetime',
             'status': 'BuildStatus',
@@ -53,6 +54,7 @@ class BuildRecord(object):
 
         self.attribute_map = {
             'id': 'id',
+            'submit_time': 'submitTime',
             'start_time': 'startTime',
             'end_time': 'endTime',
             'status': 'status',
@@ -67,6 +69,7 @@ class BuildRecord(object):
         }
 
         self._id = None
+        self._submit_time = None
         self._start_time = None
         self._end_time = None
         self._status = None
@@ -100,6 +103,28 @@ class BuildRecord(object):
         :type: int
         """
         self._id = id
+
+    @property
+    def submit_time(self):
+        """
+        Gets the submit_time of this BuildRecord.
+
+
+        :return: The submit_time of this BuildRecord.
+        :rtype: datetime
+        """
+        return self._submit_time
+
+    @submit_time.setter
+    def submit_time(self, submit_time):
+        """
+        Sets the submit_time of this BuildRecord.
+
+
+        :param submit_time: The submit_time of this BuildRecord.
+        :type: datetime
+        """
+        self._submit_time = submit_time
 
     @property
     def start_time(self):

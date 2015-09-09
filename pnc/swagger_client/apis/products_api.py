@@ -145,7 +145,7 @@ class ProductsApi(object):
         :param callback function: The callback function
             for asynchronous request. (optional)
         :param Product body: 
-        :return: Product
+        :return: ProductSingleton
                  If the method is called asynchronously,
                  returns the request thread.
         """
@@ -199,7 +199,7 @@ class ProductsApi(object):
                                             body=body_params,
                                             post_params=form_params,
                                             files=files,
-                                            response_type='Product',
+                                            response_type='ProductSingleton',
                                             auth_settings=auth_settings,
                                             callback=params.get('callback'))
         return response

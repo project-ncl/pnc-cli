@@ -38,21 +38,21 @@ class BuildConfigSetRecordPage(object):
         """
         self.swagger_types = {
             'content': 'list[BuildRecord]',
-            'page_index': 'int',
             'page_size': 'int',
+            'page_index': 'int',
             'total_pages': 'int'
         }
 
         self.attribute_map = {
             'content': 'content',
-            'page_index': 'pageIndex',
             'page_size': 'pageSize',
+            'page_index': 'pageIndex',
             'total_pages': 'totalPages'
         }
 
         self._content = None
-        self._page_index = None
         self._page_size = None
+        self._page_index = None
         self._total_pages = None
 
     @property
@@ -78,28 +78,6 @@ class BuildConfigSetRecordPage(object):
         self._content = content
 
     @property
-    def page_index(self):
-        """
-        Gets the page_index of this BuildConfigSetRecordPage.
-        Page index
-
-        :return: The page_index of this BuildConfigSetRecordPage.
-        :rtype: int
-        """
-        return self._page_index
-
-    @page_index.setter
-    def page_index(self, page_index):
-        """
-        Sets the page_index of this BuildConfigSetRecordPage.
-        Page index
-
-        :param page_index: The page_index of this BuildConfigSetRecordPage.
-        :type: int
-        """
-        self._page_index = page_index
-
-    @property
     def page_size(self):
         """
         Gets the page_size of this BuildConfigSetRecordPage.
@@ -120,6 +98,28 @@ class BuildConfigSetRecordPage(object):
         :type: int
         """
         self._page_size = page_size
+
+    @property
+    def page_index(self):
+        """
+        Gets the page_index of this BuildConfigSetRecordPage.
+        Page index
+
+        :return: The page_index of this BuildConfigSetRecordPage.
+        :rtype: int
+        """
+        return self._page_index
+
+    @page_index.setter
+    def page_index(self, page_index):
+        """
+        Sets the page_index of this BuildConfigSetRecordPage.
+        Page index
+
+        :param page_index: The page_index of this BuildConfigSetRecordPage.
+        :type: int
+        """
+        self._page_index = page_index
 
     @property
     def total_pages(self):
