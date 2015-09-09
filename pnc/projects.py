@@ -35,7 +35,7 @@ def _get_project_id_by_name(search_name):
     :param search_name: name of the project
     :return: id of the matching project, or None if no match found
     """
-    for project in projects_api.get_all():
+    for project in projects_api.get_all().content:
         if project.name == search_name:
             return project.id
     return None
@@ -46,7 +46,7 @@ def _project_exists(search_id):
     :param search_id: id to test for
     :return: True if a project with search_id exists
     """
-    existing_ids = [x.id for x in projects_api.get_all()]
+    existing_ids = [x.id for x in projects_api.get_all().content]
     return search_id in existing_ids
 
 @arg("name", help="Name for the project")
@@ -62,7 +62,7 @@ def create_project(name, **kwargs):
     :param kwargs:
     :return:
     """
-    project = _create_project_object(name, **kwargs)
+    project = _create_project_object(**kwargs)
     projects_api.create(body=project,callback=callback_function)
 
 @arg("-id", "--id", help="ID for the project that will be updated.")
