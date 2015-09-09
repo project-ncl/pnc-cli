@@ -11,6 +11,7 @@ def _create_license():
 
 def test_get_all():
     # empty at first. create one to test.
+    _create_license()
     l = licenses_api.get_all().content
     assert l is not None
 

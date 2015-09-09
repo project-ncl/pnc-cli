@@ -41,7 +41,7 @@ class BuildRecord(object):
             'submit_time': 'datetime',
             'start_time': 'datetime',
             'end_time': 'datetime',
-            'status': 'BuildStatus',
+            'status': 'str',
             'build_configuration_id': 'int',
             'build_configuration_rev': 'int',
             'user_id': 'int',
@@ -177,7 +177,7 @@ class BuildRecord(object):
 
 
         :return: The status of this BuildRecord.
-        :rtype: BuildStatus
+        :rtype: str
         """
         return self._status
 
@@ -188,8 +188,14 @@ class BuildRecord(object):
 
 
         :param status: The status of this BuildRecord.
-        :type: BuildStatus
+        :type: str
         """
+        allowed_values = ["SUCCESS", "FAILED", "UNSTABLE", "BUILDING", "ABORTED", "CANCELLED", "SYSTEM_ERROR", "UNKNOWN"]
+        if status not in allowed_values:
+            raise ValueError(
+                "Invalid value for `status`, must be one of {0}"
+                .format(allowed_values)
+            )
         self._status = status
 
     @property

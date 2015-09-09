@@ -37,48 +37,26 @@ class BuildSetStatusChangedEvent(object):
                                   and the value is json key in definition.
         """
         self.swagger_types = {
-            'user_id': 'int',
             'new_status': 'BuildSetStatus',
-            'build_set_configuration_id': 'int',
             'build_set_task_id': 'int',
-            'old_status': 'BuildSetStatus'
+            'old_status': 'BuildSetStatus',
+            'build_set_configuration_id': 'int',
+            'user_id': 'int'
         }
 
         self.attribute_map = {
-            'user_id': 'userId',
             'new_status': 'newStatus',
-            'build_set_configuration_id': 'buildSetConfigurationId',
             'build_set_task_id': 'buildSetTaskId',
-            'old_status': 'oldStatus'
+            'old_status': 'oldStatus',
+            'build_set_configuration_id': 'buildSetConfigurationId',
+            'user_id': 'userId'
         }
 
-        self._user_id = None
         self._new_status = None
-        self._build_set_configuration_id = None
         self._build_set_task_id = None
         self._old_status = None
-
-    @property
-    def user_id(self):
-        """
-        Gets the user_id of this BuildSetStatusChangedEvent.
-
-
-        :return: The user_id of this BuildSetStatusChangedEvent.
-        :rtype: int
-        """
-        return self._user_id
-
-    @user_id.setter
-    def user_id(self, user_id):
-        """
-        Sets the user_id of this BuildSetStatusChangedEvent.
-
-
-        :param user_id: The user_id of this BuildSetStatusChangedEvent.
-        :type: int
-        """
-        self._user_id = user_id
+        self._build_set_configuration_id = None
+        self._user_id = None
 
     @property
     def new_status(self):
@@ -101,28 +79,6 @@ class BuildSetStatusChangedEvent(object):
         :type: BuildSetStatus
         """
         self._new_status = new_status
-
-    @property
-    def build_set_configuration_id(self):
-        """
-        Gets the build_set_configuration_id of this BuildSetStatusChangedEvent.
-
-
-        :return: The build_set_configuration_id of this BuildSetStatusChangedEvent.
-        :rtype: int
-        """
-        return self._build_set_configuration_id
-
-    @build_set_configuration_id.setter
-    def build_set_configuration_id(self, build_set_configuration_id):
-        """
-        Sets the build_set_configuration_id of this BuildSetStatusChangedEvent.
-
-
-        :param build_set_configuration_id: The build_set_configuration_id of this BuildSetStatusChangedEvent.
-        :type: int
-        """
-        self._build_set_configuration_id = build_set_configuration_id
 
     @property
     def build_set_task_id(self):
@@ -167,6 +123,50 @@ class BuildSetStatusChangedEvent(object):
         :type: BuildSetStatus
         """
         self._old_status = old_status
+
+    @property
+    def build_set_configuration_id(self):
+        """
+        Gets the build_set_configuration_id of this BuildSetStatusChangedEvent.
+
+
+        :return: The build_set_configuration_id of this BuildSetStatusChangedEvent.
+        :rtype: int
+        """
+        return self._build_set_configuration_id
+
+    @build_set_configuration_id.setter
+    def build_set_configuration_id(self, build_set_configuration_id):
+        """
+        Sets the build_set_configuration_id of this BuildSetStatusChangedEvent.
+
+
+        :param build_set_configuration_id: The build_set_configuration_id of this BuildSetStatusChangedEvent.
+        :type: int
+        """
+        self._build_set_configuration_id = build_set_configuration_id
+
+    @property
+    def user_id(self):
+        """
+        Gets the user_id of this BuildSetStatusChangedEvent.
+
+
+        :return: The user_id of this BuildSetStatusChangedEvent.
+        :rtype: int
+        """
+        return self._user_id
+
+    @user_id.setter
+    def user_id(self, user_id):
+        """
+        Sets the user_id of this BuildSetStatusChangedEvent.
+
+
+        :param user_id: The user_id of this BuildSetStatusChangedEvent.
+        :type: int
+        """
+        self._user_id = user_id
 
     def to_dict(self):
         """
