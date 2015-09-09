@@ -274,7 +274,7 @@ class ApiClient(object):
         elif klass == date:
             return self.__deserialize_date(data)
         elif klass == datetime:
-            return self.__deserialize_datatime(data)
+            return self.__deserialize_datetime(data)
         else:
             return self.__deserialize_model(data, klass)
 
@@ -522,7 +522,7 @@ class ApiClient(object):
                 .format(string)
             )
 
-    def __deserialize_datatime(self, string):
+    def __deserialize_datetime(self, string):
         """
         Deserializes string to datetime.
 
@@ -533,6 +533,7 @@ class ApiClient(object):
         """
         try:
             from dateutil.parser import parse
+	    timestr = str(datetime.fromtimestamp(string/1000))
             return parse(string)
         except ImportError:
             return string
