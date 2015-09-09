@@ -40,23 +40,23 @@ class BuildSetStatusChangedEvent(object):
             'user_id': 'int',
             'new_status': 'BuildSetStatus',
             'build_set_configuration_id': 'int',
-            'old_status': 'BuildSetStatus',
-            'build_set_task_id': 'int'
+            'build_set_task_id': 'int',
+            'old_status': 'BuildSetStatus'
         }
 
         self.attribute_map = {
             'user_id': 'userId',
             'new_status': 'newStatus',
             'build_set_configuration_id': 'buildSetConfigurationId',
-            'old_status': 'oldStatus',
-            'build_set_task_id': 'buildSetTaskId'
+            'build_set_task_id': 'buildSetTaskId',
+            'old_status': 'oldStatus'
         }
 
         self._user_id = None
         self._new_status = None
         self._build_set_configuration_id = None
-        self._old_status = None
         self._build_set_task_id = None
+        self._old_status = None
 
     @property
     def user_id(self):
@@ -125,28 +125,6 @@ class BuildSetStatusChangedEvent(object):
         self._build_set_configuration_id = build_set_configuration_id
 
     @property
-    def old_status(self):
-        """
-        Gets the old_status of this BuildSetStatusChangedEvent.
-
-
-        :return: The old_status of this BuildSetStatusChangedEvent.
-        :rtype: BuildSetStatus
-        """
-        return self._old_status
-
-    @old_status.setter
-    def old_status(self, old_status):
-        """
-        Sets the old_status of this BuildSetStatusChangedEvent.
-
-
-        :param old_status: The old_status of this BuildSetStatusChangedEvent.
-        :type: BuildSetStatus
-        """
-        self._old_status = old_status
-
-    @property
     def build_set_task_id(self):
         """
         Gets the build_set_task_id of this BuildSetStatusChangedEvent.
@@ -167,6 +145,28 @@ class BuildSetStatusChangedEvent(object):
         :type: int
         """
         self._build_set_task_id = build_set_task_id
+
+    @property
+    def old_status(self):
+        """
+        Gets the old_status of this BuildSetStatusChangedEvent.
+
+
+        :return: The old_status of this BuildSetStatusChangedEvent.
+        :rtype: BuildSetStatus
+        """
+        return self._old_status
+
+    @old_status.setter
+    def old_status(self, old_status):
+        """
+        Sets the old_status of this BuildSetStatusChangedEvent.
+
+
+        :param old_status: The old_status of this BuildSetStatusChangedEvent.
+        :type: BuildSetStatus
+        """
+        self._old_status = old_status
 
     def to_dict(self):
         """

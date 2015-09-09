@@ -38,22 +38,22 @@ class ProductVersionPage(object):
         """
         self.swagger_types = {
             'content': 'list[ProductVersion]',
-            'page_size': 'int',
             'page_index': 'int',
-            'total_pages': 'int'
+            'total_pages': 'int',
+            'page_size': 'int'
         }
 
         self.attribute_map = {
             'content': 'content',
-            'page_size': 'pageSize',
             'page_index': 'pageIndex',
-            'total_pages': 'totalPages'
+            'total_pages': 'totalPages',
+            'page_size': 'pageSize'
         }
 
         self._content = None
-        self._page_size = None
         self._page_index = None
         self._total_pages = None
+        self._page_size = None
 
     @property
     def content(self):
@@ -76,28 +76,6 @@ class ProductVersionPage(object):
         :type: list[ProductVersion]
         """
         self._content = content
-
-    @property
-    def page_size(self):
-        """
-        Gets the page_size of this ProductVersionPage.
-        Number of records per page
-
-        :return: The page_size of this ProductVersionPage.
-        :rtype: int
-        """
-        return self._page_size
-
-    @page_size.setter
-    def page_size(self, page_size):
-        """
-        Sets the page_size of this ProductVersionPage.
-        Number of records per page
-
-        :param page_size: The page_size of this ProductVersionPage.
-        :type: int
-        """
-        self._page_size = page_size
 
     @property
     def page_index(self):
@@ -142,6 +120,28 @@ class ProductVersionPage(object):
         :type: int
         """
         self._total_pages = total_pages
+
+    @property
+    def page_size(self):
+        """
+        Gets the page_size of this ProductVersionPage.
+        Number of records per page
+
+        :return: The page_size of this ProductVersionPage.
+        :rtype: int
+        """
+        return self._page_size
+
+    @page_size.setter
+    def page_size(self, page_size):
+        """
+        Sets the page_size of this ProductVersionPage.
+        Number of records per page
+
+        :param page_size: The page_size of this ProductVersionPage.
+        :type: int
+        """
+        self._page_size = page_size
 
     def to_dict(self):
         """
