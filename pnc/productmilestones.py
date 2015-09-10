@@ -44,8 +44,8 @@ def create_product_milestone(**kwargs):
         return
 
     version = kwargs.get('version')
-    paTtern = re.compile('\d*\.\w*')
-    if not paTtern.match(version):
+    pattern = re.compile('\d*\.\w*')
+    if not pattern.match(version):
         print("Version must start with a number, followed by a dot and then a qualifier (e.g ER1).")
         return
     base_version = productversions_api.get_specific(id=kwargs['product_version_id']).content.version
