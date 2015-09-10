@@ -3,6 +3,7 @@
 import argh
 
 from pnc_help_formatter import PNCFormatter
+import productmilestones
 import products
 import productversions
 import projects
@@ -66,7 +67,12 @@ parser.add_commands([products.create_product,
                      productreleases.create_release,
                      productreleases.list_releases_for_version,
                      productreleases.get_release,
-                     productreleases.update_release],
+                     productreleases.update_release,
+                     productmilestones.list_product_milestones,
+                     productmilestones.list_milestones_for_version,
+                     productmilestones.create_product_milestone,
+                     productmilestones.get_milestone,
+                     productmilestones.update_milestone],
                     func_kwargs={"formatter_class": PNCFormatter})
 parser.autocomplete()
 

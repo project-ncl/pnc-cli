@@ -1,9 +1,12 @@
+import re
 import utils
 import swagger_client
+from swagger_client.apis.productversions_api import ProductversionsApi
 from swagger_client.apis.productmilestones_api import ProductmilestonesApi
 from argh import arg
 from pprint import pprint
 
+productversions_api = ProductversionsApi(utils.get_api_client())
 milestones_api = ProductmilestonesApi(utils.get_api_client())
 
 def create_milestone_object(**kwargs):
@@ -23,19 +26,31 @@ def list_product_milestones():
 @arg("id", help="ID of the milestone to retrieve.")
 def get_product_milestone(id):
      milestones_api.get_specific(id=id, callback=callback_function)
-
-@arg("version", help="Version of the milestone.")
+@arg("product_version_id", help="ID of the product version to create a milestone from.")
+@arg("version", help="Version of the milestone. Will be appended to the version from product_version_id.")
 @arg("start_date", help="Planned starting date for the milestone.")
 @arg("planned_release_date", help="Planned date for the milestone release.")
-def create_product_milestone(version, start_date, planned_release_date):
+def create_product_milestone(**kwargs):
     """
     Create a new product milestone.
-    :param version: version for the milestone
+    :param product_version: id of the product version the milestone is for
+    :param version: version for the milestone. Will be appended to the product_version_id's version
     :param start_date: start date for the milestone
     :param planned_release_date: planned release date
     :return: Errors upon failure.
     """
-    created_milestone = create_milestone_object(version=version, starting_date=start_date, planned_release_date=planned_release_date)
+    if kwargs.get('product_version_id') not in [str(x.id) for x in productversions_api.get_all().content]:
+        print("No product version exists with the ID {}.").format(kwargs['product_version_id'])
+        return
+
+    version = kwargs.get('version')
+    paTtern = re.compile('\d*\.\w*')
+    if not paTtern.match(version):
+        print("Version must start with a number, followed by a dot and then a qualifier (e.g ER1).")
+        return
+    base_version = productversions_api.get_specific(id=kwargs['product_version_id']).content.version
+    kwargs['version'] = base_version + "." + kwargs['version']
+    created_milestone = create_milestone_object(**kwargs)
     milestones_api.create_new(body=created_milestone, callback=callback_function)
 
 @arg("id", help="Product version ID to retrieve milestones for.")
