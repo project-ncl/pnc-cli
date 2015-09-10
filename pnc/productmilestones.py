@@ -42,7 +42,6 @@ def create_product_milestone(**kwargs):
     if kwargs.get('product_version_id') not in [str(x.id) for x in productversions_api.get_all().content]:
         print("No product version exists with the ID {}.").format(kwargs['product_version_id'])
         return
-
     version = kwargs.get('version')
     pattern = re.compile('\d*\.\w*')
     if not pattern.match(version):

@@ -16,8 +16,7 @@ def list_build_records():
 
 @arg("-i","--id", help="Build configuration ID to retrieve build records of.")
 @arg("-n","--name", help="Build configuration name to retrieve build records of.")
-@arg("-a", "--attributes", help="Comma separated list of attributes to print.")
-def list_records_for_build_config(id=None, name=None, attributes=None):
+def list_records_for_build_config(id=None, name=None):
     config_id = buildconfigurations.get_config_id(id,name)
     if not config_id:
         return
@@ -46,10 +45,10 @@ def get_audited_config_for_record(id):
 @arg("id", help="Build record ID to retrieve logs from.")
 def get_logs_for_record(id):
     response = records_api.get_logs(id=id)
-    print response.text
+    print response
 
 def callback_function(response):
-    if response:
+    if response.content:
         pprint(response.content)
 
 
