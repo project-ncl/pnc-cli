@@ -20,7 +20,7 @@ def list_records_for_build_config(id=None, name=None):
     config_id = buildconfigurations.get_config_id(id,name)
     if not config_id:
         return
-    records_api.get_all_for_build_configuration(id=config_id, callback=callback_function)
+    records_api.get_all_for_build_configuration(configuration_id=config_id, callback=callback_function)
 
 @arg("-i","--id", help="Project ID to retrieve build records of.")
 @arg("-n","--name", help="Project name to retrieve build records of.")
@@ -28,7 +28,7 @@ def list_records_for_project(id=None, name=None):
     project_id = projects.get_project_id(id,name)
     if not project_id:
         return
-    records_api.get_all_for_project(id=project_id, callback=callback_function)
+    records_api.get_all_for_project(project_id=project_id, callback=callback_function)
 
 @arg("id", help="Build record ID to retrieve.")
 def get_build_record(id):
