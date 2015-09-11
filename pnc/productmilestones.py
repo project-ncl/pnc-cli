@@ -30,7 +30,7 @@ def get_product_milestone(id):
 @arg("version", help="Version of the milestone. Will be appended to the version from product_version_id.")
 @arg("start_date", help="Planned starting date for the milestone.")
 @arg("planned_release_date", help="Planned date for the milestone release.")
-def create_product_milestone(**kwargs):
+def create_milestone(**kwargs):
     """
     Create a new product milestone.
     :param product_version: id of the product version the milestone is for
@@ -43,12 +43,12 @@ def create_product_milestone(**kwargs):
         print("No product version exists with the ID {}.").format(kwargs['product_version_id'])
         return
     version = kwargs.get('version')
-    pattern = re.compile('\d*\.\w*')
-    if not pattern.match(version):
+
+    if not utils.is_valid_version(version):
         print("Version must start with a number, followed by a dot and then a qualifier (e.g ER1).")
         return
     base_version = productversions_api.get_specific(id=kwargs['product_version_id']).content.version
-    kwargs['version'] = base_version + "." + kwargs['version']
+    kwargs['version'] = base_version + "." + kwargs.get('version')
     created_milestone = create_milestone_object(**kwargs)
     milestones_api.create_new(body=created_milestone, callback=callback_function)
 

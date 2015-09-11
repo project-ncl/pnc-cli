@@ -1,6 +1,7 @@
 import ConfigParser
 import random
 import string
+import re
 import swagger_client
 import os
 
@@ -22,3 +23,7 @@ def get_api_client():
 
 def gen_random_name():
     return ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(10))
+
+def is_valid_version(version):
+    pattern = re.compile('\d*\.\w*')
+    return pattern.match(version)
