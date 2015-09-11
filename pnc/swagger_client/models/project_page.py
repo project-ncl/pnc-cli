@@ -38,22 +38,22 @@ class ProjectPage(object):
         """
         self.swagger_types = {
             'content': 'list[Project]',
-            'page_index': 'int',
+            'page_size': 'int',
             'total_pages': 'int',
-            'page_size': 'int'
+            'page_index': 'int'
         }
 
         self.attribute_map = {
             'content': 'content',
-            'page_index': 'pageIndex',
+            'page_size': 'pageSize',
             'total_pages': 'totalPages',
-            'page_size': 'pageSize'
+            'page_index': 'pageIndex'
         }
 
         self._content = None
-        self._page_index = None
-        self._total_pages = None
         self._page_size = None
+        self._total_pages = None
+        self._page_index = None
 
     @property
     def content(self):
@@ -78,26 +78,26 @@ class ProjectPage(object):
         self._content = content
 
     @property
-    def page_index(self):
+    def page_size(self):
         """
-        Gets the page_index of this ProjectPage.
-        Page index
+        Gets the page_size of this ProjectPage.
+        Number of records per page
 
-        :return: The page_index of this ProjectPage.
+        :return: The page_size of this ProjectPage.
         :rtype: int
         """
-        return self._page_index
+        return self._page_size
 
-    @page_index.setter
-    def page_index(self, page_index):
+    @page_size.setter
+    def page_size(self, page_size):
         """
-        Sets the page_index of this ProjectPage.
-        Page index
+        Sets the page_size of this ProjectPage.
+        Number of records per page
 
-        :param page_index: The page_index of this ProjectPage.
+        :param page_size: The page_size of this ProjectPage.
         :type: int
         """
-        self._page_index = page_index
+        self._page_size = page_size
 
     @property
     def total_pages(self):
@@ -122,26 +122,26 @@ class ProjectPage(object):
         self._total_pages = total_pages
 
     @property
-    def page_size(self):
+    def page_index(self):
         """
-        Gets the page_size of this ProjectPage.
-        Number of records per page
+        Gets the page_index of this ProjectPage.
+        Page index
 
-        :return: The page_size of this ProjectPage.
+        :return: The page_index of this ProjectPage.
         :rtype: int
         """
-        return self._page_size
+        return self._page_index
 
-    @page_size.setter
-    def page_size(self, page_size):
+    @page_index.setter
+    def page_index(self, page_index):
         """
-        Sets the page_size of this ProjectPage.
-        Number of records per page
+        Sets the page_index of this ProjectPage.
+        Page index
 
-        :param page_size: The page_size of this ProjectPage.
+        :param page_index: The page_index of this ProjectPage.
         :type: int
         """
-        self._page_size = page_size
+        self._page_index = page_index
 
     def to_dict(self):
         """

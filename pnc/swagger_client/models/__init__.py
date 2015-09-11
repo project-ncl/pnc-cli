@@ -30,6 +30,7 @@ from .product_milestone import ProductMilestone
 from .build_configuration_audited_singleton import BuildConfigurationAuditedSingleton
 from .build_configuration_set_singleton import BuildConfigurationSetSingleton
 from .string_page import StringPage
+from .artifact import Artifact
 from .product_milestone_singleton import ProductMilestoneSingleton
 from .product_release_page import ProductReleasePage
 from .build_config_set_record_singleton import BuildConfigSetRecordSingleton

@@ -38,23 +38,23 @@ class BuildSetStatusChangedEvent(object):
         """
         self.swagger_types = {
             'new_status': 'BuildSetStatus',
-            'build_set_task_id': 'int',
             'old_status': 'BuildSetStatus',
+            'build_set_task_id': 'int',
             'build_set_configuration_id': 'int',
             'user_id': 'int'
         }
 
         self.attribute_map = {
             'new_status': 'newStatus',
-            'build_set_task_id': 'buildSetTaskId',
             'old_status': 'oldStatus',
+            'build_set_task_id': 'buildSetTaskId',
             'build_set_configuration_id': 'buildSetConfigurationId',
             'user_id': 'userId'
         }
 
         self._new_status = None
-        self._build_set_task_id = None
         self._old_status = None
+        self._build_set_task_id = None
         self._build_set_configuration_id = None
         self._user_id = None
 
@@ -81,28 +81,6 @@ class BuildSetStatusChangedEvent(object):
         self._new_status = new_status
 
     @property
-    def build_set_task_id(self):
-        """
-        Gets the build_set_task_id of this BuildSetStatusChangedEvent.
-
-
-        :return: The build_set_task_id of this BuildSetStatusChangedEvent.
-        :rtype: int
-        """
-        return self._build_set_task_id
-
-    @build_set_task_id.setter
-    def build_set_task_id(self, build_set_task_id):
-        """
-        Sets the build_set_task_id of this BuildSetStatusChangedEvent.
-
-
-        :param build_set_task_id: The build_set_task_id of this BuildSetStatusChangedEvent.
-        :type: int
-        """
-        self._build_set_task_id = build_set_task_id
-
-    @property
     def old_status(self):
         """
         Gets the old_status of this BuildSetStatusChangedEvent.
@@ -123,6 +101,28 @@ class BuildSetStatusChangedEvent(object):
         :type: BuildSetStatus
         """
         self._old_status = old_status
+
+    @property
+    def build_set_task_id(self):
+        """
+        Gets the build_set_task_id of this BuildSetStatusChangedEvent.
+
+
+        :return: The build_set_task_id of this BuildSetStatusChangedEvent.
+        :rtype: int
+        """
+        return self._build_set_task_id
+
+    @build_set_task_id.setter
+    def build_set_task_id(self, build_set_task_id):
+        """
+        Sets the build_set_task_id of this BuildSetStatusChangedEvent.
+
+
+        :param build_set_task_id: The build_set_task_id of this BuildSetStatusChangedEvent.
+        :type: int
+        """
+        self._build_set_task_id = build_set_task_id
 
     @property
     def build_set_configuration_id(self):

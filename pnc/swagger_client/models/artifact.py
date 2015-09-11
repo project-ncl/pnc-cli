@@ -39,11 +39,11 @@ class Artifact(object):
         self.swagger_types = {
             'id': 'int',
             'identifier': 'str',
-            'repo_type': 'RepositoryType',
+            'repo_type': 'str',
             'checksum': 'str',
             'filename': 'str',
             'deploy_url': 'str',
-            'status': 'ArtifactStatus',
+            'status': 'str',
             'build_record_id': 'int'
         }
 
@@ -118,7 +118,7 @@ class Artifact(object):
 
 
         :return: The repo_type of this Artifact.
-        :rtype: RepositoryType
+        :rtype: str
         """
         return self._repo_type
 
@@ -129,8 +129,14 @@ class Artifact(object):
 
 
         :param repo_type: The repo_type of this Artifact.
-        :type: RepositoryType
+        :type: str
         """
+        allowed_values = ["MAVEN", "DOCKER_REGISTRY", "NPM", "COCOA_POD"]
+        if repo_type not in allowed_values:
+            raise ValueError(
+                "Invalid value for `repo_type`, must be one of {0}"
+                .format(allowed_values)
+            )
         self._repo_type = repo_type
 
     @property
@@ -206,7 +212,7 @@ class Artifact(object):
 
 
         :return: The status of this Artifact.
-        :rtype: ArtifactStatus
+        :rtype: str
         """
         return self._status
 
@@ -217,8 +223,14 @@ class Artifact(object):
 
 
         :param status: The status of this Artifact.
-        :type: ArtifactStatus
+        :type: str
         """
+        allowed_values = ["BINARY_IMPORTED", "BINARY_BUILT"]
+        if status not in allowed_values:
+            raise ValueError(
+                "Invalid value for `status`, must be one of {0}"
+                .format(allowed_values)
+            )
         self._status = status
 
     @property

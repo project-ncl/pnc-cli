@@ -49,7 +49,8 @@ class BuildRecord(object):
             'system_image_id': 'int',
             'external_archive_id': 'int',
             'live_logs_uri': 'str',
-            'build_config_set_record_id': 'int'
+            'build_config_set_record_id': 'int',
+            'build_content_id': 'str'
         }
 
         self.attribute_map = {
@@ -65,7 +66,8 @@ class BuildRecord(object):
             'system_image_id': 'systemImageId',
             'external_archive_id': 'externalArchiveId',
             'live_logs_uri': 'liveLogsUri',
-            'build_config_set_record_id': 'buildConfigSetRecordId'
+            'build_config_set_record_id': 'buildConfigSetRecordId',
+            'build_content_id': 'buildContentId'
         }
 
         self._id = None
@@ -81,6 +83,7 @@ class BuildRecord(object):
         self._external_archive_id = None
         self._live_logs_uri = None
         self._build_config_set_record_id = None
+        self._build_content_id = None
 
     @property
     def id(self):
@@ -373,6 +376,28 @@ class BuildRecord(object):
         :type: int
         """
         self._build_config_set_record_id = build_config_set_record_id
+
+    @property
+    def build_content_id(self):
+        """
+        Gets the build_content_id of this BuildRecord.
+
+
+        :return: The build_content_id of this BuildRecord.
+        :rtype: str
+        """
+        return self._build_content_id
+
+    @build_content_id.setter
+    def build_content_id(self, build_content_id):
+        """
+        Sets the build_content_id of this BuildRecord.
+
+
+        :param build_content_id: The build_content_id of this BuildRecord.
+        :type: str
+        """
+        self._build_content_id = build_content_id
 
     def to_dict(self):
         """

@@ -144,7 +144,7 @@ class BuildconfigurationsetsApi(object):
 
         :param callback function: The callback function
             for asynchronous request. (optional)
-        :param GenericRestEntity body: 
+        :param BuildConfigurationSet body: 
         :return: BuildConfigurationSetSingleton
                  If the method is called asynchronously,
                  returns the request thread.

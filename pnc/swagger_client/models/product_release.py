@@ -43,7 +43,7 @@ class ProductRelease(object):
             'download_url': 'str',
             'product_version_id': 'int',
             'product_milestone_id': 'int',
-            'support_level': 'SupportLevel'
+            'support_level': 'str'
         }
 
         self.attribute_map = {
@@ -203,7 +203,7 @@ class ProductRelease(object):
 
 
         :return: The support_level of this ProductRelease.
-        :rtype: SupportLevel
+        :rtype: str
         """
         return self._support_level
 
@@ -214,8 +214,14 @@ class ProductRelease(object):
 
 
         :param support_level: The support_level of this ProductRelease.
-        :type: SupportLevel
+        :type: str
         """
+        allowed_values = ["UNRELEASED", "EARLYACCESS", "SUPPORTED", "EXTENDED_SUPPORT", "EOL"]
+        if support_level not in allowed_values:
+            raise ValueError(
+                "Invalid value for `support_level`, must be one of {0}"
+                .format(allowed_values)
+            )
         self._support_level = support_level
 
     def to_dict(self):

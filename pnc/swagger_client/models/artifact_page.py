@@ -37,23 +37,23 @@ class ArtifactPage(object):
                                   and the value is json key in definition.
         """
         self.swagger_types = {
-            'content': 'JavaUtilCollection<orgJbossPncRestRestmodelArtifactRest>',
-            'page_index': 'int',
+            'content': 'list[Artifact]',
+            'page_size': 'int',
             'total_pages': 'int',
-            'page_size': 'int'
+            'page_index': 'int'
         }
 
         self.attribute_map = {
             'content': 'content',
-            'page_index': 'pageIndex',
+            'page_size': 'pageSize',
             'total_pages': 'totalPages',
-            'page_size': 'pageSize'
+            'page_index': 'pageIndex'
         }
 
         self._content = None
-        self._page_index = None
-        self._total_pages = None
         self._page_size = None
+        self._total_pages = None
+        self._page_index = None
 
     @property
     def content(self):
@@ -62,7 +62,7 @@ class ArtifactPage(object):
 
 
         :return: The content of this ArtifactPage.
-        :rtype: JavaUtilCollection&lt;orgJbossPncRestRestmodelArtifactRest&gt;
+        :rtype: list[Artifact]
         """
         return self._content
 
@@ -73,31 +73,31 @@ class ArtifactPage(object):
 
 
         :param content: The content of this ArtifactPage.
-        :type: JavaUtilCollection&lt;orgJbossPncRestRestmodelArtifactRest&gt;
+        :type: list[Artifact]
         """
         self._content = content
 
     @property
-    def page_index(self):
+    def page_size(self):
         """
-        Gets the page_index of this ArtifactPage.
-        Page index
+        Gets the page_size of this ArtifactPage.
+        Number of records per page
 
-        :return: The page_index of this ArtifactPage.
+        :return: The page_size of this ArtifactPage.
         :rtype: int
         """
-        return self._page_index
+        return self._page_size
 
-    @page_index.setter
-    def page_index(self, page_index):
+    @page_size.setter
+    def page_size(self, page_size):
         """
-        Sets the page_index of this ArtifactPage.
-        Page index
+        Sets the page_size of this ArtifactPage.
+        Number of records per page
 
-        :param page_index: The page_index of this ArtifactPage.
+        :param page_size: The page_size of this ArtifactPage.
         :type: int
         """
-        self._page_index = page_index
+        self._page_size = page_size
 
     @property
     def total_pages(self):
@@ -122,26 +122,26 @@ class ArtifactPage(object):
         self._total_pages = total_pages
 
     @property
-    def page_size(self):
+    def page_index(self):
         """
-        Gets the page_size of this ArtifactPage.
-        Number of records per page
+        Gets the page_index of this ArtifactPage.
+        Page index
 
-        :return: The page_size of this ArtifactPage.
+        :return: The page_index of this ArtifactPage.
         :rtype: int
         """
-        return self._page_size
+        return self._page_index
 
-    @page_size.setter
-    def page_size(self, page_size):
+    @page_index.setter
+    def page_index(self, page_index):
         """
-        Sets the page_size of this ArtifactPage.
-        Number of records per page
+        Sets the page_index of this ArtifactPage.
+        Page index
 
-        :param page_size: The page_size of this ArtifactPage.
+        :param page_index: The page_index of this ArtifactPage.
         :type: int
         """
-        self._page_size = page_size
+        self._page_index = page_index
 
     def to_dict(self):
         """
