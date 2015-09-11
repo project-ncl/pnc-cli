@@ -1,9 +1,11 @@
 import utils
 import swagger_client
 from argh import arg
+from swagger_client.apis.productversions_api import ProductversionsApi
 from swagger_client.apis.productreleases_api import ProductreleasesApi
 from pprint import pprint
 
+productversions_api = ProductversionsApi(utils.get_api_client())
 releases_api = ProductreleasesApi(utils.get_api_client())
 
 def create_product_release_object(**kwargs):
@@ -13,42 +15,26 @@ def create_product_release_object(**kwargs):
     return created_release
 
 
-def list_product_releases(attributes=None):
-    """
-    List all product releases
-    :param attributes:
-    :return:
-    """
+def list_product_releases():
     releases_api.get_all(callback=callback_function)
 
 # no more than one release per milestone
 # need product version id (version is not enough)
 # version is created by appending product_version.<new info>
-
 @arg("version", help="Version of the release. Appended to the Product Version.")
-@arg("release-date", help="Date of the release.")
-@arg("download-url", help="URL where deliverables are located.")
-@arg("product-version-id", help="ID of the product version this release is associated with.")
-@arg("product-milestone-id", help="Milestone which is the basis of this release")
-@arg("support-level", help="Level of support comitted to for this release.")
-def create_release(version, release_date, download_url, product_version_id, product_milestone_id, support_level):
-    """
-    Create a new product release
-    :param version: version for the release (appended to associated product version)
-    :param release_date: release date for the release (duh!)
-    :param download_url: URL where built artifacts will be available
-    :param product_version_id: associated product version id
-    :param product_milestone_id: associated milestone id
-    :param support_level: support level for this release
-    :return: Resulting release
-    """
-    # TODO: better way to use dicts here maybe?
-    created_release = create_product_release_object(version=version,
-                                                    release_date=release_date,
-                                                    download_url=download_url,
-                                                    product_version_id=product_version_id,
-                                                    product_milestone_id=product_milestone_id,
-                                                    support_level=support_level)
+@arg("release_date", help="Date of the release. Format: yyyy-mm-dd")
+@arg("download_url", help="URL where deliverables are located.")
+@arg("product_version_id", help="ID of the product version this release is associated with.")
+@arg("product_milestone_id", help="Milestone which is the basis of this release")
+@arg("support_level", help="Level of support committed to for this release. Possible values: 'UNRELEASED', 'EARLYACCESS', 'SUPPORTED', 'EXTENDED_SUPPORT', 'EOL'")
+def create_release(**kwargs):
+    version = kwargs.get('version')
+    if not utils.is_valid_version(version):
+        print("Version must start with a number, followed by a dot and then a qualifier (e.g ER1).")
+        return
+    base_version = productversions_api.get_specific(id=kwargs.get('product_version_id')).content.version
+    kwargs['version'] = base_version + '.' + kwargs.get('version')
+    created_release = create_product_release_object(**kwargs)
     releases_api.create_new(body=created_release, callback=callback_function)
 
 
@@ -61,7 +47,7 @@ def list_releases_for_version(id):
     """
     releases_api.get_all_by_product_version_id(id=id,callback=callback_function)
 
-@arg("id", help="Product version to retrieve.")
+@arg("id", help="ID of the product version to retrieve.")
 def get_release(id):
     """
     Get a specific product release.
@@ -78,17 +64,6 @@ def get_release(id):
 @arg("-msid","--product-milestone-id", help="Milestone which is the basis of this release")
 @arg("-sl", "--support-level", help="Level of support comitted to for this release.")
 def update_release(id, **kwargs):
-    """
-    Replace the product release with ID id with new information
-    :param id: id of the release to update
-    :param version: new version for release
-    :param release_date: new release date
-    :param download_url: new download url
-    :param product_version_id: new product version id for the release
-    :param product_milestone_id: new milestone id for the release
-    :param support_level: new support level for the release
-    :return: errors upon failure
-    """
     #get the existing product_release
     to_update = releases_api.get_specific(id=id)
     for key, value in kwargs.iteritems():
