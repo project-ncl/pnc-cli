@@ -2,13 +2,13 @@
 # PYTHON_ARGCOMPLETE_OK
 import argh
 
-from pnc_help_formatter import PNCFormatter
 import productmilestones
 import products
 import productversions
 import projects
 import buildconfigurations
 import buildconfigurationsets
+import buildconfigsetrecords
 import buildrecords
 import licenses
 import environments
@@ -72,8 +72,10 @@ parser.add_commands([products.create_product,
                      productmilestones.list_milestones_for_version,
                      productmilestones.create_product_milestone,
                      productmilestones.get_milestone,
-                     productmilestones.update_milestone],
-                    func_kwargs={"formatter_class": PNCFormatter})
+                     productmilestones.update_milestone,
+                     buildconfigsetrecords.list_build_config_set_records,
+                     buildconfigsetrecords.get_build_config_set_record,
+                     buildconfigsetrecords.get_records_for_build_config_set])
 parser.autocomplete()
 
 if __name__ == "__main__":
