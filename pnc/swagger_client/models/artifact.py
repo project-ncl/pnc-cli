@@ -131,7 +131,7 @@ class Artifact(object):
         :param repo_type: The repo_type of this Artifact.
         :type: str
         """
-        allowed_values = ["MAVEN", "DOCKER_REGISTRY", "NPM", "COCOA_POD"]
+        allowed_values = [None, "MAVEN", "DOCKER_REGISTRY", "NPM", "COCOA_POD"]
         if repo_type not in allowed_values:
             raise ValueError(
                 "Invalid value for `repo_type`, must be one of {0}"
