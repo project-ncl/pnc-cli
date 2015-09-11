@@ -1,4 +1,3 @@
-import pytest
 import time
 from pnc import utils
 from pnc.swagger_client.apis.buildconfigurations_api import BuildconfigurationsApi

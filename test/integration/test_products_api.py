@@ -30,7 +30,7 @@ def test_get_specific():
 
 def test_update_product():
     new_prod = _create_product()
-    newname = 'newname'.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(10))
+    newname = 'newname'+''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(10))
     product_api.update(id=new_prod.id, body=products._create_product_object(name=newname, description='updated description'))
     updated_prod = product_api.get_specific(id=new_prod.id).content
     assert updated_prod.name == newname and updated_prod.description == 'updated description'
