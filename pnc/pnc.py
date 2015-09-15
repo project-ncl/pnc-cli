@@ -14,6 +14,7 @@ import licenses
 import environments
 import runningbuilds
 import productreleases
+import buildrecordsets
 
 
 parser = argh.ArghParser()
@@ -75,7 +76,8 @@ parser.add_commands([products.create_product,
                      productmilestones.update_milestone,
                      buildconfigsetrecords.list_build_config_set_records,
                      buildconfigsetrecords.get_build_config_set_record,
-                     buildconfigsetrecords.get_records_for_build_config_set])
+                     buildconfigsetrecords.get_records_for_build_config_set,
+                     buildrecordsets.list_build_record_sets])
 parser.autocomplete()
 
 if __name__ == "__main__":

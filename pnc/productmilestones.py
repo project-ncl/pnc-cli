@@ -26,6 +26,7 @@ def list_product_milestones():
 @arg("id", help="ID of the milestone to retrieve.")
 def get_product_milestone(id):
      milestones_api.get_specific(id=id, callback=callback_function)
+
 @arg("product_version_id", help="ID of the product version to create a milestone from.")
 @arg("version", help="Version of the milestone. Will be appended to the version from product_version_id.")
 @arg("start_date", help="Planned starting date for the milestone.")
