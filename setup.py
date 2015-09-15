@@ -7,7 +7,7 @@ setup(
     author = 'Tom Hauser',
     author_email = 'thauser@redhat.com',
     url = 'https://github.com/thauser/pnc-cli',
-    download_url='',
+    download_url='https://github.com/thauser/pnc-cli/tarball/0.1',
     keywords = ['PNC','REST'],
     long_description=open('README.md').read(),
     install_requires=[
