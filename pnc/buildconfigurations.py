@@ -58,7 +58,7 @@ def get_config_id(search_id,name):
 
 @arg("-i", "--id", help="ID of the build configuration to trigger.")
 @arg("-n", "--name", help="Name of the build configuration to trigger.")
-def build(id=None,name=None, attributes=None):
+def build(id=None,name=None):
     """Trigger a build configuration giving either the name or ID."""
     trigger_id = get_config_id(id,name)
     if not trigger_id:
