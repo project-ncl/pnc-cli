@@ -7,7 +7,7 @@ licenses_api = LicensesApi(utils.get_api_client())
 
 def _create_license():
     randname = ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(10))
-    return licenses_api.create_new(body=licenses._create_license_object(full_name=randname, full_content="pnc-cli test license")).content
+    return licenses_api.create_new(body=licenses._create_license_object(full_name=randname, full_content="pnc_cli-cli test license")).content
 
 def test_get_all():
     # empty at first. create one to test.

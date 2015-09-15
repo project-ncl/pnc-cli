@@ -17,8 +17,10 @@ import productreleases
 import buildrecordsets
 
 
-parser = argh.ArghParser()
-parser.add_commands([products.create_product,
+
+def main():
+    parser = argh.ArghParser()
+    parser.add_commands([products.create_product,
                      products.update_product,
                      products.get_product,
                      products.list_products,
@@ -78,7 +80,5 @@ parser.add_commands([products.create_product,
                      buildconfigsetrecords.get_build_config_set_record,
                      buildconfigsetrecords.get_records_for_build_config_set,
                      buildrecordsets.list_build_record_sets])
-parser.autocomplete()
-
-if __name__ == "__main__":
+    parser.autocomplete()
     parser.dispatch()
