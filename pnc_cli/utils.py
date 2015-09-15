@@ -2,6 +2,7 @@ import ConfigParser
 import random
 import string
 import re
+import errno
 import swagger_client
 import os
 
@@ -9,6 +10,12 @@ __author__ = 'thauser'
 
 config = ConfigParser.ConfigParser()
 configfilename = os.path.expanduser("~")+ "/.config/pnc-cli/pnc-cli.conf"
+configdirname = os.path.dirname(configfilename)
+try:
+    os.makedirs(configdirname)
+except OSError, e:
+    if e.errno != errno.EEXIST:
+        raise
 found = config.read(os.path.join(configfilename))
 if not found:
     config.add_section('PNC')
