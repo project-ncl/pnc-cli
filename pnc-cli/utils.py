@@ -8,11 +8,11 @@ import os
 __author__ = 'thauser'
 
 config = ConfigParser.ConfigParser()
-configfilename = os.path.expanduser("~")+ "/.config/pnc-cli/pnc-cli.conf"
+configfilename = os.path.expanduser("~")+ "/.config/pnc-cli-cli/pnc-cli-cli.conf"
 found = config.read(os.path.join(configfilename))
 if not found:
     config.add_section('PNC')
-    config.set('PNC', 'restEndpoint', 'http://localhost:8080/pnc-rest/rest')
+    config.set('PNC', 'restEndpoint', 'http://localhost:8080/pnc-cli-rest/rest')
     with open(os.path.join(configfilename),'wb') as configfile:
         config.write(configfile)
 pnc_rest_url = config.get('PNC', 'restEndpoint')

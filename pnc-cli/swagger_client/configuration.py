@@ -55,7 +55,7 @@ class Configuration(object):
         Constructor
         """
         # Default Base url
-        self.host = "http://localhost/pnc-rest/rest"
+        self.host = "http://localhost/pnc-cli-rest/rest"
         # Default api client
         self.api_client = None
         # Temp file folder for downloading files
