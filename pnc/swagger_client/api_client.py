@@ -534,7 +534,7 @@ class ApiClient(object):
         try:
             from dateutil.parser import parse
             timestr = str(datetime.fromtimestamp(string/1000))
-            return str(parse(timestr))
+            return parse(timestr)
         except ImportError:
             return string
         except ValueError:
