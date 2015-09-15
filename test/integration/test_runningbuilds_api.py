@@ -1,7 +1,7 @@
 import time
-from pnc import utils
-from pnc.swagger_client.apis.buildconfigurations_api import BuildconfigurationsApi
-from pnc.swagger_client.apis.runningbuildrecords_api import RunningbuildrecordsApi
+from pnc_cli import utils
+from pnc_cli.swagger_client.apis.buildconfigurations_api import BuildconfigurationsApi
+from pnc_cli.swagger_client.apis.runningbuildrecords_api import RunningbuildrecordsApi
 
 configs_api = BuildconfigurationsApi(utils.get_api_client())
 running_api = RunningbuildrecordsApi(utils.get_api_client())

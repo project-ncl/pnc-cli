@@ -1,8 +1,8 @@
 import pytest
 
 __author__ = 'thauser'
-from pnc import utils
-from pnc.swagger_client.apis import BuildconfigsetrecordsApi
+from pnc_cli import utils
+from pnc_cli.swagger_client.apis import BuildconfigsetrecordsApi
 
 bcsr_api = BuildconfigsetrecordsApi(utils.get_api_client())
 

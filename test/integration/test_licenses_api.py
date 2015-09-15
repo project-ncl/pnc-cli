@@ -1,8 +1,8 @@
 import random
 import string
-from pnc import licenses
-from pnc.swagger_client.apis.licenses_api import LicensesApi
-from pnc import utils
+from pnc_cli import licenses
+from pnc_cli.swagger_client.apis.licenses_api import LicensesApi
+from pnc_cli import utils
 licenses_api = LicensesApi(utils.get_api_client())
 
 def _create_license():

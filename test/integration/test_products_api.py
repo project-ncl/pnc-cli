@@ -1,11 +1,11 @@
 import random
 import string
 
-from pnc import products
-from pnc import productversions
-from pnc import utils
-from pnc.swagger_client.apis.products_api import ProductsApi
-from pnc.swagger_client.apis.productversions_api import ProductversionsApi
+from pnc_cli import products
+from pnc_cli import productversions
+from pnc_cli import utils
+from pnc_cli.swagger_client.apis.products_api import ProductsApi
+from pnc_cli.swagger_client.apis.productversions_api import ProductversionsApi
 
 
 product_api = ProductsApi(utils.get_api_client())

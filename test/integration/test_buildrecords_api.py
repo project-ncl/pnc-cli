@@ -1,5 +1,5 @@
-from pnc import utils
-from pnc.swagger_client.apis.buildrecords_api import BuildrecordsApi
+from pnc_cli import utils
+from pnc_cli.swagger_client.apis.buildrecords_api import BuildrecordsApi
 builds_api = BuildrecordsApi(utils.get_api_client())
 
 def test_get_all():

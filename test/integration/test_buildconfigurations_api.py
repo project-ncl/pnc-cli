@@ -1,6 +1,6 @@
-from pnc import buildconfigurations
-from pnc.swagger_client.apis.buildconfigurations_api import BuildconfigurationsApi
-from pnc import utils
+from pnc_cli import buildconfigurations
+from pnc_cli.swagger_client.apis.buildconfigurations_api import BuildconfigurationsApi
+from pnc_cli import utils
 
 configs_api = BuildconfigurationsApi(utils.get_api_client())
 

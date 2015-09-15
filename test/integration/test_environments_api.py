@@ -1,6 +1,6 @@
-from pnc import environments
-from pnc.swagger_client.apis.environments_api import EnvironmentsApi
-from pnc import utils
+from pnc_cli import environments
+from pnc_cli.swagger_client.apis.environments_api import EnvironmentsApi
+from pnc_cli import utils
 
 envs_api = EnvironmentsApi(utils.get_api_client())
 

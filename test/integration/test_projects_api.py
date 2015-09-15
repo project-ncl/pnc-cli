@@ -1,9 +1,9 @@
 import random
 import string
 import pytest
-from pnc import projects
-from pnc.swagger_client.apis.projects_api import ProjectsApi
-from pnc import utils
+from pnc_cli import projects
+from pnc_cli.swagger_client.apis.projects_api import ProjectsApi
+from pnc_cli import utils
 
 projects_api = ProjectsApi(utils.get_api_client())
 
