@@ -5,7 +5,7 @@ README = open(os.path.join(os.path.dirname(__file__), 'README.md')).read()
 setup(
     name='pnc-cli',
     packages=find_packages(exclude=['test*']),
-    version='0.1',
+    version='0.1.1',
     description='CLI wrapper for PNC REST calls',
     author = 'Tom Hauser',
     author_email = 'thauser@redhat.com',
@@ -15,9 +15,9 @@ setup(
     long_description=README,
     install_requires=[
 	    "argh >= 0.26.1",
-        "requests >= 2.4.3"
+        "requests >= 2.4.3",
+        "certifi >= 2015.04.28"
     ],
     #scripts=['pnc_cli/pnc.py']
     entry_points={'console_scripts': ['pnc = pnc_cli.pnc:main']}
-
 )
