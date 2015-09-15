@@ -16,11 +16,8 @@ import runningbuilds
 import productreleases
 import buildrecordsets
 
-
-
-def main():
-    parser = argh.ArghParser()
-    parser.add_commands([products.create_product,
+parser = argh.ArghParser()
+parser.add_commands([products.create_product,
                      products.update_product,
                      products.get_product,
                      products.list_products,
@@ -41,7 +38,7 @@ def main():
                      licenses.list_licenses,
                      buildconfigurations.create_build_configuration,
                      buildconfigurations.build,
-                   #  update_build_configuration,
+                     # update_build_configuration,
                      buildconfigurations.list_build_configurations,
                      environments.create_environment,
                      environments.update_environment,
@@ -80,5 +77,9 @@ def main():
                      buildconfigsetrecords.get_build_config_set_record,
                      buildconfigsetrecords.get_records_for_build_config_set,
                      buildrecordsets.list_build_record_sets])
-    parser.autocomplete()
+parser.autocomplete()
+
+
+
+if __name__ == "__main__":
     parser.dispatch()
