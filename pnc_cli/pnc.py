@@ -80,6 +80,8 @@ parser.add_commands([products.create_product,
 parser.autocomplete()
 
 
+def main():
+    parser.dispatch()
 
 if __name__ == "__main__":
     parser.dispatch()
