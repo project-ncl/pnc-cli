@@ -18,6 +18,7 @@ Copyright 2015 SmartBear Software
     Ref: https://github.com/swagger-api/swagger-codegen
 """
 
+from datetime import datetime
 from pprint import pformat
 from six import iteritems
 
@@ -333,6 +334,8 @@ class BuildConfigurationAudited(object):
                 ))
             elif hasattr(value, "to_dict"):
                 result[attr] = value.to_dict()
+	    elif isinstance(value, datetime):
+		result[attr] = str(value)
             else:
                 result[attr] = value
 
