@@ -62,7 +62,7 @@ def create_project(name, **kwargs):
     :param kwargs:
     :return:
     """
-    project = _create_project_object(**kwargs)
+    project = _create_project_object(name=name,**kwargs)
     projects_api.create(body=project,callback=callback_function)
 
 @arg("-id", "--id", help="ID for the project that will be updated.")
@@ -111,7 +111,7 @@ def delete_project(id=None, name=None):
     proj_id = get_project_id(id, name)
     if not proj_id:
         return
-    projects_api.delete(proj_id, callback=callback_function)
+    projects_api.delete_specific(proj_id, callback=callback_function)
 
 def list_projects():
     """
