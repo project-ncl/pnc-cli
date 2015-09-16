@@ -1,10 +1,12 @@
-from swagger_client.rest import ApiException
+from pprint import pprint
+
+from argh import arg
+
 import utils
 import buildconfigurations
 import projects
-from pprint import pprint
-from argh import arg
 from swagger_client.apis.buildrecords_api import BuildrecordsApi
+
 
 records_api = BuildrecordsApi(utils.get_api_client())
 

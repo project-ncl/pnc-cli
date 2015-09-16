@@ -1,7 +1,10 @@
+from argh import arg
+
 import utils
+
 import swagger_client
 from swagger_client.apis.buildconfigurations_api import BuildconfigurationsApi
-from argh import arg
+
 
 configs_api = BuildconfigurationsApi(utils.get_api_client())
 
@@ -31,7 +34,7 @@ def config_id_exists(search_id):
     :return: True if a build configuration with search_id exists, False otherwise
     """
     existing_ids = [str(x.id) for x in configs_api.get_all().content]
-    return search_id in existing_ids
+    return str(search_id) in existing_ids
 
 def get_config_id(search_id,name):
     """

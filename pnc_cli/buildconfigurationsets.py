@@ -1,5 +1,4 @@
 from pprint import pprint
-import sys
 
 from argh import arg
 
@@ -20,41 +19,49 @@ def _create_build_config_set_object(**kwargs):
     return created_build_config_set
 
 def get_build_config_set_id_by_name(search_name):
-    response = sets_api.get_all()
-    for set in response.json():
+    sets = sets_api.get_all().content
+    for set in sets:
         if set.name == search_name:
             return set.id
     return None
 
-@arg("-a","--attributes", help="Comma separated list to specify attributes to print")
 def list_build_configuration_sets():
-    sets_api.get_all(callback=callback_function)
+    """
+    List all build configurtion sets
+    """
+    response = utils.checked_api_call(sets_api,'get_all')
+    if response: return response.content
 
 @arg("name", help="Name for the new build configuration set.")
 @arg("-pvi", "--product-version-id", help="ID of the product version to associate this build configuration set.")
-@arg("-bcs", "--build-configurations", type=int, nargs='+', help="Space separated list of build-configurations to include in the set.")
-def create_build_config_set(name, product_version_id=None, build_configurations=None):
-    build_configs = None
-
+@arg("-bcs", "--build-configuration_ids", type=int, nargs='+', help="Space separated list of build-configurations to include in the set.")
+def create_build_configuration_set(**kwargs):
+    """
+    Create a new build configuration set.
+    """
+    name = kwargs.get('name')
     if get_build_config_set_id_by_name(name):
         print("A build configuration set with name {0} already exists.").format(name)
         return
 
-    if product_version_id and not productversions.version_exists(product_version_id):
-        print("No product version with id {0} exists.".format(product_version_id))
+    version_id = kwargs.get('product_version_id')
+    if version_id and not productversions.version_exists(version_id):
+        print("No product version with id {0} exists.".format(version_id))
         return
 
+    build_configurations = kwargs.get('build_configuration_ids')
+    failed = False
     if build_configurations:
-        failed = False
-        for config in build_configs:
+        for config in build_configurations:
             if not buildconfigurations.config_id_exists(config):
                 print("No build configuration with id {0} exists.".format(config))
                 failed = True
-        if failed:
-            return
+    if failed:
+        return
 
-    config_set = _create_build_config_set_object(name, product_version_id, build_configs)
-    sets_api.create(config_set, callback=callback_function)
+    config_set = _create_build_config_set_object(**kwargs)
+    response = utils.checked_api_call(sets_api, 'create_new', body=config_set)
+    if response: return response.content
 
 @arg("-id", "--id", help="ID of the build configuration set to retrieve")
 @arg("-n", "--name", help="Name of the build configuration set to retrieve")
