@@ -7,7 +7,7 @@ from argh import arg
 licenses_api = LicensesApi(utils.get_api_client())
 
 def _create_license_object(**kwargs):
-    created_license = swagger_client.models.license.License()
+    created_license = swagger_client.LicenseRest()
     for key, value in kwargs.iteritems():
         setattr(created_license, key, value)
     return created_license

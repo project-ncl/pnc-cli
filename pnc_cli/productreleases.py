@@ -9,7 +9,7 @@ productversions_api = ProductversionsApi(utils.get_api_client())
 releases_api = ProductreleasesApi(utils.get_api_client())
 
 def create_product_release_object(**kwargs):
-    created_release = swagger_client.models.product_release.ProductRelease()
+    created_release = swagger_client.ProductReleaseRest()
     for key, value in kwargs.iteritems():
         setattr(created_release, key ,value)
     return created_release

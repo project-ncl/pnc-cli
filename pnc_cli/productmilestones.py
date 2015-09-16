@@ -10,7 +10,7 @@ productversions_api = ProductversionsApi(utils.get_api_client())
 milestones_api = ProductmilestonesApi(utils.get_api_client())
 
 def create_milestone_object(**kwargs):
-    created_milestone = swagger_client.models.product_milestone.ProductMilestone()
+    created_milestone = swagger_client.ProductMilestoneRest()
     for key, value in kwargs.iteritems():
         setattr(created_milestone, key, value)
     return created_milestone

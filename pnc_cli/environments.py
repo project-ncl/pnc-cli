@@ -11,7 +11,7 @@ envs_api = EnvironmentsApi(utils.get_api_client())
 
 __author__ = 'thauser'
 def _create_environment_object(**kwargs):
-    created_environment = swagger_client.models.environment.Environment()
+    created_environment = swagger_client.EnvironmentRest()
     for key, value in kwargs.iteritems():
         setattr(created_environment, key, value.upper())
     return created_environment

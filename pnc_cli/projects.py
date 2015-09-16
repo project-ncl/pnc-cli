@@ -7,7 +7,7 @@ import utils
 projects_api = ProjectsApi(utils.get_api_client())
 
 def _create_project_object(**kwargs):
-    created_project = swagger_client.models.project.Project()
+    created_project = swagger_client.ProjectRest()
     for key, value in kwargs.iteritems():
         setattr(created_project, key, value)
     return created_project

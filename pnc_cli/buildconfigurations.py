@@ -7,7 +7,7 @@ from argh import arg
 configs_api = BuildconfigurationsApi(utils.get_api_client())
 
 def create_build_conf_object(**kwargs):
-    created_build_configuration = swagger_client.models.configuration.Configuration()
+    created_build_configuration = swagger_client.BuildConfigurationRest()
     for key, value in kwargs.iteritems():
         setattr(created_build_configuration, str(key), value)
     if "build_status" not in kwargs.keys():

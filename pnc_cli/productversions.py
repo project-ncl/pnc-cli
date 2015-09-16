@@ -15,7 +15,7 @@ products_api = ProductsApi(utils.get_api_client())
 __author__ = 'thauser'
 
 def create_product_version_object(**kwargs):
-    created_version = swagger_client.models.product_version.ProductVersion()
+    created_version = swagger_client.ProductVersionRest()
     for key, value in kwargs.iteritems():
         setattr(created_version, key, value)
     return created_version

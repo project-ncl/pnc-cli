@@ -14,7 +14,7 @@ sets_api = BuildconfigurationsetsApi(utils.get_api_client())
 configs_api = BuildconfigurationsApi(utils.get_api_client())
 
 def _create_build_config_set_object(**kwargs):
-    created_build_config_set = swagger_client.models.build_configuration_set.BuildConfigurationSet()
+    created_build_config_set = swagger_client.BuildConfigurationSetRest()
     for key, value in kwargs.iteritems():
         setattr(created_build_config_set, key, value)
     return created_build_config_set

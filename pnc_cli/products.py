@@ -10,7 +10,7 @@ products_api = ProductsApi(utils.get_api_client())
 
 __author__ = 'thauser'
 def _create_product_object(**kwargs):
-    created_product = swagger_client.models.product.Product()
+    created_product = swagger_client.ProductRest()
     for key, value in kwargs.iteritems():
         setattr(created_product, key, value)
     return created_product
