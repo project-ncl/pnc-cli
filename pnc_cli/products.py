@@ -90,7 +90,8 @@ def list_products():
     List all products
     :return:
     """
-    products_api.get_all(callback=callback_function)
+    response = products_api.get_all()
+    pprint(response.content)
 
 def callback_function(response):
     if response:

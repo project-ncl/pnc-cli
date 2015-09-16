@@ -5,6 +5,7 @@ import re
 import errno
 import swagger_client
 import os
+from swagger_client.rest import ApiException
 
 __author__ = 'thauser'
 
@@ -37,3 +38,13 @@ def gen_random_version():
 def is_valid_version(version):
     pattern = re.compile('\d*\.\w*')
     return pattern.match(version)
+
+def checked_api_call(api, func, **kwargs):
+    try:
+        response = getattr(api, func)(**kwargs)
+    except ApiException, e:
+        print e
+    else:
+        return response
+
+
