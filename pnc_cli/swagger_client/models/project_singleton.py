@@ -37,7 +37,7 @@ class ProjectSingleton(object):
                                   and the value is json key in definition.
         """
         self.swagger_types = {
-            'content': 'Project'
+            'content': 'ProjectRest'
         }
 
         self.attribute_map = {
@@ -50,10 +50,10 @@ class ProjectSingleton(object):
     def content(self):
         """
         Gets the content of this ProjectSingleton.
-
+        Content of the response
 
         :return: The content of this ProjectSingleton.
-        :rtype: Project
+        :rtype: ProjectRest
         """
         return self._content
 
@@ -61,10 +61,10 @@ class ProjectSingleton(object):
     def content(self, content):
         """
         Sets the content of this ProjectSingleton.
-
+        Content of the response
 
         :param content: The content of this ProjectSingleton.
-        :type: Project
+        :type: ProjectRest
         """
         self._content = content
 

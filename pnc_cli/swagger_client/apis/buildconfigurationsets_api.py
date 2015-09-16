@@ -144,7 +144,7 @@ class BuildconfigurationsetsApi(object):
 
         :param callback function: The callback function
             for asynchronous request. (optional)
-        :param BuildConfigurationSet body: 
+        :param BuildConfigurationSetRest body: 
         :return: BuildConfigurationSetSingleton
                  If the method is called asynchronously,
                  returns the request thread.
@@ -298,7 +298,7 @@ class BuildconfigurationsetsApi(object):
         :param callback function: The callback function
             for asynchronous request. (optional)
         :param int id: Build Configuration Set id (required)
-        :param GenericRestEntity body: 
+        :param BuildConfigurationSetRest body: 
         :return: None
                  If the method is called asynchronously,
                  returns the request thread.
@@ -505,7 +505,7 @@ class BuildconfigurationsetsApi(object):
 
         # HTTP header `Content-Type`
         header_params['Content-Type'] = self.api_client.\
-            select_header_content_type(['*/*'])
+            select_header_content_type(['application/json'])
 
         # Authentication setting
         auth_settings = []
@@ -628,7 +628,7 @@ class BuildconfigurationsetsApi(object):
         :param callback function: The callback function
             for asynchronous request. (optional)
         :param int id: Build Configuration Set id (required)
-        :param Configuration body: 
+        :param BuildConfigurationRest body: 
         :return: None
                  If the method is called asynchronously,
                  returns the request thread.

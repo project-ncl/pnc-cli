@@ -144,7 +144,7 @@ class ProjectsApi(object):
 
         :param callback function: The callback function
             for asynchronous request. (optional)
-        :param Project body: 
+        :param ProjectRest body: 
         :return: ProjectSingleton
                  If the method is called asynchronously,
                  returns the request thread.
@@ -298,7 +298,7 @@ class ProjectsApi(object):
         :param callback function: The callback function
             for asynchronous request. (optional)
         :param int id: Project id (required)
-        :param Project body: 
+        :param ProjectRest body: 
         :return: None
                  If the method is called asynchronously,
                  returns the request thread.

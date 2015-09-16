@@ -37,8 +37,8 @@ class BuildStatusChangedEventRest(object):
                                   and the value is json key in definition.
         """
         self.swagger_types = {
-            'old_status': 'BuildStatus',
-            'new_status': 'BuildStatus',
+            'old_status': 'str',
+            'new_status': 'str',
             'build_task_id': 'int',
             'user_id': 'int',
             'build_configuration_id': 'int'
@@ -65,7 +65,7 @@ class BuildStatusChangedEventRest(object):
 
 
         :return: The old_status of this BuildStatusChangedEventRest.
-        :rtype: BuildStatus
+        :rtype: str
         """
         return self._old_status
 
@@ -76,8 +76,14 @@ class BuildStatusChangedEventRest(object):
 
 
         :param old_status: The old_status of this BuildStatusChangedEventRest.
-        :type: BuildStatus
+        :type: str
         """
+        allowed_values = ["NEW", "WAITING_FOR_DEPENDENCIES", "REPO_SETTING_UP", "BUILD_ENV_SETTING_UP", "BUILD_ENV_WAITING", "BUILD_ENV_SETUP_COMPLETE_SUCCESS", "BUILD_ENV_SETUP_COMPLETE_WITH_ERROR", "BUILD_SETTING_UP", "BUILD_WAITING", "BUILD_COMPLETED_SUCCESS", "BUILD_COMPLETED_WITH_ERROR", "COLLECTING_RESULTS_FROM_BUILD_DRIVER", "COLLECTING_RESULTS_FROM_REPOSITORY_NAMAGER", "BUILD_ENV_DESTROYING", "BUILD_ENV_DESTROYED", "STORING_RESULTS", "DONE", "REJECTED", "SYSTEM_ERROR", "DONE_WITH_ERRORS"]
+        if old_status not in allowed_values:
+            raise ValueError(
+                "Invalid value for `old_status`, must be one of {0}"
+                .format(allowed_values)
+            )
         self._old_status = old_status
 
     @property
@@ -87,7 +93,7 @@ class BuildStatusChangedEventRest(object):
 
 
         :return: The new_status of this BuildStatusChangedEventRest.
-        :rtype: BuildStatus
+        :rtype: str
         """
         return self._new_status
 
@@ -98,8 +104,14 @@ class BuildStatusChangedEventRest(object):
 
 
         :param new_status: The new_status of this BuildStatusChangedEventRest.
-        :type: BuildStatus
+        :type: str
         """
+        allowed_values = ["NEW", "WAITING_FOR_DEPENDENCIES", "REPO_SETTING_UP", "BUILD_ENV_SETTING_UP", "BUILD_ENV_WAITING", "BUILD_ENV_SETUP_COMPLETE_SUCCESS", "BUILD_ENV_SETUP_COMPLETE_WITH_ERROR", "BUILD_SETTING_UP", "BUILD_WAITING", "BUILD_COMPLETED_SUCCESS", "BUILD_COMPLETED_WITH_ERROR", "COLLECTING_RESULTS_FROM_BUILD_DRIVER", "COLLECTING_RESULTS_FROM_REPOSITORY_NAMAGER", "BUILD_ENV_DESTROYING", "BUILD_ENV_DESTROYED", "STORING_RESULTS", "DONE", "REJECTED", "SYSTEM_ERROR", "DONE_WITH_ERRORS"]
+        if new_status not in allowed_values:
+            raise ValueError(
+                "Invalid value for `new_status`, must be one of {0}"
+                .format(allowed_values)
+            )
         self._new_status = new_status
 
     @property

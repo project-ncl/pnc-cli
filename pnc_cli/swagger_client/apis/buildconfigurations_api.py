@@ -144,7 +144,7 @@ class BuildconfigurationsApi(object):
 
         :param callback function: The callback function
             for asynchronous request. (optional)
-        :param Configuration body: 
+        :param BuildConfigurationRest body: 
         :return: BuildConfigurationSingleton
                  If the method is called asynchronously,
                  returns the request thread.
@@ -574,8 +574,8 @@ class BuildconfigurationsApi(object):
         :param callback function: The callback function
             for asynchronous request. (optional)
         :param int id: Build Configuration id (required)
-        :param GenericRestEntity body: 
-        :return: BuildConfigurationSingleton
+        :param BuildConfigurationRest body: 
+        :return: None
                  If the method is called asynchronously,
                  returns the request thread.
         """
@@ -634,7 +634,7 @@ class BuildconfigurationsApi(object):
                                             body=body_params,
                                             post_params=form_params,
                                             files=files,
-                                            response_type='BuildConfigurationSingleton',
+                                            response_type=None,
                                             auth_settings=auth_settings,
                                             callback=params.get('callback'))
         return response
@@ -904,7 +904,7 @@ class BuildconfigurationsApi(object):
         :param callback function: The callback function
             for asynchronous request. (optional)
         :param int id: Build configuration id (required)
-        :return: BuildRecordSingleton
+        :return: BuildRecordPage
                  If the method is called asynchronously,
                  returns the request thread.
         """
@@ -961,7 +961,7 @@ class BuildconfigurationsApi(object):
                                             body=body_params,
                                             post_params=form_params,
                                             files=files,
-                                            response_type='BuildRecordSingleton',
+                                            response_type='BuildRecordPage',
                                             auth_settings=auth_settings,
                                             callback=params.get('callback'))
         return response
@@ -1150,7 +1150,7 @@ class BuildconfigurationsApi(object):
         :param callback function: The callback function
             for asynchronous request. (optional)
         :param int id: Build Configuration id (required)
-        :param Configuration body: 
+        :param BuildConfigurationRest body: 
         :return: None
                  If the method is called asynchronously,
                  returns the request thread.
@@ -1405,7 +1405,7 @@ class BuildconfigurationsApi(object):
         :param callback function: The callback function
             for asynchronous request. (optional)
         :param int id: Build Configuration id (required)
-        :param ProductVersion body: 
+        :param ProductVersionRest body: 
         :return: None
                  If the method is called asynchronously,
                  returns the request thread.
@@ -1573,7 +1573,7 @@ class BuildconfigurationsApi(object):
         :param int page_index: Page Index
         :param int page_size: Pagination size
         :param str sort: Sorting RSQL
-        :return: BuildConfigurationAuditedPage
+        :return: BuildConfigurationPage
                  If the method is called asynchronously,
                  returns the request thread.
         """
@@ -1636,7 +1636,7 @@ class BuildconfigurationsApi(object):
                                             body=body_params,
                                             post_params=form_params,
                                             files=files,
-                                            response_type='BuildConfigurationAuditedPage',
+                                            response_type='BuildConfigurationPage',
                                             auth_settings=auth_settings,
                                             callback=params.get('callback'))
         return response

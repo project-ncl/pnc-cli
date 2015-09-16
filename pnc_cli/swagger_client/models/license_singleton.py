@@ -37,7 +37,7 @@ class LicenseSingleton(object):
                                   and the value is json key in definition.
         """
         self.swagger_types = {
-            'content': 'License'
+            'content': 'LicenseRest'
         }
 
         self.attribute_map = {
@@ -50,10 +50,10 @@ class LicenseSingleton(object):
     def content(self):
         """
         Gets the content of this LicenseSingleton.
-
+        Content of the response
 
         :return: The content of this LicenseSingleton.
-        :rtype: License
+        :rtype: LicenseRest
         """
         return self._content
 
@@ -61,10 +61,10 @@ class LicenseSingleton(object):
     def content(self, content):
         """
         Sets the content of this LicenseSingleton.
-
+        Content of the response
 
         :param content: The content of this LicenseSingleton.
-        :type: License
+        :type: LicenseRest
         """
         self._content = content
 

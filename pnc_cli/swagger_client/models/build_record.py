@@ -38,52 +38,61 @@ class BuildRecord(object):
         """
         self.swagger_types = {
             'id': 'int',
+            'latest_build_configuration': 'BuildConfiguration',
+            'build_configuration_audited': 'BuildConfigurationAudited',
+            'build_content_id': 'str',
             'submit_time': 'datetime',
             'start_time': 'datetime',
             'end_time': 'datetime',
+            'user': 'User',
+            'build_log': 'str',
             'status': 'str',
-            'build_configuration_id': 'int',
-            'build_configuration_rev': 'int',
-            'user_id': 'int',
+            'built_artifacts': 'list[Artifact]',
+            'dependencies': 'list[Artifact]',
             'build_driver_id': 'str',
-            'system_image_id': 'int',
-            'external_archive_id': 'int',
-            'live_logs_uri': 'str',
-            'build_config_set_record_id': 'int',
-            'build_content_id': 'str'
+            'system_image': 'SystemImage',
+            'build_record_sets': 'list[BuildRecordSet]',
+            'build_config_set_record': 'BuildConfigSetRecord',
+            'external_archive_id': 'int'
         }
 
         self.attribute_map = {
             'id': 'id',
+            'latest_build_configuration': 'latestBuildConfiguration',
+            'build_configuration_audited': 'buildConfigurationAudited',
+            'build_content_id': 'buildContentId',
             'submit_time': 'submitTime',
             'start_time': 'startTime',
             'end_time': 'endTime',
+            'user': 'user',
+            'build_log': 'buildLog',
             'status': 'status',
-            'build_configuration_id': 'buildConfigurationId',
-            'build_configuration_rev': 'buildConfigurationRev',
-            'user_id': 'userId',
+            'built_artifacts': 'builtArtifacts',
+            'dependencies': 'dependencies',
             'build_driver_id': 'buildDriverId',
-            'system_image_id': 'systemImageId',
-            'external_archive_id': 'externalArchiveId',
-            'live_logs_uri': 'liveLogsUri',
-            'build_config_set_record_id': 'buildConfigSetRecordId',
-            'build_content_id': 'buildContentId'
+            'system_image': 'systemImage',
+            'build_record_sets': 'buildRecordSets',
+            'build_config_set_record': 'buildConfigSetRecord',
+            'external_archive_id': 'externalArchiveId'
         }
 
         self._id = None
+        self._latest_build_configuration = None
+        self._build_configuration_audited = None
+        self._build_content_id = None
         self._submit_time = None
         self._start_time = None
         self._end_time = None
+        self._user = None
+        self._build_log = None
         self._status = None
-        self._build_configuration_id = None
-        self._build_configuration_rev = None
-        self._user_id = None
+        self._built_artifacts = None
+        self._dependencies = None
         self._build_driver_id = None
-        self._system_image_id = None
+        self._system_image = None
+        self._build_record_sets = None
+        self._build_config_set_record = None
         self._external_archive_id = None
-        self._live_logs_uri = None
-        self._build_config_set_record_id = None
-        self._build_content_id = None
 
     @property
     def id(self):
@@ -106,6 +115,72 @@ class BuildRecord(object):
         :type: int
         """
         self._id = id
+
+    @property
+    def latest_build_configuration(self):
+        """
+        Gets the latest_build_configuration of this BuildRecord.
+
+
+        :return: The latest_build_configuration of this BuildRecord.
+        :rtype: BuildConfiguration
+        """
+        return self._latest_build_configuration
+
+    @latest_build_configuration.setter
+    def latest_build_configuration(self, latest_build_configuration):
+        """
+        Sets the latest_build_configuration of this BuildRecord.
+
+
+        :param latest_build_configuration: The latest_build_configuration of this BuildRecord.
+        :type: BuildConfiguration
+        """
+        self._latest_build_configuration = latest_build_configuration
+
+    @property
+    def build_configuration_audited(self):
+        """
+        Gets the build_configuration_audited of this BuildRecord.
+
+
+        :return: The build_configuration_audited of this BuildRecord.
+        :rtype: BuildConfigurationAudited
+        """
+        return self._build_configuration_audited
+
+    @build_configuration_audited.setter
+    def build_configuration_audited(self, build_configuration_audited):
+        """
+        Sets the build_configuration_audited of this BuildRecord.
+
+
+        :param build_configuration_audited: The build_configuration_audited of this BuildRecord.
+        :type: BuildConfigurationAudited
+        """
+        self._build_configuration_audited = build_configuration_audited
+
+    @property
+    def build_content_id(self):
+        """
+        Gets the build_content_id of this BuildRecord.
+
+
+        :return: The build_content_id of this BuildRecord.
+        :rtype: str
+        """
+        return self._build_content_id
+
+    @build_content_id.setter
+    def build_content_id(self, build_content_id):
+        """
+        Sets the build_content_id of this BuildRecord.
+
+
+        :param build_content_id: The build_content_id of this BuildRecord.
+        :type: str
+        """
+        self._build_content_id = build_content_id
 
     @property
     def submit_time(self):
@@ -174,6 +249,50 @@ class BuildRecord(object):
         self._end_time = end_time
 
     @property
+    def user(self):
+        """
+        Gets the user of this BuildRecord.
+
+
+        :return: The user of this BuildRecord.
+        :rtype: User
+        """
+        return self._user
+
+    @user.setter
+    def user(self, user):
+        """
+        Sets the user of this BuildRecord.
+
+
+        :param user: The user of this BuildRecord.
+        :type: User
+        """
+        self._user = user
+
+    @property
+    def build_log(self):
+        """
+        Gets the build_log of this BuildRecord.
+
+
+        :return: The build_log of this BuildRecord.
+        :rtype: str
+        """
+        return self._build_log
+
+    @build_log.setter
+    def build_log(self, build_log):
+        """
+        Sets the build_log of this BuildRecord.
+
+
+        :param build_log: The build_log of this BuildRecord.
+        :type: str
+        """
+        self._build_log = build_log
+
+    @property
     def status(self):
         """
         Gets the status of this BuildRecord.
@@ -202,70 +321,48 @@ class BuildRecord(object):
         self._status = status
 
     @property
-    def build_configuration_id(self):
+    def built_artifacts(self):
         """
-        Gets the build_configuration_id of this BuildRecord.
+        Gets the built_artifacts of this BuildRecord.
 
 
-        :return: The build_configuration_id of this BuildRecord.
-        :rtype: int
+        :return: The built_artifacts of this BuildRecord.
+        :rtype: list[Artifact]
         """
-        return self._build_configuration_id
+        return self._built_artifacts
 
-    @build_configuration_id.setter
-    def build_configuration_id(self, build_configuration_id):
+    @built_artifacts.setter
+    def built_artifacts(self, built_artifacts):
         """
-        Sets the build_configuration_id of this BuildRecord.
+        Sets the built_artifacts of this BuildRecord.
 
 
-        :param build_configuration_id: The build_configuration_id of this BuildRecord.
-        :type: int
+        :param built_artifacts: The built_artifacts of this BuildRecord.
+        :type: list[Artifact]
         """
-        self._build_configuration_id = build_configuration_id
+        self._built_artifacts = built_artifacts
 
     @property
-    def build_configuration_rev(self):
+    def dependencies(self):
         """
-        Gets the build_configuration_rev of this BuildRecord.
+        Gets the dependencies of this BuildRecord.
 
 
-        :return: The build_configuration_rev of this BuildRecord.
-        :rtype: int
+        :return: The dependencies of this BuildRecord.
+        :rtype: list[Artifact]
         """
-        return self._build_configuration_rev
+        return self._dependencies
 
-    @build_configuration_rev.setter
-    def build_configuration_rev(self, build_configuration_rev):
+    @dependencies.setter
+    def dependencies(self, dependencies):
         """
-        Sets the build_configuration_rev of this BuildRecord.
+        Sets the dependencies of this BuildRecord.
 
 
-        :param build_configuration_rev: The build_configuration_rev of this BuildRecord.
-        :type: int
+        :param dependencies: The dependencies of this BuildRecord.
+        :type: list[Artifact]
         """
-        self._build_configuration_rev = build_configuration_rev
-
-    @property
-    def user_id(self):
-        """
-        Gets the user_id of this BuildRecord.
-
-
-        :return: The user_id of this BuildRecord.
-        :rtype: int
-        """
-        return self._user_id
-
-    @user_id.setter
-    def user_id(self, user_id):
-        """
-        Sets the user_id of this BuildRecord.
-
-
-        :param user_id: The user_id of this BuildRecord.
-        :type: int
-        """
-        self._user_id = user_id
+        self._dependencies = dependencies
 
     @property
     def build_driver_id(self):
@@ -290,26 +387,70 @@ class BuildRecord(object):
         self._build_driver_id = build_driver_id
 
     @property
-    def system_image_id(self):
+    def system_image(self):
         """
-        Gets the system_image_id of this BuildRecord.
+        Gets the system_image of this BuildRecord.
 
 
-        :return: The system_image_id of this BuildRecord.
-        :rtype: int
+        :return: The system_image of this BuildRecord.
+        :rtype: SystemImage
         """
-        return self._system_image_id
+        return self._system_image
 
-    @system_image_id.setter
-    def system_image_id(self, system_image_id):
+    @system_image.setter
+    def system_image(self, system_image):
         """
-        Sets the system_image_id of this BuildRecord.
+        Sets the system_image of this BuildRecord.
 
 
-        :param system_image_id: The system_image_id of this BuildRecord.
-        :type: int
+        :param system_image: The system_image of this BuildRecord.
+        :type: SystemImage
         """
-        self._system_image_id = system_image_id
+        self._system_image = system_image
+
+    @property
+    def build_record_sets(self):
+        """
+        Gets the build_record_sets of this BuildRecord.
+
+
+        :return: The build_record_sets of this BuildRecord.
+        :rtype: list[BuildRecordSet]
+        """
+        return self._build_record_sets
+
+    @build_record_sets.setter
+    def build_record_sets(self, build_record_sets):
+        """
+        Sets the build_record_sets of this BuildRecord.
+
+
+        :param build_record_sets: The build_record_sets of this BuildRecord.
+        :type: list[BuildRecordSet]
+        """
+        self._build_record_sets = build_record_sets
+
+    @property
+    def build_config_set_record(self):
+        """
+        Gets the build_config_set_record of this BuildRecord.
+
+
+        :return: The build_config_set_record of this BuildRecord.
+        :rtype: BuildConfigSetRecord
+        """
+        return self._build_config_set_record
+
+    @build_config_set_record.setter
+    def build_config_set_record(self, build_config_set_record):
+        """
+        Sets the build_config_set_record of this BuildRecord.
+
+
+        :param build_config_set_record: The build_config_set_record of this BuildRecord.
+        :type: BuildConfigSetRecord
+        """
+        self._build_config_set_record = build_config_set_record
 
     @property
     def external_archive_id(self):
@@ -332,72 +473,6 @@ class BuildRecord(object):
         :type: int
         """
         self._external_archive_id = external_archive_id
-
-    @property
-    def live_logs_uri(self):
-        """
-        Gets the live_logs_uri of this BuildRecord.
-
-
-        :return: The live_logs_uri of this BuildRecord.
-        :rtype: str
-        """
-        return self._live_logs_uri
-
-    @live_logs_uri.setter
-    def live_logs_uri(self, live_logs_uri):
-        """
-        Sets the live_logs_uri of this BuildRecord.
-
-
-        :param live_logs_uri: The live_logs_uri of this BuildRecord.
-        :type: str
-        """
-        self._live_logs_uri = live_logs_uri
-
-    @property
-    def build_config_set_record_id(self):
-        """
-        Gets the build_config_set_record_id of this BuildRecord.
-
-
-        :return: The build_config_set_record_id of this BuildRecord.
-        :rtype: int
-        """
-        return self._build_config_set_record_id
-
-    @build_config_set_record_id.setter
-    def build_config_set_record_id(self, build_config_set_record_id):
-        """
-        Sets the build_config_set_record_id of this BuildRecord.
-
-
-        :param build_config_set_record_id: The build_config_set_record_id of this BuildRecord.
-        :type: int
-        """
-        self._build_config_set_record_id = build_config_set_record_id
-
-    @property
-    def build_content_id(self):
-        """
-        Gets the build_content_id of this BuildRecord.
-
-
-        :return: The build_content_id of this BuildRecord.
-        :rtype: str
-        """
-        return self._build_content_id
-
-    @build_content_id.setter
-    def build_content_id(self, build_content_id):
-        """
-        Sets the build_content_id of this BuildRecord.
-
-
-        :param build_content_id: The build_content_id of this BuildRecord.
-        :type: str
-        """
-        self._build_content_id = build_content_id
 
     def to_dict(self):
         """

@@ -144,7 +144,7 @@ class ProductmilestonesApi(object):
 
         :param callback function: The callback function
             for asynchronous request. (optional)
-        :param GenericRestEntity body: 
+        :param ProductMilestoneRest body: 
         :return: ProductMilestoneSingleton
                  If the method is called asynchronously,
                  returns the request thread.
@@ -388,7 +388,7 @@ class ProductmilestonesApi(object):
         :param callback function: The callback function
             for asynchronous request. (optional)
         :param int id: Product Milestone id (required)
-        :param ProductMilestone body: 
+        :param ProductMilestoneRest body: 
         :return: None
                  If the method is called asynchronously,
                  returns the request thread.

@@ -37,47 +37,44 @@ class BuildConfigurationAudited(object):
                                   and the value is json key in definition.
         """
         self.swagger_types = {
-            'id': 'int',
+            'id': 'IdRev',
             'rev': 'int',
+            'id_rev': 'IdRev',
             'name': 'str',
-            'description': 'str',
             'build_script': 'str',
             'scm_repo_url': 'str',
             'scm_revision': 'str',
-            'creation_time': 'datetime',
-            'last_modification_time': 'datetime',
-            'repositories': 'str',
-            'project_id': 'int',
-            'environment_id': 'int'
+            'description': 'str',
+            'project': 'Project',
+            'environment': 'Environment',
+            'build_records': 'list[BuildRecord]'
         }
 
         self.attribute_map = {
             'id': 'id',
             'rev': 'rev',
+            'id_rev': 'idRev',
             'name': 'name',
-            'description': 'description',
             'build_script': 'buildScript',
             'scm_repo_url': 'scmRepoURL',
             'scm_revision': 'scmRevision',
-            'creation_time': 'creationTime',
-            'last_modification_time': 'lastModificationTime',
-            'repositories': 'repositories',
-            'project_id': 'projectId',
-            'environment_id': 'environmentId'
+            'description': 'description',
+            'project': 'project',
+            'environment': 'environment',
+            'build_records': 'buildRecords'
         }
 
         self._id = None
         self._rev = None
+        self._id_rev = None
         self._name = None
-        self._description = None
         self._build_script = None
         self._scm_repo_url = None
         self._scm_revision = None
-        self._creation_time = None
-        self._last_modification_time = None
-        self._repositories = None
-        self._project_id = None
-        self._environment_id = None
+        self._description = None
+        self._project = None
+        self._environment = None
+        self._build_records = None
 
     @property
     def id(self):
@@ -86,7 +83,7 @@ class BuildConfigurationAudited(object):
 
 
         :return: The id of this BuildConfigurationAudited.
-        :rtype: int
+        :rtype: IdRev
         """
         return self._id
 
@@ -97,7 +94,7 @@ class BuildConfigurationAudited(object):
 
 
         :param id: The id of this BuildConfigurationAudited.
-        :type: int
+        :type: IdRev
         """
         self._id = id
 
@@ -124,6 +121,28 @@ class BuildConfigurationAudited(object):
         self._rev = rev
 
     @property
+    def id_rev(self):
+        """
+        Gets the id_rev of this BuildConfigurationAudited.
+
+
+        :return: The id_rev of this BuildConfigurationAudited.
+        :rtype: IdRev
+        """
+        return self._id_rev
+
+    @id_rev.setter
+    def id_rev(self, id_rev):
+        """
+        Sets the id_rev of this BuildConfigurationAudited.
+
+
+        :param id_rev: The id_rev of this BuildConfigurationAudited.
+        :type: IdRev
+        """
+        self._id_rev = id_rev
+
+    @property
     def name(self):
         """
         Gets the name of this BuildConfigurationAudited.
@@ -144,28 +163,6 @@ class BuildConfigurationAudited(object):
         :type: str
         """
         self._name = name
-
-    @property
-    def description(self):
-        """
-        Gets the description of this BuildConfigurationAudited.
-
-
-        :return: The description of this BuildConfigurationAudited.
-        :rtype: str
-        """
-        return self._description
-
-    @description.setter
-    def description(self, description):
-        """
-        Sets the description of this BuildConfigurationAudited.
-
-
-        :param description: The description of this BuildConfigurationAudited.
-        :type: str
-        """
-        self._description = description
 
     @property
     def build_script(self):
@@ -234,114 +231,92 @@ class BuildConfigurationAudited(object):
         self._scm_revision = scm_revision
 
     @property
-    def creation_time(self):
+    def description(self):
         """
-        Gets the creation_time of this BuildConfigurationAudited.
+        Gets the description of this BuildConfigurationAudited.
 
 
-        :return: The creation_time of this BuildConfigurationAudited.
-        :rtype: datetime
-        """
-        return self._creation_time
-
-    @creation_time.setter
-    def creation_time(self, creation_time):
-        """
-        Sets the creation_time of this BuildConfigurationAudited.
-
-
-        :param creation_time: The creation_time of this BuildConfigurationAudited.
-        :type: datetime
-        """
-        self._creation_time = creation_time
-
-    @property
-    def last_modification_time(self):
-        """
-        Gets the last_modification_time of this BuildConfigurationAudited.
-
-
-        :return: The last_modification_time of this BuildConfigurationAudited.
-        :rtype: datetime
-        """
-        return self._last_modification_time
-
-    @last_modification_time.setter
-    def last_modification_time(self, last_modification_time):
-        """
-        Sets the last_modification_time of this BuildConfigurationAudited.
-
-
-        :param last_modification_time: The last_modification_time of this BuildConfigurationAudited.
-        :type: datetime
-        """
-        self._last_modification_time = last_modification_time
-
-    @property
-    def repositories(self):
-        """
-        Gets the repositories of this BuildConfigurationAudited.
-
-
-        :return: The repositories of this BuildConfigurationAudited.
+        :return: The description of this BuildConfigurationAudited.
         :rtype: str
         """
-        return self._repositories
+        return self._description
 
-    @repositories.setter
-    def repositories(self, repositories):
+    @description.setter
+    def description(self, description):
         """
-        Sets the repositories of this BuildConfigurationAudited.
+        Sets the description of this BuildConfigurationAudited.
 
 
-        :param repositories: The repositories of this BuildConfigurationAudited.
+        :param description: The description of this BuildConfigurationAudited.
         :type: str
         """
-        self._repositories = repositories
+        self._description = description
 
     @property
-    def project_id(self):
+    def project(self):
         """
-        Gets the project_id of this BuildConfigurationAudited.
+        Gets the project of this BuildConfigurationAudited.
 
 
-        :return: The project_id of this BuildConfigurationAudited.
-        :rtype: int
+        :return: The project of this BuildConfigurationAudited.
+        :rtype: Project
         """
-        return self._project_id
+        return self._project
 
-    @project_id.setter
-    def project_id(self, project_id):
+    @project.setter
+    def project(self, project):
         """
-        Sets the project_id of this BuildConfigurationAudited.
+        Sets the project of this BuildConfigurationAudited.
 
 
-        :param project_id: The project_id of this BuildConfigurationAudited.
-        :type: int
+        :param project: The project of this BuildConfigurationAudited.
+        :type: Project
         """
-        self._project_id = project_id
+        self._project = project
 
     @property
-    def environment_id(self):
+    def environment(self):
         """
-        Gets the environment_id of this BuildConfigurationAudited.
+        Gets the environment of this BuildConfigurationAudited.
 
 
-        :return: The environment_id of this BuildConfigurationAudited.
-        :rtype: int
+        :return: The environment of this BuildConfigurationAudited.
+        :rtype: Environment
         """
-        return self._environment_id
+        return self._environment
 
-    @environment_id.setter
-    def environment_id(self, environment_id):
+    @environment.setter
+    def environment(self, environment):
         """
-        Sets the environment_id of this BuildConfigurationAudited.
+        Sets the environment of this BuildConfigurationAudited.
 
 
-        :param environment_id: The environment_id of this BuildConfigurationAudited.
-        :type: int
+        :param environment: The environment of this BuildConfigurationAudited.
+        :type: Environment
         """
-        self._environment_id = environment_id
+        self._environment = environment
+
+    @property
+    def build_records(self):
+        """
+        Gets the build_records of this BuildConfigurationAudited.
+
+
+        :return: The build_records of this BuildConfigurationAudited.
+        :rtype: list[BuildRecord]
+        """
+        return self._build_records
+
+    @build_records.setter
+    def build_records(self, build_records):
+        """
+        Sets the build_records of this BuildConfigurationAudited.
+
+
+        :param build_records: The build_records of this BuildConfigurationAudited.
+        :type: list[BuildRecord]
+        """
+        self._build_records = build_records
 
     def to_dict(self):
         """

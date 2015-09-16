@@ -144,8 +144,8 @@ class BuildrecordsetsApi(object):
 
         :param callback function: The callback function
             for asynchronous request. (optional)
-        :param BuildRecordSet body: 
-        :return: BuildRecordSet
+        :param BuildRecordSetRest body: 
+        :return: BuildRecordSetSingleton
                  If the method is called asynchronously,
                  returns the request thread.
         """
@@ -199,7 +199,7 @@ class BuildrecordsetsApi(object):
                                             body=body_params,
                                             post_params=form_params,
                                             files=files,
-                                            response_type='BuildRecordSet',
+                                            response_type='BuildRecordSetSingleton',
                                             auth_settings=auth_settings,
                                             callback=params.get('callback'))
         return response
@@ -478,7 +478,7 @@ class BuildrecordsetsApi(object):
         :param callback function: The callback function
             for asynchronous request. (optional)
         :param int id: BuildRecordSet id (required)
-        :param BuildRecordSet body: 
+        :param BuildRecordSetRest body: 
         :return: None
                  If the method is called asynchronously,
                  returns the request thread.

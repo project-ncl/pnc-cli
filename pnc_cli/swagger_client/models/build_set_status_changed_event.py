@@ -37,25 +37,25 @@ class BuildSetStatusChangedEvent(object):
                                   and the value is json key in definition.
         """
         self.swagger_types = {
-            'new_status': 'BuildSetStatus',
-            'old_status': 'BuildSetStatus',
-            'build_set_task_id': 'int',
+            'new_status': 'str',
             'build_set_configuration_id': 'int',
+            'build_set_task_id': 'int',
+            'old_status': 'str',
             'user_id': 'int'
         }
 
         self.attribute_map = {
             'new_status': 'newStatus',
-            'old_status': 'oldStatus',
-            'build_set_task_id': 'buildSetTaskId',
             'build_set_configuration_id': 'buildSetConfigurationId',
+            'build_set_task_id': 'buildSetTaskId',
+            'old_status': 'oldStatus',
             'user_id': 'userId'
         }
 
         self._new_status = None
-        self._old_status = None
-        self._build_set_task_id = None
         self._build_set_configuration_id = None
+        self._build_set_task_id = None
+        self._old_status = None
         self._user_id = None
 
     @property
@@ -65,7 +65,7 @@ class BuildSetStatusChangedEvent(object):
 
 
         :return: The new_status of this BuildSetStatusChangedEvent.
-        :rtype: BuildSetStatus
+        :rtype: str
         """
         return self._new_status
 
@@ -76,31 +76,37 @@ class BuildSetStatusChangedEvent(object):
 
 
         :param new_status: The new_status of this BuildSetStatusChangedEvent.
-        :type: BuildSetStatus
+        :type: str
         """
+        allowed_values = ["NEW", "DONE", "REJECTED"]
+        if new_status not in allowed_values:
+            raise ValueError(
+                "Invalid value for `new_status`, must be one of {0}"
+                .format(allowed_values)
+            )
         self._new_status = new_status
 
     @property
-    def old_status(self):
+    def build_set_configuration_id(self):
         """
-        Gets the old_status of this BuildSetStatusChangedEvent.
+        Gets the build_set_configuration_id of this BuildSetStatusChangedEvent.
 
 
-        :return: The old_status of this BuildSetStatusChangedEvent.
-        :rtype: BuildSetStatus
+        :return: The build_set_configuration_id of this BuildSetStatusChangedEvent.
+        :rtype: int
         """
-        return self._old_status
+        return self._build_set_configuration_id
 
-    @old_status.setter
-    def old_status(self, old_status):
+    @build_set_configuration_id.setter
+    def build_set_configuration_id(self, build_set_configuration_id):
         """
-        Sets the old_status of this BuildSetStatusChangedEvent.
+        Sets the build_set_configuration_id of this BuildSetStatusChangedEvent.
 
 
-        :param old_status: The old_status of this BuildSetStatusChangedEvent.
-        :type: BuildSetStatus
+        :param build_set_configuration_id: The build_set_configuration_id of this BuildSetStatusChangedEvent.
+        :type: int
         """
-        self._old_status = old_status
+        self._build_set_configuration_id = build_set_configuration_id
 
     @property
     def build_set_task_id(self):
@@ -125,26 +131,32 @@ class BuildSetStatusChangedEvent(object):
         self._build_set_task_id = build_set_task_id
 
     @property
-    def build_set_configuration_id(self):
+    def old_status(self):
         """
-        Gets the build_set_configuration_id of this BuildSetStatusChangedEvent.
+        Gets the old_status of this BuildSetStatusChangedEvent.
 
 
-        :return: The build_set_configuration_id of this BuildSetStatusChangedEvent.
-        :rtype: int
+        :return: The old_status of this BuildSetStatusChangedEvent.
+        :rtype: str
         """
-        return self._build_set_configuration_id
+        return self._old_status
 
-    @build_set_configuration_id.setter
-    def build_set_configuration_id(self, build_set_configuration_id):
+    @old_status.setter
+    def old_status(self, old_status):
         """
-        Sets the build_set_configuration_id of this BuildSetStatusChangedEvent.
+        Sets the old_status of this BuildSetStatusChangedEvent.
 
 
-        :param build_set_configuration_id: The build_set_configuration_id of this BuildSetStatusChangedEvent.
-        :type: int
+        :param old_status: The old_status of this BuildSetStatusChangedEvent.
+        :type: str
         """
-        self._build_set_configuration_id = build_set_configuration_id
+        allowed_values = ["NEW", "DONE", "REJECTED"]
+        if old_status not in allowed_values:
+            raise ValueError(
+                "Invalid value for `old_status`, must be one of {0}"
+                .format(allowed_values)
+            )
+        self._old_status = old_status
 
     @property
     def user_id(self):

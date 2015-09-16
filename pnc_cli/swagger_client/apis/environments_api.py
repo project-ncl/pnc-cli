@@ -144,7 +144,7 @@ class EnvironmentsApi(object):
 
         :param callback function: The callback function
             for asynchronous request. (optional)
-        :param Environment body: 
+        :param EnvironmentRest body: 
         :return: EnvironmentSingleton
                  If the method is called asynchronously,
                  returns the request thread.
@@ -298,7 +298,7 @@ class EnvironmentsApi(object):
         :param callback function: The callback function
             for asynchronous request. (optional)
         :param int id: Environment id (required)
-        :param Environment body: 
+        :param EnvironmentRest body: 
         :return: None
                  If the method is called asynchronously,
                  returns the request thread.

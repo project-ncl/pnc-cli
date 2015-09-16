@@ -37,7 +37,7 @@ class BuildConfigurationAuditedSingleton(object):
                                   and the value is json key in definition.
         """
         self.swagger_types = {
-            'content': 'BuildConfigurationAudited'
+            'content': 'BuildConfigurationAuditedRest'
         }
 
         self.attribute_map = {
@@ -50,10 +50,10 @@ class BuildConfigurationAuditedSingleton(object):
     def content(self):
         """
         Gets the content of this BuildConfigurationAuditedSingleton.
-
+        Content of the response
 
         :return: The content of this BuildConfigurationAuditedSingleton.
-        :rtype: BuildConfigurationAudited
+        :rtype: BuildConfigurationAuditedRest
         """
         return self._content
 
@@ -61,10 +61,10 @@ class BuildConfigurationAuditedSingleton(object):
     def content(self, content):
         """
         Sets the content of this BuildConfigurationAuditedSingleton.
-
+        Content of the response
 
         :param content: The content of this BuildConfigurationAuditedSingleton.
-        :type: BuildConfigurationAudited
+        :type: BuildConfigurationAuditedRest
         """
         self._content = content
 

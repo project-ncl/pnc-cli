@@ -55,7 +55,7 @@ class Configuration(object):
         Constructor
         """
         # Default Base url
-        self.host = "http://localhost/pnc-rest/rest"
+        self.host = "https://localhost"
         # Default api client
         self.api_client = None
         # Temp file folder for downloading files
@@ -172,6 +172,6 @@ class Configuration(object):
         return "Python SDK Debug Report:\n"\
                "OS: {env}\n"\
                "Python Version: {pyversion}\n"\
-               "Version of the API: 1.0.0\n"\
+               "Version of the API: \n"\
                "SDK Package Version: 1.0.0".\
                format(env=sys.platform, pyversion=sys.version)

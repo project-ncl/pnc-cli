@@ -39,29 +39,29 @@ class ProductVersion(object):
         self.swagger_types = {
             'id': 'int',
             'version': 'str',
-            'product_id': 'int',
-            'current_product_milestone_id': 'int',
-            'build_configuration_set_ids': 'list[int]',
-            'product_milestones': 'list[int]',
-            'product_releases': 'list[int]'
+            'product': 'Product',
+            'build_configuration_sets': 'list[BuildConfigurationSet]',
+            'product_milestones': 'list[ProductMilestone]',
+            'current_product_milestone': 'ProductMilestone',
+            'product_releases': 'list[ProductRelease]'
         }
 
         self.attribute_map = {
             'id': 'id',
             'version': 'version',
-            'product_id': 'productId',
-            'current_product_milestone_id': 'currentProductMilestoneId',
-            'build_configuration_set_ids': 'buildConfigurationSetIds',
+            'product': 'product',
+            'build_configuration_sets': 'buildConfigurationSets',
             'product_milestones': 'productMilestones',
+            'current_product_milestone': 'currentProductMilestone',
             'product_releases': 'productReleases'
         }
 
         self._id = None
         self._version = None
-        self._product_id = None
-        self._current_product_milestone_id = None
-        self._build_configuration_set_ids = None
+        self._product = None
+        self._build_configuration_sets = None
         self._product_milestones = None
+        self._current_product_milestone = None
         self._product_releases = None
 
     @property
@@ -109,70 +109,48 @@ class ProductVersion(object):
         self._version = version
 
     @property
-    def product_id(self):
+    def product(self):
         """
-        Gets the product_id of this ProductVersion.
+        Gets the product of this ProductVersion.
 
 
-        :return: The product_id of this ProductVersion.
-        :rtype: int
+        :return: The product of this ProductVersion.
+        :rtype: Product
         """
-        return self._product_id
+        return self._product
 
-    @product_id.setter
-    def product_id(self, product_id):
+    @product.setter
+    def product(self, product):
         """
-        Sets the product_id of this ProductVersion.
+        Sets the product of this ProductVersion.
 
 
-        :param product_id: The product_id of this ProductVersion.
-        :type: int
+        :param product: The product of this ProductVersion.
+        :type: Product
         """
-        self._product_id = product_id
+        self._product = product
 
     @property
-    def current_product_milestone_id(self):
+    def build_configuration_sets(self):
         """
-        Gets the current_product_milestone_id of this ProductVersion.
+        Gets the build_configuration_sets of this ProductVersion.
 
 
-        :return: The current_product_milestone_id of this ProductVersion.
-        :rtype: int
+        :return: The build_configuration_sets of this ProductVersion.
+        :rtype: list[BuildConfigurationSet]
         """
-        return self._current_product_milestone_id
+        return self._build_configuration_sets
 
-    @current_product_milestone_id.setter
-    def current_product_milestone_id(self, current_product_milestone_id):
+    @build_configuration_sets.setter
+    def build_configuration_sets(self, build_configuration_sets):
         """
-        Sets the current_product_milestone_id of this ProductVersion.
+        Sets the build_configuration_sets of this ProductVersion.
 
 
-        :param current_product_milestone_id: The current_product_milestone_id of this ProductVersion.
-        :type: int
+        :param build_configuration_sets: The build_configuration_sets of this ProductVersion.
+        :type: list[BuildConfigurationSet]
         """
-        self._current_product_milestone_id = current_product_milestone_id
-
-    @property
-    def build_configuration_set_ids(self):
-        """
-        Gets the build_configuration_set_ids of this ProductVersion.
-
-
-        :return: The build_configuration_set_ids of this ProductVersion.
-        :rtype: list[int]
-        """
-        return self._build_configuration_set_ids
-
-    @build_configuration_set_ids.setter
-    def build_configuration_set_ids(self, build_configuration_set_ids):
-        """
-        Sets the build_configuration_set_ids of this ProductVersion.
-
-
-        :param build_configuration_set_ids: The build_configuration_set_ids of this ProductVersion.
-        :type: list[int]
-        """
-        self._build_configuration_set_ids = build_configuration_set_ids
+        self._build_configuration_sets = build_configuration_sets
 
     @property
     def product_milestones(self):
@@ -181,7 +159,7 @@ class ProductVersion(object):
 
 
         :return: The product_milestones of this ProductVersion.
-        :rtype: list[int]
+        :rtype: list[ProductMilestone]
         """
         return self._product_milestones
 
@@ -192,9 +170,31 @@ class ProductVersion(object):
 
 
         :param product_milestones: The product_milestones of this ProductVersion.
-        :type: list[int]
+        :type: list[ProductMilestone]
         """
         self._product_milestones = product_milestones
+
+    @property
+    def current_product_milestone(self):
+        """
+        Gets the current_product_milestone of this ProductVersion.
+
+
+        :return: The current_product_milestone of this ProductVersion.
+        :rtype: ProductMilestone
+        """
+        return self._current_product_milestone
+
+    @current_product_milestone.setter
+    def current_product_milestone(self, current_product_milestone):
+        """
+        Sets the current_product_milestone of this ProductVersion.
+
+
+        :param current_product_milestone: The current_product_milestone of this ProductVersion.
+        :type: ProductMilestone
+        """
+        self._current_product_milestone = current_product_milestone
 
     @property
     def product_releases(self):
@@ -203,7 +203,7 @@ class ProductVersion(object):
 
 
         :return: The product_releases of this ProductVersion.
-        :rtype: list[int]
+        :rtype: list[ProductRelease]
         """
         return self._product_releases
 
@@ -214,7 +214,7 @@ class ProductVersion(object):
 
 
         :param product_releases: The product_releases of this ProductVersion.
-        :type: list[int]
+        :type: list[ProductRelease]
         """
         self._product_releases = product_releases
 

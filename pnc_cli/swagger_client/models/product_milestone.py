@@ -39,39 +39,39 @@ class ProductMilestone(object):
         self.swagger_types = {
             'id': 'int',
             'version': 'str',
-            'release_date': 'datetime',
+            'end_date': 'datetime',
             'starting_date': 'datetime',
-            'planned_release_date': 'datetime',
+            'planned_end_date': 'datetime',
             'download_url': 'str',
-            'product_version_id': 'int',
-            'performed_build_record_set_id': 'int',
-            'distributed_build_record_set_id': 'int',
-            'product_release_id': 'int'
+            'product_version': 'ProductVersion',
+            'product_release': 'ProductRelease',
+            'performed_build_record_set': 'BuildRecordSet',
+            'distributed_build_record_set': 'BuildRecordSet'
         }
 
         self.attribute_map = {
             'id': 'id',
             'version': 'version',
-            'release_date': 'releaseDate',
+            'end_date': 'endDate',
             'starting_date': 'startingDate',
-            'planned_release_date': 'plannedReleaseDate',
+            'planned_end_date': 'plannedEndDate',
             'download_url': 'downloadUrl',
-            'product_version_id': 'productVersionId',
-            'performed_build_record_set_id': 'performedBuildRecordSetId',
-            'distributed_build_record_set_id': 'distributedBuildRecordSetId',
-            'product_release_id': 'productReleaseId'
+            'product_version': 'productVersion',
+            'product_release': 'productRelease',
+            'performed_build_record_set': 'performedBuildRecordSet',
+            'distributed_build_record_set': 'distributedBuildRecordSet'
         }
 
         self._id = None
         self._version = None
-        self._release_date = None
+        self._end_date = None
         self._starting_date = None
-        self._planned_release_date = None
+        self._planned_end_date = None
         self._download_url = None
-        self._product_version_id = None
-        self._performed_build_record_set_id = None
-        self._distributed_build_record_set_id = None
-        self._product_release_id = None
+        self._product_version = None
+        self._product_release = None
+        self._performed_build_record_set = None
+        self._distributed_build_record_set = None
 
     @property
     def id(self):
@@ -118,26 +118,26 @@ class ProductMilestone(object):
         self._version = version
 
     @property
-    def release_date(self):
+    def end_date(self):
         """
-        Gets the release_date of this ProductMilestone.
+        Gets the end_date of this ProductMilestone.
 
 
-        :return: The release_date of this ProductMilestone.
+        :return: The end_date of this ProductMilestone.
         :rtype: datetime
         """
-        return self._release_date
+        return self._end_date
 
-    @release_date.setter
-    def release_date(self, release_date):
+    @end_date.setter
+    def end_date(self, end_date):
         """
-        Sets the release_date of this ProductMilestone.
+        Sets the end_date of this ProductMilestone.
 
 
-        :param release_date: The release_date of this ProductMilestone.
+        :param end_date: The end_date of this ProductMilestone.
         :type: datetime
         """
-        self._release_date = release_date
+        self._end_date = end_date
 
     @property
     def starting_date(self):
@@ -162,26 +162,26 @@ class ProductMilestone(object):
         self._starting_date = starting_date
 
     @property
-    def planned_release_date(self):
+    def planned_end_date(self):
         """
-        Gets the planned_release_date of this ProductMilestone.
+        Gets the planned_end_date of this ProductMilestone.
 
 
-        :return: The planned_release_date of this ProductMilestone.
+        :return: The planned_end_date of this ProductMilestone.
         :rtype: datetime
         """
-        return self._planned_release_date
+        return self._planned_end_date
 
-    @planned_release_date.setter
-    def planned_release_date(self, planned_release_date):
+    @planned_end_date.setter
+    def planned_end_date(self, planned_end_date):
         """
-        Sets the planned_release_date of this ProductMilestone.
+        Sets the planned_end_date of this ProductMilestone.
 
 
-        :param planned_release_date: The planned_release_date of this ProductMilestone.
+        :param planned_end_date: The planned_end_date of this ProductMilestone.
         :type: datetime
         """
-        self._planned_release_date = planned_release_date
+        self._planned_end_date = planned_end_date
 
     @property
     def download_url(self):
@@ -206,92 +206,92 @@ class ProductMilestone(object):
         self._download_url = download_url
 
     @property
-    def product_version_id(self):
+    def product_version(self):
         """
-        Gets the product_version_id of this ProductMilestone.
+        Gets the product_version of this ProductMilestone.
 
 
-        :return: The product_version_id of this ProductMilestone.
-        :rtype: int
+        :return: The product_version of this ProductMilestone.
+        :rtype: ProductVersion
         """
-        return self._product_version_id
+        return self._product_version
 
-    @product_version_id.setter
-    def product_version_id(self, product_version_id):
+    @product_version.setter
+    def product_version(self, product_version):
         """
-        Sets the product_version_id of this ProductMilestone.
+        Sets the product_version of this ProductMilestone.
 
 
-        :param product_version_id: The product_version_id of this ProductMilestone.
-        :type: int
+        :param product_version: The product_version of this ProductMilestone.
+        :type: ProductVersion
         """
-        self._product_version_id = product_version_id
+        self._product_version = product_version
 
     @property
-    def performed_build_record_set_id(self):
+    def product_release(self):
         """
-        Gets the performed_build_record_set_id of this ProductMilestone.
+        Gets the product_release of this ProductMilestone.
 
 
-        :return: The performed_build_record_set_id of this ProductMilestone.
-        :rtype: int
+        :return: The product_release of this ProductMilestone.
+        :rtype: ProductRelease
         """
-        return self._performed_build_record_set_id
+        return self._product_release
 
-    @performed_build_record_set_id.setter
-    def performed_build_record_set_id(self, performed_build_record_set_id):
+    @product_release.setter
+    def product_release(self, product_release):
         """
-        Sets the performed_build_record_set_id of this ProductMilestone.
+        Sets the product_release of this ProductMilestone.
 
 
-        :param performed_build_record_set_id: The performed_build_record_set_id of this ProductMilestone.
-        :type: int
+        :param product_release: The product_release of this ProductMilestone.
+        :type: ProductRelease
         """
-        self._performed_build_record_set_id = performed_build_record_set_id
+        self._product_release = product_release
 
     @property
-    def distributed_build_record_set_id(self):
+    def performed_build_record_set(self):
         """
-        Gets the distributed_build_record_set_id of this ProductMilestone.
+        Gets the performed_build_record_set of this ProductMilestone.
 
 
-        :return: The distributed_build_record_set_id of this ProductMilestone.
-        :rtype: int
+        :return: The performed_build_record_set of this ProductMilestone.
+        :rtype: BuildRecordSet
         """
-        return self._distributed_build_record_set_id
+        return self._performed_build_record_set
 
-    @distributed_build_record_set_id.setter
-    def distributed_build_record_set_id(self, distributed_build_record_set_id):
+    @performed_build_record_set.setter
+    def performed_build_record_set(self, performed_build_record_set):
         """
-        Sets the distributed_build_record_set_id of this ProductMilestone.
+        Sets the performed_build_record_set of this ProductMilestone.
 
 
-        :param distributed_build_record_set_id: The distributed_build_record_set_id of this ProductMilestone.
-        :type: int
+        :param performed_build_record_set: The performed_build_record_set of this ProductMilestone.
+        :type: BuildRecordSet
         """
-        self._distributed_build_record_set_id = distributed_build_record_set_id
+        self._performed_build_record_set = performed_build_record_set
 
     @property
-    def product_release_id(self):
+    def distributed_build_record_set(self):
         """
-        Gets the product_release_id of this ProductMilestone.
+        Gets the distributed_build_record_set of this ProductMilestone.
 
 
-        :return: The product_release_id of this ProductMilestone.
-        :rtype: int
+        :return: The distributed_build_record_set of this ProductMilestone.
+        :rtype: BuildRecordSet
         """
-        return self._product_release_id
+        return self._distributed_build_record_set
 
-    @product_release_id.setter
-    def product_release_id(self, product_release_id):
+    @distributed_build_record_set.setter
+    def distributed_build_record_set(self, distributed_build_record_set):
         """
-        Sets the product_release_id of this ProductMilestone.
+        Sets the distributed_build_record_set of this ProductMilestone.
 
 
-        :param product_release_id: The product_release_id of this ProductMilestone.
-        :type: int
+        :param distributed_build_record_set: The distributed_build_record_set of this ProductMilestone.
+        :type: BuildRecordSet
         """
-        self._product_release_id = product_release_id
+        self._distributed_build_record_set = distributed_build_record_set
 
     def to_dict(self):
         """

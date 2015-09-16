@@ -44,7 +44,7 @@ class Artifact(object):
             'filename': 'str',
             'deploy_url': 'str',
             'status': 'str',
-            'build_record_id': 'int'
+            'build_record': 'BuildRecord'
         }
 
         self.attribute_map = {
@@ -55,7 +55,7 @@ class Artifact(object):
             'filename': 'filename',
             'deploy_url': 'deployUrl',
             'status': 'status',
-            'build_record_id': 'buildRecordId'
+            'build_record': 'buildRecord'
         }
 
         self._id = None
@@ -65,7 +65,7 @@ class Artifact(object):
         self._filename = None
         self._deploy_url = None
         self._status = None
-        self._build_record_id = None
+        self._build_record = None
 
     @property
     def id(self):
@@ -131,7 +131,7 @@ class Artifact(object):
         :param repo_type: The repo_type of this Artifact.
         :type: str
         """
-        allowed_values = [None, "MAVEN", "DOCKER_REGISTRY", "NPM", "COCOA_POD"]
+        allowed_values = ["MAVEN", "DOCKER_REGISTRY", "NPM", "COCOA_POD"]
         if repo_type not in allowed_values:
             raise ValueError(
                 "Invalid value for `repo_type`, must be one of {0}"
@@ -234,26 +234,26 @@ class Artifact(object):
         self._status = status
 
     @property
-    def build_record_id(self):
+    def build_record(self):
         """
-        Gets the build_record_id of this Artifact.
+        Gets the build_record of this Artifact.
 
 
-        :return: The build_record_id of this Artifact.
-        :rtype: int
+        :return: The build_record of this Artifact.
+        :rtype: BuildRecord
         """
-        return self._build_record_id
+        return self._build_record
 
-    @build_record_id.setter
-    def build_record_id(self, build_record_id):
+    @build_record.setter
+    def build_record(self, build_record):
         """
-        Sets the build_record_id of this Artifact.
+        Sets the build_record of this Artifact.
 
 
-        :param build_record_id: The build_record_id of this Artifact.
-        :type: int
+        :param build_record: The build_record of this Artifact.
+        :type: BuildRecord
         """
-        self._build_record_id = build_record_id
+        self._build_record = build_record
 
     def to_dict(self):
         """

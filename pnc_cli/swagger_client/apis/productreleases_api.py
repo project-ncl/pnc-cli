@@ -144,7 +144,7 @@ class ProductreleasesApi(object):
 
         :param callback function: The callback function
             for asynchronous request. (optional)
-        :param GenericRestEntity body: 
+        :param ProductReleaseRest body: 
         :return: ProductReleaseSingleton
                  If the method is called asynchronously,
                  returns the request thread.
@@ -224,7 +224,7 @@ class ProductreleasesApi(object):
         :param int page_size: Pagination size
         :param str sort: Sorting RSQL
         :param str q: RSQL Query
-        :return: ProductReleasePage
+        :return: ProductReleaseSingleton
                  If the method is called asynchronously,
                  returns the request thread.
         """
@@ -289,7 +289,7 @@ class ProductreleasesApi(object):
                                             body=body_params,
                                             post_params=form_params,
                                             files=files,
-                                            response_type='ProductReleasePage',
+                                            response_type='ProductReleaseSingleton',
                                             auth_settings=auth_settings,
                                             callback=params.get('callback'))
         return response
@@ -309,7 +309,7 @@ class ProductreleasesApi(object):
 
         :param callback function: The callback function
             for asynchronous request. (optional)
-        :return: StringPage
+        :return: SupportLevelPage
                  If the method is called asynchronously,
                  returns the request thread.
         """
@@ -361,7 +361,7 @@ class ProductreleasesApi(object):
                                             body=body_params,
                                             post_params=form_params,
                                             files=files,
-                                            response_type='StringPage',
+                                            response_type='SupportLevelPage',
                                             auth_settings=auth_settings,
                                             callback=params.get('callback'))
         return response
@@ -460,7 +460,7 @@ class ProductreleasesApi(object):
         :param callback function: The callback function
             for asynchronous request. (optional)
         :param int id: Product Release id (required)
-        :param ProductRelease body: 
+        :param ProductReleaseRest body: 
         :return: None
                  If the method is called asynchronously,
                  returns the request thread.

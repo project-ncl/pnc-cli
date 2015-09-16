@@ -42,8 +42,8 @@ class Project(object):
             'description': 'str',
             'issue_tracker_url': 'str',
             'project_url': 'str',
-            'configuration_ids': 'list[int]',
-            'license_id': 'int'
+            'license': 'License',
+            'build_configurations': 'list[BuildConfiguration]'
         }
 
         self.attribute_map = {
@@ -52,8 +52,8 @@ class Project(object):
             'description': 'description',
             'issue_tracker_url': 'issueTrackerUrl',
             'project_url': 'projectUrl',
-            'configuration_ids': 'configurationIds',
-            'license_id': 'licenseId'
+            'license': 'license',
+            'build_configurations': 'buildConfigurations'
         }
 
         self._id = None
@@ -61,8 +61,8 @@ class Project(object):
         self._description = None
         self._issue_tracker_url = None
         self._project_url = None
-        self._configuration_ids = None
-        self._license_id = None
+        self._license = None
+        self._build_configurations = None
 
     @property
     def id(self):
@@ -175,48 +175,48 @@ class Project(object):
         self._project_url = project_url
 
     @property
-    def configuration_ids(self):
+    def license(self):
         """
-        Gets the configuration_ids of this Project.
+        Gets the license of this Project.
 
 
-        :return: The configuration_ids of this Project.
-        :rtype: list[int]
+        :return: The license of this Project.
+        :rtype: License
         """
-        return self._configuration_ids
+        return self._license
 
-    @configuration_ids.setter
-    def configuration_ids(self, configuration_ids):
+    @license.setter
+    def license(self, license):
         """
-        Sets the configuration_ids of this Project.
+        Sets the license of this Project.
 
 
-        :param configuration_ids: The configuration_ids of this Project.
-        :type: list[int]
+        :param license: The license of this Project.
+        :type: License
         """
-        self._configuration_ids = configuration_ids
+        self._license = license
 
     @property
-    def license_id(self):
+    def build_configurations(self):
         """
-        Gets the license_id of this Project.
+        Gets the build_configurations of this Project.
 
 
-        :return: The license_id of this Project.
-        :rtype: int
+        :return: The build_configurations of this Project.
+        :rtype: list[BuildConfiguration]
         """
-        return self._license_id
+        return self._build_configurations
 
-    @license_id.setter
-    def license_id(self, license_id):
+    @build_configurations.setter
+    def build_configurations(self, build_configurations):
         """
-        Sets the license_id of this Project.
+        Sets the build_configurations of this Project.
 
 
-        :param license_id: The license_id of this Project.
-        :type: int
+        :param build_configurations: The build_configurations of this Project.
+        :type: list[BuildConfiguration]
         """
-        self._license_id = license_id
+        self._build_configurations = build_configurations
 
     def to_dict(self):
         """

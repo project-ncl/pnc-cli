@@ -37,7 +37,7 @@ class BuildRecordSetSingleton(object):
                                   and the value is json key in definition.
         """
         self.swagger_types = {
-            'content': 'BuildRecordSet'
+            'content': 'BuildRecordSetRest'
         }
 
         self.attribute_map = {
@@ -50,10 +50,10 @@ class BuildRecordSetSingleton(object):
     def content(self):
         """
         Gets the content of this BuildRecordSetSingleton.
-
+        Content of the response
 
         :return: The content of this BuildRecordSetSingleton.
-        :rtype: BuildRecordSet
+        :rtype: BuildRecordSetRest
         """
         return self._content
 
@@ -61,10 +61,10 @@ class BuildRecordSetSingleton(object):
     def content(self, content):
         """
         Sets the content of this BuildRecordSetSingleton.
-
+        Content of the response
 
         :param content: The content of this BuildRecordSetSingleton.
-        :type: BuildRecordSet
+        :type: BuildRecordSetRest
         """
         self._content = content
 

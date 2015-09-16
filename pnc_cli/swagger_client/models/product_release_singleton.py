@@ -37,7 +37,7 @@ class ProductReleaseSingleton(object):
                                   and the value is json key in definition.
         """
         self.swagger_types = {
-            'content': 'ProductRelease'
+            'content': 'ProductReleaseRest'
         }
 
         self.attribute_map = {
@@ -50,10 +50,10 @@ class ProductReleaseSingleton(object):
     def content(self):
         """
         Gets the content of this ProductReleaseSingleton.
-
+        Content of the response
 
         :return: The content of this ProductReleaseSingleton.
-        :rtype: ProductRelease
+        :rtype: ProductReleaseRest
         """
         return self._content
 
@@ -61,10 +61,10 @@ class ProductReleaseSingleton(object):
     def content(self, content):
         """
         Sets the content of this ProductReleaseSingleton.
-
+        Content of the response
 
         :param content: The content of this ProductReleaseSingleton.
-        :type: ProductRelease
+        :type: ProductReleaseRest
         """
         self._content = content
 

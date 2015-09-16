@@ -64,7 +64,7 @@ class UsersApi(object):
         :param int page_size: Pagination size
         :param str sort: Sorting RSQL
         :param str q: RSQL Query
-        :return: Page
+        :return: UserPage
                  If the method is called asynchronously,
                  returns the request thread.
         """
@@ -124,7 +124,7 @@ class UsersApi(object):
                                             body=body_params,
                                             post_params=form_params,
                                             files=files,
-                                            response_type='Page',
+                                            response_type='UserPage',
                                             auth_settings=auth_settings,
                                             callback=params.get('callback'))
         return response
@@ -144,8 +144,8 @@ class UsersApi(object):
 
         :param callback function: The callback function
             for asynchronous request. (optional)
-        :param User body: 
-        :return: Singleton
+        :param UserRest body: 
+        :return: UserSingleton
                  If the method is called asynchronously,
                  returns the request thread.
         """
@@ -199,7 +199,7 @@ class UsersApi(object):
                                             body=body_params,
                                             post_params=form_params,
                                             files=files,
-                                            response_type='Singleton',
+                                            response_type='UserSingleton',
                                             auth_settings=auth_settings,
                                             callback=params.get('callback'))
         return response
@@ -220,7 +220,7 @@ class UsersApi(object):
         :param callback function: The callback function
             for asynchronous request. (optional)
         :param int id: User id (required)
-        :return: Singleton
+        :return: UserSingleton
                  If the method is called asynchronously,
                  returns the request thread.
         """
@@ -277,7 +277,7 @@ class UsersApi(object):
                                             body=body_params,
                                             post_params=form_params,
                                             files=files,
-                                            response_type='Singleton',
+                                            response_type='UserSingleton',
                                             auth_settings=auth_settings,
                                             callback=params.get('callback'))
         return response
@@ -298,7 +298,7 @@ class UsersApi(object):
         :param callback function: The callback function
             for asynchronous request. (optional)
         :param int id: User id (required)
-        :param User body: 
+        :param UserRest body: 
         :return: None
                  If the method is called asynchronously,
                  returns the request thread.

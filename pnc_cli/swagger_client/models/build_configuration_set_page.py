@@ -37,45 +37,45 @@ class BuildConfigurationSetPage(object):
                                   and the value is json key in definition.
         """
         self.swagger_types = {
-            'content': 'list[BuildConfigurationSet]',
+            'page_index': 'int',
             'page_size': 'int',
             'total_pages': 'int',
-            'page_index': 'int'
+            'content': 'list[BuildConfigurationSetRest]'
         }
 
         self.attribute_map = {
-            'content': 'content',
+            'page_index': 'pageIndex',
             'page_size': 'pageSize',
             'total_pages': 'totalPages',
-            'page_index': 'pageIndex'
+            'content': 'content'
         }
 
-        self._content = None
+        self._page_index = None
         self._page_size = None
         self._total_pages = None
-        self._page_index = None
+        self._content = None
 
     @property
-    def content(self):
+    def page_index(self):
         """
-        Gets the content of this BuildConfigurationSetPage.
+        Gets the page_index of this BuildConfigurationSetPage.
+        Page index
 
-
-        :return: The content of this BuildConfigurationSetPage.
-        :rtype: list[BuildConfigurationSet]
+        :return: The page_index of this BuildConfigurationSetPage.
+        :rtype: int
         """
-        return self._content
+        return self._page_index
 
-    @content.setter
-    def content(self, content):
+    @page_index.setter
+    def page_index(self, page_index):
         """
-        Sets the content of this BuildConfigurationSetPage.
+        Sets the page_index of this BuildConfigurationSetPage.
+        Page index
 
-
-        :param content: The content of this BuildConfigurationSetPage.
-        :type: list[BuildConfigurationSet]
+        :param page_index: The page_index of this BuildConfigurationSetPage.
+        :type: int
         """
-        self._content = content
+        self._page_index = page_index
 
     @property
     def page_size(self):
@@ -122,26 +122,26 @@ class BuildConfigurationSetPage(object):
         self._total_pages = total_pages
 
     @property
-    def page_index(self):
+    def content(self):
         """
-        Gets the page_index of this BuildConfigurationSetPage.
-        Page index
+        Gets the content of this BuildConfigurationSetPage.
+        Embedded collection of data
 
-        :return: The page_index of this BuildConfigurationSetPage.
-        :rtype: int
+        :return: The content of this BuildConfigurationSetPage.
+        :rtype: list[BuildConfigurationSetRest]
         """
-        return self._page_index
+        return self._content
 
-    @page_index.setter
-    def page_index(self, page_index):
+    @content.setter
+    def content(self, content):
         """
-        Sets the page_index of this BuildConfigurationSetPage.
-        Page index
+        Sets the content of this BuildConfigurationSetPage.
+        Embedded collection of data
 
-        :param page_index: The page_index of this BuildConfigurationSetPage.
-        :type: int
+        :param content: The content of this BuildConfigurationSetPage.
+        :type: list[BuildConfigurationSetRest]
         """
-        self._page_index = page_index
+        self._content = content
 
     def to_dict(self):
         """

@@ -144,7 +144,7 @@ class ProductsApi(object):
 
         :param callback function: The callback function
             for asynchronous request. (optional)
-        :param Product body: 
+        :param ProductRest body: 
         :return: ProductSingleton
                  If the method is called asynchronously,
                  returns the request thread.
@@ -298,7 +298,7 @@ class ProductsApi(object):
         :param callback function: The callback function
             for asynchronous request. (optional)
         :param int id: Product id (required)
-        :param Product body: 
+        :param ProductRest body: 
         :return: None
                  If the method is called asynchronously,
                  returns the request thread.

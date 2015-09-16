@@ -325,7 +325,7 @@ class BuildrecordsApi(object):
         :param callback function: The callback function
             for asynchronous request. (optional)
         :param int id: BuildRecord id (required)
-        :return: BuildRecordSingleton
+        :return: Singleton
                  If the method is called asynchronously,
                  returns the request thread.
         """
@@ -382,7 +382,7 @@ class BuildrecordsApi(object):
                                             body=body_params,
                                             post_params=form_params,
                                             files=files,
-                                            response_type='BuildRecordSingleton',
+                                            response_type='Singleton',
                                             auth_settings=auth_settings,
                                             callback=params.get('callback'))
         return response
@@ -407,7 +407,7 @@ class BuildrecordsApi(object):
         :param int page_size: Pagination size
         :param str sort: Sorting RSQL
         :param str q: RSQL Query
-        :return: ArtifactPage
+        :return: BuildRecordPage
                  If the method is called asynchronously,
                  returns the request thread.
         """
@@ -472,7 +472,7 @@ class BuildrecordsApi(object):
                                             body=body_params,
                                             post_params=form_params,
                                             files=files,
-                                            response_type='ArtifactPage',
+                                            response_type='BuildRecordPage',
                                             auth_settings=auth_settings,
                                             callback=params.get('callback'))
         return response

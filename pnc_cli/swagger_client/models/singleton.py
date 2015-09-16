@@ -37,7 +37,7 @@ class Singleton(object):
                                   and the value is json key in definition.
         """
         self.swagger_types = {
-            'content': 'T'
+            'content': 'object'
         }
 
         self.attribute_map = {
@@ -50,10 +50,10 @@ class Singleton(object):
     def content(self):
         """
         Gets the content of this Singleton.
-        Content of the response
+
 
         :return: The content of this Singleton.
-        :rtype: T
+        :rtype: object
         """
         return self._content
 
@@ -61,10 +61,10 @@ class Singleton(object):
     def content(self, content):
         """
         Sets the content of this Singleton.
-        Content of the response
+
 
         :param content: The content of this Singleton.
-        :type: T
+        :type: object
         """
         self._content = content
 

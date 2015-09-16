@@ -41,7 +41,8 @@ class User(object):
             'email': 'str',
             'first_name': 'str',
             'last_name': 'str',
-            'username': 'str'
+            'username': 'str',
+            'build_records': 'list[BuildRecord]'
         }
 
         self.attribute_map = {
@@ -49,7 +50,8 @@ class User(object):
             'email': 'email',
             'first_name': 'firstName',
             'last_name': 'lastName',
-            'username': 'username'
+            'username': 'username',
+            'build_records': 'buildRecords'
         }
 
         self._id = None
@@ -57,6 +59,7 @@ class User(object):
         self._first_name = None
         self._last_name = None
         self._username = None
+        self._build_records = None
 
     @property
     def id(self):
@@ -167,6 +170,28 @@ class User(object):
         :type: str
         """
         self._username = username
+
+    @property
+    def build_records(self):
+        """
+        Gets the build_records of this User.
+
+
+        :return: The build_records of this User.
+        :rtype: list[BuildRecord]
+        """
+        return self._build_records
+
+    @build_records.setter
+    def build_records(self, build_records):
+        """
+        Sets the build_records of this User.
+
+
+        :param build_records: The build_records of this User.
+        :type: list[BuildRecord]
+        """
+        self._build_records = build_records
 
     def to_dict(self):
         """

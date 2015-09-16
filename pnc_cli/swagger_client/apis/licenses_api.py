@@ -144,7 +144,7 @@ class LicensesApi(object):
 
         :param callback function: The callback function
             for asynchronous request. (optional)
-        :param License body: 
+        :param LicenseRest body: 
         :return: LicenseSingleton
                  If the method is called asynchronously,
                  returns the request thread.
@@ -298,7 +298,7 @@ class LicensesApi(object):
         :param callback function: The callback function
             for asynchronous request. (optional)
         :param int id: License id (required)
-        :param GenericRestEntity body: 
+        :param LicenseRest body: 
         :return: None
                  If the method is called asynchronously,
                  returns the request thread.

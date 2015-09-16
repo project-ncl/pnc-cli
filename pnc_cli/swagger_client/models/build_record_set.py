@@ -38,22 +38,28 @@ class BuildRecordSet(object):
         """
         self.swagger_types = {
             'id': 'int',
-            'performed_in_product_milestone_id': 'int',
-            'distributed_in_product_milestone_id': 'int',
-            'build_record_ids': 'list[int]'
+            'description': 'str',
+            'performed_in_product_milestone': 'ProductMilestone',
+            'distributed_in_product_milestone': 'ProductMilestone',
+            'build_set_content_id': 'str',
+            'build_records': 'list[BuildRecord]'
         }
 
         self.attribute_map = {
             'id': 'id',
-            'performed_in_product_milestone_id': 'performedInProductMilestoneId',
-            'distributed_in_product_milestone_id': 'distributedInProductMilestoneId',
-            'build_record_ids': 'buildRecordIds'
+            'description': 'description',
+            'performed_in_product_milestone': 'performedInProductMilestone',
+            'distributed_in_product_milestone': 'distributedInProductMilestone',
+            'build_set_content_id': 'buildSetContentId',
+            'build_records': 'buildRecords'
         }
 
         self._id = None
-        self._performed_in_product_milestone_id = None
-        self._distributed_in_product_milestone_id = None
-        self._build_record_ids = None
+        self._description = None
+        self._performed_in_product_milestone = None
+        self._distributed_in_product_milestone = None
+        self._build_set_content_id = None
+        self._build_records = None
 
     @property
     def id(self):
@@ -78,70 +84,114 @@ class BuildRecordSet(object):
         self._id = id
 
     @property
-    def performed_in_product_milestone_id(self):
+    def description(self):
         """
-        Gets the performed_in_product_milestone_id of this BuildRecordSet.
+        Gets the description of this BuildRecordSet.
 
 
-        :return: The performed_in_product_milestone_id of this BuildRecordSet.
-        :rtype: int
+        :return: The description of this BuildRecordSet.
+        :rtype: str
         """
-        return self._performed_in_product_milestone_id
+        return self._description
 
-    @performed_in_product_milestone_id.setter
-    def performed_in_product_milestone_id(self, performed_in_product_milestone_id):
+    @description.setter
+    def description(self, description):
         """
-        Sets the performed_in_product_milestone_id of this BuildRecordSet.
+        Sets the description of this BuildRecordSet.
 
 
-        :param performed_in_product_milestone_id: The performed_in_product_milestone_id of this BuildRecordSet.
-        :type: int
+        :param description: The description of this BuildRecordSet.
+        :type: str
         """
-        self._performed_in_product_milestone_id = performed_in_product_milestone_id
+        self._description = description
 
     @property
-    def distributed_in_product_milestone_id(self):
+    def performed_in_product_milestone(self):
         """
-        Gets the distributed_in_product_milestone_id of this BuildRecordSet.
+        Gets the performed_in_product_milestone of this BuildRecordSet.
 
 
-        :return: The distributed_in_product_milestone_id of this BuildRecordSet.
-        :rtype: int
+        :return: The performed_in_product_milestone of this BuildRecordSet.
+        :rtype: ProductMilestone
         """
-        return self._distributed_in_product_milestone_id
+        return self._performed_in_product_milestone
 
-    @distributed_in_product_milestone_id.setter
-    def distributed_in_product_milestone_id(self, distributed_in_product_milestone_id):
+    @performed_in_product_milestone.setter
+    def performed_in_product_milestone(self, performed_in_product_milestone):
         """
-        Sets the distributed_in_product_milestone_id of this BuildRecordSet.
+        Sets the performed_in_product_milestone of this BuildRecordSet.
 
 
-        :param distributed_in_product_milestone_id: The distributed_in_product_milestone_id of this BuildRecordSet.
-        :type: int
+        :param performed_in_product_milestone: The performed_in_product_milestone of this BuildRecordSet.
+        :type: ProductMilestone
         """
-        self._distributed_in_product_milestone_id = distributed_in_product_milestone_id
+        self._performed_in_product_milestone = performed_in_product_milestone
 
     @property
-    def build_record_ids(self):
+    def distributed_in_product_milestone(self):
         """
-        Gets the build_record_ids of this BuildRecordSet.
+        Gets the distributed_in_product_milestone of this BuildRecordSet.
 
 
-        :return: The build_record_ids of this BuildRecordSet.
-        :rtype: list[int]
+        :return: The distributed_in_product_milestone of this BuildRecordSet.
+        :rtype: ProductMilestone
         """
-        return self._build_record_ids
+        return self._distributed_in_product_milestone
 
-    @build_record_ids.setter
-    def build_record_ids(self, build_record_ids):
+    @distributed_in_product_milestone.setter
+    def distributed_in_product_milestone(self, distributed_in_product_milestone):
         """
-        Sets the build_record_ids of this BuildRecordSet.
+        Sets the distributed_in_product_milestone of this BuildRecordSet.
 
 
-        :param build_record_ids: The build_record_ids of this BuildRecordSet.
-        :type: list[int]
+        :param distributed_in_product_milestone: The distributed_in_product_milestone of this BuildRecordSet.
+        :type: ProductMilestone
         """
-        self._build_record_ids = build_record_ids
+        self._distributed_in_product_milestone = distributed_in_product_milestone
+
+    @property
+    def build_set_content_id(self):
+        """
+        Gets the build_set_content_id of this BuildRecordSet.
+
+
+        :return: The build_set_content_id of this BuildRecordSet.
+        :rtype: str
+        """
+        return self._build_set_content_id
+
+    @build_set_content_id.setter
+    def build_set_content_id(self, build_set_content_id):
+        """
+        Sets the build_set_content_id of this BuildRecordSet.
+
+
+        :param build_set_content_id: The build_set_content_id of this BuildRecordSet.
+        :type: str
+        """
+        self._build_set_content_id = build_set_content_id
+
+    @property
+    def build_records(self):
+        """
+        Gets the build_records of this BuildRecordSet.
+
+
+        :return: The build_records of this BuildRecordSet.
+        :rtype: list[BuildRecord]
+        """
+        return self._build_records
+
+    @build_records.setter
+    def build_records(self, build_records):
+        """
+        Sets the build_records of this BuildRecordSet.
+
+
+        :param build_records: The build_records of this BuildRecordSet.
+        :type: list[BuildRecord]
+        """
+        self._build_records = build_records
 
     def to_dict(self):
         """

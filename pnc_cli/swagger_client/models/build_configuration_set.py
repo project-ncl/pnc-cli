@@ -39,21 +39,24 @@ class BuildConfigurationSet(object):
         self.swagger_types = {
             'id': 'int',
             'name': 'str',
-            'product_version_id': 'int',
-            'build_configuration_ids': 'list[int]'
+            'product_version': 'ProductVersion',
+            'build_configurations': 'list[BuildConfiguration]',
+            'build_config_set_records': 'list[BuildConfigSetRecord]'
         }
 
         self.attribute_map = {
             'id': 'id',
             'name': 'name',
-            'product_version_id': 'productVersionId',
-            'build_configuration_ids': 'buildConfigurationIds'
+            'product_version': 'productVersion',
+            'build_configurations': 'buildConfigurations',
+            'build_config_set_records': 'buildConfigSetRecords'
         }
 
         self._id = None
         self._name = None
-        self._product_version_id = None
-        self._build_configuration_ids = None
+        self._product_version = None
+        self._build_configurations = None
+        self._build_config_set_records = None
 
     @property
     def id(self):
@@ -100,48 +103,70 @@ class BuildConfigurationSet(object):
         self._name = name
 
     @property
-    def product_version_id(self):
+    def product_version(self):
         """
-        Gets the product_version_id of this BuildConfigurationSet.
+        Gets the product_version of this BuildConfigurationSet.
 
 
-        :return: The product_version_id of this BuildConfigurationSet.
-        :rtype: int
+        :return: The product_version of this BuildConfigurationSet.
+        :rtype: ProductVersion
         """
-        return self._product_version_id
+        return self._product_version
 
-    @product_version_id.setter
-    def product_version_id(self, product_version_id):
+    @product_version.setter
+    def product_version(self, product_version):
         """
-        Sets the product_version_id of this BuildConfigurationSet.
+        Sets the product_version of this BuildConfigurationSet.
 
 
-        :param product_version_id: The product_version_id of this BuildConfigurationSet.
-        :type: int
+        :param product_version: The product_version of this BuildConfigurationSet.
+        :type: ProductVersion
         """
-        self._product_version_id = product_version_id
+        self._product_version = product_version
 
     @property
-    def build_configuration_ids(self):
+    def build_configurations(self):
         """
-        Gets the build_configuration_ids of this BuildConfigurationSet.
+        Gets the build_configurations of this BuildConfigurationSet.
 
 
-        :return: The build_configuration_ids of this BuildConfigurationSet.
-        :rtype: list[int]
+        :return: The build_configurations of this BuildConfigurationSet.
+        :rtype: list[BuildConfiguration]
         """
-        return self._build_configuration_ids
+        return self._build_configurations
 
-    @build_configuration_ids.setter
-    def build_configuration_ids(self, build_configuration_ids):
+    @build_configurations.setter
+    def build_configurations(self, build_configurations):
         """
-        Sets the build_configuration_ids of this BuildConfigurationSet.
+        Sets the build_configurations of this BuildConfigurationSet.
 
 
-        :param build_configuration_ids: The build_configuration_ids of this BuildConfigurationSet.
-        :type: list[int]
+        :param build_configurations: The build_configurations of this BuildConfigurationSet.
+        :type: list[BuildConfiguration]
         """
-        self._build_configuration_ids = build_configuration_ids
+        self._build_configurations = build_configurations
+
+    @property
+    def build_config_set_records(self):
+        """
+        Gets the build_config_set_records of this BuildConfigurationSet.
+
+
+        :return: The build_config_set_records of this BuildConfigurationSet.
+        :rtype: list[BuildConfigSetRecord]
+        """
+        return self._build_config_set_records
+
+    @build_config_set_records.setter
+    def build_config_set_records(self, build_config_set_records):
+        """
+        Sets the build_config_set_records of this BuildConfigurationSet.
+
+
+        :param build_config_set_records: The build_config_set_records of this BuildConfigurationSet.
+        :type: list[BuildConfigSetRecord]
+        """
+        self._build_config_set_records = build_config_set_records
 
     def to_dict(self):
         """
