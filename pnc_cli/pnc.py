@@ -76,7 +76,8 @@ parser.add_commands([products.create_product,
                      buildconfigsetrecords.list_build_config_set_records,
                      buildconfigsetrecords.get_build_config_set_record,
                      buildconfigsetrecords.get_records_for_build_config_set,
-                     buildrecordsets.list_build_record_sets])
+                     buildrecordsets.list_build_record_sets,
+                     buildrecordsets.get_build_record_set])
 parser.autocomplete()
 
 
