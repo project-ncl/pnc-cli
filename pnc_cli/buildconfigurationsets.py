@@ -1,5 +1,3 @@
-from pprint import pprint
-
 from argh import arg
 
 import swagger_client
@@ -65,28 +63,28 @@ def create_build_configuration_set(**kwargs):
 
 @arg("-id", "--id", help="ID of the build configuration set to retrieve")
 @arg("-n", "--name", help="Name of the build configuration set to retrieve")
-def get_build_config_set(id=None, name=None):
-    set_id = get_set_id(id,name)
-    if not set_id:
+def get_build_configuration_set(id=None, name=None):
+    """
+    Get a specific build configuration set by name or ID
+    """
+    if not get_set_id(id,name):
         return
-    sets_api.get_specific(id=set_id, callback=callback_function)
+    response = utils.checked_api_call(sets_api, 'get_specific', id=id)
+    if response: return response.content
 
-@arg("-i", "--id", help="ID of the build configuration set to update.")
-@arg("-n", "--name", help="Name for the build configuration set to update.")
-@arg("-un", "--updated-name", help="Updated name for the build configuration set.")
+@arg("id", help="ID of the build configuration set to update.")
+@arg("-n", "--name", help="Updated name for the build configuration set.")
 @arg("-pvi", "--product-version-id", help="Updated product version ID for the build configuration set.")
-@arg("-bc", "--build-configurations", help="Comma separated list of build configurations to include in the updated set.")
-def update_build_config_set(id=None, name=None, updated_name=None, product_version_id=None, build_configurations=None):
-    build_configs = None
-    set_id = get_set_id(id,name)
-    if not set_id:
+@arg("-bcs", "--build-configuration_ids", type=int, nargs='+', help="Space separated list of build-configurations to include in the set.")
+def update_build_configuration_set(id, **kwargs):
+    """
+    Update a build configuration set
+    """
+    if not get_set_id(id):
         return
-
-    if build_configurations:
-        build_configs = build_configurations.split(',')
-
-    updated_build_config_set = _create_build_config_set_object(name=updated_name, productVersionId=product_version_id, buildConfigurationIds=build_configs)
-    sets_api.update(id=set_id, body=updated_build_config_set, callback=callback_function)
+    updated_build_config_set = _create_build_config_set_object(**kwargs)
+    response = sets_api.update(id=id, body=updated_build_config_set)
+    return response
 
 @arg("-i", "--id", help="ID of the build configuration set to delete.")
 @arg("-n", "--name", help="Name of the build configuration set to delete.")
@@ -96,11 +94,12 @@ def delete_build_config_set(id=None, name=None):
     set_id = get_set_id(id,name)
     if not set_id:
         return
-    sets_api.delete_specific(id=set_id, callback=callback_function)
+    response = utils.checked_api_call(sets_api, 'delete_specific', id=set_id)
+    return response
 
 def _set_exists(id):
     existing_ids = [str(x.id) for x in sets_api.get_all().content]
-    return id in existing_ids
+    return str(id) in existing_ids
 
 def get_set_id(set_id, name):
     if set_id:
@@ -120,42 +119,50 @@ def get_set_id(set_id, name):
 @arg("-i", "--id", help="ID of the build configuration set to build.")
 @arg("-n", "--name", help="Name of the build configuration set to build.")
 def build_set(id=None, name=None):
-    set_id = get_set_id(id,name)
-    if not set_id:
+    """
+    Start a build of the given build configuration set
+    """
+    if not get_set_id(id,name):
         return
-    #callbackUrl?
-    sets_api.build(id=set_id,callback=callback_function)
+    response = utils.checked_api_call(sets_api,'build',id=id)
+    if response: return response.content
 
 @arg("-i", "--id", help="ID of the build configuration set to build.")
 @arg("-n", "--name", help="Name of the build configuration set to build.")
 def list_build_configurations_for_set(id=None, name=None):
-    set_id = get_set_id(id,name)
-    if not set_id:
+    """
+    List all build configurations in a given build configuration set.
+    """
+    if not get_set_id(id,name):
         return
-    sets_api.get_configurations(id=set_id, callback=callback_function)
+    response = utils.checked_api_call(sets_api,'get_configurations',id=id)
+    if response: return response.content
 
 @arg("-sid", "--set-id", help="ID of the build configuration set to add to")
 @arg("-sn", "--set-name", help="Name of the build configuration set to add to")
 @arg("-cid", "--config-id", help="ID of the build configuration to add to the given set")
 @arg("-cn", "--config-name", help="Name of the build configuration to add to the given set")
 def add_build_configuration_to_set(set_id=None, set_name=None, config_id=None, config_name=None):
-    config_set_id = get_set_id(set_id,set_name)
+    """
+    Add a build configuration to an existing build configuration set
+    """
+    config_set_id = get_set_id(set_id, set_name)
     if not config_set_id:
         return
-    build_config_id = buildconfigurations.get_config_id(config_id, config_name)
-    if not build_config_id:
+    bc_id = buildconfigurations.get_config_id(config_id, config_name)
+    if not bc_id:
         return
-    bc = configs_api.get_specific(build_config_id)
-    sets_api.add_configuration(id=config_set_id, body=bc, callback=callback_function)
+    bc = configs_api.get_specific(bc_id).content
+    response = utils.checked_api_call(sets_api,'add_configuration',id=config_set_id, body=bc)
+    if response: return response.content
 
 @arg("-i", "--id", help="ID of the build configuration set")
-@arg("-n", "--name", help="name of the build configuration set")
+@arg("-n", "--name", help="Name of the build configuration set")
 def list_build_records_for_set(id=None, name=None):
-    set_id = get_set_id(id,name)
-    if not set_id:
+    """
+    List all build records for a build configuration set
+    """
+    if not get_set_id(id,name):
         return
-    sets_api.get_build_records(id=set_id,callback=callback_function)
-
-def callback_function(response):
-    if response:
-        pprint(response.content)
+    response = utils.checked_api_call(sets_api,'get_build_records',id=id)
+    if response: return response.content
