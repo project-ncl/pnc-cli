@@ -22,7 +22,7 @@ if not found:
     config.set('PNC', 'restEndpoint', 'http://localhost:8080/pnc-rest/rest')
     with open(os.path.join(configfilename),'wb') as configfile:
         config.write(configfile)
-pnc_rest_url = config.get('PNC', 'restEndpoint')
+pnc_rest_url = config.get('PNC', 'restEndpoint').rstrip('/')
 apiclient = swagger_client.api_client.ApiClient(pnc_rest_url)
 
 def get_api_client():
@@ -30,6 +30,9 @@ def get_api_client():
 
 def gen_random_name():
     return ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(10))
+
+def gen_random_version():
+    return random.choice(string.digits)+'.'+random.choice(string.digits)
 
 def is_valid_version(version):
     pattern = re.compile('\d*\.\w*')

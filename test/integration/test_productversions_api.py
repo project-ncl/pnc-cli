@@ -1,6 +1,6 @@
 import random
 import string
-from pnc import productversions
+from pnc_cli import productversions
 
 def _create_product_version():
     randversion = random.choice(string.digits)+'.'+random.choice(string.digits)
