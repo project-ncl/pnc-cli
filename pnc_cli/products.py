@@ -16,8 +16,13 @@ def _create_product_object(**kwargs):
     return created_product
 
 def _product_exists(prod_id):
+    """
+    Checks for an existing Product with ID prod_id
+    :param prod_id: the ID to test for
+    :return: True if found, False otherwise
+    """
     existing_ids = [str(x.id) for x in products_api.get_all().content]
-    return prod_id in existing_ids
+    return str(prod_id) in existing_ids
 
 def get_product_id(prod_id, name):
     if prod_id:
@@ -53,10 +58,12 @@ def get_product_id_by_name(search_name):
 @arg("-sn","--pgm-system-name", help="The system code for the new product")
 #@arg("--product-version-ids", type=int, nargs='+', help="Space separated list of associated product version ids.")
 def create_product(name, **kwargs):
-    """Define a new product"""
-    kwargs['name'] = name
-    product = _create_product_object(**kwargs)
-    products_api.create_new(body=product, callback=callback_function)
+    """
+    Create a new Product
+    """
+    product = _create_product_object(name=name, **kwargs)
+    response = utils.checked_api_call(products_api, 'create_new',body=product)
+    if response: return response.content
 
 @arg("product-id", help="ID of the product to update")
 @arg("-n","--name", help="New name for the product")
@@ -65,37 +72,37 @@ def create_product(name, **kwargs):
 @arg("-p","--product-code", help="New product code")
 @arg("-sn","--pgm-system-name", help="New system name")
 #@arg("--product-version-ids", type=int, nargs='+', help="Space separated list of associated product version ids.")
+#TODO: Get existing product at product_id and modify relevant fields
 def update_product(product_id, **kwargs):
-    """Update a product with the given id. Only provide values to update."""
+    """
+    Update a Product with new information
+    """
     product = _create_product_object(**kwargs)
-    products_api.update(id=product_id, body=product, callback=callback_function)
+    response = utils.checked_api_call(products_api,'update', id=product_id, body=product)
+    if response: return response.content
 
 @arg("-i","--id", help="ID of the product to retrieve")
 @arg("-n","--name", help="Name of the product to retrieve")
 def get_product(id=None, name=None):
-    """List information on a specific product."""
+    """
+    Get a specific Product by name or ID
+    """
     prod_id = get_product_id(id,name)
     if not prod_id: return
-    products_api.get_specific(id=prod_id,callback=callback_function)
+    response = utils.checked_api_call(products_api, 'get_specific', id=prod_id)
+    if response: return response.content
 
 @arg("-i","--id", help="ID of the product to retrieve versions from")
 @arg("-n","--name", help="Name of the product to retrieve versions from")
 def list_versions_for_product(id=None, name=None):
     prod_id = get_product_id(id,name)
     if not prod_id: return
-    products_api.get_product_versions(id=prod_id, callback=callback_function)
+    response = utils.checked_api_call(products_api, 'get_product_versions', id=prod_id)
+    if response: return response.content
 
 def list_products():
     """
-    List all products
-    :return:
+    List all Products
     """
-    response = products_api.get_all()
-    pprint(response.content)
-
-def callback_function(response):
-    if response:
-        pprint(response)
-        if hasattr(response, "content"):
-            pprint(response.content)
-
+    response = utils.checked_api_call(products_api,'get_all')
+    if response: return response.content
