@@ -1,9 +1,10 @@
+from argh import arg
+
 import utils
 import swagger_client
-from argh import arg
 from swagger_client.apis.productversions_api import ProductversionsApi
 from swagger_client.apis.productreleases_api import ProductreleasesApi
-from pprint import pprint
+
 
 productversions_api = ProductversionsApi(utils.get_api_client())
 releases_api = ProductreleasesApi(utils.get_api_client())
@@ -14,9 +15,12 @@ def create_product_release_object(**kwargs):
         setattr(created_release, key ,value)
     return created_release
 
-
 def list_product_releases():
-    releases_api.get_all(callback=callback_function)
+    """
+    List all ProductReleases
+    """
+    response = utils.checked_api_call(releases_api, 'get_all')
+    if response: return response.content
 
 # no more than one release per milestone
 # need product version id (version is not enough)
@@ -35,26 +39,31 @@ def create_release(**kwargs):
     base_version = productversions_api.get_specific(id=kwargs.get('product_version_id')).content.version
     kwargs['version'] = base_version + '.' + kwargs.get('version')
     created_release = create_product_release_object(**kwargs)
-    releases_api.create_new(body=created_release, callback=callback_function)
-
+    response = utils.checked_api_call(releases_api,'create_new',body=created_release)
+    if response: return response.content
 
 @arg("id", help="Product version ID to retrieve releases for.")
 def list_releases_for_version(id):
     """
-    List all releases for a product version
-    :param id: id of the product version
-    :return: list of associated releases
+    List all ProductReleases for a ProductVersion
     """
-    releases_api.get_all_by_product_version_id(id=id,callback=callback_function)
+    response = utils.checked_api_call(releases_api,'get_all_by_product_version_id',id=id)
+    if response: return response.content
 
 @arg("id", help="ID of the product version to retrieve.")
 def get_release(id):
     """
-    Get a specific product release.
-    :param id: id of the product release
-    :return:
+    Get a specific ProductRelease
     """
-    releases_api.get_specific(id=id, callback=callback_function)
+    response = utils.checked_api_call(releases_api,'get_specific', id=id)
+    if response: return response.content
+
+def _product_release_exists(search_id):
+    """
+    Check if a ProductVersion ID exists
+    """
+    existing_release_ids = [str(x.id) for x in releases_api.get_all().content]
+    return str(search_id) in existing_release_ids
 
 @arg("id", help="ID of the release to update.")
 @arg("-v", "--version", help="Version of the release. Appended to the Product Version.")
@@ -64,12 +73,16 @@ def get_release(id):
 @arg("-msid","--product-milestone-id", help="Milestone which is the basis of this release")
 @arg("-sl", "--support-level", help="Level of support comitted to for this release.")
 def update_release(id, **kwargs):
-    #get the existing product_release
-    to_update = releases_api.get_specific(id=id)
+    """
+    Update an existing ProductRelease with new information
+    """
+    if not _product_release_exists(id):
+        print("No ProductRelease with ID {} exists.").format(id)
+        return
+
+    to_update = releases_api.get_specific(id=id).content
     for key, value in kwargs.iteritems():
         setattr(to_update, key, value)
-    releases_api.update(id=id, body=to_update, callback=callback_function)
 
-def callback_function(response):
-    if response:
-        pprint(response.content)
+    response = utils.checked_api_call(releases_api,'update',id=id, body=to_update)
+    if response: return response.content
