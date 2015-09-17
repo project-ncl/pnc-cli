@@ -110,6 +110,9 @@ def get_product(id=None, name=None):
 @arg("-i", "--id", help="ID of the product to retrieve versions from")
 @arg("-n", "--name", help="Name of the product to retrieve versions from")
 def list_versions_for_product(id=None, name=None):
+    """
+    List all ProductVersions for a given Product
+    """
     prod_id = get_product_id(id, name)
     if not prod_id:
         return
