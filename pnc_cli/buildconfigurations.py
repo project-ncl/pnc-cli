@@ -4,15 +4,18 @@ import utils
 
 import swagger_client
 from swagger_client.apis.buildconfigurations_api import BuildconfigurationsApi
-
+import products
+import productversions
+import projects
 
 configs_api = BuildconfigurationsApi(utils.get_api_client())
 
 
 def create_build_conf_object(**kwargs):
     created_build_configuration = swagger_client.BuildConfigurationRest()
-    for key, value in kwargs.iteritems():
+    for key, value in kwargs.items():
         setattr(created_build_configuration, str(key), value)
+    #workaround for current REST client
     if "build_status" not in kwargs.keys():
         setattr(created_build_configuration, "build_status", "UNKNOWN")
     return created_build_configuration
@@ -47,27 +50,27 @@ def get_config_id(search_id, name):
     :param name: name to map to ID
     :return: Valid ID if it exists. None otherwise
     """
-    if id:
+    if search_id:
         if not config_id_exists(search_id):
-            print("No build configuration with ID {} exists.").format(search_id)
+            print("No BuildConfiguration with ID {} exists.".format(search_id))
             return
         config_id = search_id
     elif name:
         config_id = get_build_configuration_id_by_name(name)
         if not config_id:
-            print("No build configuration with the name {} exists.").format(name)
+            print("No BuildConfiguration with the name {} exists.".format(name))
             return
     else:
-        print("Either a name or an ID of a build configuration is required.")
+        print("Either a name or an ID of a BuildConfiguration is required.")
         return
     return config_id
 
 
-@arg("-i", "--id", help="ID of the build configuration to trigger.")
-@arg("-n", "--name", help="Name of the build configuration to trigger.")
+@arg("-i", "--id", help="ID of the BuildConfiguration to trigger.")
+@arg("-n", "--name", help="Name of the BuildConfiguration to trigger.")
 def build(id=None, name=None):
     """
-    Trigger a build configuration giving either the name or ID.
+    Trigger a BuildConfiguration by name or ID
     """
     trigger_id = get_config_id(id, name)
     if not trigger_id:
@@ -76,17 +79,66 @@ def build(id=None, name=None):
     if response:
         return response.content
 
+@arg("-i", "--id", help="ID of the BuildConfiguration to retrieve.")
+@arg("-n", "--name", help="Name of the BuildConfiguration to retrieve.")
+def get_build_configuration(id=None, name=None):
+    """
+    Get a specific BuildConfiguration
+    """
+    found_id = get_config_id(id, name)
+    if not found_id:
+        return
+    response = utils.checked_api_call(configs_api, 'get_specific', id=found_id)
+    if response:
+        return response.content
 
-@arg("name", help="Name for the new build configuration")
-@arg("project-id", help="ID of the project to associate the build configuration with.")
-@arg("environment", help="Environment for the new build configuration.")
-@arg("-d", "--description", help="Description of the new build configuration")
-@arg("-surl", "--scm-url", help="URL to the sources of the build")
-@arg("-rurl", "--scm-revision", help="Revision of the sources in scm-url to build")
-@arg("-bs", "--build-script", help="Script to execute for the build")
+@arg("-i", "--id", help="ID of the BuildConfiguration to update.")
+@arg("-n", "--name", help="Name of the BuildConfiguration to update.")
+#allow specifying project by name?
+@arg("-pid", "--project-id", help="ID of the Project to associate the BuildConfiguration with.")
+@arg("-e", "--environment", help="ID of the Environment for the new BuildConfiguration.")
+@arg("-d", "--description", help="Description of the new build configuration.")
+@arg("-surl", "--scm-url", help="URL to the sources of the BuildConfiguration.")
+@arg("-rurl", "--scm-revision", help="Revision of the sources in scm-url for this BuildConfiguration.")
+@arg("-bs", "--build-script", help="Script to execute for the BuildConfiguration.")
+#TODO: update project-ncl to return BuildConfigurationSingleton instead of current BuildConfigurationRest
+def update_build_configuration(id=None, name=None, **kwargs):
+    to_update_id = get_config_id(id, name)
+    if not to_update_id:
+        return
+
+    bc_to_update = configs_api.get_specific(id=to_update_id)
+    for key,value in kwargs.items():
+        if value is not None:
+            setattr(bc_to_update, key, value)
+
+    response = utils.checked_api_call(configs_api,'update', id=to_update_id, body=bc_to_update)
+    if response:
+        return response.content
+
+@arg("-i", "--id", help="ID of the BuildConfiguration to delete.")
+@arg("-n", "--name", help="Name of the BuildConfiguration to delete.")
+def delete_build_configuration(id=None, name=None):
+    to_delete_id = get_config_id(id, name)
+    if not to_delete_id:
+        return
+
+    response = utils.checked_api_call(configs_api, 'delete_specific', id=to_delete_id)
+    if response:
+        return response.content
+
+
+@arg("name", help="Name for the new BuildConfiguration.")
+#allow specifying project by name?
+@arg("project_id", help="ID of the Project to associate the BuildConfiguration with.")
+@arg("environment_id", help="ID of the Environment for the new BuildConfiguration.")
+@arg("-d", "--description", help="Description of the new build configuration.")
+@arg("-surl", "--scm-url", help="URL to the sources of the BuildConfiguration.")
+@arg("-rurl", "--scm-revision", help="Revision of the sources in scm-url for this BuildConfiguration.")
+@arg("-bs", "--build-script", help="Script to execute for the BuildConfiguration.")
 def create_build_configuration(**kwargs):
     """
-    Create a new build configuration
+    Create a new BuildConfiguration
     """
     build_configuration = create_build_conf_object(**kwargs)
     response = utils.checked_api_call(
@@ -94,10 +146,135 @@ def create_build_configuration(**kwargs):
     if response:
         return response.content
 
+@arg("-i", "--id", help="ID of the Product to list BuildConfigurations for.")
+@arg("-n", "--name", help="Name of the Product to list BuildConfigurations for.")
+def list_build_configurations_for_product(id=None, name=None):
+    """
+    List all BuildConfigurations associated with the given Product.
+    """
+    found_id = products.get_product_id(id,name)
+    if not found_id:
+        return
+
+#    configs_api.get_all_by_product_id_1() TODO: update project-ncl's method in the endpoint to be correct
+    response = utils.checked_api_call(configs_api, 'get_all_by_product_id', product_id=found_id)
+    if response:
+        return response.content
+
+#TODO: allow specifying product name / version 'version'?
+@arg("product_id", help="ID of the Product which contains the desired ProductVersion.")
+@arg("version_id", help="ID of the ProductVersion to list BuildConfigurations for.")
+def list_build_configurations_for_product_version(product_id, version_id):
+    """
+    List all BuildConfigurations associated with the given ProductVersion
+    """
+    found_product_id = products.get_product_id(product_id)
+    if not found_product_id:
+        return
+
+    if not productversions.version_exists(version_id):
+        print("No ProductVersion with ID {} exists.".format(version_id))
+        return
+
+    response = utils.checked_api_call(configs_api, 'get_all_by_product_id_1', product_id=found_product_id, version_id=version_id)
+    if response:
+        return response.content
+
+@arg("-i", "--id", help="ID of the BuildConfiguration to list dependencies for.")
+@arg("-n", "--name", help="Name of the BuildConfiguration to list dependencies for.")
+def list_dependencies(id=None, name=None):
+    found_id = get_config_id(id, name)
+    if not found_id:
+        return
+
+    response = utils.checked_api_call(configs_api, 'get_dependencies', id=found_id)
+    if response:
+        return response.content
+
+@arg("-i", "--id", help="ID of the BuildConfiguration to add a dependency to.")
+@arg("-n", "--name", help="Name of the BuildConfiguration to add a dependency to.")
+@arg("-di", "--dependency-id", help="ID of an existing BuildConfiguration to add as a dependency.")
+@arg("-dn","--dependency-name", help="Name of an existing BuildConfiguration to add as a dependency.")
+#TODO modify project-ncl to return BuildConfigurationSingleton instead of BuildConfigurationRest
+def add_dependency(id=None, name=None, existing_id=None, existing_name=None):
+    """
+    Add an existing BuildConfiguration as a dependency to another BuildConfiguration.
+    """
+    add_to = get_config_id(id, name)
+    if not add_to:
+        return
+
+    to_add = get_config_id(existing_id,existing_name)
+    if not to_add:
+        return
+
+    dependency = configs_api.get_specific(id=to_add)
+    response = utils.checked_api_call(configs_api, 'add_dependency', id=add_to, body=dependency)
+    if response:
+        return response.content
+
+@arg("-i", "--id", help="ID of the BuildConfiguration to remove a dependency from.")
+@arg("-n", "--name", help="Name of the BuildConfiguration to remove a dependency from.")
+@arg("-di", "--dependency-id", help="ID of the dependency BuildConfiguration to remove.")
+@arg("-dn", "--dependency-name", help="Name of the dependency BuildConfiguration to remove.")
+def remove_dependency(id=None, name=None, dep_id=None, dep_name=None):
+    """
+    Remove a BuildConfiguration from the dependency list of another BuildConfiguration
+    """
+    found_id = get_config_id(id, name)
+    if not found_id:
+        return
+
+    found_dep_id = get_config_id(dep_id, dep_name)
+    if not found_dep_id:
+        return
+
+    response = utils.checked_api_call(configs_api, 'remove_dependency', id=found_id, dependency_id=found_dep_id)
+    if response:
+        return response.content
+
+@arg("-i", "--id", help="ID of the BuildConfiguration to list ProductVersions for.")
+@arg("-n", "--name", help="Name of the BuildConfiguration to list ProductVersions for.")
+def list_product_versions_for_build_configuration(id=None, name=None):
+    found_id = get_config_id(id, name)
+    if not found_id:
+        return
+
+    response = utils.checked_api_call(configs_api, 'get_product_versions', id=found_id)
+    if response:
+        return response.content
+
+def add_product_version_to_build_configuration():
+    pass
+
+def remove_product_version_from_build_configuration():
+    pass
+
+def get_revisions_for_build_configuration():
+    pass
+
+def get_revision_of_build_configuration():
+    pass
+
+
+@arg("-i", "--id", help="ID of the Project to list BuildConfigurations for.")
+@arg("-n", "--name", help="Name of the Project to list BuildConfigurations for.")
+def list_build_configurations_for_project(id=None, name=None):
+    """
+    List all BuildConfigurations associated with the given Project
+    """
+    found_id = projects.get_project(id,name)
+    if not found_id:
+        return
+
+    response = utils.checked_api_call(configs_api, 'get_all_by_project_id', project_id=found_id)
+    if response:
+        return response.content
+
 
 def list_build_configurations():
     """
-    List all build configurations
+    List all BuildConfigurations
     """
     response = utils.checked_api_call(configs_api, 'get_all')
     if response:
