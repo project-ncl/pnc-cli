@@ -14,36 +14,49 @@ products_api = ProductsApi(utils.get_api_client())
 
 __author__ = 'thauser'
 
+
 def create_product_version_object(**kwargs):
     created_version = swagger_client.ProductVersionRest()
     for key, value in kwargs.iteritems():
         setattr(created_version, key, value)
     return created_version
 
+
 def version_exists(id):
     version_ids = [str(x.id) for x in versions_api.get_all().content]
     return id in version_ids
 
+
 def version_exists_for_product(id, version):
-    return version in [x.version for x in [y for y in products_api.get_product_versions(id=id).content]]
+    return version in [x.version for x in [
+        y for y in products_api.get_product_versions(id=id).content]]
+
 
 def list_product_versions():
     versions_api.get_all(callback=callback_function)
 
+
 @arg("product_id", help="ID of product to add a version to")
 @arg("version", help="Version to add")
-@arg("-cm", "--current-product-milestone-id", help="ID of the milestone this version should be on")
-@arg("-pr", "--product-releases", type=int, nargs="+", help="List of product release IDs for this Product version")
-@arg("-pm", "--product-milestones", type=int, nargs="+", help="List of milestone IDs to associate with the new version")
-@arg("-bc", "--build-configuration-set-ids", type=int, nargs="+", help="List of build configuration set IDs to associate with the new version")
+@arg("-cm", "--current-product-milestone-id",
+     help="ID of the milestone this version should be on")
+@arg("-pr", "--product-releases", type=int, nargs="+",
+     help="List of product release IDs for this Product version")
+@arg("-pm", "--product-milestones", type=int, nargs="+",
+     help="List of milestone IDs to associate with the new version")
+@arg("-bc", "--build-configuration-set-ids", type=int, nargs="+",
+     help="List of build configuration set IDs to associate with the new version")
 def create_product_version(product_id, version, **kwargs):
     if version_exists_for_product(product_id, version):
-        print("Version {0} already exists for product: {1}" ).format(version, products_api.get_specific(id=product_id).content.name)
+        print("Version {0} already exists for product: {1}").format(
+            version, products_api.get_specific(id=product_id).content.name)
         return
     kwargs['product_id'] = product_id
     kwargs['version'] = version
     product_version = create_product_version_object(**kwargs)
-    versions_api.create_new_product_version(body=product_version, callback=callback_function)
+    versions_api.create_new_product_version(
+        body=product_version, callback=callback_function)
+
 
 @arg("id", help="ID of the product version to retrieve")
 def get_product_version(id, attributes=None):
@@ -61,10 +74,14 @@ def get_product_version(id, attributes=None):
 # TODO: how should constraints be defined? Can a new productId be specified?
 @arg("product-id", help="ID of product to add a version to")
 @arg("-v", "--version", help="Version to add")
-@arg("-cm", "--current-product-milestone-id", help="ID of the milestone this version should be on")
-@arg("-pr", "--product-releases", type=int, nargs="+", help="List of product release IDs for this Product version")
-@arg("-pm", "--product-milestones", type=int, nargs="+", help="List of milestone IDs to associate with the new version")
-@arg("-bc", "--build-configuration-set-ids", type=int, nargs="+", help="List of build configuration set IDs to associate with the new version")
+@arg("-cm", "--current-product-milestone-id",
+     help="ID of the milestone this version should be on")
+@arg("-pr", "--product-releases", type=int, nargs="+",
+     help="List of product release IDs for this Product version")
+@arg("-pm", "--product-milestones", type=int, nargs="+",
+     help="List of milestone IDs to associate with the new version")
+@arg("-bc", "--build-configuration-set-ids", type=int, nargs="+",
+     help="List of build configuration set IDs to associate with the new version")
 def update_product_version(id, **kwargs):
     """
     Replace the product version with id with a new product version with provided values
@@ -82,7 +99,11 @@ def update_product_version(id, **kwargs):
         return
 
     updated_version = create_product_version_object(**kwargs)
-    versions_api.update(id=id, body=updated_version, callback=callback_function)
+    versions_api.update(
+        id=id,
+        body=updated_version,
+        callback=callback_function)
+
 
 def callback_function(response):
     if response:

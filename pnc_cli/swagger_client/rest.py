@@ -125,7 +125,8 @@ class RESTClientObject(object):
                     r = self.pool_manager.request(method, url,
                                                   body=json.dumps(body),
                                                   headers=headers)
-                if headers['Content-Type'] == 'application/x-www-form-urlencoded':
+                if headers[
+                        'Content-Type'] == 'application/x-www-form-urlencoded':
                     r = self.pool_manager.request(method, url,
                                                   fields=post_params,
                                                   encode_multipart=False,
@@ -177,21 +178,24 @@ class RESTClientObject(object):
                             headers=headers,
                             query_params=query_params)
 
-    def POST(self, url, headers=None, query_params=None, post_params=None, body=None):
+    def POST(self, url, headers=None, query_params=None,
+             post_params=None, body=None):
         return self.request("POST", url,
                             headers=headers,
                             query_params=query_params,
                             post_params=post_params,
                             body=body)
 
-    def PUT(self, url, headers=None, query_params=None, post_params=None, body=None):
+    def PUT(self, url, headers=None, query_params=None,
+            post_params=None, body=None):
         return self.request("PUT", url,
                             headers=headers,
                             query_params=query_params,
                             post_params=post_params,
                             body=body)
 
-    def PATCH(self, url, headers=None, query_params=None, post_params=None, body=None):
+    def PATCH(self, url, headers=None, query_params=None,
+              post_params=None, body=None):
         return self.request("PATCH", url,
                             headers=headers,
                             query_params=query_params,
@@ -220,28 +224,10 @@ class ApiException(Exception):
         error_message = "({0})\n"\
                         "Reason: {1}\n".format(self.status, self.reason)
         if self.headers:
-            error_message += "HTTP response headers: {0}\n".format(self.headers)
+            error_message += "HTTP response headers: {0}\n".format(
+                self.headers)
 
         if self.body:
             error_message += "HTTP response body: {0}\n".format(self.body)
 
         return error_message
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

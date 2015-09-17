@@ -15,7 +15,7 @@ Copyright 2015 SmartBear Software
    See the License for the specific language governing permissions and
    limitations under the License.
 
-   ref: https://github.com/swagger-api/swagger-codegen 
+   ref: https://github.com/swagger-api/swagger-codegen
 """
 
 from __future__ import absolute_import
@@ -27,7 +27,7 @@ try:
 except ImportError:
     # for python3
     import http.client as httplib
-    
+
 import sys
 import logging
 
@@ -80,11 +80,12 @@ class Configuration(object):
         self.init_logger()
 
         # SSL/TLS verification
-        # Set this to false to skip verifying SSL certificate when calling API from https server.
+        # Set this to false to skip verifying SSL certificate when calling API
+        # from https server.
         self.verify_ssl = True
         # Set this to customize the certificate file to verify the peer.
         self.ssl_ca_cert = None
-        
+
     def init_logger(self):
         """
         Initializes logger settings.
@@ -140,8 +141,10 @@ class Configuration(object):
         :param identifier: The identifier of apiKey.
         :return: The token for api key authentication.
         """
-        if self.api_key.get(identifier) and self.api_key_prefix.get(identifier):
-            return self.api_key_prefix[identifier] + ' ' + self.api_key[identifier]
+        if self.api_key.get(
+                identifier) and self.api_key_prefix.get(identifier):
+            return self.api_key_prefix[identifier] + \
+                ' ' + self.api_key[identifier]
         elif self.api_key.get(identifier):
             return self.api_key[identifier]
 

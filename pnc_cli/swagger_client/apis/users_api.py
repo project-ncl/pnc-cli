@@ -48,7 +48,7 @@ class UsersApi(object):
     def get_all(self, **kwargs):
         """
         Gets all Users
-        
+
 
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please define a `callback` function
@@ -132,7 +132,7 @@ class UsersApi(object):
     def create_new(self, **kwargs):
         """
         Creates new User
-        
+
 
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please define a `callback` function
@@ -144,7 +144,7 @@ class UsersApi(object):
 
         :param callback function: The callback function
             for asynchronous request. (optional)
-        :param UserRest body: 
+        :param UserRest body:
         :return: UserSingleton
                  If the method is called asynchronously,
                  returns the request thread.
@@ -207,7 +207,7 @@ class UsersApi(object):
     def get_specific(self, id, **kwargs):
         """
         Gets specific User
-        
+
 
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please define a `callback` function
@@ -226,7 +226,8 @@ class UsersApi(object):
         """
         # verify the required parameter 'id' is set
         if id is None:
-            raise ValueError("Missing the required parameter `id` when calling `get_specific`")
+            raise ValueError(
+                "Missing the required parameter `id` when calling `get_specific`")
 
         all_params = ['id']
         all_params.append('callback')
@@ -285,7 +286,7 @@ class UsersApi(object):
     def update(self, id, **kwargs):
         """
         Updates an existing User
-        
+
 
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please define a `callback` function
@@ -298,14 +299,15 @@ class UsersApi(object):
         :param callback function: The callback function
             for asynchronous request. (optional)
         :param int id: User id (required)
-        :param UserRest body: 
+        :param UserRest body:
         :return: None
                  If the method is called asynchronously,
                  returns the request thread.
         """
         # verify the required parameter 'id' is set
         if id is None:
-            raise ValueError("Missing the required parameter `id` when calling `update`")
+            raise ValueError(
+                "Missing the required parameter `id` when calling `update`")
 
         all_params = ['id', 'body']
         all_params.append('callback')

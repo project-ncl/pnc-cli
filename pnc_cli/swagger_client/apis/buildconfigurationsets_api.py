@@ -48,7 +48,7 @@ class BuildconfigurationsetsApi(object):
     def get_all(self, **kwargs):
         """
         Gets all Build Configuration Sets
-        
+
 
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please define a `callback` function
@@ -132,7 +132,7 @@ class BuildconfigurationsetsApi(object):
     def create_new(self, **kwargs):
         """
         Creates a new Build Configuration Set
-        
+
 
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please define a `callback` function
@@ -144,7 +144,7 @@ class BuildconfigurationsetsApi(object):
 
         :param callback function: The callback function
             for asynchronous request. (optional)
-        :param BuildConfigurationSetRest body: 
+        :param BuildConfigurationSetRest body:
         :return: BuildConfigurationSetSingleton
                  If the method is called asynchronously,
                  returns the request thread.
@@ -207,7 +207,7 @@ class BuildconfigurationsetsApi(object):
     def get_specific(self, id, **kwargs):
         """
         Gets a specific Build Configuration Set
-        
+
 
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please define a `callback` function
@@ -226,7 +226,8 @@ class BuildconfigurationsetsApi(object):
         """
         # verify the required parameter 'id' is set
         if id is None:
-            raise ValueError("Missing the required parameter `id` when calling `get_specific`")
+            raise ValueError(
+                "Missing the required parameter `id` when calling `get_specific`")
 
         all_params = ['id']
         all_params.append('callback')
@@ -241,7 +242,8 @@ class BuildconfigurationsetsApi(object):
             params[key] = val
         del params['kwargs']
 
-        resource_path = '/build-configuration-sets/{id}'.replace('{format}', 'json')
+        resource_path = '/build-configuration-sets/{id}'.replace(
+            '{format}', 'json')
         method = 'GET'
 
         path_params = {}
@@ -285,7 +287,7 @@ class BuildconfigurationsetsApi(object):
     def update(self, id, **kwargs):
         """
         Updates an existing Build Configuration Set
-        
+
 
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please define a `callback` function
@@ -298,14 +300,15 @@ class BuildconfigurationsetsApi(object):
         :param callback function: The callback function
             for asynchronous request. (optional)
         :param int id: Build Configuration Set id (required)
-        :param BuildConfigurationSetRest body: 
+        :param BuildConfigurationSetRest body:
         :return: None
                  If the method is called asynchronously,
                  returns the request thread.
         """
         # verify the required parameter 'id' is set
         if id is None:
-            raise ValueError("Missing the required parameter `id` when calling `update`")
+            raise ValueError(
+                "Missing the required parameter `id` when calling `update`")
 
         all_params = ['id', 'body']
         all_params.append('callback')
@@ -320,7 +323,8 @@ class BuildconfigurationsetsApi(object):
             params[key] = val
         del params['kwargs']
 
-        resource_path = '/build-configuration-sets/{id}'.replace('{format}', 'json')
+        resource_path = '/build-configuration-sets/{id}'.replace(
+            '{format}', 'json')
         method = 'PUT'
 
         path_params = {}
@@ -366,7 +370,7 @@ class BuildconfigurationsetsApi(object):
     def delete_specific(self, id, **kwargs):
         """
         Removes a specific Build Configuration Set
-        
+
 
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please define a `callback` function
@@ -385,7 +389,8 @@ class BuildconfigurationsetsApi(object):
         """
         # verify the required parameter 'id' is set
         if id is None:
-            raise ValueError("Missing the required parameter `id` when calling `delete_specific`")
+            raise ValueError(
+                "Missing the required parameter `id` when calling `delete_specific`")
 
         all_params = ['id']
         all_params.append('callback')
@@ -400,7 +405,8 @@ class BuildconfigurationsetsApi(object):
             params[key] = val
         del params['kwargs']
 
-        resource_path = '/build-configuration-sets/{id}'.replace('{format}', 'json')
+        resource_path = '/build-configuration-sets/{id}'.replace(
+            '{format}', 'json')
         method = 'DELETE'
 
         path_params = {}
@@ -444,7 +450,7 @@ class BuildconfigurationsetsApi(object):
     def build(self, id, **kwargs):
         """
         Builds the Configurations for the Specified Set
-        
+
 
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please define a `callback` function
@@ -464,7 +470,8 @@ class BuildconfigurationsetsApi(object):
         """
         # verify the required parameter 'id' is set
         if id is None:
-            raise ValueError("Missing the required parameter `id` when calling `build`")
+            raise ValueError(
+                "Missing the required parameter `id` when calling `build`")
 
         all_params = ['id', 'callback_url']
         all_params.append('callback')
@@ -479,7 +486,8 @@ class BuildconfigurationsetsApi(object):
             params[key] = val
         del params['kwargs']
 
-        resource_path = '/build-configuration-sets/{id}/build'.replace('{format}', 'json')
+        resource_path = '/build-configuration-sets/{id}/build'.replace(
+            '{format}', 'json')
         method = 'POST'
 
         path_params = {}
@@ -525,7 +533,7 @@ class BuildconfigurationsetsApi(object):
     def get_configurations(self, id, **kwargs):
         """
         Gets the Configurations for the Specified Set
-        
+
 
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please define a `callback` function
@@ -548,7 +556,8 @@ class BuildconfigurationsetsApi(object):
         """
         # verify the required parameter 'id' is set
         if id is None:
-            raise ValueError("Missing the required parameter `id` when calling `get_configurations`")
+            raise ValueError(
+                "Missing the required parameter `id` when calling `get_configurations`")
 
         all_params = ['id', 'page_index', 'page_size', 'sort', 'q']
         all_params.append('callback')
@@ -563,7 +572,8 @@ class BuildconfigurationsetsApi(object):
             params[key] = val
         del params['kwargs']
 
-        resource_path = '/build-configuration-sets/{id}/build-configurations'.replace('{format}', 'json')
+        resource_path = '/build-configuration-sets/{id}/build-configurations'.replace(
+            '{format}', 'json')
         method = 'GET'
 
         path_params = {}
@@ -615,7 +625,7 @@ class BuildconfigurationsetsApi(object):
     def add_configuration(self, id, **kwargs):
         """
         Adds a configuration to the Specified Set
-        
+
 
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please define a `callback` function
@@ -628,14 +638,15 @@ class BuildconfigurationsetsApi(object):
         :param callback function: The callback function
             for asynchronous request. (optional)
         :param int id: Build Configuration Set id (required)
-        :param BuildConfigurationRest body: 
+        :param BuildConfigurationRest body:
         :return: None
                  If the method is called asynchronously,
                  returns the request thread.
         """
         # verify the required parameter 'id' is set
         if id is None:
-            raise ValueError("Missing the required parameter `id` when calling `add_configuration`")
+            raise ValueError(
+                "Missing the required parameter `id` when calling `add_configuration`")
 
         all_params = ['id', 'body']
         all_params.append('callback')
@@ -650,7 +661,8 @@ class BuildconfigurationsetsApi(object):
             params[key] = val
         del params['kwargs']
 
-        resource_path = '/build-configuration-sets/{id}/build-configurations'.replace('{format}', 'json')
+        resource_path = '/build-configuration-sets/{id}/build-configurations'.replace(
+            '{format}', 'json')
         method = 'POST'
 
         path_params = {}
@@ -696,7 +708,7 @@ class BuildconfigurationsetsApi(object):
     def remove_configuration(self, id, config_id, **kwargs):
         """
         Removes a configuration from the specified config set
-        
+
 
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please define a `callback` function
@@ -716,10 +728,12 @@ class BuildconfigurationsetsApi(object):
         """
         # verify the required parameter 'id' is set
         if id is None:
-            raise ValueError("Missing the required parameter `id` when calling `remove_configuration`")
+            raise ValueError(
+                "Missing the required parameter `id` when calling `remove_configuration`")
         # verify the required parameter 'config_id' is set
         if config_id is None:
-            raise ValueError("Missing the required parameter `config_id` when calling `remove_configuration`")
+            raise ValueError(
+                "Missing the required parameter `config_id` when calling `remove_configuration`")
 
         all_params = ['id', 'config_id']
         all_params.append('callback')
@@ -734,7 +748,8 @@ class BuildconfigurationsetsApi(object):
             params[key] = val
         del params['kwargs']
 
-        resource_path = '/build-configuration-sets/{id}/build-configurations/{configId}'.replace('{format}', 'json')
+        resource_path = '/build-configuration-sets/{id}/build-configurations/{configId}'.replace(
+            '{format}', 'json')
         method = 'DELETE'
 
         path_params = {}
@@ -780,7 +795,7 @@ class BuildconfigurationsetsApi(object):
     def get_build_records(self, id, **kwargs):
         """
         Gets all build records associated with the contained build configurations
-        
+
 
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please define a `callback` function
@@ -803,7 +818,8 @@ class BuildconfigurationsetsApi(object):
         """
         # verify the required parameter 'id' is set
         if id is None:
-            raise ValueError("Missing the required parameter `id` when calling `get_build_records`")
+            raise ValueError(
+                "Missing the required parameter `id` when calling `get_build_records`")
 
         all_params = ['id', 'page_index', 'page_size', 'sort', 'q']
         all_params.append('callback')
@@ -818,7 +834,8 @@ class BuildconfigurationsetsApi(object):
             params[key] = val
         del params['kwargs']
 
-        resource_path = '/build-configuration-sets/{id}/build-records'.replace('{format}', 'json')
+        resource_path = '/build-configuration-sets/{id}/build-records'.replace(
+            '{format}', 'json')
         method = 'GET'
 
         path_params = {}

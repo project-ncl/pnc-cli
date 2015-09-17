@@ -65,9 +65,9 @@ class ApiClient(object):
     :param header_name: a header to pass when making calls to the API.
     :param header_value: a header value to pass when making calls to the API.
     """
+
     def __init__(self, host=Configuration().host,
                  header_name=None, header_value=None, cookie=None):
-
         """
         Constructor of the class.
         """
@@ -167,7 +167,7 @@ class ApiClient(object):
 
         :return string: quoted value.
         """
-        if type(obj) == list:
+        if isinstance(obj, list):
             return ','.join(obj)
         else:
             return str(obj)
@@ -247,7 +247,7 @@ class ApiClient(object):
         if data is None:
             return None
 
-        if type(klass) == str:
+        if isinstance(klass, str):
             if klass.startswith('list['):
                 sub_kls = re.match('list\[(.*)\]', klass).group(1)
                 return [self.__deserialize(sub_data, sub_kls)
@@ -533,7 +533,7 @@ class ApiClient(object):
         """
         try:
             from dateutil.parser import parse
-            timestr = str(datetime.fromtimestamp(string/1000))
+            timestr = str(datetime.fromtimestamp(string / 1000))
             return parse(timestr)
         except ImportError:
             return string

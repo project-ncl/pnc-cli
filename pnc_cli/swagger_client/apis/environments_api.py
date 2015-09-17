@@ -48,7 +48,7 @@ class EnvironmentsApi(object):
     def get_all(self, **kwargs):
         """
         Gets all Environments
-        
+
 
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please define a `callback` function
@@ -132,7 +132,7 @@ class EnvironmentsApi(object):
     def create_new(self, **kwargs):
         """
         Creates a new Environment
-        
+
 
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please define a `callback` function
@@ -144,7 +144,7 @@ class EnvironmentsApi(object):
 
         :param callback function: The callback function
             for asynchronous request. (optional)
-        :param EnvironmentRest body: 
+        :param EnvironmentRest body:
         :return: EnvironmentSingleton
                  If the method is called asynchronously,
                  returns the request thread.
@@ -207,7 +207,7 @@ class EnvironmentsApi(object):
     def get_specific(self, id, **kwargs):
         """
         Get specific Environment
-        
+
 
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please define a `callback` function
@@ -226,7 +226,8 @@ class EnvironmentsApi(object):
         """
         # verify the required parameter 'id' is set
         if id is None:
-            raise ValueError("Missing the required parameter `id` when calling `get_specific`")
+            raise ValueError(
+                "Missing the required parameter `id` when calling `get_specific`")
 
         all_params = ['id']
         all_params.append('callback')
@@ -285,7 +286,7 @@ class EnvironmentsApi(object):
     def update(self, id, **kwargs):
         """
         Updates an existing Environment
-        
+
 
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please define a `callback` function
@@ -298,14 +299,15 @@ class EnvironmentsApi(object):
         :param callback function: The callback function
             for asynchronous request. (optional)
         :param int id: Environment id (required)
-        :param EnvironmentRest body: 
+        :param EnvironmentRest body:
         :return: None
                  If the method is called asynchronously,
                  returns the request thread.
         """
         # verify the required parameter 'id' is set
         if id is None:
-            raise ValueError("Missing the required parameter `id` when calling `update`")
+            raise ValueError(
+                "Missing the required parameter `id` when calling `update`")
 
         all_params = ['id', 'body']
         all_params.append('callback')
@@ -366,7 +368,7 @@ class EnvironmentsApi(object):
     def delete(self, id, **kwargs):
         """
         Deletes an existing Environment
-        
+
 
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please define a `callback` function
@@ -385,7 +387,8 @@ class EnvironmentsApi(object):
         """
         # verify the required parameter 'id' is set
         if id is None:
-            raise ValueError("Missing the required parameter `id` when calling `delete`")
+            raise ValueError(
+                "Missing the required parameter `id` when calling `delete`")
 
         all_params = ['id']
         all_params.append('callback')

@@ -48,7 +48,7 @@ class BuildconfigsetrecordsApi(object):
     def get_all(self, **kwargs):
         """
         Gets all build config set execution records
-        
+
 
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please define a `callback` function
@@ -132,7 +132,7 @@ class BuildconfigsetrecordsApi(object):
     def get_specific(self, id, **kwargs):
         """
         Gets specific build config set execution record
-        
+
 
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please define a `callback` function
@@ -151,7 +151,8 @@ class BuildconfigsetrecordsApi(object):
         """
         # verify the required parameter 'id' is set
         if id is None:
-            raise ValueError("Missing the required parameter `id` when calling `get_specific`")
+            raise ValueError(
+                "Missing the required parameter `id` when calling `get_specific`")
 
         all_params = ['id']
         all_params.append('callback')
@@ -166,7 +167,8 @@ class BuildconfigsetrecordsApi(object):
             params[key] = val
         del params['kwargs']
 
-        resource_path = '/build-config-set-records/{id}'.replace('{format}', 'json')
+        resource_path = '/build-config-set-records/{id}'.replace(
+            '{format}', 'json')
         method = 'GET'
 
         path_params = {}
@@ -210,7 +212,7 @@ class BuildconfigsetrecordsApi(object):
     def get_build_records(self, id, **kwargs):
         """
         Gets the build records associated with this set
-        
+
 
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please define a `callback` function
@@ -233,7 +235,8 @@ class BuildconfigsetrecordsApi(object):
         """
         # verify the required parameter 'id' is set
         if id is None:
-            raise ValueError("Missing the required parameter `id` when calling `get_build_records`")
+            raise ValueError(
+                "Missing the required parameter `id` when calling `get_build_records`")
 
         all_params = ['id', 'page_index', 'page_size', 'sort', 'q']
         all_params.append('callback')
@@ -248,7 +251,8 @@ class BuildconfigsetrecordsApi(object):
             params[key] = val
         del params['kwargs']
 
-        resource_path = '/build-config-set-records/{id}/build-records'.replace('{format}', 'json')
+        resource_path = '/build-config-set-records/{id}/build-records'.replace(
+            '{format}', 'json')
         method = 'GET'
 
         path_params = {}
