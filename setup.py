@@ -16,7 +16,7 @@ setup(
     install_requires=[
 	    "argh >= 0.26.1",
         "requests >= 2.4.3",
-        "certifi >= 2015.04.28"
+        "certifi >= 2015.04.28", 'mock'
     ],
     #scripts=['pnc_cli/pnc.py']
     entry_points={'console_scripts': ['pnc = pnc_cli.pnc:main']}

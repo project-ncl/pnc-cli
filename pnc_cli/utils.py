@@ -3,9 +3,9 @@ import random
 import string
 import re
 import errno
-import swagger_client
+from pnc_cli import swagger_client
 import os
-from swagger_client.rest import ApiException
+from pnc_cli.swagger_client.rest import ApiException
 
 __author__ = 'thauser'
 

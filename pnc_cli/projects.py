@@ -1,12 +1,11 @@
-from pprint import pprint
 from six import iteritems
-import swagger_client
-from swagger_client.apis.projects_api import ProjectsApi
 from argh import arg
-import utils
+
+from pnc_cli import swagger_client
+from pnc_cli.swagger_client.apis.projects_api import ProjectsApi
+from pnc_cli import utils
 
 projects_api = ProjectsApi(utils.get_api_client())
-
 
 def _create_project_object(**kwargs):
     created_project = swagger_client.ProjectRest()
@@ -70,7 +69,7 @@ def create_project(**kwargs):
     Create a new Project
     """
     project = _create_project_object(**kwargs)
-    response = utils.checked_api_call(projects_api,'create', body=project)
+    response = utils.checked_api_call(projects_api, 'create', body=project)
     if response:
         return response.content
 

@@ -1,12 +1,12 @@
 from argh import arg
 
-import utils
+from pnc_cli import utils
 
-import swagger_client
-from swagger_client.apis.buildconfigurations_api import BuildconfigurationsApi
-import products
-import productversions
-import projects
+from pnc_cli import swagger_client
+from pnc_cli.swagger_client.apis.buildconfigurations_api import BuildconfigurationsApi
+from pnc_cli import products
+from pnc_cli import productversions
+from pnc_cli import projects
 
 configs_api = BuildconfigurationsApi(utils.get_api_client())
 

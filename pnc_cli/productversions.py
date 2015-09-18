@@ -4,10 +4,10 @@ import sys
 from argh import arg
 from six import iteritems
 
-import swagger_client
-from swagger_client.apis.productversions_api import ProductversionsApi
-from swagger_client.apis.products_api import ProductsApi
-import utils
+from pnc_cli import swagger_client
+from pnc_cli.swagger_client.apis.productversions_api import ProductversionsApi
+from pnc_cli.swagger_client.apis.products_api import ProductsApi
+from pnc_cli import utils
 
 versions_api = ProductversionsApi(utils.get_api_client())
 products_api = ProductsApi(utils.get_api_client())

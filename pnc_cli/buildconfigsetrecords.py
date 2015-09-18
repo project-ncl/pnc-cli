@@ -1,9 +1,9 @@
 __author__ = 'thauser'
 from argh import arg
 
-import utils
-from swagger_client.apis import BuildconfigurationsetsApi
-from swagger_client.apis import BuildconfigsetrecordsApi
+from pnc_cli import utils
+from pnc_cli.swagger_client.apis import BuildconfigurationsetsApi
+from pnc_cli.swagger_client.apis import BuildconfigsetrecordsApi
 
 
 sets_api = BuildconfigurationsetsApi(utils.get_api_client())
