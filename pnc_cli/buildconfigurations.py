@@ -196,7 +196,7 @@ def list_dependencies(id=None, name=None):
 @arg("-di", "--dependency-id", help="ID of an existing BuildConfiguration to add as a dependency.")
 @arg("-dn","--dependency-name", help="Name of an existing BuildConfiguration to add as a dependency.")
 #TODO modify project-ncl to return BuildConfigurationSingleton instead of BuildConfigurationRest
-def add_dependency(id=None, name=None, existing_id=None, existing_name=None):
+def add_dependency(id=None, name=None, dependency_id=None, dependency_name=None):
     """
     Add an existing BuildConfiguration as a dependency to another BuildConfiguration.
     """
@@ -204,7 +204,7 @@ def add_dependency(id=None, name=None, existing_id=None, existing_name=None):
     if not add_to:
         return
 
-    to_add = get_config_id(existing_id,existing_name)
+    to_add = get_config_id(dependency_id, dependency_name)
     if not to_add:
         return
 
@@ -217,7 +217,7 @@ def add_dependency(id=None, name=None, existing_id=None, existing_name=None):
 @arg("-n", "--name", help="Name of the BuildConfiguration to remove a dependency from.")
 @arg("-di", "--dependency-id", help="ID of the dependency BuildConfiguration to remove.")
 @arg("-dn", "--dependency-name", help="Name of the dependency BuildConfiguration to remove.")
-def remove_dependency(id=None, name=None, dep_id=None, dep_name=None):
+def remove_dependency(id=None, name=None, dependency_id=None, dependency_name=None):
     """
     Remove a BuildConfiguration from the dependency list of another BuildConfiguration
     """
@@ -225,7 +225,7 @@ def remove_dependency(id=None, name=None, dep_id=None, dep_name=None):
     if not found_id:
         return
 
-    found_dep_id = get_config_id(dep_id, dep_name)
+    found_dep_id = get_config_id(dependency_id, dependency_name)
     if not found_dep_id:
         return
 
@@ -236,6 +236,9 @@ def remove_dependency(id=None, name=None, dep_id=None, dep_name=None):
 @arg("-i", "--id", help="ID of the BuildConfiguration to list ProductVersions for.")
 @arg("-n", "--name", help="Name of the BuildConfiguration to list ProductVersions for.")
 def list_product_versions_for_build_configuration(id=None, name=None):
+    """
+    List all ProductVersions associated with a BuildConfiguration
+    """
     found_id = get_config_id(id, name)
     if not found_id:
         return
@@ -244,17 +247,70 @@ def list_product_versions_for_build_configuration(id=None, name=None):
     if response:
         return response.content
 
-def add_product_version_to_build_configuration():
-    pass
+@arg("-i", "--id", help="ID of the BuildConfiguration to add a ProductVersion to.")
+@arg("-n", "--name", help="Name of the BuildConfiguration to add a ProductVersions to.")
+@arg('product_version_id', help="ID of the ProductVersion to add.")
+def add_product_version_to_build_configuration(id=None, name=None, product_version_id=None):
+    """
+    Associate an existing ProductVersion with a BuildConfiguration
+    """
+    found_id = get_config_id(id, name)
+    if not found_id:
+        return
 
-def remove_product_version_from_build_configuration():
-    pass
+    to_add = productversions.get_product_version(id=product_version_id)
+    response = utils.checked_api_call(configs_api, 'add_product_version', id=found_id, body=to_add)
+    if response:
+        return response.content
 
-def get_revisions_for_build_configuration():
-    pass
+@arg("-i", "--id", help="ID of the BuildConfiguration to remove a ProductVersion from.")
+@arg("-n", "--name", help="Name of the BuildConfiguration to remove a ProductVersions from.")
+@arg('product_version_id', help="ID of the ProductVersion to remove.")
+def remove_product_version_from_build_configuration(id=None, name=None, product_version_id=None):
+    """
+    Remove a ProductVersion from association with a BuildConfiguration
+    """
+    found_id = get_config_id(id, name)
+    if not found_id:
+        return
 
-def get_revision_of_build_configuration():
-    pass
+    if product_version_id not in [x.id for x in configs_api.get_product_versions(found_id).content]:
+        print("The specified ProductVersion is not associated with BuildConfiguration {}.").format(found_id)
+        return
+
+    response = utils.checked_api_call(configs_api, 'remove_product_versions', id=found_id, product_version_id=product_version_id)
+    if response:
+        return response.content
+
+@arg("-i", "--id", help="ID of the BuildConfiguration to list audited revisions for.")
+@arg("-n", "--name", help="Name of the BuildConfiguration to list audited revisions for.")
+#TODO: PNC return BuildConfigurationAuditedPage instead of BuildConfigurationPage?
+def list_revisions_of_build_configuration(id=None, name=None):
+    """
+    List audited revisions of a BuildConfiguration
+    """
+    found_id = get_config_id(id, name)
+    if not found_id:
+        return
+
+    response = utils.checked_api_call(configs_api, 'get_revisions', id=found_id)
+    if response:
+        return response.content
+
+@arg("-i", "--id", help="ID of the BuildConfiguration to retrieve a revision from.")
+@arg("-n", "--name", help="Name of the BuildConfiguration to retrieve a revision from. ")
+@arg("--revision_id", help="Number of the revision to retrieve.")
+def get_revision_of_build_configuration(id=None, name=None, revision_id=None):
+    """
+    Get a specific audited revision of a BuildConfiguration
+    """
+    found_id = get_config_id(id, name)
+    if not found_id:
+        return
+
+    response = utils.checked_api_call(configs_api, 'get_revision', id=found_id, rev=revision_id)
+    if response:
+        return response.content
 
 
 @arg("-i", "--id", help="ID of the Project to list BuildConfigurations for.")
