@@ -2,6 +2,7 @@ from pprint import pprint
 import sys
 
 from argh import arg
+from six import iteritems
 import swagger_client
 from swagger_client.apis.products_api import ProductsApi
 import utils
@@ -13,7 +14,7 @@ __author__ = 'thauser'
 
 def _create_product_object(**kwargs):
     created_product = swagger_client.ProductRest()
-    for key, value in kwargs.iteritems():
+    for key, value in iteritems(kwargs):
         setattr(created_product, key, value)
     return created_product
 

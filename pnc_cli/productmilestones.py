@@ -1,6 +1,7 @@
 from pprint import pprint
 
 from argh import arg
+from six import iteritems
 
 import utils
 import swagger_client
@@ -13,7 +14,7 @@ milestones_api = ProductmilestonesApi(utils.get_api_client())
 
 def create_milestone_object(**kwargs):
     created_milestone = swagger_client.ProductMilestoneRest()
-    for key, value in kwargs.iteritems():
+    for key, value in iteritems(kwargs):
         setattr(created_milestone, key, value)
     return created_milestone
 
@@ -92,7 +93,7 @@ def get_milestone(id):
 @arg("release_date", help="New release date for the milestone.")
 def update_milestone(id, **kwargs):
     existing_milestone = milestones_api.get_specific(id)
-    for key, value in kwargs.iteritems():
+    for key, value in iteritems(kwargs):
         setattr(existing_milestone, key, value)
     response = utils.checked_api_call(
         milestones_api, 'update', id=id, body=existing_milestone)

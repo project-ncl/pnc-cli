@@ -1,4 +1,5 @@
 from argh import arg
+from six import iteritems
 
 import utils
 import swagger_client
@@ -12,7 +13,7 @@ releases_api = ProductreleasesApi(utils.get_api_client())
 
 def create_product_release_object(**kwargs):
     created_release = swagger_client.ProductReleaseRest()
-    for key, value in kwargs.iteritems():
+    for key, value in iteritems(kwargs):
         setattr(created_release, key, value)
     return created_release
 
@@ -99,7 +100,7 @@ def update_release(id, **kwargs):
         return
 
     to_update = releases_api.get_specific(id=id).content
-    for key, value in kwargs.iteritems():
+    for key, value in iteritems(kwargs):
         setattr(to_update, key, value)
 
     response = utils.checked_api_call(

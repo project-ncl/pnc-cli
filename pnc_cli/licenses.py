@@ -1,6 +1,7 @@
 from pprint import pprint
 
 from argh import arg
+from six import iteritems
 
 import utils
 import swagger_client
@@ -12,7 +13,7 @@ licenses_api = LicensesApi(utils.get_api_client())
 
 def _create_license_object(**kwargs):
     created_license = swagger_client.LicenseRest()
-    for key, value in kwargs.iteritems():
+    for key, value in iteritems(kwargs):
         setattr(created_license, key, value)
     return created_license
 

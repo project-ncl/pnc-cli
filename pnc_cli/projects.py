@@ -1,4 +1,5 @@
 from pprint import pprint
+from six import iteritems
 import swagger_client
 from swagger_client.apis.projects_api import ProjectsApi
 from argh import arg
@@ -9,7 +10,7 @@ projects_api = ProjectsApi(utils.get_api_client())
 
 def _create_project_object(**kwargs):
     created_project = swagger_client.ProjectRest()
-    for key, value in kwargs.iteritems():
+    for key, value in iteritems(kwargs):
         setattr(created_project, key, value)
     return created_project
 
@@ -87,7 +88,7 @@ def update_project(id=None, **kwargs):
     Update an existing Project with new information
     """
     to_udpate = projects_api.get_specific(id=id)
-    for key, value in kwargs.iteritems():
+    for key, value in iteritems(kwargs):
         setattr(to_udpate, key, value)
     response = utils.checked_api_call(projects_api, 'update', id=id, body=to_udpate)
     if response:

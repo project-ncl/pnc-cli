@@ -2,6 +2,7 @@ from pprint import pprint
 import sys
 
 from argh import arg
+from six import iteritems
 
 import swagger_client
 from swagger_client.apis.productversions_api import ProductversionsApi
@@ -16,7 +17,7 @@ __author__ = 'thauser'
 
 def create_product_version_object(**kwargs):
     created_version = swagger_client.ProductVersionRest()
-    for key, value in kwargs.iteritems():
+    for key, value in iteritems(kwargs):
         setattr(created_version, key, value)
     return created_version
 
