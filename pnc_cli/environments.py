@@ -12,10 +12,21 @@ __author__ = 'thauser'
 
 
 def _create_environment_object(**kwargs):
-    created_environment = swagger_client.BuildEnvironmentRest
+    created_environment = swagger_client.BuildEnvironmentRest()
     for key, value in iteritems(kwargs):
-        setattr(created_environment, key, value.upper())
+        if value:
+            if key == 'build_type':
+                setattr(created_environment, key, value.upper())
+            else:
+                setattr(created_environment, key, value)
     return created_environment
+
+def _get_environment_id_by_name(name):
+    existing = [x for x in envs_api.get_all().content]
+    for env in existing:
+        if env.name == name:
+            return env.id
+    return None
 
 
 def _environment_exists(search_id):
@@ -23,9 +34,28 @@ def _environment_exists(search_id):
     return str(search_id) in existing_ids
 
 
-@arg("build-type", help="Type of build for this build environment. Allowed values: JAVA, DOCKER, NATIVE")
-@arg("operational-system",
-     help="Operating system for this build environment. Allowed values: WINDOWS, LINUX, OSX")
+def get_environment_id(search_id, name):
+    if search_id:
+        if not _environment_exists(search_id):
+            print("No environment with ID {} exists.".format(search_id))
+            return
+        found_id = search_id
+    elif name:
+        found_id = _get_environment_id_by_name(name)
+        if not found_id:
+            print("No environment with name {} exists.".foramt(name))
+            return
+    else:
+        print("Either a BuildEnvironment name or ID is required.")
+        return
+    return found_id
+
+
+@arg("name", help="Unique name of the BuildEnvironment")
+@arg("-d", "--description", help="Description of the BuildEnvironment.")
+@arg("-bt", "--build-type", help="Type of build for the new BuildEnvironment.")
+@arg("-iid", "--image-id", help="ID of the Docker image for this BuildEnvironment.")
+@arg("-iru", "--image-repository-url", help="URL for the Docker repository in which the image resides.")
 def create_environment(**kwargs):
     """
     Create a new Environment
@@ -36,42 +66,58 @@ def create_environment(**kwargs):
         return response.content
 
 
-@arg("env-id", help="ID of the environment to replace")
-@arg("-bt", "--build-type", help="Type of build for the new environment")
-@arg("-os", "--operational-system",
-     help="Operating system for the new environment")
-def update_environment(env_id, **kwargs):
+@arg("id", help="ID of the environment to update.")
+@arg("-bt", "--build-type", help="Updated type of build for the new BuildEnvironment.")
+@arg("-d", "--description", help="Updated description of the BuildEnvironment.")
+@arg("-iid", "--image-id", help="Updated ID of the Docker image for this BuildEnvironment.")
+@arg("-iru", "--image-repository-url", help="Updated URL for the Docker repository in which the image resides.")
+@arg("-n", "--name", help="Updated unique name of the BuildEnvironment")
+def update_environment(id, **kwargs):
     """
-    Replace an Environment with a new Environment
+    Update a BuildEnvironment with new information
     """
-    environment = _create_environment_object(**kwargs)
-    if not _environment_exists(env_id):
-        print("No environment with id {0} exists.").format(env_id)
+    if not _environment_exists(id):
+        print("No environment with id {} exists.".format(id))
         return
+
+    to_update = envs_api.get_specific(id=id).content
+
+    for key,value in iteritems(kwargs):
+        if value:
+            if key == 'build_type':
+                setattr(to_update, key, value.upper())
+            else:
+                setattr(to_update, key, value)
+
     response = utils.checked_api_call(
-        envs_api, 'update', id=env_id, body=environment)
+        envs_api, 'update', id=id, body=to_update)
     if response:
         return response.content
 
 
-@arg("env-id", help="ID of the environment to delete")
-def delete_environment(env_id):
+@arg("-i", "--id", help="ID of the environment to delete.")
+@arg("-n", "--name", help="Name of the environment to delete.")
+def delete_environment(id=None, name=None):
     """
     Delete an environment by ID
     """
-    if not _environment_exists(env_id):
-        print("No environment with id {0} exists.").format(env_id)
+    if not _environment_exists(id):
+        print("No environment with id {} exists.".format(id))
         return
-    response = utils.checked_api_call(envs_api, 'delete', id=env_id)
+    response = utils.checked_api_call(envs_api, 'delete', id=id)
     return response
 
 
-@arg("id", help="ID of the environment to retrieve.")
-def get_environment(id):
+@arg("-i", "--id", help="ID of the environment to retrieve.")
+@arg("-n", "--name", help="Name of the environment to retrieve.")
+def get_environment(id=None, name=None):
     """
     Get a specific Environment by ID
     """
-    response = utils.checked_api_call(envs_api, 'get_specific', id=id)
+    search_id = get_environment_id(id, name)
+    if not search_id:
+        return
+    response = utils.checked_api_call(envs_api, 'get_specific', id=search_id)
     if response:
         return response.content
 
