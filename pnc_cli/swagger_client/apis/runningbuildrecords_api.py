@@ -48,7 +48,7 @@ class RunningbuildrecordsApi(object):
     def get_all(self, **kwargs):
         """
         Gets all running Build Records
-
+        
 
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please define a `callback` function
@@ -132,7 +132,7 @@ class RunningbuildrecordsApi(object):
     def get_specific(self, id, **kwargs):
         """
         Gets specific running Build Record
-
+        
 
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please define a `callback` function
@@ -151,8 +151,7 @@ class RunningbuildrecordsApi(object):
         """
         # verify the required parameter 'id' is set
         if id is None:
-            raise ValueError(
-                "Missing the required parameter `id` when calling `get_specific`")
+            raise ValueError("Missing the required parameter `id` when calling `get_specific`")
 
         all_params = ['id']
         all_params.append('callback')
@@ -167,8 +166,7 @@ class RunningbuildrecordsApi(object):
             params[key] = val
         del params['kwargs']
 
-        resource_path = '/running-build-records/{id}'.replace(
-            '{format}', 'json')
+        resource_path = '/running-build-records/{id}'.replace('{format}', 'json')
         method = 'GET'
 
         path_params = {}

@@ -48,7 +48,7 @@ class ProductmilestonesApi(object):
     def get_all(self, **kwargs):
         """
         Gets all Product Milestones
-
+        
 
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please define a `callback` function
@@ -132,7 +132,7 @@ class ProductmilestonesApi(object):
     def create_new(self, **kwargs):
         """
         Creates a new Product Milestone for the Specified Product Version
-
+        
 
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please define a `callback` function
@@ -144,7 +144,7 @@ class ProductmilestonesApi(object):
 
         :param callback function: The callback function
             for asynchronous request. (optional)
-        :param ProductMilestoneRest body:
+        :param ProductMilestoneRest body: 
         :return: ProductMilestoneSingleton
                  If the method is called asynchronously,
                  returns the request thread.
@@ -207,7 +207,7 @@ class ProductmilestonesApi(object):
     def get_all_by_product_version_id(self, version_id, **kwargs):
         """
         Gets all Product Milestones of the Specified Product Version
-
+        
 
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please define a `callback` function
@@ -230,8 +230,7 @@ class ProductmilestonesApi(object):
         """
         # verify the required parameter 'version_id' is set
         if version_id is None:
-            raise ValueError(
-                "Missing the required parameter `version_id` when calling `get_all_by_product_version_id`")
+            raise ValueError("Missing the required parameter `version_id` when calling `get_all_by_product_version_id`")
 
         all_params = ['version_id', 'page_index', 'page_size', 'sort', 'q']
         all_params.append('callback')
@@ -246,8 +245,7 @@ class ProductmilestonesApi(object):
             params[key] = val
         del params['kwargs']
 
-        resource_path = '/product-milestones/product-versions/{versionId}'.replace(
-            '{format}', 'json')
+        resource_path = '/product-milestones/product-versions/{versionId}'.replace('{format}', 'json')
         method = 'GET'
 
         path_params = {}
@@ -299,7 +297,7 @@ class ProductmilestonesApi(object):
     def get_specific(self, id, **kwargs):
         """
         Gets specific Product Milestone
-
+        
 
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please define a `callback` function
@@ -318,8 +316,7 @@ class ProductmilestonesApi(object):
         """
         # verify the required parameter 'id' is set
         if id is None:
-            raise ValueError(
-                "Missing the required parameter `id` when calling `get_specific`")
+            raise ValueError("Missing the required parameter `id` when calling `get_specific`")
 
         all_params = ['id']
         all_params.append('callback')
@@ -378,7 +375,7 @@ class ProductmilestonesApi(object):
     def update(self, id, **kwargs):
         """
         Updates an existing Product Milestone
-
+        
 
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please define a `callback` function
@@ -391,15 +388,14 @@ class ProductmilestonesApi(object):
         :param callback function: The callback function
             for asynchronous request. (optional)
         :param int id: Product Milestone id (required)
-        :param ProductMilestoneRest body:
+        :param ProductMilestoneRest body: 
         :return: None
                  If the method is called asynchronously,
                  returns the request thread.
         """
         # verify the required parameter 'id' is set
         if id is None:
-            raise ValueError(
-                "Missing the required parameter `id` when calling `update`")
+            raise ValueError("Missing the required parameter `id` when calling `update`")
 
         all_params = ['id', 'body']
         all_params.append('callback')

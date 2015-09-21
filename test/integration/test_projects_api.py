@@ -8,7 +8,7 @@ from pnc_cli import utils
 projects_api = ProjectsApi(utils.get_api_client())
 
 def _create_project():
-    randname = ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(10))
+    randname = utils.gen_random_name()
     return projects_api.create_new(body=projects._create_project_object(name=randname)).content
 
 def test_get_project_list():
@@ -26,7 +26,7 @@ def test_get_specific():
 
 def test_update():
     new_proj = _create_project()
-    newname = 'newname'.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(10))
+    newname = 'newname' + utils.gen_random_name()
     updated_project = projects._create_project_object(name=newname, description="updated description")
     projects_api.update(id=new_proj.id, body=updated_project)
     retrieved_project = projects_api.get_specific(new_proj.id).content

@@ -1,5 +1,3 @@
-from pprint import pprint
-
 from argh import arg
 from six import iteritems
 
@@ -7,13 +5,14 @@ import swagger_client
 from swagger_client.apis.environments_api import EnvironmentsApi
 import utils
 
+
 envs_api = EnvironmentsApi(utils.get_api_client())
 
 __author__ = 'thauser'
 
 
 def _create_environment_object(**kwargs):
-    created_environment = swagger_client.EnvironmentRest
+    created_environment = swagger_client.BuildEnvironmentRest
     for key, value in iteritems(kwargs):
         setattr(created_environment, key, value.upper())
     return created_environment

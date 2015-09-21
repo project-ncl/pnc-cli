@@ -48,7 +48,7 @@ class LicensesApi(object):
     def get_all(self, **kwargs):
         """
         Gets all Licenses
-
+        
 
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please define a `callback` function
@@ -132,7 +132,7 @@ class LicensesApi(object):
     def create_new(self, **kwargs):
         """
         Creates a new License
-
+        
 
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please define a `callback` function
@@ -144,7 +144,7 @@ class LicensesApi(object):
 
         :param callback function: The callback function
             for asynchronous request. (optional)
-        :param LicenseRest body:
+        :param LicenseRest body: 
         :return: LicenseSingleton
                  If the method is called asynchronously,
                  returns the request thread.
@@ -207,7 +207,7 @@ class LicensesApi(object):
     def get_specific(self, id, **kwargs):
         """
         Get specific License
-
+        
 
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please define a `callback` function
@@ -226,8 +226,7 @@ class LicensesApi(object):
         """
         # verify the required parameter 'id' is set
         if id is None:
-            raise ValueError(
-                "Missing the required parameter `id` when calling `get_specific`")
+            raise ValueError("Missing the required parameter `id` when calling `get_specific`")
 
         all_params = ['id']
         all_params.append('callback')
@@ -286,7 +285,7 @@ class LicensesApi(object):
     def update(self, id, **kwargs):
         """
         Updates an existing License
-
+        
 
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please define a `callback` function
@@ -299,15 +298,14 @@ class LicensesApi(object):
         :param callback function: The callback function
             for asynchronous request. (optional)
         :param int id: License id (required)
-        :param LicenseRest body:
+        :param LicenseRest body: 
         :return: None
                  If the method is called asynchronously,
                  returns the request thread.
         """
         # verify the required parameter 'id' is set
         if id is None:
-            raise ValueError(
-                "Missing the required parameter `id` when calling `update`")
+            raise ValueError("Missing the required parameter `id` when calling `update`")
 
         all_params = ['id', 'body']
         all_params.append('callback')
@@ -368,7 +366,7 @@ class LicensesApi(object):
     def delete(self, id, **kwargs):
         """
         Deletes an existing License
-
+        
 
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please define a `callback` function
@@ -387,8 +385,7 @@ class LicensesApi(object):
         """
         # verify the required parameter 'id' is set
         if id is None:
-            raise ValueError(
-                "Missing the required parameter `id` when calling `delete`")
+            raise ValueError("Missing the required parameter `id` when calling `delete`")
 
         all_params = ['id']
         all_params.append('callback')

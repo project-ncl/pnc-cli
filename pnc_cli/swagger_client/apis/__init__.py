@@ -4,6 +4,7 @@ from __future__ import absolute_import
 from .productreleases_api import ProductreleasesApi
 from .products_api import ProductsApi
 from .buildconfigurationsets_api import BuildconfigurationsetsApi
+from .buildtasks_api import BuildtasksApi
 from .licenses_api import LicensesApi
 from .projects_api import ProjectsApi
 from .users_api import UsersApi
