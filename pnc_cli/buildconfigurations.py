@@ -318,7 +318,7 @@ def list_build_configurations_for_project(id=None, name=None):
     """
     List all BuildConfigurations associated with the given Project
     """
-    found_id = projects.get_project(id,name)
+    found_id = projects.get_project_id(id,name)
     if not found_id:
         return
 

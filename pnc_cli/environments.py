@@ -124,10 +124,10 @@ def get_environment(id=None, name=None):
     """
     Get a specific Environment by name or ID
     """
-    found_id = get_environment_id(id, name)
-    if not found_id:
+    search_id = get_environment_id(id, name)
+    if not search_id:
         return
-    response = utils.checked_api_call(envs_api, 'get_specific', id=found_id)
+    response = utils.checked_api_call(envs_api, 'get_specific', id=search_id)
     if response:
         return response.content
 
