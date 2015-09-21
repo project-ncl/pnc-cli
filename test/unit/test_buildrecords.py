@@ -55,13 +55,7 @@ def test_list_records_for_project_notexist(mock_get_project_id):
     assert not result
 
 @patch('pnc_cli.buildrecords.records_api.get_specific', return_value=MagicMock(content='build record 2'))
-def test_get_build_record(mock_get_specific):
-    result = buildrecords.get_build_record('2')
-    mock_get_specific.assert_called_once_with(id='2')
-    assert result == 'build record 2'
-
-@patch('pnc_cli.buildrecords.records_api.get_specific', return_value=MagicMock(content='build record 2'))
-def test_get_build_record(mock_get_specific):
+def test_get_build_record_id(mock_get_specific):
     result = buildrecords.get_build_record('2')
     mock_get_specific.assert_called_once_with(id='2')
     assert result == 'build record 2'
@@ -72,11 +66,38 @@ def test_get_build_record_notexist(mock):
     mock.assert_called_once_with('2')
     assert not result
 
-def test_list_build_artifacts():
-    pass
+@patch('pnc_cli.buildrecords.records_api.get_artifacts', return_value=MagicMock(content=['artifact1','artifact2']))
+def test_list_build_artifacts(mock):
+    result = buildrecords.list_build_artifacts('1')
+    mock.assert_called_once_with(id='1')
+    assert result == ['artifact1', 'artifact2']
 
-def test_get_audited_configuration_for_record():
-    pass
+@patch('pnc_cli.buildrecords.records_api.get_artifacts', return_value=None)
+def test_list_build_artifacts_notexist(mock):
+    result = buildrecords.list_build_artifacts('100')
+    mock.assert_called_once_with(id='100')
+    assert not result
 
-def test_get_log_for_record():
-    pass
+@patch('pnc_cli.buildrecords.records_api.get_build_configuration_audited', return_value=MagicMock(content='audited bc'))
+def test_get_audited_configuration_for_record(mock):
+    result = buildrecords.get_audited_configuration_for_record(id=100)
+    mock.assert_called_once_with(id=100)
+    assert result == 'audited bc'
+
+@patch('pnc_cli.buildrecords.records_api.get_build_configuration_audited', return_value=None)
+def test_get_audited_configuration_for_record_notexist(mock):
+    result = buildrecords.get_audited_configuration_for_record(id=100)
+    mock.assert_called_once_with(id=100)
+    assert not result
+
+@patch('pnc_cli.buildrecords.records_api.get_logs', return_value='log here.')
+def test_get_log_for_record(mock):
+    result = buildrecords.get_log_for_record(id=100)
+    mock.assert_called_once_with(id=100)
+    assert result == 'log here.'
+
+@patch('pnc_cli.buildrecords.records_api.get_logs', return_value=None)
+def test_get_log_for_record_notexist(mock):
+    result = buildrecords.get_log_for_record(id=100)
+    mock.assert_called_once_with(id=100)
+    assert not result
