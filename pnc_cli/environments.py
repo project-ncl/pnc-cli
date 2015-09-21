@@ -1,4 +1,5 @@
 from argh import arg
+
 from six import iteritems
 
 import swagger_client
@@ -22,6 +23,9 @@ def _create_environment_object(**kwargs):
     return created_environment
 
 def _get_environment_id_by_name(name):
+    """
+    Return the ID of a BuildEnvironment given the name
+    """
     existing = [x for x in envs_api.get_all().content]
     for env in existing:
         if env.name == name:
@@ -30,11 +34,17 @@ def _get_environment_id_by_name(name):
 
 
 def _environment_exists(search_id):
+    """
+    Returns true if search_id is a valid BuildEnvironment id.
+    """
     existing_ids = [str(x.id) for x in envs_api.get_all().content]
     return str(search_id) in existing_ids
 
 
 def get_environment_id(search_id, name):
+    """
+    Given either a name or id, checks for BuildEnvironment existence and returns the valid id, or prints a message otherwise
+    """
     if search_id:
         if not _environment_exists(search_id):
             print("No environment with ID {} exists.".format(search_id))
@@ -99,12 +109,12 @@ def update_environment(id, **kwargs):
 @arg("-n", "--name", help="Name of the environment to delete.")
 def delete_environment(id=None, name=None):
     """
-    Delete an environment by ID
+    Delete an environment by name or ID
     """
-    if not _environment_exists(id):
-        print("No environment with id {} exists.".format(id))
+    found_id = get_environment_id(id, name)
+    if not found_id:
         return
-    response = utils.checked_api_call(envs_api, 'delete', id=id)
+    response = utils.checked_api_call(envs_api, 'delete', id=found_id)
     return response
 
 
@@ -112,12 +122,12 @@ def delete_environment(id=None, name=None):
 @arg("-n", "--name", help="Name of the environment to retrieve.")
 def get_environment(id=None, name=None):
     """
-    Get a specific Environment by ID
+    Get a specific Environment by name or ID
     """
-    search_id = get_environment_id(id, name)
-    if not search_id:
+    found_id = get_environment_id(id, name)
+    if not found_id:
         return
-    response = utils.checked_api_call(envs_api, 'get_specific', id=search_id)
+    response = utils.checked_api_call(envs_api, 'get_specific', id=found_id)
     if response:
         return response.content
 
