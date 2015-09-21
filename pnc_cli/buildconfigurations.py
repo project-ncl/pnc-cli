@@ -101,7 +101,6 @@ def get_build_configuration(id=None, name=None):
 @arg("-surl", "--scm-url", help="URL to the sources of the BuildConfiguration.")
 @arg("-rurl", "--scm-revision", help="Revision of the sources in scm-url for this BuildConfiguration.")
 @arg("-bs", "--build-script", help="Script to execute for the BuildConfiguration.")
-#TODO: update project-ncl to return BuildConfigurationSingleton instead of current BuildConfigurationRest
 def update_build_configuration(id=None, name=None, **kwargs):
     to_update_id = get_config_id(id, name)
     if not to_update_id:
