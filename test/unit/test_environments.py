@@ -13,6 +13,7 @@ def test_create_environment(mock_create_new, mock_create_environment_object):
     assert result == 'buildenvironment1'
 
 
+@patch('pnc_cli.environments._environment_exists', return_value=1)
 @patch('pnc_cli.environments.envs_api.get_specific', return_value=MagicMock(content=environments._create_environment_object(name='testerino')))
 @patch('pnc_cli.environments.envs_api.update', return_value=MagicMock(content='buildenvironment1'))
 def test_update_environment(mock_update, mock_get_specific):
@@ -20,13 +21,16 @@ def test_update_environment(mock_update, mock_get_specific):
     mock_get_specific.assert_called_once_with(id=1)
     kwargs = mock_update.call_args
     env = environments._create_environment_object(name='testerino2', id=1)
+    assert mock_update.call_count == 1
     assert cmp(kwargs, env)
     assert result == 'buildenvironment1'
 
 @patch('pnc_cli.environments._environment_exists', return_value=False)
-def test_update_environment_notexist(mock_environment_exists):
+@patch('pnc_cli.environments.envs_api.update')
+def test_update_environment_notexist(mock_update, mock_environment_exists):
     result = environments.update_environment(id=1)
     mock_environment_exists.assert_called_once_with(1)
+    assert not mock_update.called
     assert not result
 
 @patch('pnc_cli.environments.get_environment_id', return_value=1)
@@ -46,9 +50,11 @@ def test_delete_environment_name(mock_delete, mock_get_environment_id):
     assert result
 
 @patch('pnc_cli.environments.get_environment_id', return_value=None)
-def test_delete_environment_notexist(mock):
+@patch('pnc_cli.environments.envs_api.delete')
+def test_delete_environment_notexist(mock_delete, mock_get_environment_id):
     result = environments.delete_environment(id=1)
-    mock.assert_called_once_with(1,None)
+    mock_get_environment_id.assert_called_once_with(1,None)
+    assert not mock_delete.called
     assert not result
 
 @patch('pnc_cli.environments.get_environment_id', return_value=1)
@@ -68,9 +74,11 @@ def test_get_environment_name(mock_get_specific, mock_get_environment_id):
     assert result == 'buildenvironment1'
 
 @patch('pnc_cli.environments.get_environment_id', return_value=None)
-def test_get_environment_notexist(mock):
+@patch('pnc_cli.environments.envs_api.get_specific')
+def test_get_environment_notexist(mock_get_specific, mock_get_environment_id):
     result = environments.get_environment(id=100)
-    mock.assert_called_once_with(100, None)
+    mock_get_environment_id.assert_called_once_with(100, None)
+    assert not mock_get_specific.called
     assert not result
 
 @patch('pnc_cli.environments.envs_api.get_all', return_value=MagicMock(content=['env1','env2','env3']))
