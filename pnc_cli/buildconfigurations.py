@@ -207,7 +207,7 @@ def add_dependency(id=None, name=None, dependency_id=None, dependency_name=None)
     if not to_add:
         return
 
-    dependency = configs_api.get_specific(id=to_add)
+    dependency = configs_api.get_specific(id=to_add).content
     response = utils.checked_api_call(configs_api, 'add_dependency', id=add_to, body=dependency)
     if response:
         return response.content
@@ -257,7 +257,11 @@ def add_product_version_to_build_configuration(id=None, name=None, product_versi
     if not found_id:
         return
 
-    to_add = productversions.get_product_version(id=product_version_id)
+    if not productversions.version_exists(product_version_id):
+        print("No ProductVersion with ID {} exists.".format(product_version_id))
+        return
+
+    to_add = productversions.get_product_version(id=product_version_id).content
     response = utils.checked_api_call(configs_api, 'add_product_version', id=found_id, body=to_add)
     if response:
         return response.content
@@ -273,11 +277,11 @@ def remove_product_version_from_build_configuration(id=None, name=None, product_
     if not found_id:
         return
 
-    if product_version_id not in [x.id for x in configs_api.get_product_versions(found_id).content]:
-        print("The specified ProductVersion is not associated with BuildConfiguration {}.").format(found_id)
+    if product_version_id not in [x.id for x in configs_api.get_product_versions(id=found_id).content]:
+        print("The specified ProductVersion is not associated with BuildConfiguration {}.".format(found_id))
         return
 
-    response = utils.checked_api_call(configs_api, 'remove_product_versions', id=found_id, product_version_id=product_version_id)
+    response = utils.checked_api_call(configs_api, 'remove_product_version', id=found_id, product_version_id=product_version_id)
     if response:
         return response.content
 
