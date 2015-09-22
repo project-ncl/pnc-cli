@@ -32,5 +32,3 @@ def test_update():
     envs_api.update(id=new_env.id, body=updated_env)
     retrieved_env = envs_api.get_specific(new_env.id).content
     assert (retrieved_env.build_type == 'DOCKER') and (retrieved_env.name == 'test-BuildEnvironmentName')
-
-
