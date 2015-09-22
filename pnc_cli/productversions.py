@@ -24,12 +24,11 @@ def create_product_version_object(**kwargs):
 
 def version_exists(id):
     version_ids = [str(x.id) for x in versions_api.get_all().content]
-    return id in version_ids
+    return str(id) in version_ids
 
 
 def version_exists_for_product(id, version):
-    return version in [x.version for x in [
-        y for y in products_api.get_product_versions(id=id).content]]
+    return version in [x.version for x in products_api.get_product_versions(id=id).content]
 
 
 def list_product_versions():
@@ -37,7 +36,8 @@ def list_product_versions():
     List all ProductVersions
     """
     response = utils.checked_api_call(versions_api, 'get_all')
-    if response: return response.content
+    if response:
+        return response.content
 
 
 @arg("product_id", help="ID of product to add a version to")
@@ -71,6 +71,9 @@ def get_product_version(id):
     """
     Get a specific ProductVersion by ID
     """
+    if not version_exists(id):
+        print("No ProductVersion with ID {} exists.".format(id))
+        return
     response = utils.checked_api_call(versions_api, 'get_specific', id=id)
     if response: return response.content
 
