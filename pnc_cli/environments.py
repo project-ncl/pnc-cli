@@ -26,8 +26,7 @@ def _get_environment_id_by_name(name):
     """
     Return the ID of a BuildEnvironment given the name
     """
-    existing = [x for x in envs_api.get_all().content]
-    for env in existing:
+    for env in envs_api.get_all().content:
         if env.name == name:
             return env.id
     return None
@@ -53,7 +52,7 @@ def get_environment_id(search_id, name):
     elif name:
         found_id = _get_environment_id_by_name(name)
         if not found_id:
-            print("No environment with name {} exists.".foramt(name))
+            print("No environment with name {} exists.".format(name))
             return
     else:
         print("Either a BuildEnvironment name or ID is required.")
