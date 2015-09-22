@@ -46,7 +46,7 @@ def test_config_id_exists_false(mock):
 
 @patch('pnc_cli.buildconfigurations.configs_api.get_all')
 def test_get_build_configuration_id_by_name(mock):
-    mock.return_value = test.utils.create_mock_content_list()
+    mock.return_value = test.utils.create_mock_list_with_name_attribute()
     result = buildconfigurations.get_build_configuration_id_by_name('testerino')
     mock.assert_called_once_with()
     assert result == 1

@@ -47,14 +47,14 @@ def test_environment_exists_false(mock):
 
 @patch('pnc_cli.environments.envs_api.get_all')
 def test_get_environment_id_by_name(mock):
-    mock.return_value = test.utils.create_mock_content_list()
+    mock.return_value = test.utils.create_mock_list_with_name_attribute()
     result = environments._get_environment_id_by_name('testerino')
     mock.assert_called_once_with()
     assert result == 1
 
 @patch('pnc_cli.environments.envs_api.get_all')
 def test_get_environment_id_by_name_notexist(mock):
-    mock.return_value = test.utils.create_mock_content_list()
+    mock.return_value = test.utils.create_mock_list_with_name_attribute()
     result = environments._get_environment_id_by_name('doesntexist')
     mock.assert_called_once_with()
     assert not result
