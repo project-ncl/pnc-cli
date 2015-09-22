@@ -9,21 +9,17 @@ running_api = RunningbuildrecordsApi(utils.get_api_client())
 def list_running_builds():
     """
     List all running builds
-    :return: list of running builds
     """
-    running_api.get_all(callback=callback_function)
+    response = utils.checked_api_call(running_api,'get_all')
+    if response:
+        return response.content
 
 
 @arg("id", help="ID of the running build to retrieve.")
 def get_running_build(id):
     """
     Get info about a specific running build
-    :param id: id of the build
-    :return: build information!
     """
-    running_api.get_specific(id=id)
-
-
-def callback_function(response):
+    response = utils.checked_api_call(running_api,'get_specific', id=id)
     if response:
-        pprint(response.content)
+        return response.content
