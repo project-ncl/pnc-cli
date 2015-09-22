@@ -1,3 +1,5 @@
+import test.utils
+
 __author__ = 'thauser'
 from mock import MagicMock, patch, call
 from pnc_cli import buildconfigurations
@@ -42,14 +44,15 @@ def test_config_id_exists_false(mock):
     mock.assert_called_once_with()
     assert not result
 
-@patch('pnc_cli.buildconfigurations.configs_api.get_all', return_value=MagicMock(content=[MagicMock(name='testerino', id=1), MagicMock(name='another', id=2)]))
+@patch('pnc_cli.buildconfigurations.configs_api.get_all')
 def test_get_build_configuration_id_by_name(mock):
+    mock.return_value = test.utils.create_mock_content_list()
     result = buildconfigurations.get_build_configuration_id_by_name('testerino')
     mock.assert_called_once_with()
     assert result == 1
 
 @patch('pnc_cli.buildconfigurations.configs_api.get_all', return_value=MagicMock(content=[MagicMock(name='testerino', id=1), MagicMock(name='another', id=2)]))
-def test_get_build_configuration_id_by_name(mock):
+def test_get_build_configuration_id_by_name_notexist(mock):
     result = buildconfigurations.get_build_configuration_id_by_name('doesntexist')
     mock.assert_called_once_with()
     assert not result
