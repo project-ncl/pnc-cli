@@ -1,8 +1,6 @@
-from pprint import pprint
-import sys
-
 from argh import arg
 from six import iteritems
+
 from pnc_cli import swagger_client
 from pnc_cli.swagger_client.apis.products_api import ProductsApi
 from pnc_cli import utils

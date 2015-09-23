@@ -55,8 +55,8 @@ def create_product_version(product_id, version, **kwargs):
     Create a new ProductVersion
     """
     if version_exists_for_product(product_id, version):
-        print("Version {} already exists for product: {}").format(
-            version, products_api.get_specific(id=product_id).content.name)
+        print("Version {} already exists for product: {}".format(
+            version, products_api.get_specific(id=product_id).content.name))
         return
     kwargs['product_id'] = product_id
     kwargs['version'] = version

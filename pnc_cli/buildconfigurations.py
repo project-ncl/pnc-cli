@@ -99,7 +99,7 @@ def get_build_configuration(id=None, name=None):
 @arg("-e", "--environment", help="ID of the Environment for the new BuildConfiguration.")
 @arg("-d", "--description", help="Description of the new build configuration.")
 @arg("-surl", "--scm-url", help="URL to the sources of the BuildConfiguration.")
-@arg("-rurl", "--scm-revision", help="Revision of the sources in scm-url for this BuildConfiguration.")
+@arg("-srev", "--scm-revision", help="Revision of the sources in scm-url for this BuildConfiguration.")
 @arg("-bs", "--build-script", help="Script to execute for the BuildConfiguration.")
 def update_build_configuration(id=None, name=None, **kwargs):
     to_update_id = get_config_id(id, name)
@@ -133,7 +133,7 @@ def delete_build_configuration(id=None, name=None):
 @arg("environment_id", help="ID of the Environment for the new BuildConfiguration.")
 @arg("-d", "--description", help="Description of the new build configuration.")
 @arg("-surl", "--scm-url", help="URL to the sources of the BuildConfiguration.")
-@arg("-rurl", "--scm-revision", help="Revision of the sources in scm-url for this BuildConfiguration.")
+@arg("-srev", "--scm-revision", help="Revision of the sources in scm-url for this BuildConfiguration.")
 @arg("-bs", "--build-script", help="Script to execute for the BuildConfiguration.")
 def create_build_configuration(**kwargs):
     """
