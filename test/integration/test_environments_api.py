@@ -36,7 +36,8 @@ def test_delete():
 
 def test_update():
     new_env = _create_env()
-    updated_env = environments._create_environment_object(description="DOCKER", name="test-BuildEnvironmentName")
+    randname = testutils.gen_random_name()
+    updated_env = environments._create_environment_object(description="DOCKER", name=randname)
     envs_api.update(id=new_env.id, body=updated_env)
     retrieved_env = envs_api.get_specific(new_env.id).content
-    assert (retrieved_env.description == 'DOCKER') and (retrieved_env.name == 'test-BuildEnvironmentName')
+    assert (retrieved_env.description == 'DOCKER') and (retrieved_env.name == randname)
