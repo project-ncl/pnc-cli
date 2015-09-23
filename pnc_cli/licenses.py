@@ -3,16 +3,15 @@ from pprint import pprint
 from argh import arg
 from six import iteritems
 
-import utils
-import swagger_client
-from swagger_client.apis.licenses_api import LicensesApi
-
+from pnc_cli import utils
+from pnc_cli.swagger_client import LicenseRest
+from pnc_cli.swagger_client import LicensesApi
 
 licenses_api = LicensesApi(utils.get_api_client())
 
 
 def _create_license_object(**kwargs):
-    created_license = swagger_client.LicenseRest()
+    created_license = LicenseRest()
     for key, value in iteritems(kwargs):
         setattr(created_license, key, value)
     return created_license
@@ -90,6 +89,7 @@ def delete_license(license_id):
     response = utils.checked_api_call(licenses_api, 'delete', id=license_id)
     if response:
         return response
+
 
 # TODO: preserve existing license fields that aren't supplied by user, to
 # make it a true update

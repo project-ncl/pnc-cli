@@ -2,12 +2,11 @@ try:
     import configparser
 except ImportError:
     import ConfigParser as configparser
-import random
-import string
 import re
 import errno
-from pnc_cli import swagger_client
 import os
+
+from pnc_cli import swagger_client
 from pnc_cli.swagger_client.rest import ApiException
 
 __author__ = 'thauser'
@@ -32,15 +31,6 @@ apiclient = swagger_client.api_client.ApiClient(pnc_rest_url)
 
 def get_api_client():
     return apiclient
-
-
-def gen_random_name():
-    return ''.join(random.choice(string.ascii_uppercase + string.digits)
-                   for _ in range(10))
-
-
-def gen_random_version():
-    return random.choice(string.digits) + '.' + random.choice(string.digits)
 
 
 def is_valid_version(version):

@@ -1,6 +1,6 @@
 __author__ = 'thauser'
-import utils
-from swagger_client.apis import BuildrecordsetsApi
+from pnc_cli import utils
+from pnc_cli.swagger_client.apis import BuildrecordsetsApi
 
 brs_api = BuildrecordsetsApi(utils.get_api_client())
 

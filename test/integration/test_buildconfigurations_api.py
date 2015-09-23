@@ -1,25 +1,34 @@
 from pnc_cli import buildconfigurations
 from pnc_cli.swagger_client.apis.buildconfigurations_api import BuildconfigurationsApi
 from pnc_cli import utils
+from test import testutils
 
 configs_api = BuildconfigurationsApi(utils.get_api_client())
 
+
 def create_config():
-    return configs_api.create_new(body=buildconfigurations.create_build_conf_object(name=utils.gen_random_name(), project_id=1, environment_id=1, build_status="UNKNOWN")).content
+    return configs_api.create_new(
+        body=buildconfigurations.create_build_conf_object(name=testutils.gen_random_name(), project_id=1, environment_id=1,
+                                                          build_status="UNKNOWN")).content
+
 
 def test_get_all():
     build_configurations = configs_api.get_all().content
     assert build_configurations is not None
+
 
 def test_create_build_configuration():
     new_config = create_config()
     bc_names = [bc.name for bc in configs_api.get_all().content]
     assert new_config.name in bc_names
 
+
 def test_build_trigger():
     new_config = create_config()
-    running_build = configs_api.trigger(id=new_config.id).content
-    assert running_build.status == "BUILDING"
+    configs_api.trigger(id=new_config.id)
+    running_build = configs_api.get_specific(id=new_config.id).content
+    assert running_build.build_status == "BUILDING"
+
 
 def test_get_build_configuration_id_by_name():
     created_bc = create_config()

@@ -1,8 +1,8 @@
 from argh import arg
 from six import iteritems
 
-from pnc_cli import swagger_client
-from pnc_cli.swagger_client.apis.products_api import ProductsApi
+from pnc_cli.swagger_client import ProductRest
+from pnc_cli.swagger_client import ProductsApi
 from pnc_cli import utils
 
 products_api = ProductsApi(utils.get_api_client())
@@ -11,7 +11,7 @@ __author__ = 'thauser'
 
 
 def _create_product_object(**kwargs):
-    created_product = swagger_client.ProductRest()
+    created_product = ProductRest()
     for key, value in iteritems(kwargs):
         setattr(created_product, key, value)
     return created_product

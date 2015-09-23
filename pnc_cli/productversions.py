@@ -1,6 +1,3 @@
-from pprint import pprint
-import sys
-
 from argh import arg
 from six import iteritems
 
@@ -98,11 +95,11 @@ def update_product_version(id, **kwargs):
         return
 
     to_update = versions_api.get_specific(id=id).content
-    for key,value in kwargs.items():
+    for key, value in kwargs.items():
         if value is not None:
             setattr(to_update, key, value)
     response = utils.checked_api_call(versions_api, 'update',
-        id=id,
-        body=to_update)
+                                      id=id,
+                                      body=to_update)
     if response:
         return response.content

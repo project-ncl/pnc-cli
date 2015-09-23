@@ -15,7 +15,7 @@ def create_build_conf_object(**kwargs):
     created_build_configuration = swagger_client.BuildConfigurationRest()
     for key, value in kwargs.items():
         setattr(created_build_configuration, str(key), value)
-    #workaround for current REST client
+    # workaround for current REST client
     if "build_status" not in kwargs.keys():
         setattr(created_build_configuration, "build_status", "UNKNOWN")
     return created_build_configuration
@@ -79,6 +79,7 @@ def build(id=None, name=None):
     if response:
         return response.content
 
+
 @arg("-i", "--id", help="ID of the BuildConfiguration to retrieve.")
 @arg("-n", "--name", help="Name of the BuildConfiguration to retrieve.")
 def get_build_configuration(id=None, name=None):
@@ -92,9 +93,10 @@ def get_build_configuration(id=None, name=None):
     if response:
         return response.content
 
+
 @arg("-i", "--id", help="ID of the BuildConfiguration to update.")
 @arg("-n", "--name", help="Name of the BuildConfiguration to update.")
-#allow specifying project by name?
+# allow specifying project by name?
 @arg("-pid", "--project-id", help="ID of the Project to associate the BuildConfiguration with.")
 @arg("-e", "--environment", help="ID of the Environment for the new BuildConfiguration.")
 @arg("-d", "--description", help="Description of the new build configuration.")
@@ -106,14 +108,15 @@ def update_build_configuration(id=None, name=None, **kwargs):
     if not to_update_id:
         return
 
-    bc_to_update = configs_api.get_specific(id=to_update_id)
-    for key,value in kwargs.items():
+    bc_to_update = configs_api.get_specific(id=to_update_id).content
+    for key, value in kwargs.items():
         if value is not None:
             setattr(bc_to_update, key, value)
 
-    response = utils.checked_api_call(configs_api,'update', id=to_update_id, body=bc_to_update)
+    response = utils.checked_api_call(configs_api, 'update', id=to_update_id, body=bc_to_update)
     if response:
         return response.content
+
 
 @arg("-i", "--id", help="ID of the BuildConfiguration to delete.")
 @arg("-n", "--name", help="Name of the BuildConfiguration to delete.")
@@ -128,7 +131,7 @@ def delete_build_configuration(id=None, name=None):
 
 
 @arg("name", help="Name for the new BuildConfiguration.")
-#allow specifying project by name?
+# allow specifying project by name?
 @arg("project_id", help="ID of the Project to associate the BuildConfiguration with.")
 @arg("environment_id", help="ID of the Environment for the new BuildConfiguration.")
 @arg("-d", "--description", help="Description of the new build configuration.")
@@ -145,22 +148,24 @@ def create_build_configuration(**kwargs):
     if response:
         return response.content
 
+
 @arg("-i", "--id", help="ID of the Product to list BuildConfigurations for.")
 @arg("-n", "--name", help="Name of the Product to list BuildConfigurations for.")
 def list_build_configurations_for_product(id=None, name=None):
     """
     List all BuildConfigurations associated with the given Product.
     """
-    found_id = products.get_product_id(id,name)
+    found_id = products.get_product_id(id, name)
     if not found_id:
         return
 
-#    configs_api.get_all_by_product_id_1() TODO: update project-ncl's method in the endpoint to be correct
+    #    configs_api.get_all_by_product_id_1() TODO: update project-ncl's method in the endpoint to be correct
     response = utils.checked_api_call(configs_api, 'get_all_by_product_id', product_id=found_id)
     if response:
         return response.content
 
-#TODO: allow specifying product name / version 'version'?
+
+# TODO: allow specifying product name / version 'version'?
 @arg("product_id", help="ID of the Product which contains the desired ProductVersion.")
 @arg("version_id", help="ID of the ProductVersion to list BuildConfigurations for.")
 def list_build_configurations_for_product_version(product_id, version_id):
@@ -175,9 +180,11 @@ def list_build_configurations_for_product_version(product_id, version_id):
         print("No ProductVersion with ID {} exists.".format(version_id))
         return
 
-    response = utils.checked_api_call(configs_api, 'get_all_by_product_id_1', product_id=found_product_id, version_id=version_id)
+    response = utils.checked_api_call(configs_api, 'get_all_by_product_id_1', product_id=found_product_id,
+                                      version_id=version_id)
     if response:
         return response.content
+
 
 @arg("-i", "--id", help="ID of the BuildConfiguration to list dependencies for.")
 @arg("-n", "--name", help="Name of the BuildConfiguration to list dependencies for.")
@@ -190,11 +197,12 @@ def list_dependencies(id=None, name=None):
     if response:
         return response.content
 
+
 @arg("-i", "--id", help="ID of the BuildConfiguration to add a dependency to.")
 @arg("-n", "--name", help="Name of the BuildConfiguration to add a dependency to.")
 @arg("-di", "--dependency-id", help="ID of an existing BuildConfiguration to add as a dependency.")
-@arg("-dn","--dependency-name", help="Name of an existing BuildConfiguration to add as a dependency.")
-#TODO modify project-ncl to return BuildConfigurationSingleton instead of BuildConfigurationRest
+@arg("-dn", "--dependency-name", help="Name of an existing BuildConfiguration to add as a dependency.")
+# TODO modify project-ncl to return BuildConfigurationSingleton instead of BuildConfigurationRest
 def add_dependency(id=None, name=None, dependency_id=None, dependency_name=None):
     """
     Add an existing BuildConfiguration as a dependency to another BuildConfiguration.
@@ -211,6 +219,7 @@ def add_dependency(id=None, name=None, dependency_id=None, dependency_name=None)
     response = utils.checked_api_call(configs_api, 'add_dependency', id=add_to, body=dependency)
     if response:
         return response.content
+
 
 @arg("-i", "--id", help="ID of the BuildConfiguration to remove a dependency from.")
 @arg("-n", "--name", help="Name of the BuildConfiguration to remove a dependency from.")
@@ -232,6 +241,7 @@ def remove_dependency(id=None, name=None, dependency_id=None, dependency_name=No
     if response:
         return response.content
 
+
 @arg("-i", "--id", help="ID of the BuildConfiguration to list ProductVersions for.")
 @arg("-n", "--name", help="Name of the BuildConfiguration to list ProductVersions for.")
 def list_product_versions_for_build_configuration(id=None, name=None):
@@ -245,6 +255,7 @@ def list_product_versions_for_build_configuration(id=None, name=None):
     response = utils.checked_api_call(configs_api, 'get_product_versions', id=found_id)
     if response:
         return response.content
+
 
 @arg("-i", "--id", help="ID of the BuildConfiguration to add a ProductVersion to.")
 @arg("-n", "--name", help="Name of the BuildConfiguration to add a ProductVersions to.")
@@ -266,6 +277,7 @@ def add_product_version_to_build_configuration(id=None, name=None, product_versi
     if response:
         return response.content
 
+
 @arg("-i", "--id", help="ID of the BuildConfiguration to remove a ProductVersion from.")
 @arg("-n", "--name", help="Name of the BuildConfiguration to remove a ProductVersions from.")
 @arg('product_version_id', help="ID of the ProductVersion to remove.")
@@ -281,13 +293,15 @@ def remove_product_version_from_build_configuration(id=None, name=None, product_
         print("The specified ProductVersion is not associated with BuildConfiguration {}.".format(found_id))
         return
 
-    response = utils.checked_api_call(configs_api, 'remove_product_version', id=found_id, product_version_id=product_version_id)
+    response = utils.checked_api_call(configs_api, 'remove_product_version', id=found_id,
+                                      product_version_id=product_version_id)
     if response:
         return response.content
 
+
 @arg("-i", "--id", help="ID of the BuildConfiguration to list audited revisions for.")
 @arg("-n", "--name", help="Name of the BuildConfiguration to list audited revisions for.")
-#TODO: PNC return BuildConfigurationAuditedPage instead of BuildConfigurationPage?
+# TODO: PNC return BuildConfigurationAuditedPage instead of BuildConfigurationPage?
 def list_revisions_of_build_configuration(id=None, name=None):
     """
     List audited revisions of a BuildConfiguration
@@ -299,6 +313,7 @@ def list_revisions_of_build_configuration(id=None, name=None):
     response = utils.checked_api_call(configs_api, 'get_revisions', id=found_id)
     if response:
         return response.content
+
 
 @arg("-i", "--id", help="ID of the BuildConfiguration to retrieve a revision from.")
 @arg("-n", "--name", help="Name of the BuildConfiguration to retrieve a revision from. ")
@@ -322,7 +337,7 @@ def list_build_configurations_for_project(id=None, name=None):
     """
     List all BuildConfigurations associated with the given Project
     """
-    found_id = projects.get_project_id(id,name)
+    found_id = projects.get_project_id(id, name)
     if not found_id:
         return
 

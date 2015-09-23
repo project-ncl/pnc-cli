@@ -1,12 +1,12 @@
 from argh import arg
 from six import iteritems
 
-import swagger_client
-import utils
-import buildconfigurations
-import productversions
-from swagger_client.apis.buildconfigurationsets_api import BuildconfigurationsetsApi
-from swagger_client.apis.buildconfigurations_api import BuildconfigurationsApi
+from pnc_cli import swagger_client
+from pnc_cli import utils
+from pnc_cli import buildconfigurations
+from pnc_cli import productversions
+from pnc_cli.swagger_client.apis.buildconfigurationsets_api import BuildconfigurationsetsApi
+from pnc_cli.swagger_client.apis.buildconfigurations_api import BuildconfigurationsApi
 
 sets_api = BuildconfigurationsetsApi(utils.get_api_client())
 configs_api = BuildconfigurationsApi(utils.get_api_client())

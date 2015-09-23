@@ -1,10 +1,9 @@
 from argh import arg
 
 from six import iteritems
-
-import swagger_client
-from swagger_client.apis.environments_api import EnvironmentsApi
-import utils
+from pnc_cli.swagger_client import BuildEnvironmentRest
+from pnc_cli.swagger_client import EnvironmentsApi
+from pnc_cli import utils
 
 
 envs_api = EnvironmentsApi(utils.get_api_client())
@@ -13,7 +12,7 @@ __author__ = 'thauser'
 
 
 def _create_environment_object(**kwargs):
-    created_environment = swagger_client.BuildEnvironmentRest()
+    created_environment = BuildEnvironmentRest()
     for key, value in iteritems(kwargs):
         if value:
             if key == 'build_type':

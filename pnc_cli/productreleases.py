@@ -1,10 +1,10 @@
 from argh import arg
 from six import iteritems
 
-import utils
-import swagger_client
-from swagger_client.apis.productversions_api import ProductversionsApi
-from swagger_client.apis.productreleases_api import ProductreleasesApi
+from pnc_cli import utils
+from pnc_cli.swagger_client import ProductReleaseRest
+from pnc_cli.swagger_client import ProductversionsApi
+from pnc_cli.swagger_client import ProductreleasesApi
 
 
 productversions_api = ProductversionsApi(utils.get_api_client())
@@ -12,7 +12,7 @@ releases_api = ProductreleasesApi(utils.get_api_client())
 
 
 def create_product_release_object(**kwargs):
-    created_release = swagger_client.ProductReleaseRest()
+    created_release = ProductReleaseRest()
     for key, value in iteritems(kwargs):
         setattr(created_release, key, value)
     return created_release

@@ -1,7 +1,7 @@
-import utils
 from argh import arg
-from swagger_client.apis.runningbuildrecords_api import RunningbuildrecordsApi
-from pprint import pprint
+
+from pnc_cli import utils
+from pnc_cli.swagger_client import RunningbuildrecordsApi
 
 running_api = RunningbuildrecordsApi(utils.get_api_client())
 
@@ -10,7 +10,7 @@ def list_running_builds():
     """
     List all running builds
     """
-    response = utils.checked_api_call(running_api,'get_all')
+    response = utils.checked_api_call(running_api, 'get_all')
     if response:
         return response.content
 
@@ -20,6 +20,6 @@ def get_running_build(id):
     """
     Get info about a specific running build
     """
-    response = utils.checked_api_call(running_api,'get_specific', id=id)
+    response = utils.checked_api_call(running_api, 'get_specific', id=id)
     if response:
         return response.content

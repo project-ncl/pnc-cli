@@ -3,17 +3,17 @@ from pprint import pprint
 from argh import arg
 from six import iteritems
 
-import utils
-import swagger_client
-from swagger_client.apis.productversions_api import ProductversionsApi
-from swagger_client.apis.productmilestones_api import ProductmilestonesApi
+from pnc_cli import utils
+from pnc_cli.swagger_client import ProductMilestoneRest
+from pnc_cli.swagger_client import ProductversionsApi
+from pnc_cli.swagger_client import ProductmilestonesApi
 
 productversions_api = ProductversionsApi(utils.get_api_client())
 milestones_api = ProductmilestonesApi(utils.get_api_client())
 
 
 def create_milestone_object(**kwargs):
-    created_milestone = swagger_client.ProductMilestoneRest()
+    created_milestone = ProductMilestoneRest()
     for key, value in iteritems(kwargs):
         setattr(created_milestone, key, value)
     return created_milestone

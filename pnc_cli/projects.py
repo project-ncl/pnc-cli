@@ -1,14 +1,14 @@
 from six import iteritems
 from argh import arg
 
-from pnc_cli import swagger_client
-from pnc_cli.swagger_client.apis.projects_api import ProjectsApi
+from pnc_cli.swagger_client import ProjectRest
+from pnc_cli.swagger_client import ProjectsApi
 from pnc_cli import utils
 
 projects_api = ProjectsApi(utils.get_api_client())
 
 def _create_project_object(**kwargs):
-    created_project = swagger_client.ProjectRest()
+    created_project = ProjectRest()
     for key, value in iteritems(kwargs):
         setattr(created_project, key, value)
     return created_project
