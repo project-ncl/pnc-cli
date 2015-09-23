@@ -48,7 +48,7 @@ class BuildtasksApi(object):
     def build_task_completed(self, task_id, build_status, **kwargs):
         """
         Notifies the completion of externally managed build task process.
-        
+
 
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please define a `callback` function
