@@ -69,7 +69,7 @@ def create_project(**kwargs):
     Create a new Project
     """
     project = _create_project_object(**kwargs)
-    response = utils.checked_api_call(projects_api, 'create', body=project)
+    response = utils.checked_api_call(projects_api, 'create_new', body=project)
     if response:
         return response.content
 

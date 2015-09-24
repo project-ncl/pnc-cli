@@ -1,3 +1,7 @@
+import json
+import requests
+import sys
+
 try:
     import configparser
 except ImportError:
@@ -11,9 +15,24 @@ from pnc_cli.swagger_client.rest import ApiException
 
 __author__ = 'thauser'
 
+
+def get_keycloak_token(config):
+    username = config.get('PNC', 'username')
+    password = config.get('PNC', 'password')
+    params = {'grant_type': 'password',
+              'client_id': 'pncdirect',
+              'username': username,
+              'password': password}
+    r = requests.post('https://keycloak3-pncauth.rhcloud.com/auth/realms/pncredhat/tokens/grants/access', params)
+    if r.status_code == 200:
+        reply = json.loads(r.content.decode('utf-8'))
+        return reply.get('access_token')
+
+
 config = configparser.ConfigParser()
 configfilename = os.path.expanduser("~") + "/.config/pnc-cli/pnc-cli.conf"
 configdirname = os.path.dirname(configfilename)
+
 try:
     os.makedirs(configdirname)
 except OSError as e:
@@ -22,11 +41,21 @@ except OSError as e:
 found = config.read(os.path.join(configfilename))
 if not found:
     config.add_section('PNC')
-    config.set('PNC', 'restEndpoint', 'http://localhost:8080/pnc-rest/rest')
-    with open is str.encode((os.path.join(configfilename), 'wb')) as configfile:
+    config.set('PNC', 'restEndpoint', 'http://ncl-test-vm-01.host.prod.eng.bos.redhat.com:8180/pnc-rest/rest/')
+    # prompt user for his keycloak username / passwords
+    username = input('Keycloak username: ')
+    password = input('Keycloak password: ')
+    config.set('PNC', 'username', username)
+    config.set('PNC', 'password', password)
+    with open(os.path.join(configfilename), 'w') as configfile:
         config.write(configfile)
 pnc_rest_url = config.get('PNC', 'restEndpoint').rstrip('/')
-apiclient = swagger_client.api_client.ApiClient(pnc_rest_url)
+keycloaktoken = get_keycloak_token(config)
+if keycloaktoken:
+    apiclient = swagger_client.ApiClient(pnc_rest_url, header_name='Authorization',
+                                         header_value="Bearer " + keycloaktoken)
+else:
+    sys.exit('Could not authenticate with keycloak.')
 
 
 def get_api_client():
