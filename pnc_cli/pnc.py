@@ -15,6 +15,7 @@ from pnc_cli import environments
 from pnc_cli import runningbuilds
 from pnc_cli import productreleases
 from pnc_cli import buildrecordsets
+from pnc_cli import users
 
 parser = argh.ArghParser()
 parser.add_commands([products.create_product,
@@ -48,8 +49,8 @@ parser.add_commands([products.create_product,
                      buildconfigurations.list_build_configurations,
                      buildconfigurations.list_build_configurations_for_product,
                      buildconfigurations.list_build_configurations_for_product_version,
-                     #buildconfigurations.list_revisions_of_build_configuration,
-                     #buildconfigurations.get_revision_of_build_configuration,
+                     # buildconfigurations.list_revisions_of_build_configuration,
+                     # buildconfigurations.get_revision_of_build_configuration,
                      environments.create_environment,
                      environments.update_environment,
                      environments.delete_environment,
@@ -87,12 +88,17 @@ parser.add_commands([products.create_product,
                      buildconfigsetrecords.get_build_configuration_set_record,
                      buildconfigsetrecords.get_records_for_build_config_set,
                      buildrecordsets.list_build_record_sets,
-                     buildrecordsets.get_build_record_set])
+                     buildrecordsets.get_build_record_set,
+                     users.create_user,
+                     users.list_users,
+                     users.update_user,
+                     users.get_user])
 parser.autocomplete()
 
 
 def main():
     parser.dispatch()
+
 
 if __name__ == "__main__":
     parser.dispatch()
