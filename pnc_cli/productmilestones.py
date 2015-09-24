@@ -21,9 +21,7 @@ def create_milestone_object(**kwargs):
 
 def list_milestones():
     """
-    List all product milestones
-    :param attributes:
-    :return:
+    List all ProductMilestones
     """
     response = utils.checked_api_call(milestones_api, 'get_all')
     if response:
@@ -36,12 +34,7 @@ def list_milestones():
 @arg("planned_release_date", help="Planned date for the milestone release.")
 def create_milestone(**kwargs):
     """
-    Create a new product milestone.
-    :param product_version: id of the product version the milestone is for
-    :param version: version for the milestone. Will be appended to the product_version_id's version
-    :param start_date: start date for the milestone
-    :param planned_release_date: planned release date
-    :return: Errors upon failure.
+    Create a new ProductMilestone
     """
     if kwargs.get('product_version_id') not in [
             str(x.id) for x in productversions_api.get_all().content]:
@@ -68,9 +61,7 @@ def create_milestone(**kwargs):
 @arg("id", help="Product version ID to retrieve milestones for.")
 def list_milestones_for_version(id):
     """
-    List milestones for a specific product version
-    :param id: ID of the product
-    :return: List of product milestones associated with the given product
+    List ProductMilestones for a specific ProductVersion
     """
     response = utils.checked_api_call(
         milestones_api,
