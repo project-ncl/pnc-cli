@@ -29,20 +29,20 @@ def get_build_configuration_set_record(id):
     Get a specific BuildConfigSetRecord
     """
     if not _config_set_record_exists(id):
-        print("A build configuration set record with ID {} does not exist.").format(id)
+        print("A build configuration set record with ID {} does not exist.".format(id))
         return
     response = utils.checked_api_call(bcsr_api, 'get_specific', id=id)
     if response:
         return response.content
 
 
-@arg("id", help="ID of build configuration set record to retrieve build records from.")
+@arg("id", help="ID of BuildConfigSetRecord to retrieve build records from.")
 def get_records_for_build_config_set(id):
     """
     Get a list of BuildRecords for the given BuildConfigSetRecord
     """
     if not id in [str(x.id) for x in sets_api.get_all().content]:
-        print("A build configuration set with ID {} does not exist.").format(id)
+        print("A BuildConfigurationSet with ID {} does not exist.".format(id))
         return
     response = utils.checked_api_call(bcsr_api, 'get_build_records', id=id)
     if response:
