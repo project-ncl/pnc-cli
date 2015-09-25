@@ -3,6 +3,14 @@ import test.testutils
 __author__ = 'thauser'
 from mock import MagicMock, patch
 from pnc_cli import environments
+from pnc_cli.swagger_client import BuildEnvironmentRest
+
+def test_create_environment_object():
+    compare = BuildEnvironmentRest()
+    compare.build_type = 'JAVA'
+    compare.name = 'test-environment'
+    result = environments._create_environment_object(name='test-environment', build_type='java')
+    assert result.to_dict() == compare.to_dict()
 
 
 @patch('pnc_cli.environments._environment_exists', return_value=True)

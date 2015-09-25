@@ -23,6 +23,13 @@ def test_get_user_id_by_name(mock):
     assert result == 2
 
 
+@patch('pnc_cli.users.users_api.get_all',
+       return_value=MagicMock(content=[MagicMock(id=1, username='test1'), MagicMock(id=2, username='testerino')]))
+def test_get_user_id_by_name_notexist(mock):
+    result = users.get_user_id_by_name('notexist')
+    mock.assert_called_once_with()
+    assert not result
+
 @patch('pnc_cli.users.user_exists', return_value=True)
 def test_get_user_id_id(mock):
     result = users.get_user_id(1, None)
@@ -125,7 +132,7 @@ def test_update_user_id(mock_update, mock_get_specific, mock_get_user_id):
 @patch('pnc_cli.users.get_user_id', return_value=1)
 @patch('pnc_cli.users.users_api.get_specific')
 @patch('pnc_cli.users.users_api.update', return_value=MagicMock(content='SUCCESS'))
-def test_update_user_id(mock_update, mock_get_specific, mock_get_user_id):
+def test_update_user_name(mock_update, mock_get_specific, mock_get_user_id):
     mock = MagicMock()
     mockcontent = MagicMock(content=mock)
     mock_get_specific.return_value = mockcontent
@@ -135,3 +142,14 @@ def test_update_user_id(mock_update, mock_get_specific, mock_get_user_id):
     assert getattr(mock, 'username') == 'newusername'
     mock_update.assert_called_once_with(id=1, body=mock)
     assert result == 'SUCCESS'
+
+
+@patch('pnc_cli.users.get_user_id', return_value=None)
+@patch('pnc_cli.users.users_api.get_specific')
+@patch('pnc_cli.users.users_api.update')
+def test_update_user_notexist(mock_update, mock_get_specific, mock_get_user_id):
+    result = users.update_user(name='olduser', username='newusername')
+    mock_get_user_id.assert_called_once_with(None, 'olduser')
+    assert not mock_get_specific.called
+    assert not mock_update.called
+    assert not result

@@ -75,6 +75,7 @@ def list_build_record_sets_for_milestone(id):
     """
     List all BuildRecordSets containing the given ProductMilestone
     """
+    #TODO: check id for existence in productversions
     response = utils.checked_api_call(
         brs_api, 'get_all_for_product_milestone', version_id=id)
     if response:

@@ -3,6 +3,15 @@ import test.testutils
 __author__ = 'thauser'
 from mock import MagicMock, patch, call
 from pnc_cli import buildconfigurations
+from pnc_cli.swagger_client import BuildConfigurationRest
+
+
+def test_create_build_conf_object():
+    compare = BuildConfigurationRest()
+    compare.build_status = 'UNKNOWN'
+    compare.name = 'test'
+    result = buildconfigurations.create_build_conf_object(name='test')
+    assert compare.to_dict() == result.to_dict()
 
 
 @patch('pnc_cli.buildconfigurations.config_id_exists', return_value=True)

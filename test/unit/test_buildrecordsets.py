@@ -97,3 +97,22 @@ def test_update_build_record(mock_update, mock_get_specific, mock_get_brs_id):
     mock_get_specific.assert_called_once_with(id=1)
     mock_update.assert_called_once_with(id=1, body=mock)
     assert result == 'SUCCESS'
+
+
+@patch('pnc_cli.buildrecordsets.get_brs_id', return_value=None)
+@patch('pnc_cli.buildrecordsets.brs_api.get_specific')
+@patch('pnc_cli.buildrecordsets.brs_api.update')
+def test_update_build_record_notexist(mock_update, mock_get_specific, mock_get_brs_id):
+
+    result = buildrecordsets.update_build_record_set(1, build_record_ids=[1, 2, 3])
+    mock_get_brs_id.assert_called_once_with(1)
+    assert not mock_get_specific.called
+    assert not mock_update.called
+    assert not result
+
+
+@patch('pnc_cli.buildrecordsets.brs_api.get_all_for_build_record', return_value=MagicMock(content='SUCCESS'))
+def test_list_sets_containing_build_record(mock):
+    result = buildrecordsets.list_sets_containing_build_record(1)
+    mock.assert_called_once_with(record_id=1)
+    assert result == 'SUCCESS'
