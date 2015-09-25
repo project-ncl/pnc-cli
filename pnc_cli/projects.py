@@ -22,13 +22,13 @@ def get_project_id(proj_id, name):
     """
     if proj_id:
         if not _project_exists(proj_id):
-            print("No Project with ID {} exists.").format(proj_id)
+            print("No Project with ID {} exists.".format(proj_id))
             return
         found_id = proj_id
     elif name:
         found_id = _get_project_id_by_name(name)
         if not found_id:
-            print("No project with name {0} exists.").format(name)
+            print("No project with name {0} exists.".format(name))
             return
     else:
         print("Either a project name or id is required")
@@ -86,7 +86,7 @@ def update_project(id=None, **kwargs):
     """
     Update an existing Project with new information
     """
-    to_udpate = projects_api.get_specific(id=id)
+    to_udpate = projects_api.get_specific(id=id).content
     for key, value in iteritems(kwargs):
         setattr(to_udpate, key, value)
     response = utils.checked_api_call(projects_api, 'update', id=id, body=to_udpate)
