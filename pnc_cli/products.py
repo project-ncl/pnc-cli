@@ -30,12 +30,12 @@ def _product_exists(prod_id):
 def get_product_id(prod_id, name):
     if prod_id:
         if not _product_exists(prod_id):
-            print("No product with id {0} exists.").format(prod_id)
+            print("No product with id {0} exists.".format(prod_id))
             return
     elif name:
         prod_id = get_product_id_by_name(name)
         if not prod_id:
-            print("No product with the name {0} exists.").format(name)
+            print("No product with the name {0} exists.".format(name))
             return
     else:
         print("Either a product ID or product name is required.")
@@ -62,7 +62,7 @@ def get_product_id_by_name(search_name):
      help="The abbreviation or \"short name\" of the new product")
 @arg("-p", "--product-code", help="The product code for the new product")
 @arg("-sn", "--pgm-system-name", help="The system code for the new product")
-#@arg("--product-version-ids", type=int, nargs='+', help="Space separated list of associated product version ids.")
+# @arg("--product-version-ids", type=int, nargs='+', help="Space separated list of associated product version ids.")
 def create_product(name, **kwargs):
     """
     Create a new Product
@@ -79,15 +79,23 @@ def create_product(name, **kwargs):
 @arg("-a", "--abbreviation", help="New abbreviation")
 @arg("-p", "--product-code", help="New product code")
 @arg("-sn", "--pgm-system-name", help="New system name")
-#@arg("--product-version-ids", type=int, nargs='+', help="Space separated list of associated product version ids.")
-# TODO: Get existing product at product_id and modify relevant fields
+# @arg("--product-version-ids", type=int, nargs='+', help="Space separated list of associated product version ids.")
 def update_product(product_id, **kwargs):
     """
     Update a Product with new information
     """
-    product = _create_product_object(**kwargs)
+    found_id = get_product_id(1, None)
+    if not found_id:
+        return
+
+    to_update = products_api.get_specific(id=found_id).content
+
+    for key, value in iteritems(kwargs):
+        if value is not None:
+            setattr(to_update, key, value)
+
     response = utils.checked_api_call(
-        products_api, 'update', id=product_id, body=product)
+        products_api, 'update', id=product_id, body=to_update)
     if response:
         return response.content
 

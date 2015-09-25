@@ -16,6 +16,7 @@ def create_mock_list_with_name_attribute():
 
 def create_mock_object_with_name_attribute(name):
     mock = MagicMock()
+    mock.id = 1
     mock.name = name
     return mock
 
