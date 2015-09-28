@@ -57,7 +57,7 @@ def test_get_product_id_name_notexist(mock):
 
 
 def test_get_product_id_none():
-    result = products.get_product_id(None,None)
+    result = products.get_product_id(None, None)
     assert not result
 
 
@@ -69,7 +69,8 @@ def test_get_product_id_by_name(mock):
     assert result == 1
 
 
-@patch('pnc_cli.products.products_api.get_all', return_value=MagicMock(content=[testutils.create_mock_object_with_name_attribute('nope')]))
+@patch('pnc_cli.products.products_api.get_all',
+       return_value=MagicMock(content=[testutils.create_mock_object_with_name_attribute('nope')]))
 def test_get_product_id_by_name_notexist(mock):
     result = products.get_product_id_by_name('testerino')
     mock.assert_called_once_with()
@@ -107,3 +108,63 @@ def test_update_product_notexist(mock_update, mock_get_specific, mock_get_produc
     assert not mock_get_specific.called
     assert not mock_update.called
     assert not result
+
+
+@patch('pnc_cli.products.get_product_id', return_value=1)
+@patch('pnc_cli.products.products_api.get_specific', return_value=MagicMock(content='SUCCESS'))
+def test_get_product_id(mock_get_specific, mock_get_product_id):
+    result = products.get_product(id=1)
+    mock_get_product_id.assert_called_once_with(1, None)
+    mock_get_specific.assert_called_once_with(id=1)
+    assert result == 'SUCCESS'
+
+
+@patch('pnc_cli.products.get_product_id', return_value=1)
+@patch('pnc_cli.products.products_api.get_specific', return_value=MagicMock(content='SUCCESS'))
+def test_get_product_name(mock_get_specific, mock_get_product_id):
+    result = products.get_product(name='testerino')
+    mock_get_product_id.assert_called_once_with(None, 'testerino')
+    mock_get_specific.assert_called_once_with(id=1)
+    assert result == 'SUCCESS'
+
+
+@patch('pnc_cli.products.get_product_id', return_value=None)
+@patch('pnc_cli.products.products_api.get_specific')
+def test_get_product_none(mock_get_specific, mock_get_product_id):
+    result = products.get_product(id=1)
+    mock_get_product_id.assert_called_once_with(1, None)
+    assert not mock_get_specific.called
+    assert not result
+
+
+@patch('pnc_cli.products.get_product_id', return_value=1)
+@patch('pnc_cli.products.products_api.get_product_versions', return_value=MagicMock(content='SUCCESS'))
+def test_list_versions_for_product_id(mock_get_product_versions, mock_get_product_id):
+    result = products.list_versions_for_product(id=1)
+    mock_get_product_id.assert_called_once_with(1, None)
+    mock_get_product_versions.assert_called_once_with(id=1)
+    assert result == 'SUCCESS'
+
+
+@patch('pnc_cli.products.get_product_id', return_value=1)
+@patch('pnc_cli.products.products_api.get_product_versions', return_value=MagicMock(content='SUCCESS'))
+def test_list_versions_for_product_name(mock_get_product_versions, mock_get_product_id):
+    result = products.list_versions_for_product(name='testerino')
+    mock_get_product_id.assert_called_once_with(None, 'testerino')
+    mock_get_product_versions.assert_called_once_with(id=1)
+    assert result == 'SUCCESS'
+
+
+@patch('pnc_cli.products.get_product_id', return_value=None)
+@patch('pnc_cli.products.products_api.get_product_versions')
+def test_list_versions_for_product_none(mock_get_product_versions, mock_get_product_id):
+    result = products.list_versions_for_product(id=1)
+    mock_get_product_id.assert_called_once_with(1, None)
+    assert not mock_get_product_versions.called
+    assert not result
+
+@patch('pnc_cli.products.products_api.get_all', return_value=MagicMock(content='SUCCESS'))
+def test_list_products(mock):
+    result = products.list_products()
+    mock.assert_called_once_with()
+    assert result == 'SUCCESS'
