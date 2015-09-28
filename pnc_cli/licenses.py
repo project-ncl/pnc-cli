@@ -21,12 +21,12 @@ def get_license_id(id, name):
     if id:
         l_id = id
         if not _license_exists(l_id):
-            print("No license with ID {} exists.").format(l_id)
+            print("No license with ID {} exists.".format(l_id))
             return
     elif name:
         l_id = _get_license_id_by_name(name)
         if not l_id:
-            print("No license with name {0} exists.").format(name)
+            print("No license with name {0} exists.".format(name))
             return
     else:
         print("A license ID or name is required.")
@@ -88,7 +88,7 @@ def delete_license(license_id):
 
     response = utils.checked_api_call(licenses_api, 'delete', id=license_id)
     if response:
-        return response
+        return response.content
 
 
 # TODO: preserve existing license fields that aren't supplied by user, to
@@ -108,7 +108,7 @@ def update_license(license_id, **kwargs):
     """
     updated_license = _create_license_object(**kwargs)
     if not _license_exists(license_id):
-        print("No license with id {0} exists.").format(license_id)
+        print("No license with id {0} exists.".format(license_id))
         return
     response = utils.checked_api_call(
         licenses_api,
