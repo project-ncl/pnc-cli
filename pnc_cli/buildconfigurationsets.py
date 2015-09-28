@@ -47,8 +47,8 @@ def create_build_configuration_set(**kwargs):
     """
     name = kwargs.get('name')
     if get_build_config_set_id_by_name(name):
-        print("A build configuration set with name {0} already exists.").format(
-            name)
+        print("A build configuration set with name {0} already exists.".format(
+            name))
         return
 
     version_id = kwargs.get('product_version_id')
@@ -79,9 +79,10 @@ def get_build_configuration_set(id=None, name=None):
     """
     Get a specific build configuration set by name or ID
     """
-    if not get_set_id(id, name):
+    found_id = get_set_id(id, name)
+    if not found_id:
         return
-    response = utils.checked_api_call(sets_api, 'get_specific', id=id)
+    response = utils.checked_api_call(sets_api, 'get_specific', id=found_id)
     if response:
         return response.content
 
@@ -92,6 +93,7 @@ def get_build_configuration_set(id=None, name=None):
      help="Updated product version ID for the build configuration set.")
 @arg("-bcs", "--build-configuration_ids", type=int, nargs='+',
      help="Space separated list of build-configurations to include in the set.")
+# TODO: get the actual existing set and modify it, instead of creating a new one
 def update_build_configuration_set(id, **kwargs):
     """
     Update a build configuration set
@@ -99,8 +101,9 @@ def update_build_configuration_set(id, **kwargs):
     if not get_set_id(id):
         return
     updated_build_config_set = _create_build_config_set_object(**kwargs)
-    response = sets_api.update(id=id, body=updated_build_config_set)
-    return response
+    response = utils.checked_api_call(sets_api, 'update', id=id, body=updated_build_config_set)
+    if response:
+        return response.content
 
 
 @arg("-i", "--id", help="ID of the build configuration set to delete.")
@@ -113,7 +116,8 @@ def delete_build_config_set(id=None, name=None):
     if not set_id:
         return
     response = utils.checked_api_call(sets_api, 'delete_specific', id=set_id)
-    return response
+    if response:
+        return response.content
 
 
 def _set_exists(id):
@@ -124,12 +128,12 @@ def _set_exists(id):
 def get_set_id(set_id, name):
     if set_id:
         if not _set_exists(set_id):
-            print("There is no build configuration set with ID {}.").format(set_id)
+            print("There is no build configuration set with ID {}.".format(set_id))
             return
     elif name:
         set_id = get_build_config_set_id_by_name(name)
         if not set_id:
-            print("There is no build configuration set with name {}.").format(name)
+            print("There is no build configuration set with name {}.".format(name))
             return
     else:
         print("Either a build configuration set ID or name is required.")
@@ -143,9 +147,10 @@ def build_set(id=None, name=None):
     """
     Start a build of the given build configuration set
     """
-    if not get_set_id(id, name):
+    found_id = get_set_id(id, name)
+    if not found_id:
         return
-    response = utils.checked_api_call(sets_api, 'build', id=id)
+    response = utils.checked_api_call(sets_api, 'build', id=found_id)
     if response:
         return response.content
 
@@ -156,7 +161,8 @@ def list_build_configurations_for_set(id=None, name=None):
     """
     List all build configurations in a given build configuration set.
     """
-    if not get_set_id(id, name):
+    found_id = get_set_id(id, name)
+    if not found_id:
         return
     response = utils.checked_api_call(sets_api, 'get_configurations', id=id)
     if response:
@@ -180,7 +186,7 @@ def add_build_configuration_to_set(
     bc_id = buildconfigurations.get_config_id(config_id, config_name)
     if not bc_id:
         return
-    bc = configs_api.get_specific(bc_id).content
+    bc = configs_api.get_specific(id=bc_id).content
     response = utils.checked_api_call(
         sets_api,
         'add_configuration',
@@ -196,8 +202,9 @@ def list_build_records_for_set(id=None, name=None):
     """
     List all build records for a build configuration set
     """
-    if not get_set_id(id, name):
+    found_id = get_set_id(id, name)
+    if not found_id:
         return
-    response = utils.checked_api_call(sets_api, 'get_build_records', id=id)
+    response = utils.checked_api_call(sets_api, 'get_build_records', id=found_id)
     if response:
         return response.content
