@@ -17,13 +17,14 @@ __author__ = 'thauser'
 
 
 def get_keycloak_token(config):
+    server = config.get('PNC', 'keycloakServer')
     username = config.get('PNC', 'username')
     password = config.get('PNC', 'password')
     params = {'grant_type': 'password',
               'client_id': 'pncdirect',
               'username': username,
               'password': password}
-    r = requests.post('https://keycloak3-pncauth.rhcloud.com/auth/realms/pncredhat/tokens/grants/access', params)
+    r = requests.post(server, params)
     if r.status_code == 200:
         reply = json.loads(r.content.decode('utf-8'))
         return reply.get('access_token')
@@ -41,7 +42,7 @@ except OSError as e:
 found = config.read(os.path.join(configfilename))
 if not found:
     config.add_section('PNC')
-    config.set('PNC', 'restEndpoint', 'http://ncl-test-vm-01.host.prod.eng.bos.redhat.com:8180/pnc-rest/rest/')
+    config.set('PNC', 'restEndpoint', 'http://localhost:8080/pnc-rest/rest/')
     # prompt user for his keycloak username / passwords
     username = input('Keycloak username: ')
     password = input('Keycloak password: ')
