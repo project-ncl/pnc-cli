@@ -16,10 +16,20 @@ from pnc_cli.swagger_client.rest import ApiException
 __author__ = 'thauser'
 
 
-def get_keycloak_token(config):
-    server = config.get('PNC', 'keycloakServer')
-    username = config.get('PNC', 'username')
-    password = config.get('PNC', 'password')
+def get_auth_token(config):
+    try:
+        server = config.get('PNC', 'authServer')
+    except configparser.NoOptionError:
+        print('No authentication server defined. Define "authServer" in pnc-cli.conf for authentication.')
+        return
+
+    try:
+        username = config.get('PNC', 'username')
+        password = config.get('PNC', 'password')
+    except configparser.NoOptionError:
+        print('Username / password missing. Define "username" and "password" in pnc-cli.conf for authentication.')
+        return
+
     params = {'grant_type': 'password',
               'client_id': 'pncdirect',
               'username': username,
@@ -44,20 +54,20 @@ if not found:
     config.add_section('PNC')
     config.set('PNC', 'restEndpoint', 'http://localhost:8080/pnc-rest/rest/')
     # prompt user for his keycloak username / passwords
-    username = input('Keycloak username: ')
-    password = input('Keycloak password: ')
+    username = input('Username: ')
+    password = input('Password: ')
     config.set('PNC', 'username', username)
     config.set('PNC', 'password', password)
     with open(os.path.join(configfilename), 'w') as configfile:
         config.write(configfile)
 pnc_rest_url = config.get('PNC', 'restEndpoint').rstrip('/')
-keycloaktoken = get_keycloak_token(config)
-if keycloaktoken:
+authtoken = get_auth_token(config)
+if authtoken:
     apiclient = swagger_client.ApiClient(pnc_rest_url, header_name='Authorization',
-                                         header_value="Bearer " + keycloaktoken)
+                                         header_value="Bearer " + authtoken)
 else:
-    sys.exit('Could not authenticate with keycloak.')
-
+    print('Authentication failed. Some operations will be unavailable.')
+    apiclient = swagger_client.ApiClient(pnc_rest_url)
 
 def get_api_client():
     return apiclient
