@@ -202,7 +202,6 @@ def list_dependencies(id=None, name=None):
 @arg("-n", "--name", help="Name of the BuildConfiguration to add a dependency to.")
 @arg("-di", "--dependency-id", help="ID of an existing BuildConfiguration to add as a dependency.")
 @arg("-dn", "--dependency-name", help="Name of an existing BuildConfiguration to add as a dependency.")
-# TODO modify project-ncl to return BuildConfigurationSingleton instead of BuildConfigurationRest
 def add_dependency(id=None, name=None, dependency_id=None, dependency_name=None):
     """
     Add an existing BuildConfiguration as a dependency to another BuildConfiguration.
