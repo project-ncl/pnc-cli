@@ -53,8 +53,8 @@ def _project_exists(search_id):
     :param search_id: id to test for
     :return: True if a project with search_id exists
     """
-    existing_ids = [x.id for x in projects_api.get_all().content]
-    return search_id in existing_ids
+    existing_ids = [str(x.id) for x in projects_api.get_all().content]
+    return str(search_id) in existing_ids
 
 
 @arg("name", help="Name for the project")

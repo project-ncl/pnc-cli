@@ -20,7 +20,7 @@ def get_auth_token(config):
     try:
         server = config.get('PNC', 'authServer')
     except configparser.NoOptionError:
-        print('No authentication server defined. Define "authServer" in pnc-cli.conf for authentication.')
+        print('No authentication server defined. Define "authServer" in pnc-cli.conf to enable authentication.')
         return
 
     try:
