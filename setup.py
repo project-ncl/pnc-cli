@@ -5,12 +5,12 @@ README = open(os.path.join(os.path.dirname(__file__), 'README.md')).read()
 setup(
     name='pnc-cli',
     packages=find_packages(exclude=['test*']),
-    version='0.0.1',
+    version='0.0.2',
     description='CLI wrapper for PNC REST calls',
     author = 'Tom Hauser',
     author_email = 'thauser@redhat.com',
     url = 'https://github.com/thauser/pnc_cli',
-    download_url='https://github.com/thauser/pnc_cli/tarball/0.0.1',
+    download_url='https://github.com/thauser/pnc_cli/tarball/pypi-0.0.2',
     keywords = ['PNC','REST'],
     long_description=README,
     install_requires=[
