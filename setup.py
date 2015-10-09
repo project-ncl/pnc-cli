@@ -20,8 +20,9 @@ setup(
         'mock'
     ],
     classifiers=[
-	'Development Status :: Alpha',
-	'Programming Language :: Python'
+	'Development Status :: 3 - Alpha',
+	'Programming Language :: Python :: 2.7',
+	'Programming Language :: Python :: 3'
     ],
     entry_points={'console_scripts': ['pnc = pnc_cli.pnc:main']}
 )
