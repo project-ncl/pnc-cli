@@ -43,6 +43,7 @@ class ProductVersionRest(object):
             'product_id': 'int',
             'current_product_milestone_id': 'int',
             'build_configuration_set_ids': 'list[int]',
+            'build_configuration_ids': 'list[int]',
             'product_milestones': 'list[int]',
             'product_releases': 'list[int]'
         }
@@ -53,6 +54,7 @@ class ProductVersionRest(object):
             'product_id': 'productId',
             'current_product_milestone_id': 'currentProductMilestoneId',
             'build_configuration_set_ids': 'buildConfigurationSetIds',
+            'build_configuration_ids': 'buildConfigurationIds',
             'product_milestones': 'productMilestones',
             'product_releases': 'productReleases'
         }
@@ -62,6 +64,7 @@ class ProductVersionRest(object):
         self._product_id = None
         self._current_product_milestone_id = None
         self._build_configuration_set_ids = None
+        self._build_configuration_ids = None
         self._product_milestones = None
         self._product_releases = None
 
@@ -176,6 +179,28 @@ class ProductVersionRest(object):
         self._build_configuration_set_ids = build_configuration_set_ids
 
     @property
+    def build_configuration_ids(self):
+        """
+        Gets the build_configuration_ids of this ProductVersionRest.
+
+
+        :return: The build_configuration_ids of this ProductVersionRest.
+        :rtype: list[int]
+        """
+        return self._build_configuration_ids
+
+    @build_configuration_ids.setter
+    def build_configuration_ids(self, build_configuration_ids):
+        """
+        Sets the build_configuration_ids of this ProductVersionRest.
+
+
+        :param build_configuration_ids: The build_configuration_ids of this ProductVersionRest.
+        :type: list[int]
+        """
+        self._build_configuration_ids = build_configuration_ids
+
+    @property
     def product_milestones(self):
         """
         Gets the product_milestones of this ProductVersionRest.
@@ -234,8 +259,8 @@ class ProductVersionRest(object):
                 ))
             elif hasattr(value, "to_dict"):
                 result[attr] = value.to_dict()
-            elif isinstance(value, datetime):
-                result[attr] = str(value)
+	    elif isinstance(value, datetime):
+		result[attr] = str(value)
             else:
                 result[attr] = value
 

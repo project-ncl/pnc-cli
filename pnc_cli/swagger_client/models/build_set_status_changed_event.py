@@ -38,48 +38,26 @@ class BuildSetStatusChangedEvent(object):
                                   and the value is json key in definition.
         """
         self.swagger_types = {
-            'user_id': 'int',
             'new_status': 'str',
             'build_set_task_id': 'int',
             'old_status': 'str',
-            'build_set_configuration_id': 'int'
+            'build_set_configuration_id': 'int',
+            'user_id': 'int'
         }
 
         self.attribute_map = {
-            'user_id': 'userId',
             'new_status': 'newStatus',
             'build_set_task_id': 'buildSetTaskId',
             'old_status': 'oldStatus',
-            'build_set_configuration_id': 'buildSetConfigurationId'
+            'build_set_configuration_id': 'buildSetConfigurationId',
+            'user_id': 'userId'
         }
 
-        self._user_id = None
         self._new_status = None
         self._build_set_task_id = None
         self._old_status = None
         self._build_set_configuration_id = None
-
-    @property
-    def user_id(self):
-        """
-        Gets the user_id of this BuildSetStatusChangedEvent.
-
-
-        :return: The user_id of this BuildSetStatusChangedEvent.
-        :rtype: int
-        """
-        return self._user_id
-
-    @user_id.setter
-    def user_id(self, user_id):
-        """
-        Sets the user_id of this BuildSetStatusChangedEvent.
-
-
-        :param user_id: The user_id of this BuildSetStatusChangedEvent.
-        :type: int
-        """
-        self._user_id = user_id
+        self._user_id = None
 
     @property
     def new_status(self):
@@ -181,6 +159,28 @@ class BuildSetStatusChangedEvent(object):
         """
         self._build_set_configuration_id = build_set_configuration_id
 
+    @property
+    def user_id(self):
+        """
+        Gets the user_id of this BuildSetStatusChangedEvent.
+
+
+        :return: The user_id of this BuildSetStatusChangedEvent.
+        :rtype: int
+        """
+        return self._user_id
+
+    @user_id.setter
+    def user_id(self, user_id):
+        """
+        Sets the user_id of this BuildSetStatusChangedEvent.
+
+
+        :param user_id: The user_id of this BuildSetStatusChangedEvent.
+        :type: int
+        """
+        self._user_id = user_id
+
     def to_dict(self):
         """
         Returns the model properties as a dict
@@ -196,8 +196,8 @@ class BuildSetStatusChangedEvent(object):
                 ))
             elif hasattr(value, "to_dict"):
                 result[attr] = value.to_dict()
-            elif isinstance(value, datetime):
-                result[attr] = str(value)
+	    elif isinstance(value, datetime):
+		result[attr] = str(value)
             else:
                 result[attr] = value
 

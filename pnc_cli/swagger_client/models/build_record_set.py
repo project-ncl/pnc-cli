@@ -42,7 +42,6 @@ class BuildRecordSet(object):
             'description': 'str',
             'performed_in_product_milestone': 'ProductMilestone',
             'distributed_in_product_milestone': 'ProductMilestone',
-            'build_set_content_id': 'str',
             'build_records': 'list[BuildRecord]'
         }
 
@@ -51,7 +50,6 @@ class BuildRecordSet(object):
             'description': 'description',
             'performed_in_product_milestone': 'performedInProductMilestone',
             'distributed_in_product_milestone': 'distributedInProductMilestone',
-            'build_set_content_id': 'buildSetContentId',
             'build_records': 'buildRecords'
         }
 
@@ -59,7 +57,6 @@ class BuildRecordSet(object):
         self._description = None
         self._performed_in_product_milestone = None
         self._distributed_in_product_milestone = None
-        self._build_set_content_id = None
         self._build_records = None
 
     @property
@@ -151,28 +148,6 @@ class BuildRecordSet(object):
         self._distributed_in_product_milestone = distributed_in_product_milestone
 
     @property
-    def build_set_content_id(self):
-        """
-        Gets the build_set_content_id of this BuildRecordSet.
-
-
-        :return: The build_set_content_id of this BuildRecordSet.
-        :rtype: str
-        """
-        return self._build_set_content_id
-
-    @build_set_content_id.setter
-    def build_set_content_id(self, build_set_content_id):
-        """
-        Sets the build_set_content_id of this BuildRecordSet.
-
-
-        :param build_set_content_id: The build_set_content_id of this BuildRecordSet.
-        :type: str
-        """
-        self._build_set_content_id = build_set_content_id
-
-    @property
     def build_records(self):
         """
         Gets the build_records of this BuildRecordSet.
@@ -209,8 +184,8 @@ class BuildRecordSet(object):
                 ))
             elif hasattr(value, "to_dict"):
                 result[attr] = value.to_dict()
-            elif isinstance(value, datetime):
-                result[attr] = str(value)
+	    elif isinstance(value, datetime):
+		result[attr] = str(value)
             else:
                 result[attr] = value
 

@@ -46,6 +46,8 @@ class BuildRecord(object):
             'start_time': 'datetime',
             'end_time': 'datetime',
             'user': 'User',
+            'scm_repo_url': 'str',
+            'scm_revision': 'str',
             'build_log': 'str',
             'status': 'str',
             'built_artifacts': 'list[Artifact]',
@@ -66,6 +68,8 @@ class BuildRecord(object):
             'start_time': 'startTime',
             'end_time': 'endTime',
             'user': 'user',
+            'scm_repo_url': 'scmRepoURL',
+            'scm_revision': 'scmRevision',
             'build_log': 'buildLog',
             'status': 'status',
             'built_artifacts': 'builtArtifacts',
@@ -85,6 +89,8 @@ class BuildRecord(object):
         self._start_time = None
         self._end_time = None
         self._user = None
+        self._scm_repo_url = None
+        self._scm_revision = None
         self._build_log = None
         self._status = None
         self._built_artifacts = None
@@ -270,6 +276,50 @@ class BuildRecord(object):
         :type: User
         """
         self._user = user
+
+    @property
+    def scm_repo_url(self):
+        """
+        Gets the scm_repo_url of this BuildRecord.
+
+
+        :return: The scm_repo_url of this BuildRecord.
+        :rtype: str
+        """
+        return self._scm_repo_url
+
+    @scm_repo_url.setter
+    def scm_repo_url(self, scm_repo_url):
+        """
+        Sets the scm_repo_url of this BuildRecord.
+
+
+        :param scm_repo_url: The scm_repo_url of this BuildRecord.
+        :type: str
+        """
+        self._scm_repo_url = scm_repo_url
+
+    @property
+    def scm_revision(self):
+        """
+        Gets the scm_revision of this BuildRecord.
+
+
+        :return: The scm_revision of this BuildRecord.
+        :rtype: str
+        """
+        return self._scm_revision
+
+    @scm_revision.setter
+    def scm_revision(self, scm_revision):
+        """
+        Sets the scm_revision of this BuildRecord.
+
+
+        :param scm_revision: The scm_revision of this BuildRecord.
+        :type: str
+        """
+        self._scm_revision = scm_revision
 
     @property
     def build_log(self):
@@ -490,8 +540,8 @@ class BuildRecord(object):
                 ))
             elif hasattr(value, "to_dict"):
                 result[attr] = value.to_dict()
-            elif isinstance(value, datetime):
-                result[attr] = str(value)
+	    elif isinstance(value, datetime):
+		result[attr] = str(value)
             else:
                 result[attr] = value
 

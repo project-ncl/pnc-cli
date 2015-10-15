@@ -44,6 +44,8 @@ class BuildConfigurationRest(object):
             'build_script': 'str',
             'scm_repo_url': 'str',
             'scm_revision': 'str',
+            'scm_mirror_repo_url': 'str',
+            'scm_mirror_revision': 'str',
             'creation_time': 'datetime',
             'last_modification_time': 'datetime',
             'build_status': 'str',
@@ -61,6 +63,8 @@ class BuildConfigurationRest(object):
             'build_script': 'buildScript',
             'scm_repo_url': 'scmRepoURL',
             'scm_revision': 'scmRevision',
+            'scm_mirror_repo_url': 'scmMirrorRepoURL',
+            'scm_mirror_revision': 'scmMirrorRevision',
             'creation_time': 'creationTime',
             'last_modification_time': 'lastModificationTime',
             'build_status': 'buildStatus',
@@ -77,6 +81,8 @@ class BuildConfigurationRest(object):
         self._build_script = None
         self._scm_repo_url = None
         self._scm_revision = None
+        self._scm_mirror_repo_url = None
+        self._scm_mirror_revision = None
         self._creation_time = None
         self._last_modification_time = None
         self._build_status = None
@@ -217,6 +223,50 @@ class BuildConfigurationRest(object):
         :type: str
         """
         self._scm_revision = scm_revision
+
+    @property
+    def scm_mirror_repo_url(self):
+        """
+        Gets the scm_mirror_repo_url of this BuildConfigurationRest.
+
+
+        :return: The scm_mirror_repo_url of this BuildConfigurationRest.
+        :rtype: str
+        """
+        return self._scm_mirror_repo_url
+
+    @scm_mirror_repo_url.setter
+    def scm_mirror_repo_url(self, scm_mirror_repo_url):
+        """
+        Sets the scm_mirror_repo_url of this BuildConfigurationRest.
+
+
+        :param scm_mirror_repo_url: The scm_mirror_repo_url of this BuildConfigurationRest.
+        :type: str
+        """
+        self._scm_mirror_repo_url = scm_mirror_repo_url
+
+    @property
+    def scm_mirror_revision(self):
+        """
+        Gets the scm_mirror_revision of this BuildConfigurationRest.
+
+
+        :return: The scm_mirror_revision of this BuildConfigurationRest.
+        :rtype: str
+        """
+        return self._scm_mirror_revision
+
+    @scm_mirror_revision.setter
+    def scm_mirror_revision(self, scm_mirror_revision):
+        """
+        Sets the scm_mirror_revision of this BuildConfigurationRest.
+
+
+        :param scm_mirror_revision: The scm_mirror_revision of this BuildConfigurationRest.
+        :type: str
+        """
+        self._scm_mirror_revision = scm_mirror_revision
 
     @property
     def creation_time(self):
@@ -409,8 +459,8 @@ class BuildConfigurationRest(object):
                 ))
             elif hasattr(value, "to_dict"):
                 result[attr] = value.to_dict()
-            elif isinstance(value, datetime):
-                result[attr] = str(value)
+	    elif isinstance(value, datetime):
+		result[attr] = str(value)
             else:
                 result[attr] = value
 

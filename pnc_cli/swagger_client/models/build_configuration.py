@@ -43,6 +43,8 @@ class BuildConfiguration(object):
             'build_script': 'str',
             'scm_repo_url': 'str',
             'scm_revision': 'str',
+            'scm_mirror_repo_url': 'str',
+            'scm_mirror_revision': 'str',
             'description': 'str',
             'product_versions': 'list[ProductVersion]',
             'project': 'Project',
@@ -65,6 +67,8 @@ class BuildConfiguration(object):
             'build_script': 'buildScript',
             'scm_repo_url': 'scmRepoURL',
             'scm_revision': 'scmRevision',
+            'scm_mirror_repo_url': 'scmMirrorRepoURL',
+            'scm_mirror_revision': 'scmMirrorRevision',
             'description': 'description',
             'product_versions': 'productVersions',
             'project': 'project',
@@ -86,6 +90,8 @@ class BuildConfiguration(object):
         self._build_script = None
         self._scm_repo_url = None
         self._scm_revision = None
+        self._scm_mirror_repo_url = None
+        self._scm_mirror_revision = None
         self._description = None
         self._product_versions = None
         self._project = None
@@ -210,6 +216,50 @@ class BuildConfiguration(object):
         :type: str
         """
         self._scm_revision = scm_revision
+
+    @property
+    def scm_mirror_repo_url(self):
+        """
+        Gets the scm_mirror_repo_url of this BuildConfiguration.
+
+
+        :return: The scm_mirror_repo_url of this BuildConfiguration.
+        :rtype: str
+        """
+        return self._scm_mirror_repo_url
+
+    @scm_mirror_repo_url.setter
+    def scm_mirror_repo_url(self, scm_mirror_repo_url):
+        """
+        Sets the scm_mirror_repo_url of this BuildConfiguration.
+
+
+        :param scm_mirror_repo_url: The scm_mirror_repo_url of this BuildConfiguration.
+        :type: str
+        """
+        self._scm_mirror_repo_url = scm_mirror_repo_url
+
+    @property
+    def scm_mirror_revision(self):
+        """
+        Gets the scm_mirror_revision of this BuildConfiguration.
+
+
+        :return: The scm_mirror_revision of this BuildConfiguration.
+        :rtype: str
+        """
+        return self._scm_mirror_revision
+
+    @scm_mirror_revision.setter
+    def scm_mirror_revision(self, scm_mirror_revision):
+        """
+        Sets the scm_mirror_revision of this BuildConfiguration.
+
+
+        :param scm_mirror_revision: The scm_mirror_revision of this BuildConfiguration.
+        :type: str
+        """
+        self._scm_mirror_revision = scm_mirror_revision
 
     @property
     def description(self):
@@ -540,8 +590,8 @@ class BuildConfiguration(object):
                 ))
             elif hasattr(value, "to_dict"):
                 result[attr] = value.to_dict()
-            elif isinstance(value, datetime):
-                result[attr] = str(value)
+	    elif isinstance(value, datetime):
+		result[attr] = str(value)
             else:
                 result[attr] = value
 

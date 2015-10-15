@@ -65,7 +65,6 @@ class ApiClient(object):
     :param header_name: a header to pass when making calls to the API.
     :param header_value: a header value to pass when making calls to the API.
     """
-
     def __init__(self, host=Configuration().host,
                  header_name=None, header_value=None, cookie=None):
 
@@ -116,7 +115,7 @@ class ApiClient(object):
             path_params = self.sanitize_for_serialization(path_params)
             for k, v in iteritems(path_params):
                 replacement = quote(str(self.to_path_value(v)))
-                resource_path = resource_path. \
+                resource_path = resource_path.\
                     replace('{' + k + '}', replacement)
 
         # query parameters
@@ -388,8 +387,8 @@ class ApiClient(object):
                 with open(v, 'rb') as f:
                     filename = os.path.basename(f.name)
                     filedata = f.read()
-                    mimetype = mimetypes. \
-                                   guess_type(filename)[0] or 'application/octet-stream'
+                    mimetype = mimetypes.\
+                        guess_type(filename)[0] or 'application/octet-stream'
                     params[k] = tuple([filename, filedata, mimetype])
 
         return params
@@ -469,8 +468,8 @@ class ApiClient(object):
 
         content_disposition = response.getheader("Content-Disposition")
         if content_disposition:
-            filename = re. \
-                search(r'filename=[\'"]?([^\'"\s]+)[\'"]?', content_disposition). \
+            filename = re.\
+                search(r'filename=[\'"]?([^\'"\s]+)[\'"]?', content_disposition).\
                 group(1)
             path = os.path.join(os.path.dirname(path), filename)
 
@@ -513,7 +512,6 @@ class ApiClient(object):
         """
         try:
             from dateutil.parser import parse
-
             return parse(string).date()
         except ImportError:
             return string
@@ -521,7 +519,7 @@ class ApiClient(object):
             raise ApiException(
                 status=0,
                 reason="Failed to parse `{0}` into a date object"
-                    .format(string)
+                .format(string)
             )
 
     def __deserialize_datetime(self, string):
@@ -535,8 +533,7 @@ class ApiClient(object):
         """
         try:
             from dateutil.parser import parse
-
-            timestr = str(datetime.fromtimestamp(string / 1000))
+            timestr = str(datetime.fromtimestamp(string/1000))
             return parse(timestr)
         except ImportError:
             return string
@@ -544,7 +541,7 @@ class ApiClient(object):
             raise ApiException(
                 status=0,
                 reason="Failed to parse `{0}` into a datetime object".
-                    format(string)
+                format(string)
             )
 
     def __deserialize_model(self, data, klass):
@@ -559,8 +556,8 @@ class ApiClient(object):
 
         for attr, attr_type in iteritems(instance.swagger_types):
             if data is not None \
-                    and instance.attribute_map[attr] in data \
-                    and isinstance(data, (list, dict)):
+               and instance.attribute_map[attr] in data\
+               and isinstance(data, (list, dict)):
                 value = data[instance.attribute_map[attr]]
                 setattr(instance, attr, self.__deserialize(value, attr_type))
 

@@ -44,6 +44,7 @@ class ProductVersion(object):
             'build_configuration_sets': 'list[BuildConfigurationSet]',
             'product_milestones': 'list[ProductMilestone]',
             'current_product_milestone': 'ProductMilestone',
+            'build_configurations': 'list[BuildConfiguration]',
             'product_releases': 'list[ProductRelease]'
         }
 
@@ -54,6 +55,7 @@ class ProductVersion(object):
             'build_configuration_sets': 'buildConfigurationSets',
             'product_milestones': 'productMilestones',
             'current_product_milestone': 'currentProductMilestone',
+            'build_configurations': 'buildConfigurations',
             'product_releases': 'productReleases'
         }
 
@@ -63,6 +65,7 @@ class ProductVersion(object):
         self._build_configuration_sets = None
         self._product_milestones = None
         self._current_product_milestone = None
+        self._build_configurations = None
         self._product_releases = None
 
     @property
@@ -198,6 +201,28 @@ class ProductVersion(object):
         self._current_product_milestone = current_product_milestone
 
     @property
+    def build_configurations(self):
+        """
+        Gets the build_configurations of this ProductVersion.
+
+
+        :return: The build_configurations of this ProductVersion.
+        :rtype: list[BuildConfiguration]
+        """
+        return self._build_configurations
+
+    @build_configurations.setter
+    def build_configurations(self, build_configurations):
+        """
+        Sets the build_configurations of this ProductVersion.
+
+
+        :param build_configurations: The build_configurations of this ProductVersion.
+        :type: list[BuildConfiguration]
+        """
+        self._build_configurations = build_configurations
+
+    @property
     def product_releases(self):
         """
         Gets the product_releases of this ProductVersion.
@@ -234,8 +259,8 @@ class ProductVersion(object):
                 ))
             elif hasattr(value, "to_dict"):
                 result[attr] = value.to_dict()
-            elif isinstance(value, datetime):
-                result[attr] = str(value)
+	    elif isinstance(value, datetime):
+		result[attr] = str(value)
             else:
                 result[attr] = value
 

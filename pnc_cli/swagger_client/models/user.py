@@ -42,6 +42,7 @@ class User(object):
             'email': 'str',
             'first_name': 'str',
             'last_name': 'str',
+            'login_token': 'str',
             'username': 'str',
             'build_records': 'list[BuildRecord]'
         }
@@ -51,6 +52,7 @@ class User(object):
             'email': 'email',
             'first_name': 'firstName',
             'last_name': 'lastName',
+            'login_token': 'loginToken',
             'username': 'username',
             'build_records': 'buildRecords'
         }
@@ -59,6 +61,7 @@ class User(object):
         self._email = None
         self._first_name = None
         self._last_name = None
+        self._login_token = None
         self._username = None
         self._build_records = None
 
@@ -151,6 +154,28 @@ class User(object):
         self._last_name = last_name
 
     @property
+    def login_token(self):
+        """
+        Gets the login_token of this User.
+
+
+        :return: The login_token of this User.
+        :rtype: str
+        """
+        return self._login_token
+
+    @login_token.setter
+    def login_token(self, login_token):
+        """
+        Sets the login_token of this User.
+
+
+        :param login_token: The login_token of this User.
+        :type: str
+        """
+        self._login_token = login_token
+
+    @property
     def username(self):
         """
         Gets the username of this User.
@@ -209,8 +234,8 @@ class User(object):
                 ))
             elif hasattr(value, "to_dict"):
                 result[attr] = value.to_dict()
-            elif isinstance(value, datetime):
-                result[attr] = str(value)
+	    elif isinstance(value, datetime):
+		result[attr] = str(value)
             else:
                 result[attr] = value
 

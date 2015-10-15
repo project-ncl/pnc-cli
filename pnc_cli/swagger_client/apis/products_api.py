@@ -48,7 +48,7 @@ class ProductsApi(object):
     def get_all(self, **kwargs):
         """
         Gets all Products
-
+        
 
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please define a `callback` function
@@ -132,7 +132,7 @@ class ProductsApi(object):
     def create_new(self, **kwargs):
         """
         Creates a new Product
-
+        
 
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please define a `callback` function
@@ -144,7 +144,7 @@ class ProductsApi(object):
 
         :param callback function: The callback function
             for asynchronous request. (optional)
-        :param ProductRest body:
+        :param ProductRest body: 
         :return: ProductSingleton
                  If the method is called asynchronously,
                  returns the request thread.
@@ -207,7 +207,7 @@ class ProductsApi(object):
     def get_specific(self, id, **kwargs):
         """
         Get specific Product
-
+        
 
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please define a `callback` function
@@ -285,7 +285,7 @@ class ProductsApi(object):
     def update(self, id, **kwargs):
         """
         Updates an existing Product
-
+        
 
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please define a `callback` function
@@ -298,7 +298,7 @@ class ProductsApi(object):
         :param callback function: The callback function
             for asynchronous request. (optional)
         :param int id: Product id (required)
-        :param ProductRest body:
+        :param ProductRest body: 
         :return: None
                  If the method is called asynchronously,
                  returns the request thread.
@@ -366,7 +366,7 @@ class ProductsApi(object):
     def get_product_versions(self, id, **kwargs):
         """
         Get all versions for a Product
-
+        
 
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please define a `callback` function
