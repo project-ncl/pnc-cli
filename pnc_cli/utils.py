@@ -22,7 +22,7 @@ def get_auth_token(config):
     except configparser.NoOptionError:
         print('No authentication server defined. Define "authServer" in pnc-cli.conf to enable authentication.')
         return
-
+    server = server + "/auth/realms/pncredhat/tokens/grants/access"
     try:
         username = config.get('PNC', 'username')
         password = config.get('PNC', 'password')
