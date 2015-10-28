@@ -217,7 +217,7 @@ def test_delete_build_configuration_notexist(mock_delete_specific, mock_get_conf
 def test_list_build_configurations_for_product_id(mock_get_all_by_product_id, mock_get_product_id):
     result = buildconfigurations.list_build_configurations_for_product(id=1)
     mock_get_product_id.called_once_with(1, None)
-    mock_get_all_by_product_id.called_once_with(product_id=1)
+    mock_get_all_by_product_id.called_once_with(product_id=1, page_size=200, sort="", q="")
     assert result == [1, 2, 3]
 
 
@@ -241,23 +241,25 @@ def test_list_build_configurations_for_product_notexist(mock_get_all_by_product_
 
 @patch('pnc_cli.products.get_product_id', return_value=1)
 @patch('pnc_cli.productversions.version_exists', return_value=True)
-@patch('pnc_cli.buildconfigurations.configs_api.get_all_by_product_version_id', return_value=MagicMock(content=[1, 2, 3]))
+@patch('pnc_cli.buildconfigurations.configs_api.get_all_by_product_version_id',
+       return_value=MagicMock(content=[1, 2, 3]))
 def test_list_build_configurations_for_product_version(mock_get_all_by_product_version_id, mock_version_exists,
                                                        mock_get_product_id):
     result = buildconfigurations.list_build_configurations_for_product_version(product_id=1, version_id=2)
-    mock_get_product_id.assert_called_once_with(1)
+    mock_get_product_id.assert_called_once_with(1, None)
     mock_version_exists.assert_called_once_with(2)
-    mock_get_all_by_product_version_id.assert_called_once_with(product_id=1, version_id=2)
+    mock_get_all_by_product_version_id.assert_called_once_with(product_id=1, version_id=2, page_size=20, sort="", q="")
     assert result == [1, 2, 3]
 
 
 @patch('pnc_cli.products.get_product_id', return_value=None)
 @patch('pnc_cli.productversions.version_exists')
 @patch('pnc_cli.buildconfigurations.configs_api.get_all_by_product_version_id')
-def test_list_build_configurations_for_product_version_no_product(mock_get_all_by_product_version_id, mock_version_exists,
+def test_list_build_configurations_for_product_version_no_product(mock_get_all_by_product_version_id,
+                                                                  mock_version_exists,
                                                                   mock_get_product_id):
     result = buildconfigurations.list_build_configurations_for_product_version(product_id=1, version_id=2)
-    mock_get_product_id.assert_called_once_with(1)
+    mock_get_product_id.assert_called_once_with(1, None)
     assert not mock_version_exists.called
     assert not mock_get_all_by_product_version_id.called
     assert not result
@@ -266,10 +268,11 @@ def test_list_build_configurations_for_product_version_no_product(mock_get_all_b
 @patch('pnc_cli.products.get_product_id', return_value=1)
 @patch('pnc_cli.productversions.version_exists', return_value=False)
 @patch('pnc_cli.buildconfigurations.configs_api.get_all_by_product_version_id')
-def test_list_build_configurations_for_product_version_no_version(mock_get_all_by_product_version_id, mock_version_exists,
+def test_list_build_configurations_for_product_version_no_version(mock_get_all_by_product_version_id,
+                                                                  mock_version_exists,
                                                                   mock_get_product_id):
     result = buildconfigurations.list_build_configurations_for_product_version(product_id=1, version_id=2)
-    mock_get_product_id.assert_called_once_with(1)
+    mock_get_product_id.assert_called_once_with(1, None)
     mock_version_exists.assert_called_once_with(2)
     assert not mock_get_all_by_product_version_id.called
     assert not result
@@ -280,7 +283,7 @@ def test_list_build_configurations_for_product_version_no_version(mock_get_all_b
 def test_list_dependencies_id(mock_get_dependencies, mock_get_config_id):
     result = buildconfigurations.list_dependencies(id=1)
     mock_get_config_id.assert_called_once_with(1, None)
-    mock_get_dependencies.assert_called_once_with(id=1)
+    mock_get_dependencies.assert_called_once_with(id=1, page_size=200, sort="", q="")
     assert result == ['dep1', 'dep2']
 
 
@@ -289,7 +292,7 @@ def test_list_dependencies_id(mock_get_dependencies, mock_get_config_id):
 def test_list_dependencies_name(mock_get_dependencies, mock_get_config_id):
     result = buildconfigurations.list_dependencies(name='testerino')
     mock_get_config_id.assert_called_once_with(None, 'testerino')
-    mock_get_dependencies.assert_called_once_with(id=1)
+    mock_get_dependencies.assert_called_once_with(id=1, page_size=200, sort="", q="")
     assert result == ['dep1', 'dep2']
 
 
@@ -437,7 +440,7 @@ def test_remove_dependency_no_dep(mock_remove_dependency, mock_get_config_id):
 def test_list_product_versions_for_build_configuration_id(mock_get_product_versions, mock_get_config_id):
     result = buildconfigurations.list_product_versions_for_build_configuration(id=1)
     mock_get_config_id.assert_called_once_with(1, None)
-    mock_get_product_versions.assert_called_once_with(id=1)
+    mock_get_product_versions.assert_called_once_with(id=1, page_size=200, sort="", q="")
     assert result == [1, 2, 3]
 
 
@@ -446,7 +449,7 @@ def test_list_product_versions_for_build_configuration_id(mock_get_product_versi
 def test_list_product_versions_for_build_configuration_name(mock_get_product_versions, mock_get_config_id):
     result = buildconfigurations.list_product_versions_for_build_configuration(name='testerino')
     mock_get_config_id.assert_called_once_with(None, 'testerino')
-    mock_get_product_versions.assert_called_once_with(id=1)
+    mock_get_product_versions.assert_called_once_with(id=1, page_size=200, sort="", q="")
     assert result == [1, 2, 3]
 
 
@@ -581,7 +584,7 @@ def test_remove_product_version_from_build_configuration_no_version(mock_remove_
 def test_list_revisions_of_build_configuration_id(mock_get_revisions, mock_get_config_id):
     result = buildconfigurations.list_revisions_of_build_configuration(id=1)
     mock_get_config_id.assert_called_once_with(1, None)
-    mock_get_revisions.assert_called_once_with(id=1)
+    mock_get_revisions.assert_called_once_with(id=1, page_size=200, sort="", q="")
     assert result == ['rev1', 'rev2']
 
 
@@ -590,7 +593,7 @@ def test_list_revisions_of_build_configuration_id(mock_get_revisions, mock_get_c
 def test_list_revisions_of_build_configuration(mock_get_revisions, mock_get_config_id):
     result = buildconfigurations.list_revisions_of_build_configuration(name='testerino')
     mock_get_config_id.assert_called_once_with(None, 'testerino')
-    mock_get_revisions.assert_called_once_with(id=1)
+    mock_get_revisions.assert_called_once_with(id=1, page_size=200, sort="", q="")
     assert result == ['rev1', 'rev2']
 
 
@@ -635,7 +638,7 @@ def test_get_revision_of_build_configuration_notexist(mock_get_revision, mock_ge
 def test_list_build_configurations_for_project_id(mock_get_all_by_project_id, mock_get_project_id):
     result = buildconfigurations.list_build_configurations_for_project(id=1)
     mock_get_project_id.assert_called_once_with(1, None)
-    mock_get_all_by_project_id.assert_called_once_with(project_id=1)
+    mock_get_all_by_project_id.assert_called_once_with(project_id=1, page_size=200, sort="", q="")
     assert result == [1, 2, 3]
 
 
@@ -644,7 +647,7 @@ def test_list_build_configurations_for_project_id(mock_get_all_by_project_id, mo
 def test_list_build_configurations_for_project_name(mock_get_all_by_project_id, mock_get_project_id):
     result = buildconfigurations.list_build_configurations_for_project(name='testerino-project')
     mock_get_project_id.assert_called_once_with(None, 'testerino-project')
-    mock_get_all_by_project_id.assert_called_once_with(project_id=1)
+    mock_get_all_by_project_id.assert_called_once_with(project_id=1, page_size=200, sort="", q="")
     assert result == [1, 2, 3]
 
 
@@ -660,5 +663,5 @@ def test_list_build_configurations_for_project_notexist(mock_get_all_by_project_
 @patch('pnc_cli.buildconfigurations.configs_api.get_all', return_value=MagicMock(content=[1, 2, 3]))
 def test_list_build_configurations(mock):
     result = buildconfigurations.list_build_configurations()
-    mock.assert_called_once_with()
+    mock.assert_called_once_with(page_size=200, sort="", q="")
     assert result == [1, 2, 3]
