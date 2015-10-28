@@ -19,11 +19,14 @@ def create_milestone_object(**kwargs):
     return created_milestone
 
 
-def list_milestones():
+@arg("-p", "--page-size", help="Limit the amount of product releases returned")
+@arg("-s", "--sort", help="Sorting RSQL")
+@arg("-q", help="RSQL query")
+def list_milestones(page_size=200, q="", sort=""):
     """
     List all ProductMilestones
     """
-    response = utils.checked_api_call(milestones_api, 'get_all')
+    response = utils.checked_api_call(milestones_api, 'get_all', page_size=page_size, q=q, sort=sort)
     if response:
         pprint(response.content)
 

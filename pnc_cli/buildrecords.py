@@ -11,39 +11,50 @@ def record_exists(id):
     existing = [str(x.id) for x in records_api.get_all().content]
     return str(id) in existing
 
-def list_build_records():
+@arg("-p", "--page-size", help="Limit the amount of build records returned")
+@arg("-s", "--sort", help="Sorting RSQL")
+@arg("-q", help="RSQL query")
+def list_build_records(page_size=200, sort="", q=""):
     """
     List all build records
     """
-    response = utils.checked_api_call(records_api, 'get_all')
+    response = utils.checked_api_call(records_api, 'get_all', page_size=page_size, sort=sort, q=q)
     if response:
         return response.content
 
 
 @arg("-i", "--id", help="Build configuration ID to retrieve build records of.")
 @arg("-n", "--name", help="Build configuration name to retrieve build records of.")
-def list_records_for_build_configuration(id=None, name=None):
+@arg("-p", "--page-size", help="Limit the amount of build records returned")
+@arg("-s", "--sort", help="Sorting RSQL")
+@arg("-q", help="RSQL query")
+def list_records_for_build_configuration(id=None, name=None, page_size=200, sort="", q=""):
     """
     List all BuildRecords for a given BuildConfiguration
     """
     config_id = buildconfigurations.get_config_id(id, name)
     if not config_id:
         return
-    response = utils.checked_api_call(records_api, 'get_all_for_build_configuration', configuration_id=config_id)
+    response = utils.checked_api_call(records_api, 'get_all_for_build_configuration', configuration_id=config_id,
+                                      page_size=page_size, sort=sort, q=q)
     if response:
         return response.content
 
 
 @arg("-i", "--id", help="Project ID to retrieve build records of.")
 @arg("-n", "--name", help="Project name to retrieve build records of.")
-def list_records_for_project(id=None, name=None):
+@arg("-p", "--page-size", help="Limit the amount of build records returned")
+@arg("-s", "--sort", help="Sorting RSQL")
+@arg("-q", help="RSQL query")
+def list_records_for_project(id=None, name=None, page_size=200, sort="", q=""):
     """
     List all BuildRecords for a given Project
     """
     project_id = projects.get_project_id(id, name)
     if not project_id:
         return
-    response = utils.checked_api_call(records_api, 'get_all_for_project', project_id=project_id)
+    response = utils.checked_api_call(records_api, 'get_all_for_project', project_id=project_id, page_size=page_size,
+                                      sort=sort, q=q)
     if response:
         return response.content
 
@@ -62,11 +73,14 @@ def get_build_record(id):
 
 
 @arg("id", help="Build record ID to retrieve artifacts from.")
-def list_build_artifacts(id):
+@arg("-p", "--page-size", help="Limit the amount of build records returned")
+@arg("-s", "--sort", help="Sorting RSQL")
+@arg("-q", help="RSQL query")
+def list_build_artifacts(id, page_size=200, sort="", q=""):
     """
     List Artifacts associated with a BuildRecord
     """
-    response = utils.checked_api_call(records_api, 'get_artifacts', id=id)
+    response = utils.checked_api_call(records_api, 'get_artifacts', id=id, page_size=page_size, sort=sort, q=q)
     if response:
         return response.content
 

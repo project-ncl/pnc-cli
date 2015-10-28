@@ -1,6 +1,8 @@
 import json
 import requests
-import sys
+import logging
+import getpass
+from requests_kerberos import HTTPKerberosAuth, DISABLED
 
 try:
     import configparser
@@ -20,18 +22,30 @@ def get_auth_token(config):
     try:
         server = config.get('PNC', 'authServer')
     except configparser.NoOptionError:
-        print('No authentication server defined. Define "authServer" in pnc-cli.conf to enable authentication.')
+        logging.error('No authentication server defined. Define "authServer" in pnc-cli.conf to enable authentication.')
         return
-    server = server + "/auth/realms/pncredhat/tokens/grants/access"
+    try:
+        realm = config.get('PNC', 'authRealm')
+    except configparser.NoOptionError:
+        logging.error('No authentication realm defined. Define "authRealm" in pnc-cli.conf to enable authentication.')
+        return
+    server = server + "/auth/realms/" + realm + "/tokens/grants/access"
     try:
         username = config.get('PNC', 'username')
         password = config.get('PNC', 'password')
     except configparser.NoOptionError:
-        print('Username / password missing. Define "username" and "password" in pnc-cli.conf for authentication.')
+        logging.error(
+            'Username / password missing. Define "username" and "password" in pnc-cli.conf for authentication.')
+        return
+
+    try:
+        client_id = config.get('PNC', 'clientId')
+    except configparser.NoOptionError:
+        logging.error('clientId is missing for the keycloak payload. Define "clientId" in pnc-cli.conf for authentication.')
         return
 
     params = {'grant_type': 'password',
-              'client_id': 'pncdirect',
+              'client_id': client_id,
               'username': username,
               'password': password}
     r = requests.post(server, params, verify=False)
@@ -54,8 +68,11 @@ if not found:
     config.add_section('PNC')
     config.set('PNC', 'restEndpoint', 'http://localhost:8080/pnc-rest/rest/')
     # prompt user for his keycloak username / passwords
+    config.set('PNC', 'authServer', '')
+    config.set('PNC', 'authRealm', '')
+    config.set('PNC', 'clientId', '')
     username = input('Username: ')
-    password = input('Password: ')
+    password = getpass.getpass('Password: ')
     config.set('PNC', 'username', username)
     config.set('PNC', 'password', password)
     with open(os.path.join(configfilename), 'w') as configfile:
@@ -66,8 +83,9 @@ if authtoken:
     apiclient = swagger_client.ApiClient(pnc_rest_url, header_name='Authorization',
                                          header_value="Bearer " + authtoken)
 else:
-    print('Authentication failed. Some operations will be unavailable.')
+    logging.warn('Authentication failed. Some operations will be unavailable.')
     apiclient = swagger_client.ApiClient(pnc_rest_url)
+
 
 def get_api_client():
     return apiclient

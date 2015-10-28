@@ -129,11 +129,13 @@ def get_environment(id=None, name=None):
     if response:
         return response.content
 
-
-def list_environments():
+@arg("-p", "--page-size", help="Limit the amount of product releases returned")
+@arg("-s", "--sort", help="Sorting RSQL")
+@arg("-q", help="RSQL query")
+def list_environments(page_size=200, sort="", q=""):
     """
     List all Environments
     """
-    response = utils.checked_api_call(envs_api, 'get_all')
+    response = utils.checked_api_call(envs_api, 'get_all', page_size=page_size, sort=sort, q=q)
     if response:
         return response.content

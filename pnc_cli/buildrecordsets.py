@@ -22,12 +22,14 @@ def get_brs_id(id):
         return
     return id
 
-
-def list_build_record_sets():
+@arg("-p", "--page-size", help="Limit the amount of build record sets returned")
+@arg("-s", "--sort", help="Sorting RSQL")
+@arg("-q", help="RSQL query")
+def list_build_record_sets(page_size=200, sort="", q=""):
     """
     List all BuildRecordSets
     """
-    response = utils.checked_api_call(brs_api, 'get_all')
+    response = utils.checked_api_call(brs_api, 'get_all', page_size=page_size, sort=sort, q=q)
     if response:
         return response.content
 
@@ -60,24 +62,29 @@ def create_build_record_set(**kwargs):
 
 
 @arg('id', help='ID of the BuildRecord.')
-def list_sets_containing_build_record(id):
+@arg("-p", "--page-size", help="Limit the amount of build record sets returned")
+@arg("-s", "--sort", help="Sorting RSQL")
+@arg("-q", help="RSQL query")
+def list_sets_containing_build_record(id, page_size=200, sort="", q=""):
     """
     List all BuildRecordSets containing the given BuildRecord
     """
     response = utils.checked_api_call(
-        brs_api, 'get_all_for_build_record', record_id=id)
+        brs_api, 'get_all_for_build_record', record_id=id, page_size=page_size, sort=sort, q=q)
     if response:
         return response.content
 
-
+@arg("-p", "--page-size", help="Limit the amount of build record sets returned")
+@arg("-s", "--sort", help="Sorting RSQL")
+@arg("-q", help="RSQL query")
 @arg('id', help='ID of the BuildRecord.')
-def list_build_record_sets_for_milestone(id):
+def list_build_record_sets_for_milestone(id, page_size=200, sort="", q=""):
     """
     List all BuildRecordSets containing the given ProductMilestone
     """
     #TODO: check id for existence in productversions
     response = utils.checked_api_call(
-        brs_api, 'get_all_for_product_milestone', version_id=id)
+        brs_api, 'get_all_for_product_milestone', version_id=id, page_size=page_size, sort=sort, q=q)
     if response:
         return response.content
 

@@ -152,7 +152,10 @@ def create_build_configuration(**kwargs):
 
 @arg("-i", "--id", help="ID of the Product to list BuildConfigurations for.")
 @arg("-n", "--name", help="Name of the Product to list BuildConfigurations for.")
-def list_build_configurations_for_product(id=None, name=None):
+@arg("-p", "--page-size", help="Limit the amount of build records returned")
+@arg("-s", "--sort", help="Sorting RSQL")
+@arg("-q", help="RSQL query")
+def list_build_configurations_for_product(id=None, name=None, page_size=200, sort="", q=""):
     """
     List all BuildConfigurations associated with the given Product.
     """
@@ -160,8 +163,8 @@ def list_build_configurations_for_product(id=None, name=None):
     if not found_id:
         return
 
-    #    configs_api.get_all_by_product_id_1() TODO: update project-ncl's method in the endpoint to be correct
-    response = utils.checked_api_call(configs_api, 'get_all_by_product_id', product_id=found_id)
+    response = utils.checked_api_call(configs_api, 'get_all_by_product_id', product_id=found_id, page_size=page_size,
+                                      sort=sort, q=q)
     if response:
         return response.content
 
@@ -169,11 +172,14 @@ def list_build_configurations_for_product(id=None, name=None):
 # TODO: allow specifying product name / version 'version'?
 @arg("product_id", help="ID of the Product which contains the desired ProductVersion.")
 @arg("version_id", help="ID of the ProductVersion to list BuildConfigurations for.")
-def list_build_configurations_for_product_version(product_id, version_id):
+@arg("-p", "--page-size", help="Limit the amount of build records returned")
+@arg("-s", "--sort", help="Sorting RSQL")
+@arg("-q", help="RSQL query")
+def list_build_configurations_for_product_version(product_id, version_id, page_size=20, sort="", q=""):
     """
     List all BuildConfigurations associated with the given ProductVersion
     """
-    found_product_id = products.get_product_id(product_id)
+    found_product_id = products.get_product_id(product_id,None)
     if not found_product_id:
         return
 
@@ -182,19 +188,22 @@ def list_build_configurations_for_product_version(product_id, version_id):
         return
 
     response = utils.checked_api_call(configs_api, 'get_all_by_product_version_id', product_id=found_product_id,
-                                      version_id=version_id)
+                                      version_id=version_id, page_size=page_size, sort=sort, q=q)
     if response:
         return response.content
 
 
 @arg("-i", "--id", help="ID of the BuildConfiguration to list dependencies for.")
 @arg("-n", "--name", help="Name of the BuildConfiguration to list dependencies for.")
-def list_dependencies(id=None, name=None):
+@arg("-p", "--page-size", help="Limit the amount of build records returned")
+@arg("-s", "--sort", help="Sorting RSQL")
+@arg("-q", help="RSQL query")
+def list_dependencies(id=None, name=None, page_size=200, sort="", q=""):
     found_id = get_config_id(id, name)
     if not found_id:
         return
 
-    response = utils.checked_api_call(configs_api, 'get_dependencies', id=found_id)
+    response = utils.checked_api_call(configs_api, 'get_dependencies', id=found_id, page_size=page_size, sort=sort, q=q)
     if response:
         return response.content
 
@@ -244,7 +253,10 @@ def remove_dependency(id=None, name=None, dependency_id=None, dependency_name=No
 
 @arg("-i", "--id", help="ID of the BuildConfiguration to list ProductVersions for.")
 @arg("-n", "--name", help="Name of the BuildConfiguration to list ProductVersions for.")
-def list_product_versions_for_build_configuration(id=None, name=None):
+@arg("-p", "--page-size", help="Limit the amount of build records returned")
+@arg("-s", "--sort", help="Sorting RSQL")
+@arg("-q", help="RSQL query")
+def list_product_versions_for_build_configuration(id=None, name=None, page_size=200, sort="", q=""):
     """
     List all ProductVersions associated with a BuildConfiguration
     """
@@ -252,7 +264,8 @@ def list_product_versions_for_build_configuration(id=None, name=None):
     if not found_id:
         return
 
-    response = utils.checked_api_call(configs_api, 'get_product_versions', id=found_id)
+    response = utils.checked_api_call(configs_api, 'get_product_versions', id=found_id, page_size=page_size, sort=sort,
+                                      q=q)
     if response:
         return response.content
 
@@ -301,8 +314,11 @@ def remove_product_version_from_build_configuration(id=None, name=None, product_
 
 @arg("-i", "--id", help="ID of the BuildConfiguration to list audited revisions for.")
 @arg("-n", "--name", help="Name of the BuildConfiguration to list audited revisions for.")
+@arg("-p", "--page-size", help="Limit the amount of build records returned")
+@arg("-s", "--sort", help="Sorting RSQL")
+@arg("-q", help="RSQL query")
 # TODO: PNC return BuildConfigurationAuditedPage instead of BuildConfigurationPage?
-def list_revisions_of_build_configuration(id=None, name=None):
+def list_revisions_of_build_configuration(id=None, name=None, page_size=200, sort="", q=""):
     """
     List audited revisions of a BuildConfiguration
     """
@@ -310,7 +326,7 @@ def list_revisions_of_build_configuration(id=None, name=None):
     if not found_id:
         return
 
-    response = utils.checked_api_call(configs_api, 'get_revisions', id=found_id)
+    response = utils.checked_api_call(configs_api, 'get_revisions', id=found_id, page_size=page_size, sort=sort, q=q)
     if response:
         return response.content
 
@@ -333,7 +349,10 @@ def get_revision_of_build_configuration(id=None, name=None, revision_id=None):
 
 @arg("-i", "--id", help="ID of the Project to list BuildConfigurations for.")
 @arg("-n", "--name", help="Name of the Project to list BuildConfigurations for.")
-def list_build_configurations_for_project(id=None, name=None):
+@arg("-p", "--page-size", help="Limit the amount of build records returned")
+@arg("-s", "--sort", help="Sorting RSQL")
+@arg("-q", help="RSQL query")
+def list_build_configurations_for_project(id=None, name=None, page_size=200, sort="", q=""):
     """
     List all BuildConfigurations associated with the given Project
     """
@@ -341,15 +360,18 @@ def list_build_configurations_for_project(id=None, name=None):
     if not found_id:
         return
 
-    response = utils.checked_api_call(configs_api, 'get_all_by_project_id', project_id=found_id)
+    response = utils.checked_api_call(configs_api, 'get_all_by_project_id', project_id=found_id, page_size=page_size,
+                                      sort=sort, q=q)
     if response:
         return response.content
 
-
-def list_build_configurations():
+@arg("-p", "--page-size", help="Limit the amount of build records returned")
+@arg("-s", "--sort", help="Sorting RSQL")
+@arg("-q", help="RSQL query")
+def list_build_configurations(page_size=200, sort="", q=""):
     """
     List all BuildConfigurations
     """
-    response = utils.checked_api_call(configs_api, 'get_all')
+    response = utils.checked_api_call(configs_api, 'get_all', page_size=page_size, sort=sort, q=q)
     if response:
         return response.content

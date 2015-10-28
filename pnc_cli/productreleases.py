@@ -17,12 +17,14 @@ def create_product_release_object(**kwargs):
         setattr(created_release, key, value)
     return created_release
 
-
-def list_product_releases():
+@arg("-p", "--page-size", help="Limit the amount of product releases returned")
+@arg("-s", "--sort", help="Sorting RSQL")
+@arg("-q", help="RSQL query")
+def list_product_releases(page_size=200, sort="", q=""):
     """
     List all ProductReleases
     """
-    response = utils.checked_api_call(releases_api, 'get_all')
+    response = utils.checked_api_call(releases_api, 'get_all', page_size=page_size, sort=sort, q=q)
     if response:
         return response.content
 

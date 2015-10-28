@@ -129,10 +129,13 @@ def list_versions_for_product(id=None, name=None):
         return response.content
 
 
-def list_products():
+@arg("-p", "--page-size", help="Limit the amount of products returned")
+@arg("-s", "--sort", help="Sorting RSQL")
+@arg("-q", help="RSQL query")
+def list_products(page_size=200, sort="", q=""):
     """
     List all Products
     """
-    response = utils.checked_api_call(products_api, 'get_all')
+    response = utils.checked_api_call(products_api, 'get_all', page_size=page_size, q=q, sort=sort)
     if response:
         return response.content

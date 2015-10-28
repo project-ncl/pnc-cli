@@ -27,11 +27,14 @@ def get_build_config_set_id_by_name(search_name):
     return None
 
 
-def list_build_configuration_sets():
+@arg("-p", "--page-size", help="Limit the amount of build records returned")
+@arg("-s", "--sort", help="Sorting RSQL")
+@arg("-q", help="RSQL query")
+def list_build_configuration_sets(page_size=200, sort="", q=""):
     """
     List all build configurtion sets
     """
-    response = utils.checked_api_call(sets_api, 'get_all')
+    response = utils.checked_api_call(sets_api, 'get_all', page_size=page_size, sort=sort, q=q)
     if response:
         return response.content
 
@@ -157,14 +160,17 @@ def build_set(id=None, name=None):
 
 @arg("-i", "--id", help="ID of the build configuration set to build.")
 @arg("-n", "--name", help="Name of the build configuration set to build.")
-def list_build_configurations_for_set(id=None, name=None):
+@arg("-p", "--page-size", help="Limit the amount of build records returned")
+@arg("-s", "--sort", help="Sorting RSQL")
+@arg("-q", help="RSQL query")
+def list_build_configurations_for_set(id=None, name=None, page_size=200, sort="", q=""):
     """
     List all build configurations in a given build configuration set.
     """
     found_id = get_set_id(id, name)
     if not found_id:
         return
-    response = utils.checked_api_call(sets_api, 'get_configurations', id=id)
+    response = utils.checked_api_call(sets_api, 'get_configurations', id=id, page_size=page_size, sort=sort, q=q)
     if response:
         return response.content
 
@@ -195,16 +201,18 @@ def add_build_configuration_to_set(
     if response:
         return response.content
 
-
 @arg("-i", "--id", help="ID of the build configuration set")
 @arg("-n", "--name", help="Name of the build configuration set")
-def list_build_records_for_set(id=None, name=None):
+@arg("-p", "--page-size", help="Limit the amount of build records returned")
+@arg("-s", "--sort", help="Sorting RSQL")
+@arg("-q", help="RSQL query")
+def list_build_records_for_set(id=None, name=None, page_size=200, sort="", q=""):
     """
     List all build records for a build configuration set
     """
     found_id = get_set_id(id, name)
     if not found_id:
         return
-    response = utils.checked_api_call(sets_api, 'get_build_records', id=found_id)
+    response = utils.checked_api_call(sets_api, 'get_build_records', id=found_id, page_size=page_size, sort=sort, q=q)
     if response:
         return response.content

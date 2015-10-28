@@ -121,11 +121,13 @@ def delete_project(id=None, name=None):
     if response:
         return response.content
 
-
-def list_projects():
+@arg("-p", "--page-size", help="Limit the amount of build records returned")
+@arg("-s", "--sort", help="Sorting RSQL")
+@arg("-q", help="RSQL query")
+def list_projects(page_size=200, sort="", q=""):
     """
     List all Projects
     """
-    response = utils.checked_api_call(projects_api, 'get_all')
+    response = utils.checked_api_call(projects_api, 'get_all', page_size=page_size, sort=sort, q=q)
     if response:
         return response.content

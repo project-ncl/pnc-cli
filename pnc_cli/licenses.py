@@ -118,11 +118,13 @@ def update_license(license_id, **kwargs):
     if response:
         return response.content
 
-
-def list_licenses():
+@arg("-p", "--page-size", help="Limit the amount of product releases returned")
+@arg("-s", "--sort", help="Sorting RSQL")
+@arg("-q", help="RSQL query")
+def list_licenses(page_size=200, sort="", q=""):
     """
     List all Licenses
     """
-    response = utils.checked_api_call(licenses_api, 'get_all')
+    response = utils.checked_api_call(licenses_api, 'get_all', page_size=page_size, sort=sort, q=q)
     if response:
         return response.content
