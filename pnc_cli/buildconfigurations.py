@@ -135,13 +135,14 @@ def delete_build_configuration(id=None, name=None):
 @arg("project_id", help="ID of the Project to associate the BuildConfiguration with.")
 @arg("environment_id", help="ID of the Environment for the new BuildConfiguration.")
 @arg("-d", "--description", help="Description of the new build configuration.")
-@arg("-surl", "--scm-url", help="URL to the sources of the BuildConfiguration.")
+@arg("-surl", "--scm-repo-url", help="URL to the sources of the BuildConfiguration.")
 @arg("-srev", "--scm-revision", help="Revision of the sources in scm-url for this BuildConfiguration.")
 @arg("-bs", "--build-script", help="Script to execute for the BuildConfiguration.")
 def create_build_configuration(**kwargs):
     """
     Create a new BuildConfiguration
     """
+    #TODO: non alphanum not allowed: [a-zA-Z0-9]
     build_configuration = create_build_conf_object(**kwargs)
     response = utils.checked_api_call(
         configs_api, 'create_new', body=build_configuration)
@@ -180,7 +181,7 @@ def list_build_configurations_for_product_version(product_id, version_id):
         print("No ProductVersion with ID {} exists.".format(version_id))
         return
 
-    response = utils.checked_api_call(configs_api, 'get_all_by_product_id_1', product_id=found_product_id,
+    response = utils.checked_api_call(configs_api, 'get_all_by_product_version_id', product_id=found_product_id,
                                       version_id=version_id)
     if response:
         return response.content

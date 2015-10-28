@@ -241,37 +241,37 @@ def test_list_build_configurations_for_product_notexist(mock_get_all_by_product_
 
 @patch('pnc_cli.products.get_product_id', return_value=1)
 @patch('pnc_cli.productversions.version_exists', return_value=True)
-@patch('pnc_cli.buildconfigurations.configs_api.get_all_by_product_id_1', return_value=MagicMock(content=[1, 2, 3]))
-def test_list_build_configurations_for_product_version(mock_get_all_by_product_id_1, mock_version_exists,
+@patch('pnc_cli.buildconfigurations.configs_api.get_all_by_product_version_id', return_value=MagicMock(content=[1, 2, 3]))
+def test_list_build_configurations_for_product_version(mock_get_all_by_product_version_id, mock_version_exists,
                                                        mock_get_product_id):
     result = buildconfigurations.list_build_configurations_for_product_version(product_id=1, version_id=2)
     mock_get_product_id.assert_called_once_with(1)
     mock_version_exists.assert_called_once_with(2)
-    mock_get_all_by_product_id_1.assert_called_once_with(product_id=1, version_id=2)
+    mock_get_all_by_product_version_id.assert_called_once_with(product_id=1, version_id=2)
     assert result == [1, 2, 3]
 
 
 @patch('pnc_cli.products.get_product_id', return_value=None)
 @patch('pnc_cli.productversions.version_exists')
-@patch('pnc_cli.buildconfigurations.configs_api.get_all_by_product_id_1')
-def test_list_build_configurations_for_product_version_no_product(mock_get_all_by_product_id_1, mock_version_exists,
+@patch('pnc_cli.buildconfigurations.configs_api.get_all_by_product_version_id')
+def test_list_build_configurations_for_product_version_no_product(mock_get_all_by_product_version_id, mock_version_exists,
                                                                   mock_get_product_id):
     result = buildconfigurations.list_build_configurations_for_product_version(product_id=1, version_id=2)
     mock_get_product_id.assert_called_once_with(1)
     assert not mock_version_exists.called
-    assert not mock_get_all_by_product_id_1.called
+    assert not mock_get_all_by_product_version_id.called
     assert not result
 
 
 @patch('pnc_cli.products.get_product_id', return_value=1)
 @patch('pnc_cli.productversions.version_exists', return_value=False)
-@patch('pnc_cli.buildconfigurations.configs_api.get_all_by_product_id_1')
-def test_list_build_configurations_for_product_version_no_version(mock_get_all_by_product_id_1, mock_version_exists,
+@patch('pnc_cli.buildconfigurations.configs_api.get_all_by_product_version_id')
+def test_list_build_configurations_for_product_version_no_version(mock_get_all_by_product_version_id, mock_version_exists,
                                                                   mock_get_product_id):
     result = buildconfigurations.list_build_configurations_for_product_version(product_id=1, version_id=2)
     mock_get_product_id.assert_called_once_with(1)
     mock_version_exists.assert_called_once_with(2)
-    assert not mock_get_all_by_product_id_1.called
+    assert not mock_get_all_by_product_version_id.called
     assert not result
 
 

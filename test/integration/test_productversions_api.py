@@ -3,9 +3,9 @@ import string
 from pnc_cli import productversions
 
 
-def _create_product_version():
+def create_product_version():
     randversion = random.choice(string.digits) + '.' + random.choice(string.digits)
-    # return productversions.create_product_version(randversion, )
+    return productversions.create_product_version(randversion, )
 
 
 def test_list_product_versions():

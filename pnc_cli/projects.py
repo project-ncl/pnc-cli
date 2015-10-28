@@ -62,7 +62,7 @@ def _project_exists(search_id):
      help="Space separated list of BuildConfigurationIDs this Project should be associated with.")
 @arg("-d", "--description", help="Detailed description of the new project")
 @arg("-p", "--project_url", help="SCM Url for the project")
-@arg("-i", "--issue_url", help="Issue tracker URL for the new project")
+@arg("-i", "--issue-tracker-url", help="Issue tracker URL for the new project")
 @arg("-l", "--license_id", help="License ID for the new project")
 def create_project(**kwargs):
     """
