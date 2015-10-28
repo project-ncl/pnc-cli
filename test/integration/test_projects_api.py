@@ -30,10 +30,10 @@ def test_get_specific():
 def test_update():
     new_proj = _create_project()
     newname = 'newname' + testutils.gen_random_name()
-    updated_project = projects._create_project_object(name=newname, description="updated description")
+    updated_project = projects._create_project_object(name=newname, description="pnc-cli test updated description")
     projects_api.update(id=new_proj.id, body=updated_project)
     retrieved_project = projects_api.get_specific(new_proj.id).content
-    assert retrieved_project.name == newname and retrieved_project.description == 'updated description'
+    assert retrieved_project.name == newname and retrieved_project.description == 'pnc-cli test updated description'
 
 
 def test_delete():

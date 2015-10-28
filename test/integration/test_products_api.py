@@ -33,9 +33,9 @@ def test_update_product():
     new_prod = _create_product()
     newname = 'newname' + testutils.gen_random_name()
     product_api.update(id=new_prod.id,
-                       body=products._create_product_object(name=newname, description='updated description'))
+                       body=products._create_product_object(name=newname, description='pnc-cli test updated description'))
     updated_prod = product_api.get_specific(id=new_prod.id).content
-    assert updated_prod.name == newname and updated_prod.description == 'updated description'
+    assert updated_prod.name == newname and updated_prod.description == 'pnc-cli test updated description'
 
 
 def test_list_versions_for_product():

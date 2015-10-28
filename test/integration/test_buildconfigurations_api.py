@@ -51,7 +51,7 @@ def test_get_all_by_project_id():
 def test_update():
     created_bc = create_config()
     created_bc.description = "This is a new description for testing update functionality"
-    created_bc.name = "updated-"+created_bc.name
+    created_bc.name = "pnc-cli-test-updated-"+created_bc.name
     configs_api.update(id=created_bc.id, body=created_bc)
     updated = configs_api.get_specific(id=created_bc.id).content
     assert updated.to_dict() == created_bc.to_dict()
