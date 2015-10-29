@@ -37,10 +37,12 @@ def test_get_build_configuration_id_by_name():
     assert configs_api.get_specific(id=find_by_name).content.id == configs_api.get_specific(id=created_bc.id).content.id
 
 def test_get_all_by_product_id():
+    #need to add bcs to some product
     response = configs_api.get_all_by_product_id(product_id=1).content
     assert response is not None
 
 def test_get_all_by_product_version_id():
+    #need to add bcs to some product version
     response = configs_api.get_all_by_product_version_id(product_id=1, version_id=1).content
     assert response is not None
 
@@ -83,7 +85,7 @@ def test_clone():
 def test_dependency_operations():
     created_bc = create_config()
     created_dep = create_config()
-    configs_api.add_dependency(id=created_bc.id, body=created_dep)
+    configs_api.add_dependency(id=created_dep.id, body=created_bc)
     dependency_ids = [dep.id for dep in configs_api.get_dependencies(id=created_bc).content]
     assert created_dep.id in dependency_ids
     configs_api.remove_dependency(id=created_bc.id, dependency_id=created_dep.id)
@@ -100,7 +102,7 @@ def test_get_product_versions():
 #TODO: cannot test due to test_productversions_api incomplete
 def test_product_version_operations():
     created_bc = create_config()
-    test_productversions_api.create_version()
+    test_productversions_api.create_product_version()
 
 
 
