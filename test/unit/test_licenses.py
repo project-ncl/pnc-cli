@@ -104,7 +104,7 @@ def test_delete_license(mock):
 @patch('pnc_cli.licenses.licenses_api.get_all', return_value=MagicMock(content='SUCCESS'))
 def test_list_licenses(mock):
     result = licenses.list_licenses()
-    mock.assert_called_once_with()
+    mock.assert_called_once_with(page_size=200, q="", sort="")
     assert result == 'SUCCESS'
 
 

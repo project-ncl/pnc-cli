@@ -166,5 +166,5 @@ def test_get_environment_notexist(mock_get_specific, mock_get_environment_id):
 @patch('pnc_cli.environments.envs_api.get_all', return_value=MagicMock(content=['env1', 'env2', 'env3']))
 def test_list_environments(mock):
     result = environments.list_environments()
-    mock.assert_called_once_with()
+    mock.assert_called_once_with(page_size=200, q="", sort="")
     assert result == ['env1', 'env2', 'env3']

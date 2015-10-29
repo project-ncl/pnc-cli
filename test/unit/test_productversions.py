@@ -50,7 +50,7 @@ def test_version_exists_for_product_notexist(mock):
 @patch('pnc_cli.productversions.versions_api.get_all', return_value=MagicMock(content=['1.0', '1.6', '2.0']))
 def test_list_product_versions(mock):
     result = productversions.list_product_versions()
-    mock.assert_called_once_with()
+    mock.assert_called_once_with(page_size=200, q="", sort="")
     assert result == ['1.0', '1.6', '2.0']
 
 

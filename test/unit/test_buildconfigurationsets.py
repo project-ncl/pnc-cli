@@ -32,7 +32,7 @@ def test_get_build_config_set_id_by_name_notexist(mock):
 @patch('pnc_cli.buildconfigurationsets.sets_api.get_all', return_value=MagicMock(content=[1, 2, 3]))
 def test_list_build_configuration_sets(mock):
     result = buildconfigurationsets.list_build_configuration_sets()
-    mock.assert_called_once_with()
+    mock.assert_called_once_with(page_size=200, q="", sort="")
     assert result == [1, 2, 3]
 
 
@@ -276,7 +276,7 @@ def test_build_set_notexist(mock_build, mock_get_set_id):
 def test_list_build_configurations_for_set_id(mock_get_configurations, mock_get_set_id):
     result = buildconfigurationsets.list_build_configurations_for_set(id=1)
     mock_get_set_id.assert_called_once_with(1, None)
-    mock_get_configurations.assert_called_once_with(id=1)
+    mock_get_configurations.assert_called_once_with(id=1, page_size=200, q="", sort="")
     assert result == 'SUCCESS'
 
 
@@ -365,7 +365,7 @@ def test_add_build_configuration_to_set_name_notexist(mock_add_config, mock_get_
 def test_list_build_records_for_set_id(mock_get_records, mock_get_set_id):
     result = buildconfigurationsets.list_build_records_for_set(id=1)
     mock_get_set_id.assert_called_once_with(1, None)
-    mock_get_records.assert_called_once_with(id=1)
+    mock_get_records.assert_called_once_with(id=1, page_size=200, q="", sort="")
     assert result == 'SUCCESS'
 
 @patch('pnc_cli.buildconfigurationsets.get_set_id', return_value=None)

@@ -153,5 +153,5 @@ def test_delete_project_notexist(mock_delete, mock_get_project_id):
 @patch('pnc_cli.projects.projects_api.get_all', return_value=MagicMock(content='SUCCESS'))
 def test_list_projects(mock):
     result = projects.list_projects()
-    mock.assert_called_once_with()
+    mock.assert_called_once_with(page_size=200, q="", sort="")
     assert result == 'SUCCESS'

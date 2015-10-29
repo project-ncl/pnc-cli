@@ -166,5 +166,5 @@ def test_list_versions_for_product_none(mock_get_product_versions, mock_get_prod
 @patch('pnc_cli.products.products_api.get_all', return_value=MagicMock(content='SUCCESS'))
 def test_list_products(mock):
     result = products.list_products()
-    mock.assert_called_once_with()
+    mock.assert_called_once_with(page_size=200, q="", sort="")
     assert result == 'SUCCESS'

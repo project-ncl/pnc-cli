@@ -29,7 +29,7 @@ def test_get_brs_id_none(mock):
 @patch('pnc_cli.buildrecordsets.brs_api.get_all', return_value=MagicMock(content='SUCCESS'))
 def test_list_build_record_sets(mock):
     result = buildrecordsets.list_build_record_sets()
-    mock.assert_called_once_with()
+    mock.assert_called_once_with(page_size=200, q="", sort="")
     assert result == 'SUCCESS'
 
 
@@ -63,7 +63,7 @@ def test_create_build_record_set(mock_create_new, mock_create_buildrecordset_obj
 @patch('pnc_cli.buildrecordsets.brs_api.get_all_for_product_milestone', return_value=MagicMock(content='SUCCESS'))
 def test_list_build_record_sets_for_milestone(mock):
     result = buildrecordsets.list_build_record_sets_for_milestone(1)
-    mock.assert_called_once_with(version_id=1)
+    mock.assert_called_once_with(page_size=200, q="", sort="", version_id=1)
     assert result == 'SUCCESS'
 
 
@@ -114,5 +114,5 @@ def test_update_build_record_notexist(mock_update, mock_get_specific, mock_get_b
 @patch('pnc_cli.buildrecordsets.brs_api.get_all_for_build_record', return_value=MagicMock(content='SUCCESS'))
 def test_list_sets_containing_build_record(mock):
     result = buildrecordsets.list_sets_containing_build_record(1)
-    mock.assert_called_once_with(record_id=1)
+    mock.assert_called_once_with(record_id=1, page_size=200, q="", sort="")
     assert result == 'SUCCESS'
