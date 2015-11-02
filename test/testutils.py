@@ -1,6 +1,7 @@
 import random
 import string
 from mock import MagicMock
+import pytest
 
 __author__ = 'thauser'
 
@@ -23,8 +24,18 @@ def create_mock_object_with_name_attribute(name):
 
 def gen_random_name():
     return "test" + ''.join(random.choice(string.ascii_uppercase + string.digits)
-                   for _ in range(10))
+                            for _ in range(10))
 
 
 def gen_random_version():
     return random.choice(string.digits) + '.' + random.choice(string.digits)
+
+
+def assert_raises_valueerror(api, function, **kwargs):
+    with pytest.raises(ValueError):
+        getattr(api, function)(**kwargs)
+
+
+def assert_raises_typeerror(api, function, **kwargs):
+    with pytest.raises(TypeError):
+        getattr(api, function)(invalid_param=1, **kwargs)

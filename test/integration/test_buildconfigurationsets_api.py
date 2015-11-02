@@ -70,7 +70,7 @@ def test_get_configurations():
 
 def test_add_configuration():
     new_set = create_set()
-    new_config = test_buildconfigurations_api.create_config()
+    new_config = test_buildconfigurations_api.new_config()
     sets_api.add_configuration(id=new_set.id, body=new_config)
     set_config_ids = [x.id for x in sets_api.get_configurations(id=new_set.id).content]
     assert new_config.id in set_config_ids
