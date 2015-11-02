@@ -7,8 +7,8 @@ from .models.build_record_set_singleton import BuildRecordSetSingleton
 from .models.product_milestone_rest import ProductMilestoneRest
 from .models.license import License
 from .models.product import Product
-from .models.page import Page
 from .models.product_version_page import ProductVersionPage
+from .models.page import Page
 from .models.build_record import BuildRecord
 from .models.project_rest import ProjectRest
 from .models.support_level_page import SupportLevelPage
@@ -23,19 +23,19 @@ from .models.build_status_changed_event_rest import BuildStatusChangedEventRest
 from .models.license_rest import LicenseRest
 from .models.user_rest import UserRest
 from .models.product_milestone_singleton import ProductMilestoneSingleton
-from .models.product_release_page import ProductReleasePage
 from .models.build_config_set_record_singleton import BuildConfigSetRecordSingleton
+from .models.product_release_page import ProductReleasePage
 from .models.build_configuration_audited import BuildConfigurationAudited
 from .models.project import Project
 from .models.error_response_rest import ErrorResponseRest
-from .models.build_environment import BuildEnvironment
 from .models.build_configuration_set_page import BuildConfigurationSetPage
+from .models.build_environment import BuildEnvironment
 from .models.singleton import Singleton
 from .models.build_environment_singleton import BuildEnvironmentSingleton
 from .models.build_configuration_set_record_page import BuildConfigurationSetRecordPage
+from .models.product_milestone_page import ProductMilestonePage
 from .models.build_record_set_page import BuildRecordSetPage
 from .models.license_singleton import LicenseSingleton
-from .models.product_milestone_page import ProductMilestonePage
 from .models.user import User
 from .models.product_rest import ProductRest
 from .models.project_page import ProjectPage
@@ -55,14 +55,14 @@ from .models.build_configuration_set_singleton import BuildConfigurationSetSingl
 from .models.user_page import UserPage
 from .models.artifact import Artifact
 from .models.build_configuration_set import BuildConfigurationSet
-from .models.project_singleton import ProjectSingleton
 from .models.build_configuration_set_rest import BuildConfigurationSetRest
+from .models.project_singleton import ProjectSingleton
 from .models.product_release_rest import ProductReleaseRest
 from .models.product_release import ProductRelease
 from .models.user_singleton import UserSingleton
 from .models.product_release_singleton import ProductReleaseSingleton
-from .models.build_record_singleton import BuildRecordSingleton
 from .models.product_version_singleton import ProductVersionSingleton
+from .models.build_record_singleton import BuildRecordSingleton
 from .models.build_record_page import BuildRecordPage
 
 # import apis into sdk package

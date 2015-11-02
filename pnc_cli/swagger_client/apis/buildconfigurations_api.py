@@ -1325,6 +1325,7 @@ class BuildconfigurationsApi(object):
         :param str callback_url: Optional Callback URL
         :param str build_record_set_ids_csv: A CSV list of build record set ids.
         :param str build_config_set_record_id: Build configuration set record id.
+        :param str username_triggered: Username who triggered the build. If empty current user is used.
         :return: None
                  If the method is called asynchronously,
                  returns the request thread.
@@ -1342,7 +1343,7 @@ class BuildconfigurationsApi(object):
         if submit_time_millis is None:
             raise ValueError("Missing the required parameter `submit_time_millis` when calling `build`")
 
-        all_params = ['id', 'build_configuration_revision', 'build_task_id', 'submit_time_millis', 'build_set_task_id', 'callback_url', 'build_record_set_ids_csv', 'build_config_set_record_id']
+        all_params = ['id', 'build_configuration_revision', 'build_task_id', 'submit_time_millis', 'build_set_task_id', 'callback_url', 'build_record_set_ids_csv', 'build_config_set_record_id', 'username_triggered']
         all_params.append('callback')
 
         params = locals()
@@ -1377,6 +1378,8 @@ class BuildconfigurationsApi(object):
             query_params['buildConfigSetRecordId'] = params['build_config_set_record_id']
         if 'submit_time_millis' in params:
             query_params['submitTimeMillis'] = params['submit_time_millis']
+        if 'username_triggered' in params:
+            query_params['usernameTriggered'] = params['username_triggered']
 
         header_params = {}
 
