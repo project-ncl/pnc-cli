@@ -23,7 +23,7 @@ def create_mock_object_with_name_attribute(name):
 
 
 def gen_random_name():
-    return "test" + ''.join(random.choice(string.ascii_uppercase + string.digits)
+    return "pnc-cli-test" + ''.join(random.choice(string.ascii_uppercase + string.digits)
                             for _ in range(10))
 
 
