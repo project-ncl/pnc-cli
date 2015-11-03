@@ -13,7 +13,7 @@ def new_env(request):
         body=environments._create_environment_object(name=testutils.gen_random_name())).content
 
     def teardown():
-        if (env.id in [x.id for x in envs_api.get_all().content]):
+        if env.id in [x.id for x in envs_api.get_all().content]:
             envs_api.delete(id=env.id)
 
     request.addfinalizer(teardown)
