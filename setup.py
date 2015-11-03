@@ -10,14 +10,13 @@ setup(
     author = 'Tom Hauser',
     author_email = 'thauser@redhat.com',
     url = 'https://github.com/thauser/pnc_cli',
-    download_url='https://github.com/thauser/pnc_cli/tarball/pypi-0.0.2',
+    download_url='https://github.com/thauser/pnc_cli/tarball/pypi-0.0.3',
     keywords = ['PNC','REST'],
     long_description=README,
     install_requires=[
 	    "argh >= 0.26.1",
         "requests >= 2.4.3",
         "certifi >= 2015.04.28",
-        'mock'
     ],
     classifiers=[
 	'Development Status :: 3 - Alpha',
