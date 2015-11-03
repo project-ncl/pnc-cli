@@ -11,12 +11,15 @@ except ImportError:
 import re
 import errno
 import os
+try:
+    input = raw_input
+except NameError:
+    pass
 
 from pnc_cli import swagger_client
 from pnc_cli.swagger_client.rest import ApiException
 
 __author__ = 'thauser'
-
 
 def get_auth_token(config):
     try:
@@ -57,7 +60,6 @@ def get_auth_token(config):
 config = configparser.ConfigParser()
 configfilename = os.path.expanduser("~") + "/.config/pnc-cli/pnc-cli.conf"
 configdirname = os.path.dirname(configfilename)
-
 try:
     os.makedirs(configdirname)
 except OSError as e:
@@ -69,19 +71,20 @@ if not found:
     config.set('PNC', 'restEndpoint', 'http://localhost:8080/pnc-rest/rest/')
     # prompt user for his keycloak username / passwords
     config.set('PNC', 'authServer', '')
-    config.set('PNC', 'authRealm', '')
-    config.set('PNC', 'clientId', '')
+    config.set('PNC', 'authRealm', 'pncredhat')
+    config.set('PNC', 'clientId', 'pncdirect')
     username = input('Username: ')
     password = getpass.getpass('Password: ')
     config.set('PNC', 'username', username)
     config.set('PNC', 'password', password)
     with open(os.path.join(configfilename), 'w') as configfile:
         config.write(configfile)
+    logging.warn("New config file written to ~/.config/pnc-cli/pnc-cli.conf. Configure authServer and restEndpoint targets.")
+    exit(0)
 pnc_rest_url = config.get('PNC', 'restEndpoint').rstrip('/')
 authtoken = get_auth_token(config)
 if authtoken:
-    apiclient = swagger_client.ApiClient(pnc_rest_url, header_name='Authorization',
-                                         header_value="Bearer " + authtoken)
+    apiclient = swagger_client.ApiClient(pnc_rest_url, header_name='Authorization', header_value="Bearer " + authtoken)
 else:
     logging.warn('Authentication failed. Some operations will be unavailable.')
     apiclient = swagger_client.ApiClient(pnc_rest_url)
