@@ -1,3 +1,4 @@
+import logging
 from six import iteritems
 from argh import arg
 
@@ -74,7 +75,7 @@ def create_project(**kwargs):
         return response.content
 
 
-@arg("-id", "--id", help="ID for the project that will be updated.")
+@arg("id", help="ID for the project that will be updated.")
 @arg("-n", "--name", help="New name for the project that will be updated.")
 @arg("-c", "--configuration-ids", type=int, nargs='+',
      help="Space separated list of BuildConfiguration IDs this Project should be associated with.")
@@ -82,10 +83,13 @@ def create_project(**kwargs):
 @arg("-p", "--project_url", help="SCM Url for the project.")
 @arg("-i", "--issue_url", help="Issue tracker URL for the new project")
 @arg("-l", "--license_id", help="License ID for the new project")
-def update_project(id=None, **kwargs):
+def update_project(id, **kwargs):
     """
     Update an existing Project with new information
     """
+    if not id:
+        logging.warn("A Project ID must be specified.")
+        return
     to_udpate = projects_api.get_specific(id=id).content
     for key, value in iteritems(kwargs):
         setattr(to_udpate, key, value)
