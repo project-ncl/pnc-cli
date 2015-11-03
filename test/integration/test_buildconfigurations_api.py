@@ -21,6 +21,7 @@ def new_config(request):
     request.addfinalizer(teardown)
     return created_bc
 
+
 def test_get_all_invalid_params():
     testutils.assert_raises_typeerror(configs_api, 'get_all')
 
@@ -60,7 +61,7 @@ def test_trigger_invalid_params():
 
 
 def test_trigger(new_config):
-    configs_api.trigger(id=new_config.id)
+    configs_api.trigger(id=new_config.id, rebuild_all=True)
     running_build = configs_api.get_specific(id=new_config.id).content
     assert running_build.build_status == "BUILDING"
 
@@ -221,7 +222,9 @@ def test_remove_dependency_invalid_param():
 def test_dependency_operations(new_config):
     dep = configs_api.get_specific(id=1).content
     configs_api.add_dependency(id=new_config.id, body=dep)
-    dependency_ids = [dep.id for dep in configs_api.get_dependencies(id=new_config.id).content]
+    dependency_ids = [dep.id for dep in
+                      configs_api.get_dependencies(id=new_config.id, page_index=0, page_size=1000, sort='',
+                                                   q='').content]
     assert dep.id in dependency_ids
     configs_api.remove_dependency(id=new_config.id, dependency_id=dep.id)
     assert not configs_api.get_dependencies(id=new_config.id).content
