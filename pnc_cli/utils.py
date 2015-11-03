@@ -1,8 +1,9 @@
 import json
-import requests
 import logging
 import getpass
-from requests_kerberos import HTTPKerberosAuth, DISABLED
+
+import requests
+
 
 try:
     import configparser
