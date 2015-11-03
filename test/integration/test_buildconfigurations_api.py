@@ -1,12 +1,14 @@
 import pytest
 from pnc_cli import buildconfigurations
 from pnc_cli.swagger_client.apis.buildconfigurations_api import BuildconfigurationsApi
+from pnc_cli.swagger_client.apis.productversions_api import ProductversionsApi
 from pnc_cli import utils
 from test import testutils
-from test.integration import test_productversions_api
+import time
 
+current_time_millis = lambda: int(round(time.time() * 1000))
 configs_api = BuildconfigurationsApi(utils.get_api_client())
-
+versions_api = ProductversionsApi(utils.get_api_client())
 
 @pytest.fixture(scope='function')
 def new_config(request):
@@ -64,6 +66,25 @@ def test_trigger(new_config):
     configs_api.trigger(id=new_config.id, rebuild_all=True)
     running_build = configs_api.get_specific(id=new_config.id).content
     assert running_build.build_status == "BUILDING"
+
+def test_build_no_id():
+    testutils.assert_raises_valueerror(configs_api, 'build', id=None, build_configuration_revision=1, build_task_id=1, submit_time_millis=1)
+
+def test_build_no_revision():
+    testutils.assert_raises_valueerror(configs_api, 'build', id=1, build_configuration_revision=None, build_task_id=1, submit_time_millis=1)
+
+def test_build_no_task_id():
+    testutils.assert_raises_valueerror(configs_api, 'build', id=1, build_configuration_revision=1, build_task_id=None, submit_time_millis=1)
+
+def test_build_no_time():
+    testutils.assert_raises_valueerror(configs_api, 'build', id=1, build_configuration_revision=1, build_task_id=1, submit_time_millis=None)
+
+def test_build_invalid_param():
+    testutils.assert_raises_typeerror(configs_api, 'build', id=1, build_configuration_revision=1, build_task_id=1, submit_time_millis=1)
+
+def test_build(new_config):
+    response = configs_api.build(id=new_config.id, build_configuration_revision=new_config.id, build_task_id=1, submit_time_millis=current_time_millis())
+    assert response.status_code == 200
 
 
 def test_get_build_configuration_id_by_name(new_config):
@@ -262,7 +283,7 @@ def test_add_product_version_invalid_param():
 # get_product_versions
 # remove_product_version
 # TODO: cannot test due to test_productversions_api incomplete
-def test_product_version_operations():
+def test_product_version_operations(new_config):
     pass
 
 
