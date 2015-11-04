@@ -15,9 +15,17 @@ def new_product():
     return product
 
 
+def test_get_all_invalid_param():
+    testutils.assert_raises_typeerror(product_api, 'get_all')
+
+
 def test_get_all():
-    p = product_api.get_all().content
+    p = product_api.get_all(page_index=0, page_size=1000, sort='', q='').content
     assert p is not None
+
+
+def test_create_new_invalid_param():
+    testutils.assert_raises_typeerror(product_api, 'create_new')
 
 
 def test_create_new(new_product):
@@ -25,11 +33,27 @@ def test_create_new(new_product):
     assert new_product.id in prod_ids
 
 
+def test_get_specific_no_id():
+    testutils.assert_raises_valueerror(product_api, 'get_specific', id=None)
+
+
+def test_get_specific_invalid_param():
+    testutils.assert_raises_typeerror(product_api, 'get_specific', id=1)
+
+
 def test_get_specific(new_product):
     assert product_api.get_specific(id=new_product.id) is not None
 
 
-def test_update_product(new_product):
+def test_update_no_id():
+    testutils.assert_raises_valueerror(product_api, 'update', id=None)
+
+
+def test_update_invalid_param():
+    testutils.assert_raises_typeerror(product_api, 'update', id=1)
+
+
+def test_update(new_product):
     newname = 'newname' + testutils.gen_random_name()
     product_api.update(id=new_product.id,
                        body=products._create_product_object(name=newname, description='pnc-cli test updated description'))
@@ -37,15 +61,17 @@ def test_update_product(new_product):
     assert updated_prod.name == newname and updated_prod.description == 'pnc-cli test updated description'
 
 
-def test_list_versions_for_product(new_product):
+def test_get_product_versions_no_id():
+    testutils.assert_raises_valueerror(product_api, 'get_product_versions', id=None)
+
+
+def test_get_product_versions_invalid_param():
+    testutils.assert_raises_typeerror(product_api, 'get_product_versions', id=1)
+
+
+def test_get_product_versions(new_product):
     randversion = testutils.gen_random_version()
     versions_api.create_new_product_version(
         body=productversions.create_product_version_object(product_id=new_product.id, version=randversion))
     versions = [x.version for x in product_api.get_product_versions(id=new_product.id).content]
     assert versions is not None and randversion in versions
-
-
-def test_get_product_id_by_name(new_product):
-    assert product_api.get_specific(
-        id=products.get_product_id_by_name(new_product.name)).content.id == product_api.get_specific(
-        id=new_product.id).content.id
