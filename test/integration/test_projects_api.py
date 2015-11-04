@@ -71,7 +71,7 @@ def test_delete_specific_no_id():
 
 
 def test_delete_specific_invalid_param():
-    testutils.assert_raises_valueerror(projects_api, 'delete_specific', id=1)
+    testutils.assert_raises_typeerror(projects_api, 'delete_specific', id=1)
 
 
 def test_delete_specific(new_project):
