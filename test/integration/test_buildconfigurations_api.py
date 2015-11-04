@@ -206,8 +206,11 @@ def test_clone_invalid_param():
 
 def test_clone(new_config):
     cloned_bc = configs_api.clone(id=new_config.id).content
-    assert new_config.to_dict() == cloned_bc.to_dict()
-
+    common_fields = ['build_script', 'build_status', 'dependency_ids', 'description', 'environment_id', 'internal_scm', 'internal_scm_revision',
+                     'product_version_ids', 'project_id', 'repositories', 'scm_mirror_repo_url', 'scm_mirror_revision', 'scm_repo_url',
+                     'scm_revision']
+    for field in common_fields:
+        assert getattr(cloned_bc, field) == getattr(new_config, field)
 
 def test_get_dependencies_no_id():
     testutils.assert_raises_valueerror(configs_api, 'get_dependencies', id=None)
