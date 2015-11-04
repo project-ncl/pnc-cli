@@ -83,6 +83,11 @@ def test_create_project(mock_create_new, mock_create_project_object):
     assert result == 'SUCCESS'
 
 
+def test_update_project_no_id():
+    result = projects.update_project(None, name='hi')
+    assert not result
+
+
 @patch('pnc_cli.projects.projects_api.get_specific')
 @patch('pnc_cli.projects.projects_api.update', return_value=MagicMock(content='SUCCESS'))
 def test_update_project(mock_update, mock_get_specific):

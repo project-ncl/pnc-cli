@@ -1,6 +1,5 @@
 from mock import patch, MagicMock
 from pnc_cli import productmilestones
-from test import testutils
 from pnc_cli.swagger_client.models import ProductMilestoneRest
 
 def test_create_milestone_object():
