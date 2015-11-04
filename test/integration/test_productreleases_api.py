@@ -17,8 +17,11 @@ versions_api = ProductversionsApi(utils.get_api_client())
 
 @pytest.fixture(scope='function')
 def new_version():
+    version_number = testutils.gen_random_version()
+    while version_number in [x.version for x in versions_api.get_all().content]:
+        version_number = testutils.gen_random_version()
     version = versions_api.create_new_product_version(body=productversions.create_product_version_object(
-        version=testutils.gen_random_version(),
+        version=version_number,
         product_id=1,
         current_product_milestone_id=1
     )).content

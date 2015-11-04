@@ -2,17 +2,33 @@ import pytest
 
 __author__ = 'thauser'
 from pnc_cli.swagger_client.apis import ProductmilestonesApi
+from pnc_cli.swagger_client.apis import ProductversionsApi
 from pnc_cli import utils
 from pnc_cli import productmilestones
+from pnc_cli import productversions
 from test import testutils
 
+versions_api = ProductversionsApi(utils.get_api_client())
 milestone_api = ProductmilestonesApi(utils.get_api_client())
 
 
 @pytest.fixture(scope='function')
-def new_milestone():
+def new_version():
+    version_number = testutils.gen_random_version()
+    while version_number in [x.version for x in versions_api.get_all().content]:
+        version_number = testutils.gen_random_version()
+    version = versions_api.create_new_product_version(body=productversions.create_product_version_object(
+        version=version_number,
+        product_id=1,
+        current_product_milestone_id=1
+    )).content
+    return version
+
+
+@pytest.fixture(scope='function')
+def new_milestone(new_version):
     milestone = milestone_api.create_new(body=productmilestones.create_milestone_object(
-        product_version_id=1, version=testutils.gen_random_version() + ".1.GA", start_date="2015-01-01",
+        product_version_id=new_version.id, version=new_version.version + ".1.GA", start_date="2015-01-01",
         planned_release_date="2015-01-02"
     )).content
     return milestone
