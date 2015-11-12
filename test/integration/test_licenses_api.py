@@ -80,7 +80,7 @@ def test_delete(new_license):
     licenses_api.delete(new_license.id)
     existing = licenses_api.get_all(page_size=100000).content
     if existing:
-        assert new_license.id not in [x.id for x in ]
+        assert new_license.id not in [x.id for x in existing]
     else:
         assert not existing
 

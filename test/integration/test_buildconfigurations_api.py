@@ -1,15 +1,19 @@
 import pytest
 from pnc_cli import buildconfigurations
+from pnc_cli.swagger_client import BuildConfigurationRest
 from pnc_cli.swagger_client.apis.buildconfigurations_api import BuildconfigurationsApi
 from pnc_cli.swagger_client.apis.productversions_api import ProductversionsApi
 from pnc_cli import utils
 from test import testutils
+from six import iteritems
 import time
 
 current_time_millis = lambda: int(round(time.time() * 1000))
 configs_api = BuildconfigurationsApi(utils.get_api_client())
 versions_api = ProductversionsApi(utils.get_api_client())
-
+common_fields = ['build_script', 'build_status', 'dependency_ids', 'description', 'environment_id', 'internal_scm', 'internal_scm_revison',
+                     'project_id', 'repositories', 'scm_mirror_repo_url', 'scm_mirror_revision', 'scm_repo_url',
+                     'scm_revision']
 @pytest.fixture(scope='function')
 def new_config(request):
     created_bc = configs_api.create_new(
@@ -157,7 +161,8 @@ def test_update(new_config):
     new_config.name = "pnc-cli-test-updated-" + new_config.name
     configs_api.update(id=new_config.id, body=new_config)
     updated = configs_api.get_specific(id=new_config.id).content
-    assert updated.to_dict() == new_config.to_dict()
+    for field in common_fields:
+        assert getattr(updated, field) == getattr(new_config, field)
 
 
 def test_delete_specific_no_id():
@@ -213,9 +218,6 @@ def test_clone_invalid_param():
 #TODO: project_version_ids is not being cloned correctly all the time.
 def test_clone(new_config):
     cloned_bc = configs_api.clone(id=new_config.id).content
-    common_fields = ['build_script', 'build_status', 'dependency_ids', 'description', 'environment_id', 'internal_scm', 'internal_scm_revison',
-                     'project_id', 'repositories', 'scm_mirror_repo_url', 'scm_mirror_revision', 'scm_repo_url',
-                     'scm_revision']
     for field in common_fields:
         assert getattr(cloned_bc, field) == getattr(new_config, field)
     #cleanup

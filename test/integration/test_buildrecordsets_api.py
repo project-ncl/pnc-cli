@@ -106,5 +106,5 @@ def test_delete_specific(new_brs):
     assert new_brs.id in existing
     brs_api.delete_specific(id=new_brs.id)
     existing = [x.id for x in brs_api.get_all().content]
-    assert not new_brs.id in existing
+    assert new_brs.id not in existing
 
