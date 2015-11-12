@@ -76,7 +76,12 @@ def test_delete_invalid_param():
 
 
 def test_delete(new_license):
+    assert new_license.id in [x.id for x in licenses_api.get_all(page_size=100000).content]
     licenses_api.delete(new_license.id)
-    assert not licenses_api.get_all().content
+    existing = licenses_api.get_all(page_size=100000).content
+    if existing:
+        assert new_license.id not in [x.id for x in ]
+    else:
+        assert not existing
 
 

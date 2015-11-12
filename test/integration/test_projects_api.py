@@ -75,8 +75,8 @@ def test_delete_specific_invalid_param():
 
 
 def test_delete_specific(new_project):
-    proj_ids = [x.id for x in projects_api.get_all().content]
+    proj_ids = [x.id for x in projects_api.get_all(page_size=100000).content]
     assert new_project.id in proj_ids
     projects_api.delete_specific(new_project.id)
-    proj_ids = [x.id for x in projects_api.get_all().content]
+    proj_ids = [x.id for x in projects_api.get_all(page_size=100000).content]
     assert new_project.id not in proj_ids
