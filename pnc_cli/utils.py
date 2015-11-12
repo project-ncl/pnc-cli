@@ -3,7 +3,7 @@ import logging
 import getpass
 
 import requests
-
+requests.packages.urllib3.disable_warnings()
 
 try:
     import configparser
@@ -12,6 +12,7 @@ except ImportError:
 import re
 import errno
 import os
+
 try:
     input = raw_input
 except NameError:
@@ -22,16 +23,19 @@ from pnc_cli.swagger_client.rest import ApiException
 
 __author__ = 'thauser'
 
+
 def get_auth_token(config):
     try:
-        server = config.get('PNC', 'authServer')
+        server = config.get('PNC', 'keycloakUrl')
+        if server is None:
+            raise configparser.NoOptionError
     except configparser.NoOptionError:
-        logging.error('No authentication server defined. Define "authServer" in pnc-cli.conf to enable authentication.')
+        logging.error('No authentication server defined. Define "keycloakUrl" in pnc-cli.conf to enable authentication.')
         return
     try:
-        realm = config.get('PNC', 'authRealm')
+        realm = config.get('PNC', 'keycloakRealm')
     except configparser.NoOptionError:
-        logging.error('No authentication realm defined. Define "authRealm" in pnc-cli.conf to enable authentication.')
+        logging.error('No keycloak authentication realm defined. Define "keycloakRealm" in pnc-cli.conf to enable authentication.')
         return
     server = server + "/auth/realms/" + realm + "/tokens/grants/access"
     try:
@@ -43,9 +47,10 @@ def get_auth_token(config):
         return
 
     try:
-        client_id = config.get('PNC', 'clientId')
+        client_id = config.get('PNC', 'keycloakClientId')
     except configparser.NoOptionError:
-        logging.error('clientId is missing for the keycloak payload. Define "clientId" in pnc-cli.conf for authentication.')
+        logging.error(
+            'client_id is missing for the keycloak payload. Define "keycloakClientId" in pnc-cli.conf for authentication.')
         return
 
     params = {'grant_type': 'password',
@@ -57,8 +62,7 @@ def get_auth_token(config):
         reply = json.loads(r.content.decode('utf-8'))
         return str(reply.get('access_token'))
 
-
-config = configparser.ConfigParser()
+config = configparser.ConfigParser(allow_no_value=False)
 configfilename = os.path.expanduser("~") + "/.config/pnc-cli/pnc-cli.conf"
 configdirname = os.path.dirname(configfilename)
 try:
@@ -69,25 +73,26 @@ except OSError as e:
 found = config.read(os.path.join(configfilename))
 if not found:
     config.add_section('PNC')
-    config.set('PNC', 'restEndpoint', 'http://localhost:8080/pnc-rest/rest/')
+    config.set('PNC', 'pncUrl', 'http://localhost:8080/')
     # prompt user for his keycloak username / passwords
-    config.set('PNC', 'authServer', '')
-    config.set('PNC', 'authRealm', 'pncredhat')
-    config.set('PNC', 'clientId', 'pncdirect')
+    config.set('PNC', 'keycloakUrl', '')
+    config.set('PNC', 'keycloakRealm', 'pncredhat')
+    config.set('PNC', 'keycloakClientId', 'pncdirect')
     username = input('Username: ')
     password = getpass.getpass('Password: ')
     config.set('PNC', 'username', username)
     config.set('PNC', 'password', password)
     with open(os.path.join(configfilename), 'w') as configfile:
         config.write(configfile)
-    logging.warn("New config file written to ~/.config/pnc-cli/pnc-cli.conf. Configure authServer and restEndpoint targets.")
+    logging.warning(
+        "New config file written to ~/.config/pnc-cli/pnc-cli.conf. Configure pncUrl and keycloakUrl values.")
     exit(0)
-pnc_rest_url = config.get('PNC', 'restEndpoint').rstrip('/')
+pnc_rest_url = config.get('PNC', 'pncUrl').rstrip('/')+'/pnc-rest/rest'
 authtoken = get_auth_token(config)
 if authtoken:
     apiclient = swagger_client.ApiClient(pnc_rest_url, header_name='Authorization', header_value="Bearer " + authtoken)
 else:
-    logging.warn('Authentication failed. Some operations will be unavailable.')
+    logging.warning('Authentication failed. Some operations will be unavailable.')
     apiclient = swagger_client.ApiClient(pnc_rest_url)
 
 

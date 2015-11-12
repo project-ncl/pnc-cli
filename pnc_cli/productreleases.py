@@ -98,7 +98,7 @@ def update_release(id, **kwargs):
     Update an existing ProductRelease with new information
     """
     if not _product_release_exists(id):
-        print("No ProductRelease with ID {} exists.").format(id)
+        print("No ProductRelease with ID {} exists.".format(id))
         return
 
     to_update = releases_api.get_specific(id=id).content
