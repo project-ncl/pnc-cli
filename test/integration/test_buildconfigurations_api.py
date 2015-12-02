@@ -26,7 +26,7 @@ def new_config(request):
                                                           scm_repo_url='https://github.com/thauser/simple-maven-build-pnc.git')).content
 
     def teardown():
-        existing = [x.id for x in configs_api.get_all(page_size=10000).content]
+        existing = [x.id for x in configs_api.get_all(page_size=10000000).content]
         if created_bc.id in existing:
             configs_api.delete_specific(id=created_bc.id)
 
@@ -39,7 +39,7 @@ def test_get_all_invalid_params():
 
 
 def test_get_all():
-    build_configurations = configs_api.get_all(page_index=0, page_size=200, sort="", q="").content
+    build_configurations = configs_api.get_all(page_index=0, page_size=10000000, sort="", q="").content
     assert build_configurations is not None
 
 
@@ -112,7 +112,7 @@ def test_get_all_by_product_id_invalid_param():
 
 def test_get_all_by_product_id(new_config):
     # need to add bcs to some product
-    response = configs_api.get_all_by_product_id(product_id=1, page_index=0, page_size=200, sort="", q="").content
+    response = configs_api.get_all_by_product_id(product_id=1, page_index=0, page_size=1000000, sort="", q="").content
     assert response is not None
 
 
@@ -130,7 +130,7 @@ def test_get_all_by_product_version_id_invalid_param():
 
 def test_get_all_by_product_version_id(new_config):
     # need to add bcs to some product version
-    response = configs_api.get_all_by_product_version_id(product_id=1, version_id=1, page_index=0, page_size=200,
+    response = configs_api.get_all_by_product_version_id(product_id=1, version_id=1, page_index=0, page_size=1000000,
                                                          sort="", q="").content
     assert response is not None
 
@@ -144,7 +144,7 @@ def test_get_all_by_project_id_invalid_param():
 
 
 def test_get_all_by_project_id():
-    response = configs_api.get_all_by_project_id(project_id=1, page_index=0, page_size=200, sort="", q="").content
+    response = configs_api.get_all_by_project_id(project_id=1, page_index=0, page_size=1000000, sort="", q="").content
     assert response is not None
 
 
@@ -190,7 +190,7 @@ def test_get_build_records_invalid_param():
 
 
 def test_get_build_records():
-    response = configs_api.get_build_records(id=1, page_index=0, page_size=200, sort='', q='').content
+    response = configs_api.get_build_records(id=1, page_index=0, page_size=1000000, sort='', q='').content
     assert response is not None
 
 

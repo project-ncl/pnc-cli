@@ -25,7 +25,7 @@ def test_get_all_invalid_param():
 
 
 def test_get_all():
-    envs = envs_api.get_all(page_index=0, page_size=2000, sort='', q='').content
+    envs = envs_api.get_all(page_index=0, page_size=1000000, sort='', q='').content
     assert envs is not None
 
 

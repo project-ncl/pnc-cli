@@ -21,7 +21,7 @@ def test_get_all_invalid_param():
     testutils.assert_raises_typeerror(versions_api, 'get_all')
 
 def test_get_all():
-    product_versions = versions_api.get_all(page_index=0, page_size=2000, sort='', q='').content
+    product_versions = versions_api.get_all(page_index=0, page_size=1000000, sort='', q='').content
     assert product_versions is not None
 
 
