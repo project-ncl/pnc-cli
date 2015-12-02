@@ -27,7 +27,7 @@ def test_get_all_invalid_param():
 
 def test_get_all(new_license):
     # empty at first. create one to test.
-    l = licenses_api.get_all(page_index=0, page_size=1000, sort='', q='').content
+    l = licenses_api.get_all(page_index=0, page_size=1000000, sort='', q='').content
     assert l is not None
 
 
@@ -76,9 +76,9 @@ def test_delete_invalid_param():
 
 
 def test_delete(new_license):
-    assert new_license.id in [x.id for x in licenses_api.get_all(page_size=100000).content]
+    assert new_license.id in [x.id for x in licenses_api.get_all(page_size=1000000).content]
     licenses_api.delete(new_license.id)
-    existing = licenses_api.get_all(page_size=100000).content
+    existing = licenses_api.get_all(page_size=1000000).content
     if existing:
         assert new_license.id not in [x.id for x in existing]
     else:

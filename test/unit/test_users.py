@@ -3,8 +3,6 @@ from mock import MagicMock, patch
 __author__ = 'Tom'
 from pnc_cli import users
 from pnc_cli.swagger_client import UserRest
-from pnc_cli import utils
-from test import testutils
 
 
 @patch('pnc_cli.users.users_api.get_all',

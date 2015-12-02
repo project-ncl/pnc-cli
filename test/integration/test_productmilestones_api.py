@@ -39,7 +39,7 @@ def test_get_all_invalid_param():
 
 
 def test_get_all(new_milestone):
-    assert milestone_api.get_all(page_index=0, page_size=1000, sort='', q='').content is not None
+    assert milestone_api.get_all(page_index=0, page_size=1000000, sort='', q='').content is not None
 
 
 def test_create_new_invalid_param():
@@ -60,7 +60,7 @@ def test_get_all_by_product_version_id_invalid_param():
 
 
 def test_get_all_by_product_version_id():
-    milestones = milestone_api.get_all_by_product_version_id(version_id=1, page_index=0, page_size=1000, sort='',
+    milestones = milestone_api.get_all_by_product_version_id(version_id=1, page_index=0, page_size=1000000, sort='',
                                                              q='').content
     assert milestones is not None
 

@@ -59,7 +59,7 @@ def test_get_all_invalid_param():
 
 
 def test_get_all(new_release):
-    assert releases_api.get_all(page_index=0, page_size=1000, sort='', q='').content is not None
+    assert releases_api.get_all(page_index=0, page_size=1000000, sort='', q='').content is not None
 
 
 def test_create_new_invalid_param():
@@ -80,7 +80,7 @@ def test_get_all_by_product_version_id_invalid_param():
 
 
 def test_get_all_by_product_version_id():
-    assert releases_api.get_all_by_product_version_id(version_id=1, page_index=0, page_size=1000, sort='',
+    assert releases_api.get_all_by_product_version_id(version_id=1, page_index=0, page_size=1000000, sort='',
                                                       q='').content is not None
 
 

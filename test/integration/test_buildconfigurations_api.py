@@ -1,6 +1,5 @@
 import pytest
 from pnc_cli import buildconfigurations
-from pnc_cli.swagger_client import BuildConfigurationRest
 from pnc_cli.swagger_client.apis.buildconfigurations_api import BuildconfigurationsApi
 from pnc_cli.swagger_client.apis.productversions_api import ProductversionsApi
 from pnc_cli import utils
@@ -173,10 +172,10 @@ def test_delete_specific_invalid_param():
 
 
 def test_delete_specific(new_config):
-    existing_ids = [bc.id for bc in configs_api.get_all(page_size=1000).content]
+    existing_ids = [bc.id for bc in configs_api.get_all(page_size=1000000).content]
     assert new_config.id in existing_ids
     configs_api.delete_specific(id=new_config.id)
-    existing_ids = [bc.id for bc in configs_api.get_all(page_size=1000).content]
+    existing_ids = [bc.id for bc in configs_api.get_all(page_size=1000000).content]
     assert new_config.id not in existing_ids
 
 
@@ -257,7 +256,7 @@ def test_dependency_operations(new_config):
     dep = configs_api.get_specific(id=1).content
     configs_api.add_dependency(id=new_config.id, body=dep)
     dependency_ids = [dep.id for dep in
-                      configs_api.get_dependencies(id=new_config.id, page_index=0, page_size=1000, sort='',
+                      configs_api.get_dependencies(id=new_config.id, page_index=0, page_size=1000000, sort='',
                                                    q='').content]
     assert dep.id in dependency_ids
     configs_api.remove_dependency(id=new_config.id, dependency_id=dep.id)

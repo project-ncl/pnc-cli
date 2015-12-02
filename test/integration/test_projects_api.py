@@ -25,7 +25,7 @@ def test_get_all_invalid_param():
 
 
 def test_get_all():
-    projs = projects_api.get_all(page_index=0, page_size=1000, sort='', q='').content
+    projs = projects_api.get_all(page_index=0, page_size=1000000, sort='', q='').content
     assert projs is not None
 
 
@@ -75,8 +75,8 @@ def test_delete_specific_invalid_param():
 
 
 def test_delete_specific(new_project):
-    proj_ids = [x.id for x in projects_api.get_all(page_size=100000).content]
+    proj_ids = [x.id for x in projects_api.get_all(page_size=1000000).content]
     assert new_project.id in proj_ids
     projects_api.delete_specific(new_project.id)
-    proj_ids = [x.id for x in projects_api.get_all(page_size=100000).content]
+    proj_ids = [x.id for x in projects_api.get_all(page_size=1000000).content]
     assert new_project.id not in proj_ids

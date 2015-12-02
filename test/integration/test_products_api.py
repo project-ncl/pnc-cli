@@ -20,7 +20,7 @@ def test_get_all_invalid_param():
 
 
 def test_get_all():
-    p = product_api.get_all(page_index=0, page_size=1000, sort='', q='').content
+    p = product_api.get_all(page_index=0, page_size=1000000, sort='', q='').content
     assert p is not None
 
 

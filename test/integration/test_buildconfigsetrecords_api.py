@@ -13,7 +13,7 @@ def test_get_all_invalid_param():
 
 
 def test_get_all():
-    bcrsets = bcsr_api.get_all(page_index=0, page_size=1000, sort='', q='').content
+    bcrsets = bcsr_api.get_all(page_index=0, page_size=1000000, sort='', q='').content
     assert bcrsets is not None
 
 
@@ -40,5 +40,5 @@ def test_get_build_records_invalid_param():
 
 @pytest.mark.xpass(reason='none of the default record sets contain build records, and there is no api to add them.')
 def test_get_build_records():
-    records = bcsr_api.get_build_records(id=1, page_index=0, page_size=1000, sort='', q='').content
+    records = bcsr_api.get_build_records(id=1, page_index=0, page_size=1000000, sort='', q='').content
     assert records is None

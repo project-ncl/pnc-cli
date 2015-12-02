@@ -4,7 +4,6 @@ from pnc_cli import productversions
 from pnc_cli.swagger_client.apis import ProductversionsApi
 from test import testutils
 
-
 versions_api = ProductversionsApi(utils.get_api_client())
 
 
@@ -68,8 +67,10 @@ def test_version_exists(new_version):
 def test_get_build_configuration_sets_no_id():
     testutils.assert_raises_valueerror(versions_api, 'get_build_configuration_sets', id=None)
 
+
 def test_get_build_configuration_sets_invalid_param():
     testutils.assert_raises_typeerror(versions_api, 'get_build_configuration_sets', id=1)
+
 
 def test_get_build_configuration_sets():
     sets = versions_api.get_build_configuration_sets(id=1)
