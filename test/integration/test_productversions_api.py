@@ -12,12 +12,19 @@ def new_version():
     version = versions_api.create_new_product_version(
         body=productversions.create_product_version_object(
             product_id=1,
-            version=testutils.gen_random_version())).content
+            version=get_unique_version())).content
     return version
+
+def get_unique_version():
+    rand_version = testutils.gen_random_version()
+    while rand_version in [x.version for x in versions_api.get_all(page_size=1000000).content]:
+        rand_version = testutils.gen_random_version()
+    return rand_version
 
 
 def test_get_all_invalid_param():
     testutils.assert_raises_typeerror(versions_api, 'get_all')
+
 
 def test_get_all():
     product_versions = versions_api.get_all(page_index=0, page_size=1000000, sort='', q='').content
@@ -27,6 +34,7 @@ def test_get_all():
 def test_create_new_product_version_invalid_param():
     testutils.assert_raises_typeerror(versions_api, 'create_new_product_version')
 
+
 def test_create_new_product_version(new_version):
     product_versions = [v.version for v in versions_api.get_all().content]
     assert new_version.version in product_versions
@@ -34,6 +42,7 @@ def test_create_new_product_version(new_version):
 
 def test_get_specific_no_id():
     testutils.assert_raises_valueerror(versions_api, 'get_specific', id=None)
+
 
 def test_get_specific_invalid_param():
     testutils.assert_raises_typeerror(versions_api, 'get_specific', id=1)
@@ -47,14 +56,14 @@ def test_get_specific(new_version):
 def test_update_no_id():
     testutils.assert_raises_valueerror(versions_api, 'update', id=None)
 
+
 def test_update_invalid_param():
     testutils.assert_raises_typeerror(versions_api, 'update', id=1)
 
 
-
 # currently unable to update build_configuration_ids
 def test_update(new_version):
-    new_version.version = testutils.gen_random_version()
+    new_version.version = get_unique_version()
     versions_api.update(id=new_version.id, body=new_version)
     updated = versions_api.get_specific(id=new_version.id).content
     assert updated.version == new_version.version
