@@ -5,7 +5,6 @@ from pnc_cli.swagger_client.apis.buildconfigurations_api import Buildconfigurati
 from pnc_cli.swagger_client.apis.productversions_api import ProductversionsApi
 from pnc_cli import utils
 from test import testutils
-from six import iteritems
 import time
 
 current_time_millis = lambda: int(round(time.time() * 1000))

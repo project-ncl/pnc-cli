@@ -26,7 +26,7 @@ def test_get_all_invalid_param():
 
 
 def test_get_all():
-    response = brs_api.get_all(page_index=0, page_size=1000, sort='', q='').content
+    response = brs_api.get_all(page_index=0, page_size=1000000, sort='', q='').content
     assert response is not None
 
 
@@ -48,7 +48,7 @@ def test_get_all_for_build_record_invalid_param():
 
 
 def test_get_all_for_build_record():
-    response = brs_api.get_all_for_build_record(record_id=1, page_index=0, page_size=1000, sort='', q='').content
+    response = brs_api.get_all_for_build_record(record_id=1, page_index=0, page_size=1000000, sort='', q='').content
     assert response is not None
 
 
