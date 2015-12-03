@@ -1,5 +1,8 @@
 __author__ = 'thauser'
 import pytest
+import datetime
+
+
 from pnc_cli.swagger_client.apis import ProductreleasesApi
 from pnc_cli.swagger_client.apis import ProductmilestonesApi
 from pnc_cli.swagger_client.apis import ProductversionsApi
@@ -30,10 +33,12 @@ def new_version():
 
 @pytest.fixture(scope='function')
 def new_milestone(new_version):
+    starting = utils.unix_time_millis(datetime.datetime(2016, 1, 2, 12, 0, 0))
+    ending = utils.unix_time_millis(datetime.datetime(2017, 1, 2, 12, 0, 0))
     milestone = milestones_api.create_new(body=productmilestones.create_milestone_object(
         version=new_version.version+'.1.build3',
-        starting_date='2016-01-01',
-        planned_end_date='2017-01-01',
+        starting_date=starting,
+        planned_end_date=ending,
         download_url='localhost:8080/build3',
         product_version_id=new_version.id
     )).content
@@ -42,10 +47,11 @@ def new_milestone(new_version):
 
 @pytest.fixture(scope='function')
 def new_release(new_milestone):
+    release_time = utils.unix_time_millis(datetime.datetime(2016, 1, 2, 12, 0, 0))
     associated_version = versions_api.get_specific(id=new_milestone.product_version_id).content.version
     release = releases_api.create_new(body=productreleases.create_product_release_object(
         version= associated_version + ".1.DR1",
-        release_date="2016-01-01",
+        release_date=release_time,
         download_url="pnc-cli-test-url",
         product_version_id=new_milestone.product_version_id,
         product_milestone_id=new_milestone.id,

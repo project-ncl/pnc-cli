@@ -1,6 +1,8 @@
 import json
 import logging
 import getpass
+import datetime
+
 
 import requests
 requests.packages.urllib3.disable_warnings()
@@ -112,3 +114,9 @@ def checked_api_call(api, func, **kwargs):
         print(e)
     else:
         return response
+
+epoch = datetime.datetime.utcfromtimestamp(0)
+
+def unix_time_millis(dt):
+    millis = int((dt - epoch).total_seconds() * 1000.0)
+    return millis
