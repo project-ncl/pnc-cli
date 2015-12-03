@@ -15,7 +15,7 @@ Copyright 2015 SmartBear Software
    See the License for the specific language governing permissions and
    limitations under the License.
 
-   ref: https://github.com/swagger-api/swagger-codegen
+   ref: https://github.com/swagger-api/swagger-codegen 
 """
 
 from __future__ import absolute_import
@@ -27,7 +27,7 @@ try:
 except ImportError:
     # for python3
     import http.client as httplib
-
+    
 import sys
 import logging
 
@@ -84,7 +84,7 @@ class Configuration(object):
         self.verify_ssl = True
         # Set this to customize the certificate file to verify the peer.
         self.ssl_ca_cert = None
-
+        
     def init_logger(self):
         """
         Initializes logger settings.

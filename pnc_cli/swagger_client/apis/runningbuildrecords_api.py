@@ -48,7 +48,7 @@ class RunningbuildrecordsApi(object):
     def get_all(self, **kwargs):
         """
         Gets all running Build Records
-
+        
 
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please define a `callback` function
@@ -129,7 +129,7 @@ class RunningbuildrecordsApi(object):
     def get_all_for_bc_set(self, id, **kwargs):
         """
         Gets running Build Records for a specific Build Configuration Set Record.
-
+        
 
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please define a `callback` function
@@ -216,7 +216,7 @@ class RunningbuildrecordsApi(object):
     def get_all_for_bc(self, id, **kwargs):
         """
         Gets running Build Records for a specific Build Configuration.
-
+        
 
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please define a `callback` function
@@ -303,7 +303,7 @@ class RunningbuildrecordsApi(object):
     def get_specific(self, id, **kwargs):
         """
         Gets specific running Build Record
-
+        
 
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please define a `callback` function
