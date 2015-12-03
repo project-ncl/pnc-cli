@@ -14,6 +14,7 @@ running_api = RunningbuildrecordsApi(utils.get_api_client())
 common_fields = ['build_script', 'build_status', 'dependency_ids', 'description', 'environment_id', 'internal_scm', 'internal_scm_revison',
                      'project_id', 'repositories', 'scm_mirror_repo_url', 'scm_mirror_revision', 'scm_repo_url',
                      'scm_revision']
+
 @pytest.fixture(scope='function')
 def new_config(request):
     created_bc = configs_api.create_new(
