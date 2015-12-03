@@ -27,7 +27,7 @@ def get_build_configuration_id_by_name(name):
     :param name: name of build configuration
     :return: id of the matching build configuration, or None if no match found
     """
-    for config in configs_api.get_all().content:
+    for config in configs_api.get_all(page_size=10000000).content:
         if config.name == name:
             return config.id
     return None
@@ -39,7 +39,7 @@ def config_id_exists(search_id):
     :param search_id: id to test for
     :return: True if a build configuration with search_id exists, False otherwise
     """
-    existing_ids = [str(x.id) for x in configs_api.get_all().content]
+    existing_ids = [str(x.id) for x in configs_api.get_all(page_size=1000000).content]
     return str(search_id) in existing_ids
 
 
