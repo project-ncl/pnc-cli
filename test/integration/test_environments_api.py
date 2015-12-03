@@ -13,7 +13,7 @@ def new_env(request):
         body=environments._create_environment_object(name=testutils.gen_random_name())).content
 
     def teardown():
-        if env.id in [x.id for x in envs_api.get_all().content]:
+        if env.id in [x.id for x in envs_api.get_all(page_size=1000000).content]:
             envs_api.delete(id=env.id)
 
     request.addfinalizer(teardown)
@@ -34,7 +34,7 @@ def test_create_invalid_param():
 
 
 def test_create_new(new_env):
-    env_ids = [env.id for env in envs_api.get_all().content]
+    env_ids = [env.id for env in envs_api.get_all(page_size=1000000).content]
     assert new_env.id in env_ids
 
 
@@ -76,7 +76,7 @@ def test_delete_invalid_param():
 
 def test_delete(new_env):
     envs_api.delete(new_env.id)
-    env_ids = [env.id for env in envs_api.get_all().content]
+    env_ids = [env.id for env in envs_api.get_all(page_size=1000000).content]
     assert new_env.id not in env_ids
 
 

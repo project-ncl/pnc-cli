@@ -14,7 +14,7 @@ def new_brs(request):
         build_records_ids=[1, 2]
     )).content
     def teardown():
-        existing = [x.id for x in brs_api.get_all().content]
+        existing = [x.id for x in brs_api.get_all(page_size=1000000).content]
         if set.id in existing:
             brs_api.delete_specific(id=set.id)
     request.addfinalizer(teardown)
@@ -35,7 +35,7 @@ def test_create_new_invalid_param():
 
 
 def test_create_new(new_brs):
-    existing = [x.id for x in brs_api.get_all().content]
+    existing = [x.id for x in brs_api.get_all(page_size=1000000).content]
     assert new_brs.id in existing
 
 
@@ -102,9 +102,9 @@ def test_delete_specific_invalid_param():
 
 
 def test_delete_specific(new_brs):
-    existing = [x.id for x in brs_api.get_all().content]
+    existing = [x.id for x in brs_api.get_all(page_size=1000000).content]
     assert new_brs.id in existing
     brs_api.delete_specific(id=new_brs.id)
-    existing = [x.id for x in brs_api.get_all().content]
+    existing = [x.id for x in brs_api.get_all(page_size=1000000).content]
     assert new_brs.id not in existing
 

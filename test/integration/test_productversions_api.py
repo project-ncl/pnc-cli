@@ -36,7 +36,7 @@ def test_create_new_product_version_invalid_param():
 
 
 def test_create_new_product_version(new_version):
-    product_versions = [v.version for v in versions_api.get_all().content]
+    product_versions = [v.version for v in versions_api.get_all(page_size=1000000).content]
     assert new_version.version in product_versions
 
 

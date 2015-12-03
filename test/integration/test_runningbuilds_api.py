@@ -11,7 +11,7 @@ def test_get_all():
     # start a build so that a build is running
     # need to run a legitimate build, create a buildconfiguration that will start running
     configs_api.trigger(id=1)
-    running_builds = running_api.get_all().content
+    running_builds = running_api.get_all(page_size=1000000).content
     time.sleep(5)
     assert running_builds is not None
 

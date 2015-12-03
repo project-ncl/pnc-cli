@@ -13,7 +13,7 @@ def new_license(request):
                                                                            full_content="pnc_cli-cli test license")).content
 
     def teardown():
-        existing_licenses = licenses_api.get_all().content
+        existing_licenses = licenses_api.get_all(page_size=1000000).content
         if existing_licenses and license.id in [x.id for x in existing_licenses]:
             licenses_api.delete(id=license.id)
 
@@ -36,7 +36,7 @@ def test_create_new_invalid_param():
 
 
 def test_create_new(new_license):
-    license_ids = [x.id for x in licenses_api.get_all().content]
+    license_ids = [x.id for x in licenses_api.get_all(page_size=1000000).content]
     assert new_license.id in license_ids
 
 

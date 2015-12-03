@@ -15,7 +15,7 @@ milestone_api = ProductmilestonesApi(utils.get_api_client())
 @pytest.fixture(scope='function')
 def new_version():
     version_number = testutils.gen_random_version()
-    while version_number in [x.version for x in versions_api.get_all().content]:
+    while version_number in [x.version for x in versions_api.get_all(page_size=1000000).content]:
         version_number = testutils.gen_random_version()
     version = versions_api.create_new_product_version(body=productversions.create_product_version_object(
         version=version_number,
@@ -47,7 +47,7 @@ def test_create_new_invalid_param():
 
 
 def test_create_new(new_milestone):
-    milestones = [m.id for m in milestone_api.get_all().content]
+    milestones = [m.id for m in milestone_api.get_all(page_size=1000000).content]
     assert new_milestone.id in milestones
 
 

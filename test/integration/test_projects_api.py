@@ -12,7 +12,7 @@ def new_project(request):
     project = projects_api.create_new(body=projects._create_project_object(name=testutils.gen_random_name())).content
 
     def teardown():
-        existing = projects_api.get_all().content
+        existing = projects_api.get_all(page_size=1000000).content
         if existing and project.id in [x.id for x in existing]:
             projects_api.delete_specific(id=project.id)
 
@@ -34,7 +34,7 @@ def test_create_new_invalid_param():
 
 
 def test_create_new(new_project):
-    proj_ids = [x.id for x in projects_api.get_all().content]
+    proj_ids = [x.id for x in projects_api.get_all(page_size=1000000).content]
     assert new_project.id in proj_ids
 
 

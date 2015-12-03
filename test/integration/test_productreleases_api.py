@@ -18,7 +18,7 @@ versions_api = ProductversionsApi(utils.get_api_client())
 @pytest.fixture(scope='function')
 def new_version():
     version_number = testutils.gen_random_version()
-    while version_number in [x.version for x in versions_api.get_all().content]:
+    while version_number in [x.version for x in versions_api.get_all(page_size=1000000).content]:
         version_number = testutils.gen_random_version()
     version = versions_api.create_new_product_version(body=productversions.create_product_version_object(
         version=version_number,
@@ -67,7 +67,7 @@ def test_create_new_invalid_param():
 
 
 def test_create_new(new_release):
-    release_ids = [r.id for r in releases_api.get_all().content]
+    release_ids = [r.id for r in releases_api.get_all(page_size=1000000).content]
     assert new_release.id in release_ids
 
 

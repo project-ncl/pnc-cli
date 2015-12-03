@@ -29,7 +29,7 @@ def test_create_new_invalid_param():
 
 
 def test_create_new(new_product):
-    prod_ids = [x.id for x in product_api.get_all().content]
+    prod_ids = [x.id for x in product_api.get_all(page_size=1000000).content]
     assert new_product.id in prod_ids
 
 

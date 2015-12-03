@@ -29,7 +29,7 @@ def test_get_all():
 
 
 def test_create(new_set):
-    set_names = [set.name for set in sets_api.get_all().content]
+    set_names = [set.name for set in sets_api.get_all(page_size=1000000).content]
     assert new_set.name in set_names
 
 

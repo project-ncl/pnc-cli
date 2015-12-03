@@ -46,7 +46,7 @@ def test_create_build_configuration_invalid_params():
 
 
 def test_create_build_configuration(new_config):
-    bc_names = [bc.name for bc in configs_api.get_all().content]
+    bc_names = [bc.name for bc in configs_api.get_all(page_size=1000000).content]
     assert new_config.name in bc_names
 
 
