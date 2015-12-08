@@ -11,7 +11,9 @@ versions_api = ProductversionsApi(utils.get_api_client())
 
 @pytest.fixture(scope='function')
 def new_product():
-    product = product_api.create_new(body=products._create_product_object(name=testutils.gen_random_name())).content
+    product = product_api.create_new(body=products._create_product_object(name=testutils.gen_random_name(),
+                                                                          description="PNC-CLI: test_products_api product"
+                                                                          )).content
     return product
 
 
