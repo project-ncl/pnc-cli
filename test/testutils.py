@@ -28,7 +28,7 @@ def gen_random_name():
 
 
 def gen_random_version():
-    return random.choice(string.digits) + '.' + random.choice(string.digits)
+    return ''.join(random.choice(string.digits)for _ in range(10)) + '.' + ''.join(random.choice(string.digits) for _ in range(10))
 
 
 def assert_raises_valueerror(api, function, **kwargs):
