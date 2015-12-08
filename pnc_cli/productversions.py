@@ -20,7 +20,7 @@ def create_product_version_object(**kwargs):
 
 
 def version_exists(id):
-    version_ids = [str(x.id) for x in versions_api.get_all().content]
+    version_ids = [str(x.id) for x in versions_api.get_all(page_size=1000000).content]
     return str(id) in version_ids
 
 
