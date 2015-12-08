@@ -3,6 +3,7 @@ import pytest
 import datetime
 
 
+from pnc_cli.swagger_client.apis import ProductsApi
 from pnc_cli.swagger_client.apis import ProductreleasesApi
 from pnc_cli.swagger_client.apis import ProductmilestonesApi
 from pnc_cli.swagger_client.apis import ProductversionsApi
@@ -10,18 +11,27 @@ from pnc_cli import utils
 from pnc_cli import productreleases
 from pnc_cli import productmilestones
 from pnc_cli import productversions
+from pnc_cli import products
 from test import testutils
 
 
+product_api = ProductsApi(utils.get_api_client())
 milestones_api = ProductmilestonesApi(utils.get_api_client())
 releases_api = ProductreleasesApi(utils.get_api_client())
 versions_api = ProductversionsApi(utils.get_api_client())
 
+@pytest.fixture(scope='function')
+def new_product():
+    product = product_api.create_new(body=products._create_product_object(name=testutils.gen_random_name(),
+                                                                          description="PNC CLI: test_productreleases_api product"
+                                                                          )).content
+    return product
 
 @pytest.fixture(scope='function')
-def new_version():
+def new_version(new_product):
     version_number = testutils.gen_random_version()
-    while version_number in [x.version for x in versions_api.get_all(page_size=1000000).content]:
+    existing = product_api.get_product_versions(id=new_product.id).content
+    while existing is not None and version_number in [x.version for x in existing]:
         version_number = testutils.gen_random_version()
     version = versions_api.create_new_product_version(body=productversions.create_product_version_object(
         version=version_number,
@@ -65,7 +75,8 @@ def test_get_all_invalid_param():
 
 
 def test_get_all(new_release):
-    assert releases_api.get_all(page_index=0, page_size=1000000, sort='', q='').content is not None
+    existing = releases_api.get_all(page_index=0, sort='', q='').content
+    assert existing is not None
 
 
 def test_create_new_invalid_param():
