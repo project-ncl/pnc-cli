@@ -13,14 +13,38 @@ from pnc_cli.swagger_client.apis.buildconfigurations_api import Buildconfigurati
 sets_api = BuildconfigurationsetsApi(utils.get_api_client())
 configs_api = BuildconfigurationsApi(utils.get_api_client())
 
+
 @pytest.fixture(scope='function')
 def new_set(request):
     set = sets_api.create_new(
-        body=buildconfigurationsets._create_build_config_set_object(name=testutils.gen_random_name(), productVersionId=1)).content
+        body=buildconfigurationsets._create_build_config_set_object(name=testutils.gen_random_name(),
+                                                                    productVersionId=1)).content
+
     def teardown():
         sets_api.delete_specific(id=set.id)
+
     request.addfinalizer(teardown)
     return set
+
+
+@pytest.fixture(scope='function')
+def new_config(request):
+    created_bc = configs_api.create_new(
+        body=buildconfigurations.create_build_conf_object(name=testutils.gen_random_name(),
+                                                          project_id=1,
+                                                          environment_id=1,
+                                                          build_status="UNKNOWN",
+                                                          build_script='mvn clean install',
+                                                          product_version_ids=[1],
+                                                          scm_repo_url='https://github.com/thauser/simple-maven-build-pnc.git')).content
+
+    def teardown():
+        existing = [x.id for x in configs_api.get_all(page_size=10000000).content]
+        if created_bc.id in existing:
+            configs_api.delete_specific(id=created_bc.id)
+
+    request.addfinalizer(teardown)
+    return created_bc
 
 
 def test_get_all():
@@ -57,19 +81,13 @@ def test_trigger(new_set):
     assert running_set.ok
 
 
-def test_get_configurations(new_set):
-    new_config_obj = buildconfigurations.create_build_conf_object(name=testutils.gen_random_name(), project_id="1",
-                                                                  environment_id="1", build_status="SUCCESS")
-    new_config = configs_api.create_new(body=new_config_obj).content
+def test_get_configurations(new_config, new_set):
     sets_api.add_configuration(id=new_set.id, body=new_config)
     set_configs = sets_api.get_configurations(id=new_set.id)
     assert set_configs is not None
 
 
-def test_add_configuration(new_set):
-    new_config_obj = buildconfigurations.create_build_conf_object(name=testutils.gen_random_name(), project_id="1",
-                                                                  environment_id="1", build_status="SUCCESS")
-    new_config = configs_api.create_new(body=new_config_obj).content
+def test_add_configuration(new_config, new_set):
     sets_api.add_configuration(id=new_set.id, body=new_config)
     set_config_ids = [x.id for x in sets_api.get_configurations(id=new_set.id).content]
     assert new_config.id in set_config_ids
