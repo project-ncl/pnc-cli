@@ -48,7 +48,7 @@ class BuildrecordsetsApi(object):
     def get_all(self, **kwargs):
         """
         Gets all BuildRecordSets
-        
+
 
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please define a `callback` function
@@ -132,7 +132,7 @@ class BuildrecordsetsApi(object):
     def create_new(self, **kwargs):
         """
         Creates a new BuildRecordSet
-        
+
 
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please define a `callback` function
@@ -144,7 +144,7 @@ class BuildrecordsetsApi(object):
 
         :param callback function: The callback function
             for asynchronous request. (optional)
-        :param BuildRecordSetRest body: 
+        :param BuildRecordSetRest body:
         :return: BuildRecordSetSingleton
                  If the method is called asynchronously,
                  returns the request thread.
@@ -207,7 +207,7 @@ class BuildrecordsetsApi(object):
     def get_all_for_build_record(self, record_id, **kwargs):
         """
         Gets all BuildRecordSet of a BuildRecord
-        
+
 
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please define a `callback` function
@@ -297,7 +297,7 @@ class BuildrecordsetsApi(object):
     def get_all_for_product_milestone(self, version_id, **kwargs):
         """
         Gets all BuildRecordSet of a Product Version
-        
+
 
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please define a `callback` function
@@ -387,7 +387,7 @@ class BuildrecordsetsApi(object):
     def get_specific(self, id, **kwargs):
         """
         Gets a specific BuildRecordSet
-        
+
 
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please define a `callback` function
@@ -465,7 +465,7 @@ class BuildrecordsetsApi(object):
     def update(self, id, **kwargs):
         """
         Updates an existing BuildRecordSet
-        
+
 
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please define a `callback` function
@@ -478,7 +478,7 @@ class BuildrecordsetsApi(object):
         :param callback function: The callback function
             for asynchronous request. (optional)
         :param int id: BuildRecordSet id (required)
-        :param BuildRecordSetRest body: 
+        :param BuildRecordSetRest body:
         :return: None
                  If the method is called asynchronously,
                  returns the request thread.
@@ -546,7 +546,7 @@ class BuildrecordsetsApi(object):
     def delete_specific(self, id, **kwargs):
         """
         Deletes a specific BuildRecordSet
-        
+
 
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please define a `callback` function

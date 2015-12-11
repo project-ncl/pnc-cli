@@ -48,7 +48,7 @@ class UsersApi(object):
     def get_all(self, **kwargs):
         """
         Gets all Users
-        
+
 
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please define a `callback` function
@@ -132,7 +132,7 @@ class UsersApi(object):
     def create_new(self, **kwargs):
         """
         Creates new User
-        
+
 
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please define a `callback` function
@@ -144,7 +144,7 @@ class UsersApi(object):
 
         :param callback function: The callback function
             for asynchronous request. (optional)
-        :param UserRest body: 
+        :param UserRest body:
         :return: UserSingleton
                  If the method is called asynchronously,
                  returns the request thread.
@@ -207,7 +207,7 @@ class UsersApi(object):
     def get_logged_user(self, **kwargs):
         """
         Gets logged user and in case not existing creates a new one
-        
+
 
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please define a `callback` function
@@ -279,7 +279,7 @@ class UsersApi(object):
     def get_specific(self, id, **kwargs):
         """
         Gets specific User
-        
+
 
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please define a `callback` function
@@ -357,7 +357,7 @@ class UsersApi(object):
     def update(self, id, **kwargs):
         """
         Updates an existing User
-        
+
 
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please define a `callback` function
@@ -370,7 +370,7 @@ class UsersApi(object):
         :param callback function: The callback function
             for asynchronous request. (optional)
         :param int id: User id (required)
-        :param UserRest body: 
+        :param UserRest body:
         :return: None
                  If the method is called asynchronously,
                  returns the request thread.
