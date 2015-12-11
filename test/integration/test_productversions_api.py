@@ -6,12 +6,15 @@ from pnc_cli.swagger_client.apis import ProductversionsApi
 from pnc_cli.swagger_client.apis import ProductsApi
 from test import testutils
 
-product_api = ProductsApi(utils.get_api_client())
-versions_api = ProductversionsApi(utils.get_api_client())
+@pytest.fixture(scope='function', autouse=True)
+def get_versions_api():
+    global versions_api
+    versions_api = ProductversionsApi(utils.get_api_client())
 
 
 @pytest.fixture(scope='function')
 def new_product():
+    product_api = ProductsApi(utils.get_api_client())
     product = product_api.create_new(body=products._create_product_object(name=testutils.gen_random_name(),
                                                                           description="PNC CLI: test_productversions_api product"
                                                                           )).content
@@ -26,6 +29,7 @@ def new_version(new_product):
     return version
 
 def get_unique_version(product_id):
+    product_api = ProductsApi(utils.get_api_client())
     rand_version = testutils.gen_random_version()
     existing = product_api.get_product_versions(id=product_id, page_size=100000).content
     while existing is not None and rand_version in [x.version for x in existing]:

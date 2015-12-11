@@ -10,20 +10,26 @@ from pnc_cli import productversions
 from pnc_cli import products
 from test import testutils
 
-product_api = ProductsApi(utils.get_api_client())
-versions_api = ProductversionsApi(utils.get_api_client())
-milestone_api = ProductmilestonesApi(utils.get_api_client())
+
+@pytest.fixture(scope='function', autouse=True)
+def get_milestone_api():
+    global milestone_api
+    milestone_api = ProductmilestonesApi(utils.get_api_client())
 
 
 @pytest.fixture(scope='function')
 def new_product():
+    product_api = ProductsApi(utils.get_api_client())
     product = product_api.create_new(body=products._create_product_object(name=testutils.gen_random_name(),
                                                                           description="PNC CLI: test_productmilestones_api product"
                                                                           )).content
     return product
 
+
 @pytest.fixture(scope='function')
 def new_version(new_product):
+    product_api = ProductsApi(utils.get_api_client())
+    versions_api = ProductversionsApi(utils.get_api_client())
     version_number = testutils.gen_random_version()
     existing = product_api.get_product_versions(id=new_product.id, page_size=1000000).content
     while existing is not None and version_number in [x.version for x in existing]:
@@ -102,5 +108,3 @@ def test_update(new_milestone):
     milestone_api.update(id=new_milestone.id, body=new_milestone)
     updated = milestone_api.get_specific(new_milestone.id).content
     assert updated.to_dict() == new_milestone.to_dict()
-
-

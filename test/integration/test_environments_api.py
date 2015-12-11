@@ -4,7 +4,11 @@ from pnc_cli.swagger_client.apis.environments_api import EnvironmentsApi
 from pnc_cli import utils
 from test import testutils
 
-envs_api = EnvironmentsApi(utils.get_api_client())
+
+@pytest.fixture(scope='function', autouse=True)
+def get_envs_api():
+    global envs_api
+    envs_api = EnvironmentsApi(utils.get_api_client())
 
 
 @pytest.fixture(scope='function')
@@ -78,6 +82,3 @@ def test_delete(new_env):
     envs_api.delete(new_env.id)
     env_ids = [env.id for env in envs_api.get_all(page_size=1000000).content]
     assert new_env.id not in env_ids
-
-
-

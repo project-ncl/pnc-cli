@@ -5,7 +5,11 @@ from pnc_cli import buildrecordsets
 from pnc_cli import utils
 from test import testutils
 
-brs_api = BuildrecordsetsApi(utils.get_api_client())
+
+@pytest.fixture(scope='function', autouse=True)
+def get_brs_api():
+    global brs_api
+    brs_api = BuildrecordsetsApi(utils.get_api_client())
 
 
 @pytest.fixture(scope='function')
@@ -13,10 +17,12 @@ def new_brs(request):
     set = brs_api.create_new(body=buildrecordsets.create_buildrecordset_object(
         build_records_ids=[1, 2]
     )).content
+
     def teardown():
         existing = [x.id for x in brs_api.get_all(page_size=1000000).content]
         if set.id in existing:
             brs_api.delete_specific(id=set.id)
+
     request.addfinalizer(teardown)
     return set
 
@@ -107,4 +113,3 @@ def test_delete_specific(new_brs):
     brs_api.delete_specific(id=new_brs.id)
     existing = [x.id for x in brs_api.get_all(page_size=1000000).content]
     assert new_brs.id not in existing
-

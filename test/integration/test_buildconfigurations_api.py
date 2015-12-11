@@ -1,19 +1,24 @@
 import pytest
 from pnc_cli import buildconfigurations
 from pnc_cli.swagger_client.apis.buildconfigurations_api import BuildconfigurationsApi
-from pnc_cli.swagger_client.apis.productversions_api import ProductversionsApi
 from pnc_cli.swagger_client.apis.runningbuildrecords_api import RunningbuildrecordsApi
 from pnc_cli import utils
 from test import testutils
 import time
 
 current_time_millis = lambda: int(round(time.time() * 1000))
-configs_api = BuildconfigurationsApi(utils.get_api_client())
-versions_api = ProductversionsApi(utils.get_api_client())
-running_api = RunningbuildrecordsApi(utils.get_api_client())
-common_fields = ['build_script', 'build_status', 'dependency_ids', 'description', 'environment_id', 'internal_scm', 'internal_scm_revison',
-                     'project_id', 'repositories', 'scm_mirror_repo_url', 'scm_mirror_revision', 'scm_repo_url',
-                     'scm_revision']
+
+common_fields = ['build_script', 'build_status', 'dependency_ids', 'description', 'environment_id', 'internal_scm',
+                 'internal_scm_revison',
+                 'project_id', 'repositories', 'scm_mirror_repo_url', 'scm_mirror_revision', 'scm_repo_url',
+                 'scm_revision']
+
+
+@pytest.fixture(scope='function', autouse=True)
+def get_configs_api():
+    global configs_api
+    configs_api = BuildconfigurationsApi(utils.get_api_client())
+
 
 @pytest.fixture(scope='function')
 def new_config(request):
@@ -74,30 +79,42 @@ def test_trigger_invalid_params():
 
 
 def test_trigger(new_config):
+    running_api = RunningbuildrecordsApi(utils.get_api_client())
     triggered_build = configs_api.trigger(id=new_config.id, rebuild_all=False).content
     assert triggered_build is not None
     build_record = running_api.get_specific(id=triggered_build.id)
     assert build_record is not None
 
+
 def test_build_no_id():
-    testutils.assert_raises_valueerror(configs_api, 'build', id=None, build_configuration_revision=1, build_task_id=1, submit_time_millis=1)
+    testutils.assert_raises_valueerror(configs_api, 'build', id=None, build_configuration_revision=1, build_task_id=1,
+                                       submit_time_millis=1)
+
 
 def test_build_no_revision():
-    testutils.assert_raises_valueerror(configs_api, 'build', id=1, build_configuration_revision=None, build_task_id=1, submit_time_millis=1)
+    testutils.assert_raises_valueerror(configs_api, 'build', id=1, build_configuration_revision=None, build_task_id=1,
+                                       submit_time_millis=1)
+
 
 def test_build_no_task_id():
-    testutils.assert_raises_valueerror(configs_api, 'build', id=1, build_configuration_revision=1, build_task_id=None, submit_time_millis=1)
+    testutils.assert_raises_valueerror(configs_api, 'build', id=1, build_configuration_revision=1, build_task_id=None,
+                                       submit_time_millis=1)
+
 
 def test_build_no_time():
-    testutils.assert_raises_valueerror(configs_api, 'build', id=1, build_configuration_revision=1, build_task_id=1, submit_time_millis=None)
+    testutils.assert_raises_valueerror(configs_api, 'build', id=1, build_configuration_revision=1, build_task_id=1,
+                                       submit_time_millis=None)
+
 
 def test_build_invalid_param():
-    testutils.assert_raises_typeerror(configs_api, 'build', id=1, build_configuration_revision=1, build_task_id=1, submit_time_millis=1)
+    testutils.assert_raises_typeerror(configs_api, 'build', id=1, build_configuration_revision=1, build_task_id=1,
+                                      submit_time_millis=1)
 
 
 @pytest.mark.xfail(reason='seems like this method may be deprecated.')
 def test_build(new_config):
-    response = configs_api.build(id=new_config.id, build_configuration_revision=new_config.id, build_task_id=1, submit_time_millis=current_time_millis())
+    response = configs_api.build(id=new_config.id, build_configuration_revision=new_config.id, build_task_id=1,
+                                 submit_time_millis=current_time_millis())
     assert response.status_code == 200
 
 
@@ -116,6 +133,7 @@ def test_get_all_by_product_id_invalid_param():
 
 def test_get_all_by_product_id(new_config):
     # need to add bcs to some product
+
     response = configs_api.get_all_by_product_id(product_id=1, page_index=0, page_size=1000000, sort="", q="").content
     assert response is not None
 
@@ -134,6 +152,7 @@ def test_get_all_by_product_version_id_invalid_param():
 
 def test_get_all_by_product_version_id(new_config):
     # need to add bcs to some product version
+
     response = configs_api.get_all_by_product_version_id(product_id=1, version_id=1, page_index=0, page_size=1000000,
                                                          sort="", q="").content
     assert response is not None
@@ -219,13 +238,14 @@ def test_clone_invalid_param():
     testutils.assert_raises_typeerror(configs_api, 'clone', id=1)
 
 
-#TODO: project_version_ids is not being cloned correctly all the time.
+# TODO: project_version_ids is not being cloned correctly all the time.
 def test_clone(new_config):
     cloned_bc = configs_api.clone(id=new_config.id).content
     for field in common_fields:
         assert getattr(cloned_bc, field) == getattr(new_config, field)
-    #cleanup
+    # cleanup
     configs_api.delete_specific(id=cloned_bc.id)
+
 
 def test_get_dependencies_no_id():
     testutils.assert_raises_valueerror(configs_api, 'get_dependencies', id=None)
@@ -333,13 +353,3 @@ def test_revision_operations(new_config):
     assert revisions is not None
     revision = configs_api.get_revision(id=new_config.id, rev=revisions[0].id)
     assert revision is not None
-
-
-
-
-
-
-
-
-
-

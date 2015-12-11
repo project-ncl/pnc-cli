@@ -4,7 +4,11 @@ from pnc_cli.swagger_client.apis.licenses_api import LicensesApi
 from pnc_cli import utils
 from test import testutils
 
-licenses_api = LicensesApi(utils.get_api_client())
+
+@pytest.fixture(scope='function', autouse=True)
+def get_licenses_api():
+    global licenses_api
+    licenses_api = LicensesApi(utils.get_api_client())
 
 
 @pytest.fixture(scope='function')
@@ -83,5 +87,3 @@ def test_delete(new_license):
         assert new_license.id not in [x.id for x in existing]
     else:
         assert not existing
-
-

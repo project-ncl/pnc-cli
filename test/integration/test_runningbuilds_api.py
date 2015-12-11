@@ -9,9 +9,15 @@ from pnc_cli.swagger_client.apis.buildconfigurations_api import Buildconfigurati
 from pnc_cli.swagger_client.apis.runningbuildrecords_api import RunningbuildrecordsApi
 
 
-configs_api = BuildconfigurationsApi(utils.get_api_client())
-running_api = RunningbuildrecordsApi(utils.get_api_client())
+@pytest.fixture(scope='function', autouse=True)
+def get_running_api():
+    global running_api
+    running_api = RunningbuildrecordsApi(utils.get_api_client())
 
+@pytest.fixture(scope='function', autouse=True)
+def get_configs_api():
+    global configs_api
+    configs_api = BuildconfigurationsApi(utils.get_api_client())
 
 @pytest.fixture(scope='function')
 def new_config(request):

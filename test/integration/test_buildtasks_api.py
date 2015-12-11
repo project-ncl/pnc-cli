@@ -5,8 +5,10 @@ from test import testutils
 from pnc_cli import utils
 from pnc_cli.swagger_client.apis import BuildtasksApi
 
-
-tasks_api = BuildtasksApi(utils.get_api_client())
+@pytest.fixture(scope='function', autouse=True)
+def get_tasks_api():
+    global tasks_api
+    tasks_api = BuildtasksApi(utils.get_api_client())
 
 
 def test_build_task_completed_no_task_id():

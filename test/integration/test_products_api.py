@@ -6,8 +6,12 @@ from pnc_cli.swagger_client.apis.products_api import ProductsApi
 from pnc_cli.swagger_client.apis.productversions_api import ProductversionsApi
 from test import testutils
 
-product_api = ProductsApi(utils.get_api_client())
-versions_api = ProductversionsApi(utils.get_api_client())
+@pytest.fixture(scope='function', autouse=True)
+def get_product_api():
+    global product_api
+    product_api = ProductsApi(utils.get_api_client())
+
+
 
 @pytest.fixture(scope='function')
 def new_product():
@@ -72,6 +76,7 @@ def test_get_product_versions_invalid_param():
 
 
 def test_get_product_versions(new_product):
+    versions_api = ProductversionsApi(utils.get_api_client())
     randversion = testutils.gen_random_version()
     versions_api.create_new_product_version(
         body=productversions.create_product_version_object(product_id=new_product.id, version=randversion))

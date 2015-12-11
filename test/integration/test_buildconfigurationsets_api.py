@@ -3,15 +3,17 @@ import pytest
 __author__ = 'thauser'
 
 from pnc_cli import buildconfigurationsets
-from test.integration import test_buildconfigurations_api
 from pnc_cli import buildconfigurations
 from pnc_cli import utils
 from test import testutils
 from pnc_cli.swagger_client.apis.buildconfigurationsets_api import BuildconfigurationsetsApi
 from pnc_cli.swagger_client.apis.buildconfigurations_api import BuildconfigurationsApi
 
-sets_api = BuildconfigurationsetsApi(utils.get_api_client())
-configs_api = BuildconfigurationsApi(utils.get_api_client())
+
+@pytest.fixture(scope='function', autouse=True)
+def get_sets_api():
+    global sets_api
+    sets_api = BuildconfigurationsetsApi(utils.get_api_client())
 
 
 @pytest.fixture(scope='function')
@@ -29,6 +31,7 @@ def new_set(request):
 
 @pytest.fixture(scope='function')
 def new_config(request):
+    configs_api = BuildconfigurationsApi(utils.get_api_client())
     created_bc = configs_api.create_new(
         body=buildconfigurations.create_build_conf_object(name=testutils.gen_random_name(),
                                                           project_id=1,

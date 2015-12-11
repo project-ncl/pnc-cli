@@ -2,9 +2,8 @@ import json
 import logging
 import getpass
 import datetime
-
-
 import requests
+
 requests.packages.urllib3.disable_warnings()
 
 try:
@@ -32,12 +31,14 @@ def get_auth_token(config):
         if server is None:
             raise configparser.NoOptionError
     except configparser.NoOptionError:
-        logging.error('No authentication server defined. Define "keycloakUrl" in pnc-cli.conf to enable authentication.')
+        logging.error(
+            'No authentication server defined. Define "keycloakUrl" in pnc-cli.conf to enable authentication.')
         return
     try:
         realm = config.get('PNC', 'keycloakRealm')
     except configparser.NoOptionError:
-        logging.error('No keycloak authentication realm defined. Define "keycloakRealm" in pnc-cli.conf to enable authentication.')
+        logging.error(
+            'No keycloak authentication realm defined. Define "keycloakRealm" in pnc-cli.conf to enable authentication.')
         return
     server = server + "/auth/realms/" + realm + "/tokens/grants/access"
     try:
@@ -64,6 +65,7 @@ def get_auth_token(config):
         reply = json.loads(r.content.decode('utf-8'))
         return str(reply.get('access_token'))
 
+
 config = configparser.ConfigParser(allow_no_value=False)
 configfilename = os.path.expanduser("~") + "/.config/pnc-cli/pnc-cli.conf"
 configdirname = os.path.dirname(configfilename)
@@ -89,16 +91,17 @@ if not found:
     logging.warning(
         "New config file written to ~/.config/pnc-cli/pnc-cli.conf. Configure pncUrl and keycloakUrl values.")
     exit(0)
-pnc_rest_url = config.get('PNC', 'pncUrl').rstrip('/')+'/pnc-rest/rest'
-authtoken = get_auth_token(config)
-if authtoken:
-    apiclient = swagger_client.ApiClient(pnc_rest_url, header_name='Authorization', header_value="Bearer " + authtoken)
-else:
-    logging.warning('Authentication failed. Some operations will be unavailable.')
-    apiclient = swagger_client.ApiClient(pnc_rest_url)
 
 
 def get_api_client():
+    pnc_rest_url = config.get('PNC', 'pncUrl').rstrip('/') + '/pnc-rest/rest'
+    authtoken = get_auth_token(config)
+    if authtoken:
+        apiclient = swagger_client.ApiClient(pnc_rest_url, header_name='Authorization',
+                                             header_value="Bearer " + authtoken)
+    else:
+        logging.warning('Authentication failed. Some operations will be unavailable.')
+        apiclient = swagger_client.ApiClient(pnc_rest_url)
     return apiclient
 
 
@@ -115,7 +118,9 @@ def checked_api_call(api, func, **kwargs):
     else:
         return response
 
+
 epoch = datetime.datetime.utcfromtimestamp(0)
+
 
 def unix_time_millis(dt):
     millis = int((dt - epoch).total_seconds() * 1000.0)

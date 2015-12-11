@@ -4,7 +4,10 @@ from pnc_cli.swagger_client.apis.projects_api import ProjectsApi
 from pnc_cli import utils
 from test import testutils
 
-projects_api = ProjectsApi(utils.get_api_client())
+@pytest.fixture(scope='function', autouse=True)
+def get_projects_api():
+    global projects_api
+    projects_api = ProjectsApi(utils.get_api_client())
 
 
 @pytest.fixture(scope='function')

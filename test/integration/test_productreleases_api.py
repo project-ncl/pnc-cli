@@ -15,7 +15,10 @@ from pnc_cli import products
 from test import testutils
 
 
-product_api = ProductsApi(utils.get_api_client())
+@pytest.fixture(scope='function', autouse=True)
+def get_product_api():
+    global product_api
+    product_api = ProductsApi(utils.get_api_client())
 milestones_api = ProductmilestonesApi(utils.get_api_client())
 releases_api = ProductreleasesApi(utils.get_api_client())
 versions_api = ProductversionsApi(utils.get_api_client())

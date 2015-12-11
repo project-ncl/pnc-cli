@@ -1,8 +1,14 @@
+import pytest
+
 from pnc_cli import utils
 from pnc_cli.swagger_client.apis.buildrecords_api import BuildrecordsApi
 from test import testutils
 
-builds_api = BuildrecordsApi(utils.get_api_client())
+
+@pytest.fixture(scope='function', autostart=True)
+def get_builds_api():
+    global builds_api
+    builds_api = BuildrecordsApi(utils.get_api_client())
 
 
 def test_get_all_invalid_param():
@@ -103,4 +109,3 @@ def test_get_completed_or_runnning_invalid_param():
 def test_get_completed_or_runnning():
     response = builds_api.get_completed_or_runnning(id=1)
     assert response is not None
-
