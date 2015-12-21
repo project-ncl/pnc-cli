@@ -54,7 +54,7 @@ def _project_exists(search_id):
     :param search_id: id to test for
     :return: True if a project with search_id exists
     """
-    existing_ids = [str(x.id) for x in projects_api.get_all().content]
+    existing_ids = [str(x.id) for x in projects_api.get_all(page_size=search_id).content]
     return str(search_id) in existing_ids
 
 
