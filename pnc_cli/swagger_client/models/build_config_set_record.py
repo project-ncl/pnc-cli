@@ -45,7 +45,8 @@ class BuildConfigSetRecord(object):
             'user': 'User',
             'status': 'str',
             'build_records': 'list[BuildRecord]',
-            'product_version': 'ProductVersion'
+            'product_version': 'ProductVersion',
+            'field_handler': 'FieldHandler'
         }
 
         self.attribute_map = {
@@ -56,7 +57,8 @@ class BuildConfigSetRecord(object):
             'user': 'user',
             'status': 'status',
             'build_records': 'buildRecords',
-            'product_version': 'productVersion'
+            'product_version': 'productVersion',
+            'field_handler': 'fieldHandler'
         }
 
         self._id = None
@@ -67,6 +69,7 @@ class BuildConfigSetRecord(object):
         self._status = None
         self._build_records = None
         self._product_version = None
+        self._field_handler = None
 
     @property
     def id(self):
@@ -250,6 +253,28 @@ class BuildConfigSetRecord(object):
         """
         self._product_version = product_version
 
+    @property
+    def field_handler(self):
+        """
+        Gets the field_handler of this BuildConfigSetRecord.
+
+
+        :return: The field_handler of this BuildConfigSetRecord.
+        :rtype: FieldHandler
+        """
+        return self._field_handler
+
+    @field_handler.setter
+    def field_handler(self, field_handler):
+        """
+        Sets the field_handler of this BuildConfigSetRecord.
+
+
+        :param field_handler: The field_handler of this BuildConfigSetRecord.
+        :type: FieldHandler
+        """
+        self._field_handler = field_handler
+
     def to_dict(self):
         """
         Returns the model properties as a dict
@@ -265,8 +290,8 @@ class BuildConfigSetRecord(object):
                 ))
             elif hasattr(value, "to_dict"):
                 result[attr] = value.to_dict()
-            elif isinstance(value, datetime):
-                result[attr] = str(value)
+	    elif isinstance(value, datetime):
+		result[attr] = str(value.date())
             else:
                 result[attr] = value
 

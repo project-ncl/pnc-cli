@@ -39,16 +39,19 @@ class IdRev(object):
         """
         self.swagger_types = {
             'id': 'int',
-            'rev': 'int'
+            'rev': 'int',
+            'field_handler': 'FieldHandler'
         }
 
         self.attribute_map = {
             'id': 'id',
-            'rev': 'rev'
+            'rev': 'rev',
+            'field_handler': 'fieldHandler'
         }
 
         self._id = None
         self._rev = None
+        self._field_handler = None
 
     @property
     def id(self):
@@ -94,6 +97,28 @@ class IdRev(object):
         """
         self._rev = rev
 
+    @property
+    def field_handler(self):
+        """
+        Gets the field_handler of this IdRev.
+
+
+        :return: The field_handler of this IdRev.
+        :rtype: FieldHandler
+        """
+        return self._field_handler
+
+    @field_handler.setter
+    def field_handler(self, field_handler):
+        """
+        Sets the field_handler of this IdRev.
+
+
+        :param field_handler: The field_handler of this IdRev.
+        :type: FieldHandler
+        """
+        self._field_handler = field_handler
+
     def to_dict(self):
         """
         Returns the model properties as a dict
@@ -109,8 +134,8 @@ class IdRev(object):
                 ))
             elif hasattr(value, "to_dict"):
                 result[attr] = value.to_dict()
-            elif isinstance(value, datetime):
-                result[attr] = str(value)
+	    elif isinstance(value, datetime):
+		result[attr] = str(value.date())
             else:
                 result[attr] = value
 

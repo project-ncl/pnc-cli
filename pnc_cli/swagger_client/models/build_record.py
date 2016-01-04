@@ -56,7 +56,8 @@ class BuildRecord(object):
             'system_image': 'BuildEnvironment',
             'build_record_sets': 'list[BuildRecordSet]',
             'build_config_set_record': 'BuildConfigSetRecord',
-            'external_archive_id': 'int'
+            'external_archive_id': 'int',
+            'field_handler': 'FieldHandler'
         }
 
         self.attribute_map = {
@@ -78,7 +79,8 @@ class BuildRecord(object):
             'system_image': 'systemImage',
             'build_record_sets': 'buildRecordSets',
             'build_config_set_record': 'buildConfigSetRecord',
-            'external_archive_id': 'externalArchiveId'
+            'external_archive_id': 'externalArchiveId',
+            'field_handler': 'fieldHandler'
         }
 
         self._id = None
@@ -100,6 +102,7 @@ class BuildRecord(object):
         self._build_record_sets = None
         self._build_config_set_record = None
         self._external_archive_id = None
+        self._field_handler = None
 
     @property
     def id(self):
@@ -525,6 +528,28 @@ class BuildRecord(object):
         """
         self._external_archive_id = external_archive_id
 
+    @property
+    def field_handler(self):
+        """
+        Gets the field_handler of this BuildRecord.
+
+
+        :return: The field_handler of this BuildRecord.
+        :rtype: FieldHandler
+        """
+        return self._field_handler
+
+    @field_handler.setter
+    def field_handler(self, field_handler):
+        """
+        Sets the field_handler of this BuildRecord.
+
+
+        :param field_handler: The field_handler of this BuildRecord.
+        :type: FieldHandler
+        """
+        self._field_handler = field_handler
+
     def to_dict(self):
         """
         Returns the model properties as a dict
@@ -540,8 +565,8 @@ class BuildRecord(object):
                 ))
             elif hasattr(value, "to_dict"):
                 result[attr] = value.to_dict()
-            elif isinstance(value, datetime):
-                result[attr] = str(value)
+	    elif isinstance(value, datetime):
+		result[attr] = str(value.date())
             else:
                 result[attr] = value
 

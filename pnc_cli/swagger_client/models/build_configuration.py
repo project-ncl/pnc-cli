@@ -58,6 +58,7 @@ class BuildConfiguration(object):
             'dependants': 'list[BuildConfiguration]',
             'repositories': 'str',
             'all_dependencies': 'list[BuildConfiguration]',
+            'field_handler': 'FieldHandler',
             'indirect_dependencies': 'list[BuildConfiguration]'
         }
 
@@ -82,6 +83,7 @@ class BuildConfiguration(object):
             'dependants': 'dependants',
             'repositories': 'repositories',
             'all_dependencies': 'allDependencies',
+            'field_handler': 'fieldHandler',
             'indirect_dependencies': 'indirectDependencies'
         }
 
@@ -105,6 +107,7 @@ class BuildConfiguration(object):
         self._dependants = None
         self._repositories = None
         self._all_dependencies = None
+        self._field_handler = None
         self._indirect_dependencies = None
 
     @property
@@ -554,6 +557,28 @@ class BuildConfiguration(object):
         self._all_dependencies = all_dependencies
 
     @property
+    def field_handler(self):
+        """
+        Gets the field_handler of this BuildConfiguration.
+
+
+        :return: The field_handler of this BuildConfiguration.
+        :rtype: FieldHandler
+        """
+        return self._field_handler
+
+    @field_handler.setter
+    def field_handler(self, field_handler):
+        """
+        Sets the field_handler of this BuildConfiguration.
+
+
+        :param field_handler: The field_handler of this BuildConfiguration.
+        :type: FieldHandler
+        """
+        self._field_handler = field_handler
+
+    @property
     def indirect_dependencies(self):
         """
         Gets the indirect_dependencies of this BuildConfiguration.
@@ -590,8 +615,8 @@ class BuildConfiguration(object):
                 ))
             elif hasattr(value, "to_dict"):
                 result[attr] = value.to_dict()
-            elif isinstance(value, datetime):
-                result[attr] = str(value)
+	    elif isinstance(value, datetime):
+		result[attr] = str(value.date())
             else:
                 result[attr] = value
 

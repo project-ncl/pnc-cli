@@ -42,7 +42,8 @@ class BuildRecordSet(object):
             'description': 'str',
             'performed_in_product_milestone': 'ProductMilestone',
             'distributed_in_product_milestone': 'ProductMilestone',
-            'build_records': 'list[BuildRecord]'
+            'build_records': 'list[BuildRecord]',
+            'field_handler': 'FieldHandler'
         }
 
         self.attribute_map = {
@@ -50,7 +51,8 @@ class BuildRecordSet(object):
             'description': 'description',
             'performed_in_product_milestone': 'performedInProductMilestone',
             'distributed_in_product_milestone': 'distributedInProductMilestone',
-            'build_records': 'buildRecords'
+            'build_records': 'buildRecords',
+            'field_handler': 'fieldHandler'
         }
 
         self._id = None
@@ -58,6 +60,7 @@ class BuildRecordSet(object):
         self._performed_in_product_milestone = None
         self._distributed_in_product_milestone = None
         self._build_records = None
+        self._field_handler = None
 
     @property
     def id(self):
@@ -169,6 +172,28 @@ class BuildRecordSet(object):
         """
         self._build_records = build_records
 
+    @property
+    def field_handler(self):
+        """
+        Gets the field_handler of this BuildRecordSet.
+
+
+        :return: The field_handler of this BuildRecordSet.
+        :rtype: FieldHandler
+        """
+        return self._field_handler
+
+    @field_handler.setter
+    def field_handler(self, field_handler):
+        """
+        Sets the field_handler of this BuildRecordSet.
+
+
+        :param field_handler: The field_handler of this BuildRecordSet.
+        :type: FieldHandler
+        """
+        self._field_handler = field_handler
+
     def to_dict(self):
         """
         Returns the model properties as a dict
@@ -184,8 +209,8 @@ class BuildRecordSet(object):
                 ))
             elif hasattr(value, "to_dict"):
                 result[attr] = value.to_dict()
-            elif isinstance(value, datetime):
-                result[attr] = str(value)
+	    elif isinstance(value, datetime):
+		result[attr] = str(value.date())
             else:
                 result[attr] = value
 

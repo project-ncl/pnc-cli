@@ -47,7 +47,8 @@ class ProductMilestone(object):
             'product_version': 'ProductVersion',
             'product_release': 'ProductRelease',
             'performed_build_record_set': 'BuildRecordSet',
-            'distributed_build_record_set': 'BuildRecordSet'
+            'distributed_build_record_set': 'BuildRecordSet',
+            'field_handler': 'FieldHandler'
         }
 
         self.attribute_map = {
@@ -60,7 +61,8 @@ class ProductMilestone(object):
             'product_version': 'productVersion',
             'product_release': 'productRelease',
             'performed_build_record_set': 'performedBuildRecordSet',
-            'distributed_build_record_set': 'distributedBuildRecordSet'
+            'distributed_build_record_set': 'distributedBuildRecordSet',
+            'field_handler': 'fieldHandler'
         }
 
         self._id = None
@@ -73,6 +75,7 @@ class ProductMilestone(object):
         self._product_release = None
         self._performed_build_record_set = None
         self._distributed_build_record_set = None
+        self._field_handler = None
 
     @property
     def id(self):
@@ -294,6 +297,28 @@ class ProductMilestone(object):
         """
         self._distributed_build_record_set = distributed_build_record_set
 
+    @property
+    def field_handler(self):
+        """
+        Gets the field_handler of this ProductMilestone.
+
+
+        :return: The field_handler of this ProductMilestone.
+        :rtype: FieldHandler
+        """
+        return self._field_handler
+
+    @field_handler.setter
+    def field_handler(self, field_handler):
+        """
+        Sets the field_handler of this ProductMilestone.
+
+
+        :param field_handler: The field_handler of this ProductMilestone.
+        :type: FieldHandler
+        """
+        self._field_handler = field_handler
+
     def to_dict(self):
         """
         Returns the model properties as a dict
@@ -309,8 +334,8 @@ class ProductMilestone(object):
                 ))
             elif hasattr(value, "to_dict"):
                 result[attr] = value.to_dict()
-            elif isinstance(value, datetime):
-                result[attr] = str(value)
+	    elif isinstance(value, datetime):
+		result[attr] = str(value.date())
             else:
                 result[attr] = value
 

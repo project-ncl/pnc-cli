@@ -43,7 +43,8 @@ class License(object):
             'full_content': 'str',
             'ref_url': 'str',
             'short_name': 'str',
-            'projects': 'list[Project]'
+            'projects': 'list[Project]',
+            'field_handler': 'FieldHandler'
         }
 
         self.attribute_map = {
@@ -52,7 +53,8 @@ class License(object):
             'full_content': 'fullContent',
             'ref_url': 'refUrl',
             'short_name': 'shortName',
-            'projects': 'projects'
+            'projects': 'projects',
+            'field_handler': 'fieldHandler'
         }
 
         self._id = None
@@ -61,6 +63,7 @@ class License(object):
         self._ref_url = None
         self._short_name = None
         self._projects = None
+        self._field_handler = None
 
     @property
     def id(self):
@@ -194,6 +197,28 @@ class License(object):
         """
         self._projects = projects
 
+    @property
+    def field_handler(self):
+        """
+        Gets the field_handler of this License.
+
+
+        :return: The field_handler of this License.
+        :rtype: FieldHandler
+        """
+        return self._field_handler
+
+    @field_handler.setter
+    def field_handler(self, field_handler):
+        """
+        Sets the field_handler of this License.
+
+
+        :param field_handler: The field_handler of this License.
+        :type: FieldHandler
+        """
+        self._field_handler = field_handler
+
     def to_dict(self):
         """
         Returns the model properties as a dict
@@ -209,8 +234,8 @@ class License(object):
                 ))
             elif hasattr(value, "to_dict"):
                 result[attr] = value.to_dict()
-            elif isinstance(value, datetime):
-                result[attr] = str(value)
+	    elif isinstance(value, datetime):
+		result[attr] = str(value.date())
             else:
                 result[attr] = value
 

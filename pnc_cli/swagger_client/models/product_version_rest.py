@@ -44,8 +44,8 @@ class ProductVersionRest(object):
             'current_product_milestone_id': 'int',
             'build_configuration_set_ids': 'list[int]',
             'build_configuration_ids': 'list[int]',
-            'product_releases': 'list[int]',
-            'product_milestones': 'list[int]'
+            'product_milestones': 'list[int]',
+            'product_releases': 'list[int]'
         }
 
         self.attribute_map = {
@@ -55,8 +55,8 @@ class ProductVersionRest(object):
             'current_product_milestone_id': 'currentProductMilestoneId',
             'build_configuration_set_ids': 'buildConfigurationSetIds',
             'build_configuration_ids': 'buildConfigurationIds',
-            'product_releases': 'productReleases',
-            'product_milestones': 'productMilestones'
+            'product_milestones': 'productMilestones',
+            'product_releases': 'productReleases'
         }
 
         self._id = None
@@ -65,8 +65,8 @@ class ProductVersionRest(object):
         self._current_product_milestone_id = None
         self._build_configuration_set_ids = None
         self._build_configuration_ids = None
-        self._product_releases = None
         self._product_milestones = None
+        self._product_releases = None
 
     @property
     def id(self):
@@ -201,28 +201,6 @@ class ProductVersionRest(object):
         self._build_configuration_ids = build_configuration_ids
 
     @property
-    def product_releases(self):
-        """
-        Gets the product_releases of this ProductVersionRest.
-
-
-        :return: The product_releases of this ProductVersionRest.
-        :rtype: list[int]
-        """
-        return self._product_releases
-
-    @product_releases.setter
-    def product_releases(self, product_releases):
-        """
-        Sets the product_releases of this ProductVersionRest.
-
-
-        :param product_releases: The product_releases of this ProductVersionRest.
-        :type: list[int]
-        """
-        self._product_releases = product_releases
-
-    @property
     def product_milestones(self):
         """
         Gets the product_milestones of this ProductVersionRest.
@@ -244,6 +222,28 @@ class ProductVersionRest(object):
         """
         self._product_milestones = product_milestones
 
+    @property
+    def product_releases(self):
+        """
+        Gets the product_releases of this ProductVersionRest.
+
+
+        :return: The product_releases of this ProductVersionRest.
+        :rtype: list[int]
+        """
+        return self._product_releases
+
+    @product_releases.setter
+    def product_releases(self, product_releases):
+        """
+        Sets the product_releases of this ProductVersionRest.
+
+
+        :param product_releases: The product_releases of this ProductVersionRest.
+        :type: list[int]
+        """
+        self._product_releases = product_releases
+
     def to_dict(self):
         """
         Returns the model properties as a dict
@@ -259,8 +259,8 @@ class ProductVersionRest(object):
                 ))
             elif hasattr(value, "to_dict"):
                 result[attr] = value.to_dict()
-            elif isinstance(value, datetime):
-                result[attr] = str(value)
+	    elif isinstance(value, datetime):
+		result[attr] = str(value.date())
             else:
                 result[attr] = value
 

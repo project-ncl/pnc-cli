@@ -43,7 +43,8 @@ class BuildEnvironment(object):
             'description': 'str',
             'image_repository_url': 'str',
             'system_image_id': 'str',
-            'build_type': 'str'
+            'build_type': 'str',
+            'field_handler': 'FieldHandler'
         }
 
         self.attribute_map = {
@@ -52,7 +53,8 @@ class BuildEnvironment(object):
             'description': 'description',
             'image_repository_url': 'imageRepositoryUrl',
             'system_image_id': 'systemImageId',
-            'build_type': 'buildType'
+            'build_type': 'buildType',
+            'field_handler': 'fieldHandler'
         }
 
         self._id = None
@@ -61,6 +63,7 @@ class BuildEnvironment(object):
         self._image_repository_url = None
         self._system_image_id = None
         self._build_type = None
+        self._field_handler = None
 
     @property
     def id(self):
@@ -200,6 +203,28 @@ class BuildEnvironment(object):
             )
         self._build_type = build_type
 
+    @property
+    def field_handler(self):
+        """
+        Gets the field_handler of this BuildEnvironment.
+
+
+        :return: The field_handler of this BuildEnvironment.
+        :rtype: FieldHandler
+        """
+        return self._field_handler
+
+    @field_handler.setter
+    def field_handler(self, field_handler):
+        """
+        Sets the field_handler of this BuildEnvironment.
+
+
+        :param field_handler: The field_handler of this BuildEnvironment.
+        :type: FieldHandler
+        """
+        self._field_handler = field_handler
+
     def to_dict(self):
         """
         Returns the model properties as a dict
@@ -215,8 +240,8 @@ class BuildEnvironment(object):
                 ))
             elif hasattr(value, "to_dict"):
                 result[attr] = value.to_dict()
-            elif isinstance(value, datetime):
-                result[attr] = str(value)
+	    elif isinstance(value, datetime):
+		result[attr] = str(value.date())
             else:
                 result[attr] = value
 

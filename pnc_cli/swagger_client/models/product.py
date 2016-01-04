@@ -44,7 +44,8 @@ class Product(object):
             'abbreviation': 'str',
             'product_code': 'str',
             'pgm_system_name': 'str',
-            'product_versions': 'list[ProductVersion]'
+            'product_versions': 'list[ProductVersion]',
+            'field_handler': 'FieldHandler'
         }
 
         self.attribute_map = {
@@ -54,7 +55,8 @@ class Product(object):
             'abbreviation': 'abbreviation',
             'product_code': 'productCode',
             'pgm_system_name': 'pgmSystemName',
-            'product_versions': 'productVersions'
+            'product_versions': 'productVersions',
+            'field_handler': 'fieldHandler'
         }
 
         self._id = None
@@ -64,6 +66,7 @@ class Product(object):
         self._product_code = None
         self._pgm_system_name = None
         self._product_versions = None
+        self._field_handler = None
 
     @property
     def id(self):
@@ -219,6 +222,28 @@ class Product(object):
         """
         self._product_versions = product_versions
 
+    @property
+    def field_handler(self):
+        """
+        Gets the field_handler of this Product.
+
+
+        :return: The field_handler of this Product.
+        :rtype: FieldHandler
+        """
+        return self._field_handler
+
+    @field_handler.setter
+    def field_handler(self, field_handler):
+        """
+        Sets the field_handler of this Product.
+
+
+        :param field_handler: The field_handler of this Product.
+        :type: FieldHandler
+        """
+        self._field_handler = field_handler
+
     def to_dict(self):
         """
         Returns the model properties as a dict
@@ -234,8 +259,8 @@ class Product(object):
                 ))
             elif hasattr(value, "to_dict"):
                 result[attr] = value.to_dict()
-            elif isinstance(value, datetime):
-                result[attr] = str(value)
+	    elif isinstance(value, datetime):
+		result[attr] = str(value.date())
             else:
                 result[attr] = value
 

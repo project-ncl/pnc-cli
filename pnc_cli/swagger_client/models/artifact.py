@@ -45,7 +45,8 @@ class Artifact(object):
             'filename': 'str',
             'deploy_url': 'str',
             'status': 'str',
-            'build_record': 'BuildRecord'
+            'build_record': 'BuildRecord',
+            'field_handler': 'FieldHandler'
         }
 
         self.attribute_map = {
@@ -56,7 +57,8 @@ class Artifact(object):
             'filename': 'filename',
             'deploy_url': 'deployUrl',
             'status': 'status',
-            'build_record': 'buildRecord'
+            'build_record': 'buildRecord',
+            'field_handler': 'fieldHandler'
         }
 
         self._id = None
@@ -67,6 +69,7 @@ class Artifact(object):
         self._deploy_url = None
         self._status = None
         self._build_record = None
+        self._field_handler = None
 
     @property
     def id(self):
@@ -256,6 +259,28 @@ class Artifact(object):
         """
         self._build_record = build_record
 
+    @property
+    def field_handler(self):
+        """
+        Gets the field_handler of this Artifact.
+
+
+        :return: The field_handler of this Artifact.
+        :rtype: FieldHandler
+        """
+        return self._field_handler
+
+    @field_handler.setter
+    def field_handler(self, field_handler):
+        """
+        Sets the field_handler of this Artifact.
+
+
+        :param field_handler: The field_handler of this Artifact.
+        :type: FieldHandler
+        """
+        self._field_handler = field_handler
+
     def to_dict(self):
         """
         Returns the model properties as a dict
@@ -271,8 +296,8 @@ class Artifact(object):
                 ))
             elif hasattr(value, "to_dict"):
                 result[attr] = value.to_dict()
-            elif isinstance(value, datetime):
-                result[attr] = str(value)
+	    elif isinstance(value, datetime):
+		result[attr] = str(value.date())
             else:
                 result[attr] = value
 

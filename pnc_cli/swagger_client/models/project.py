@@ -44,7 +44,8 @@ class Project(object):
             'issue_tracker_url': 'str',
             'project_url': 'str',
             'license': 'License',
-            'build_configurations': 'list[BuildConfiguration]'
+            'build_configurations': 'list[BuildConfiguration]',
+            'field_handler': 'FieldHandler'
         }
 
         self.attribute_map = {
@@ -54,7 +55,8 @@ class Project(object):
             'issue_tracker_url': 'issueTrackerUrl',
             'project_url': 'projectUrl',
             'license': 'license',
-            'build_configurations': 'buildConfigurations'
+            'build_configurations': 'buildConfigurations',
+            'field_handler': 'fieldHandler'
         }
 
         self._id = None
@@ -64,6 +66,7 @@ class Project(object):
         self._project_url = None
         self._license = None
         self._build_configurations = None
+        self._field_handler = None
 
     @property
     def id(self):
@@ -219,6 +222,28 @@ class Project(object):
         """
         self._build_configurations = build_configurations
 
+    @property
+    def field_handler(self):
+        """
+        Gets the field_handler of this Project.
+
+
+        :return: The field_handler of this Project.
+        :rtype: FieldHandler
+        """
+        return self._field_handler
+
+    @field_handler.setter
+    def field_handler(self, field_handler):
+        """
+        Sets the field_handler of this Project.
+
+
+        :param field_handler: The field_handler of this Project.
+        :type: FieldHandler
+        """
+        self._field_handler = field_handler
+
     def to_dict(self):
         """
         Returns the model properties as a dict
@@ -234,8 +259,8 @@ class Project(object):
                 ))
             elif hasattr(value, "to_dict"):
                 result[attr] = value.to_dict()
-            elif isinstance(value, datetime):
-                result[attr] = str(value)
+	    elif isinstance(value, datetime):
+		result[attr] = str(value.date())
             else:
                 result[attr] = value
 

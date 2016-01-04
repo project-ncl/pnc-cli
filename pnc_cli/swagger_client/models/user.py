@@ -44,7 +44,8 @@ class User(object):
             'last_name': 'str',
             'login_token': 'str',
             'username': 'str',
-            'build_records': 'list[BuildRecord]'
+            'build_records': 'list[BuildRecord]',
+            'field_handler': 'FieldHandler'
         }
 
         self.attribute_map = {
@@ -54,7 +55,8 @@ class User(object):
             'last_name': 'lastName',
             'login_token': 'loginToken',
             'username': 'username',
-            'build_records': 'buildRecords'
+            'build_records': 'buildRecords',
+            'field_handler': 'fieldHandler'
         }
 
         self._id = None
@@ -64,6 +66,7 @@ class User(object):
         self._login_token = None
         self._username = None
         self._build_records = None
+        self._field_handler = None
 
     @property
     def id(self):
@@ -219,6 +222,28 @@ class User(object):
         """
         self._build_records = build_records
 
+    @property
+    def field_handler(self):
+        """
+        Gets the field_handler of this User.
+
+
+        :return: The field_handler of this User.
+        :rtype: FieldHandler
+        """
+        return self._field_handler
+
+    @field_handler.setter
+    def field_handler(self, field_handler):
+        """
+        Sets the field_handler of this User.
+
+
+        :param field_handler: The field_handler of this User.
+        :type: FieldHandler
+        """
+        self._field_handler = field_handler
+
     def to_dict(self):
         """
         Returns the model properties as a dict
@@ -234,8 +259,8 @@ class User(object):
                 ))
             elif hasattr(value, "to_dict"):
                 result[attr] = value.to_dict()
-            elif isinstance(value, datetime):
-                result[attr] = str(value)
+	    elif isinstance(value, datetime):
+		result[attr] = str(value.date())
             else:
                 result[attr] = value
 

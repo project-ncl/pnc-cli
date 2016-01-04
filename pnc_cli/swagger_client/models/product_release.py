@@ -44,6 +44,7 @@ class ProductRelease(object):
             'release_date': 'datetime',
             'download_url': 'str',
             'product_milestone': 'ProductMilestone',
+            'field_handler': 'FieldHandler',
             'product_version': 'ProductVersion'
         }
 
@@ -54,6 +55,7 @@ class ProductRelease(object):
             'release_date': 'releaseDate',
             'download_url': 'downloadUrl',
             'product_milestone': 'productMilestone',
+            'field_handler': 'fieldHandler',
             'product_version': 'productVersion'
         }
 
@@ -63,6 +65,7 @@ class ProductRelease(object):
         self._release_date = None
         self._download_url = None
         self._product_milestone = None
+        self._field_handler = None
         self._product_version = None
 
     @property
@@ -204,6 +207,28 @@ class ProductRelease(object):
         self._product_milestone = product_milestone
 
     @property
+    def field_handler(self):
+        """
+        Gets the field_handler of this ProductRelease.
+
+
+        :return: The field_handler of this ProductRelease.
+        :rtype: FieldHandler
+        """
+        return self._field_handler
+
+    @field_handler.setter
+    def field_handler(self, field_handler):
+        """
+        Sets the field_handler of this ProductRelease.
+
+
+        :param field_handler: The field_handler of this ProductRelease.
+        :type: FieldHandler
+        """
+        self._field_handler = field_handler
+
+    @property
     def product_version(self):
         """
         Gets the product_version of this ProductRelease.
@@ -240,8 +265,8 @@ class ProductRelease(object):
                 ))
             elif hasattr(value, "to_dict"):
                 result[attr] = value.to_dict()
-            elif isinstance(value, datetime):
-                result[attr] = str(value)
+	    elif isinstance(value, datetime):
+		result[attr] = str(value.date())
             else:
                 result[attr] = value
 
