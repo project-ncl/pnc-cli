@@ -5,7 +5,7 @@ from pnc_cli.swagger_client.apis.buildrecords_api import BuildrecordsApi
 from test import testutils
 
 
-@pytest.fixture(scope='function', autostart=True)
+@pytest.fixture(scope='function', autouse=True)
 def get_builds_api():
     global builds_api
     builds_api = BuildrecordsApi(utils.get_api_client())
