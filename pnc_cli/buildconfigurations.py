@@ -4,10 +4,14 @@ from pnc_cli import utils
 
 from pnc_cli import swagger_client
 from pnc_cli.swagger_client.apis.buildconfigurations_api import BuildconfigurationsApi
+from pnc_cli.swagger_client.apis.environments_api import EnvironmentsApi
+from pnc_cli.swagger_client.apis.projects_api import ProjectsApi
 from pnc_cli import products
 from pnc_cli import productversions
 from pnc_cli import projects
 
+projects_api = ProjectsApi(utils.get_api_client())
+envs_api = EnvironmentsApi(utils.get_api_client())
 configs_api = BuildconfigurationsApi(utils.get_api_client())
 
 
@@ -97,7 +101,7 @@ def get_build_configuration(id=None, name=None):
 @arg("-i", "--id", help="ID of the BuildConfiguration to update.")
 @arg("-n", "--name", help="Name of the BuildConfiguration to update.")
 # allow specifying project by name?
-@arg("-pid", "--project-id", help="ID of the Project to associate the BuildConfiguration with.")
+@arg("-pid", "--project", help="ID of the Project to associate the BuildConfiguration with.")
 @arg("-e", "--environment", help="ID of the Environment for the new BuildConfiguration.")
 @arg("-d", "--description", help="Description of the new build configuration.")
 @arg("-surl", "--scm-url", help="URL to the sources of the BuildConfiguration.")
@@ -132,8 +136,8 @@ def delete_build_configuration(id=None, name=None):
 
 @arg("name", help="Name for the new BuildConfiguration.")
 # allow specifying project by name?
-@arg("project_id", help="ID of the Project to associate the BuildConfiguration with.")
-@arg("environment_id", help="ID of the Environment for the new BuildConfiguration.")
+@arg("project", help="ID of the Project to associate the BuildConfiguration with.")
+@arg("environment", help="ID of the Environment for the new BuildConfiguration.")
 @arg("-d", "--description", help="Description of the new build configuration.")
 @arg("-surl", "--scm-repo-url", help="URL to the sources of the BuildConfiguration.")
 @arg("-srev", "--scm-revision", help="Revision of the sources in scm-url for this BuildConfiguration.")
@@ -142,7 +146,19 @@ def create_build_configuration(**kwargs):
     """
     Create a new BuildConfiguration
     """
-    #TODO: non alphanum not allowed: [a-zA-Z0-9]
+    project_id = kwargs.get('project')
+    project_rest = utils.checked_api_call(projects_api, 'get_specific', id=project_id).content
+    if not project_rest:
+        return 'No project with id {} exists'.format(project_id)
+
+    env_id = kwargs.get('environment')
+    env_rest = utils.checked_api_call(envs_api, 'get_specific', id=env_id).content
+    if not env_rest:
+        return 'No environment with id {} exists'.format(env_id)
+    update_kwargs = {'project': project_rest,
+                     'environment' : env_rest}
+    kwargs.update(update_kwargs)
+
     build_configuration = create_build_conf_object(**kwargs)
     response = utils.checked_api_call(
         configs_api, 'create_new', body=build_configuration)
