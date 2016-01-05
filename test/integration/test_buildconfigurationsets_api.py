@@ -4,10 +4,11 @@ __author__ = 'thauser'
 
 from pnc_cli import buildconfigurationsets
 from pnc_cli import buildconfigurations
+from pnc_cli import projects
+from pnc_cli import environments
 from pnc_cli import utils
 from test import testutils
 from pnc_cli.swagger_client.apis.buildconfigurationsets_api import BuildconfigurationsetsApi
-from pnc_cli.swagger_client.apis.buildconfigurations_api import BuildconfigurationsApi
 
 
 @pytest.fixture(scope='function', autouse=True)
@@ -30,21 +31,39 @@ def new_set(request):
 
 
 @pytest.fixture(scope='function')
-def new_config(request):
-    configs_api = BuildconfigurationsApi(utils.get_api_client())
-    created_bc = configs_api.create_new(
-        body=buildconfigurations.create_build_conf_object(name=testutils.gen_random_name(),
-                                                          project_id=1,
-                                                          environment_id=1,
-                                                          build_status="UNKNOWN",
-                                                          build_script='mvn clean install',
-                                                          product_version_ids=[1],
-                                                          scm_repo_url='https://github.com/thauser/simple-maven-build-pnc.git')).content
+def new_project(request):
+    project = projects.create_project(name=testutils.gen_random_name() + '_project')
 
     def teardown():
-        existing = [x.id for x in configs_api.get_all(page_size=10000000).content]
-        if created_bc.id in existing:
-            configs_api.delete_specific(id=created_bc.id)
+        projects.delete_project(id=project.id)
+
+    request.addfinalizer(teardown)
+    return project
+
+
+@pytest.fixture(scope='function')
+def new_environment(request):
+    env = environments.create_environment(name=testutils.gen_random_name() + '_environment')
+
+    def teardown():
+        environments.delete_environment(id=env.id)
+
+    request.addfinalizer(teardown)
+    return env
+
+
+@pytest.fixture(scope='function')
+def new_config(request, new_project, new_environment):
+    created_bc = buildconfigurations.create_build_configuration(name=testutils.gen_random_name(),
+                                                                project=new_project.id,
+                                                                environment=new_environment.id,
+                                                                build_status="UNKNOWN",
+                                                                build_script='mvn clean install',
+                                                                product_version_ids=[1],
+                                                                scm_repo_url='https://github.com/thauser/simple-maven-build-pnc.git')
+
+    def teardown():
+        buildconfigurations.delete_build_configuration(id=created_bc.id)
 
     request.addfinalizer(teardown)
     return created_bc

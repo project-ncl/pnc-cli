@@ -3,6 +3,8 @@ import time
 import pytest
 
 from pnc_cli import buildconfigurations
+from pnc_cli import projects
+from pnc_cli import environments
 from pnc_cli import utils
 from test import testutils
 from pnc_cli.swagger_client.apis.buildconfigurations_api import BuildconfigurationsApi
@@ -20,19 +22,34 @@ def get_configs_api():
     configs_api = BuildconfigurationsApi(utils.get_api_client())
 
 @pytest.fixture(scope='function')
-def new_config(request):
+def new_project(request):
+    project = projects.create_project(name=testutils.gen_random_name()+'_project')
+    def teardown():
+        projects.delete_project(id=project.id)
+    request.addfinalizer(teardown)
+    return project
+
+@pytest.fixture(scope='function')
+def new_environment(request):
+    env = environments.create_environment(name=testutils.gen_random_name()+'_environment')
+    def teardown():
+        environments.delete_environment(id=env.id)
+    request.addfinalizer(teardown)
+    return env
+
+@pytest.fixture(scope='function')
+def new_config(request, new_project, new_environment):
     created_bc = configs_api.create_new(
         body=buildconfigurations.create_build_conf_object(name=testutils.gen_random_name(),
-                                                          project_id=1,
-                                                          environment_id=1,
+                                                          project=new_project,
+                                                          environment=new_environment,
                                                           build_status="UNKNOWN",
                                                           build_script='mvn clean install',
                                                           product_version_ids=[1],
                                                           scm_repo_url='https://github.com/thauser/simple-maven-build-pnc.git')).content
 
     def teardown():
-        existing = [x.id for x in configs_api.get_all(page_size=10000000).content]
-        if created_bc.id in existing:
+        if utils.checked_api_call(configs_api, 'get_specific',id=created_bc.id):
             configs_api.delete_specific(id=created_bc.id)
 
     request.addfinalizer(teardown)
