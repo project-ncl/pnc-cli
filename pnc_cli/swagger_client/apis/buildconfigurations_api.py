@@ -735,7 +735,7 @@ class BuildconfigurationsApi(object):
         :param int id: Build Configuration id (required)
         :param str callback_url: Optional Callback URL
         :param bool rebuild_all: Rebuild all dependencies
-        :return: None
+        :return: BuildRecordSingleton
                  If the method is called asynchronously,
                  returns the request thread.
         """
@@ -796,7 +796,7 @@ class BuildconfigurationsApi(object):
                                             body=body_params,
                                             post_params=form_params,
                                             files=files,
-                                            response_type=None,
+                                            response_type='BuildRecordSingleton',
                                             auth_settings=auth_settings,
                                             callback=params.get('callback'))
         return response

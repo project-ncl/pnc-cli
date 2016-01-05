@@ -42,10 +42,10 @@ class ProductVersionRest(object):
             'version': 'str',
             'product_id': 'int',
             'current_product_milestone_id': 'int',
-            'build_configuration_set_ids': 'list[int]',
-            'build_configuration_ids': 'list[int]',
-            'product_milestones': 'list[int]',
-            'product_releases': 'list[int]'
+            'product_milestones': 'list[ProductMilestoneRest]',
+            'product_releases': 'list[ProductReleaseRest]',
+            'build_configuration_sets': 'list[BuildConfigurationSetRest]',
+            'build_configurations': 'list[BuildConfigurationRest]'
         }
 
         self.attribute_map = {
@@ -53,20 +53,20 @@ class ProductVersionRest(object):
             'version': 'version',
             'product_id': 'productId',
             'current_product_milestone_id': 'currentProductMilestoneId',
-            'build_configuration_set_ids': 'buildConfigurationSetIds',
-            'build_configuration_ids': 'buildConfigurationIds',
             'product_milestones': 'productMilestones',
-            'product_releases': 'productReleases'
+            'product_releases': 'productReleases',
+            'build_configuration_sets': 'buildConfigurationSets',
+            'build_configurations': 'buildConfigurations'
         }
 
         self._id = None
         self._version = None
         self._product_id = None
         self._current_product_milestone_id = None
-        self._build_configuration_set_ids = None
-        self._build_configuration_ids = None
         self._product_milestones = None
         self._product_releases = None
+        self._build_configuration_sets = None
+        self._build_configurations = None
 
     @property
     def id(self):
@@ -157,57 +157,13 @@ class ProductVersionRest(object):
         self._current_product_milestone_id = current_product_milestone_id
 
     @property
-    def build_configuration_set_ids(self):
-        """
-        Gets the build_configuration_set_ids of this ProductVersionRest.
-
-
-        :return: The build_configuration_set_ids of this ProductVersionRest.
-        :rtype: list[int]
-        """
-        return self._build_configuration_set_ids
-
-    @build_configuration_set_ids.setter
-    def build_configuration_set_ids(self, build_configuration_set_ids):
-        """
-        Sets the build_configuration_set_ids of this ProductVersionRest.
-
-
-        :param build_configuration_set_ids: The build_configuration_set_ids of this ProductVersionRest.
-        :type: list[int]
-        """
-        self._build_configuration_set_ids = build_configuration_set_ids
-
-    @property
-    def build_configuration_ids(self):
-        """
-        Gets the build_configuration_ids of this ProductVersionRest.
-
-
-        :return: The build_configuration_ids of this ProductVersionRest.
-        :rtype: list[int]
-        """
-        return self._build_configuration_ids
-
-    @build_configuration_ids.setter
-    def build_configuration_ids(self, build_configuration_ids):
-        """
-        Sets the build_configuration_ids of this ProductVersionRest.
-
-
-        :param build_configuration_ids: The build_configuration_ids of this ProductVersionRest.
-        :type: list[int]
-        """
-        self._build_configuration_ids = build_configuration_ids
-
-    @property
     def product_milestones(self):
         """
         Gets the product_milestones of this ProductVersionRest.
 
 
         :return: The product_milestones of this ProductVersionRest.
-        :rtype: list[int]
+        :rtype: list[ProductMilestoneRest]
         """
         return self._product_milestones
 
@@ -218,7 +174,7 @@ class ProductVersionRest(object):
 
 
         :param product_milestones: The product_milestones of this ProductVersionRest.
-        :type: list[int]
+        :type: list[ProductMilestoneRest]
         """
         self._product_milestones = product_milestones
 
@@ -229,7 +185,7 @@ class ProductVersionRest(object):
 
 
         :return: The product_releases of this ProductVersionRest.
-        :rtype: list[int]
+        :rtype: list[ProductReleaseRest]
         """
         return self._product_releases
 
@@ -240,9 +196,53 @@ class ProductVersionRest(object):
 
 
         :param product_releases: The product_releases of this ProductVersionRest.
-        :type: list[int]
+        :type: list[ProductReleaseRest]
         """
         self._product_releases = product_releases
+
+    @property
+    def build_configuration_sets(self):
+        """
+        Gets the build_configuration_sets of this ProductVersionRest.
+
+
+        :return: The build_configuration_sets of this ProductVersionRest.
+        :rtype: list[BuildConfigurationSetRest]
+        """
+        return self._build_configuration_sets
+
+    @build_configuration_sets.setter
+    def build_configuration_sets(self, build_configuration_sets):
+        """
+        Sets the build_configuration_sets of this ProductVersionRest.
+
+
+        :param build_configuration_sets: The build_configuration_sets of this ProductVersionRest.
+        :type: list[BuildConfigurationSetRest]
+        """
+        self._build_configuration_sets = build_configuration_sets
+
+    @property
+    def build_configurations(self):
+        """
+        Gets the build_configurations of this ProductVersionRest.
+
+
+        :return: The build_configurations of this ProductVersionRest.
+        :rtype: list[BuildConfigurationRest]
+        """
+        return self._build_configurations
+
+    @build_configurations.setter
+    def build_configurations(self, build_configurations):
+        """
+        Sets the build_configurations of this ProductVersionRest.
+
+
+        :param build_configurations: The build_configurations of this ProductVersionRest.
+        :type: list[BuildConfigurationRest]
+        """
+        self._build_configurations = build_configurations
 
     def to_dict(self):
         """

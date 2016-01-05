@@ -50,8 +50,8 @@ class BuildConfigurationRest(object):
             'last_modification_time': 'datetime',
             'build_status': 'str',
             'repositories': 'str',
-            'project_id': 'int',
-            'environment_id': 'int',
+            'project': 'ProjectRest',
+            'environment': 'BuildEnvironmentRest',
             'dependency_ids': 'list[int]',
             'product_version_ids': 'list[int]',
             'internal_scm': 'str',
@@ -71,8 +71,8 @@ class BuildConfigurationRest(object):
             'last_modification_time': 'lastModificationTime',
             'build_status': 'buildStatus',
             'repositories': 'repositories',
-            'project_id': 'projectId',
-            'environment_id': 'environmentId',
+            'project': 'project',
+            'environment': 'environment',
             'dependency_ids': 'dependencyIds',
             'product_version_ids': 'productVersionIds',
             'internal_scm': 'internalScm',
@@ -91,8 +91,8 @@ class BuildConfigurationRest(object):
         self._last_modification_time = None
         self._build_status = None
         self._repositories = None
-        self._project_id = None
-        self._environment_id = None
+        self._project = None
+        self._environment = None
         self._dependency_ids = None
         self._product_version_ids = None
         self._internal_scm = None
@@ -363,48 +363,48 @@ class BuildConfigurationRest(object):
         self._repositories = repositories
 
     @property
-    def project_id(self):
+    def project(self):
         """
-        Gets the project_id of this BuildConfigurationRest.
+        Gets the project of this BuildConfigurationRest.
 
 
-        :return: The project_id of this BuildConfigurationRest.
-        :rtype: int
+        :return: The project of this BuildConfigurationRest.
+        :rtype: ProjectRest
         """
-        return self._project_id
+        return self._project
 
-    @project_id.setter
-    def project_id(self, project_id):
+    @project.setter
+    def project(self, project):
         """
-        Sets the project_id of this BuildConfigurationRest.
+        Sets the project of this BuildConfigurationRest.
 
 
-        :param project_id: The project_id of this BuildConfigurationRest.
-        :type: int
+        :param project: The project of this BuildConfigurationRest.
+        :type: ProjectRest
         """
-        self._project_id = project_id
+        self._project = project
 
     @property
-    def environment_id(self):
+    def environment(self):
         """
-        Gets the environment_id of this BuildConfigurationRest.
+        Gets the environment of this BuildConfigurationRest.
 
 
-        :return: The environment_id of this BuildConfigurationRest.
-        :rtype: int
+        :return: The environment of this BuildConfigurationRest.
+        :rtype: BuildEnvironmentRest
         """
-        return self._environment_id
+        return self._environment
 
-    @environment_id.setter
-    def environment_id(self, environment_id):
+    @environment.setter
+    def environment(self, environment):
         """
-        Sets the environment_id of this BuildConfigurationRest.
+        Sets the environment of this BuildConfigurationRest.
 
 
-        :param environment_id: The environment_id of this BuildConfigurationRest.
-        :type: int
+        :param environment: The environment of this BuildConfigurationRest.
+        :type: BuildEnvironmentRest
         """
-        self._environment_id = environment_id
+        self._environment = environment
 
     @property
     def dependency_ids(self):

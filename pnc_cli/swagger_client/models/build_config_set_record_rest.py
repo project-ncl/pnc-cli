@@ -40,10 +40,12 @@ class BuildConfigSetRecordRest(object):
         self.swagger_types = {
             'id': 'int',
             'build_configuration_set_id': 'int',
+            'build_configuration_set_name': 'str',
             'start_time': 'datetime',
             'end_time': 'datetime',
             'status': 'str',
             'user_id': 'int',
+            'username': 'str',
             'product_version_id': 'int',
             'build_record_ids': 'list[int]'
         }
@@ -51,20 +53,24 @@ class BuildConfigSetRecordRest(object):
         self.attribute_map = {
             'id': 'id',
             'build_configuration_set_id': 'buildConfigurationSetId',
+            'build_configuration_set_name': 'buildConfigurationSetName',
             'start_time': 'startTime',
             'end_time': 'endTime',
             'status': 'status',
             'user_id': 'userId',
+            'username': 'username',
             'product_version_id': 'productVersionId',
             'build_record_ids': 'buildRecordIds'
         }
 
         self._id = None
         self._build_configuration_set_id = None
+        self._build_configuration_set_name = None
         self._start_time = None
         self._end_time = None
         self._status = None
         self._user_id = None
+        self._username = None
         self._product_version_id = None
         self._build_record_ids = None
 
@@ -111,6 +117,28 @@ class BuildConfigSetRecordRest(object):
         :type: int
         """
         self._build_configuration_set_id = build_configuration_set_id
+
+    @property
+    def build_configuration_set_name(self):
+        """
+        Gets the build_configuration_set_name of this BuildConfigSetRecordRest.
+
+
+        :return: The build_configuration_set_name of this BuildConfigSetRecordRest.
+        :rtype: str
+        """
+        return self._build_configuration_set_name
+
+    @build_configuration_set_name.setter
+    def build_configuration_set_name(self, build_configuration_set_name):
+        """
+        Sets the build_configuration_set_name of this BuildConfigSetRecordRest.
+
+
+        :param build_configuration_set_name: The build_configuration_set_name of this BuildConfigSetRecordRest.
+        :type: str
+        """
+        self._build_configuration_set_name = build_configuration_set_name
 
     @property
     def start_time(self):
@@ -205,6 +233,28 @@ class BuildConfigSetRecordRest(object):
         :type: int
         """
         self._user_id = user_id
+
+    @property
+    def username(self):
+        """
+        Gets the username of this BuildConfigSetRecordRest.
+
+
+        :return: The username of this BuildConfigSetRecordRest.
+        :rtype: str
+        """
+        return self._username
+
+    @username.setter
+    def username(self, username):
+        """
+        Sets the username of this BuildConfigSetRecordRest.
+
+
+        :param username: The username of this BuildConfigSetRecordRest.
+        :type: str
+        """
+        self._username = username
 
     @property
     def product_version_id(self):

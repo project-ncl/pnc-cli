@@ -44,8 +44,10 @@ class BuildRecordRest(object):
             'end_time': 'datetime',
             'status': 'str',
             'build_configuration_id': 'int',
+            'build_configuration_name': 'str',
             'build_configuration_rev': 'int',
             'user_id': 'int',
+            'username': 'str',
             'scm_repo_url': 'str',
             'scm_revision': 'str',
             'build_driver_id': 'str',
@@ -66,8 +68,10 @@ class BuildRecordRest(object):
             'end_time': 'endTime',
             'status': 'status',
             'build_configuration_id': 'buildConfigurationId',
+            'build_configuration_name': 'buildConfigurationName',
             'build_configuration_rev': 'buildConfigurationRev',
             'user_id': 'userId',
+            'username': 'username',
             'scm_repo_url': 'scmRepoURL',
             'scm_revision': 'scmRevision',
             'build_driver_id': 'buildDriverId',
@@ -87,8 +91,10 @@ class BuildRecordRest(object):
         self._end_time = None
         self._status = None
         self._build_configuration_id = None
+        self._build_configuration_name = None
         self._build_configuration_rev = None
         self._user_id = None
+        self._username = None
         self._scm_repo_url = None
         self._scm_revision = None
         self._build_driver_id = None
@@ -234,6 +240,28 @@ class BuildRecordRest(object):
         self._build_configuration_id = build_configuration_id
 
     @property
+    def build_configuration_name(self):
+        """
+        Gets the build_configuration_name of this BuildRecordRest.
+
+
+        :return: The build_configuration_name of this BuildRecordRest.
+        :rtype: str
+        """
+        return self._build_configuration_name
+
+    @build_configuration_name.setter
+    def build_configuration_name(self, build_configuration_name):
+        """
+        Sets the build_configuration_name of this BuildRecordRest.
+
+
+        :param build_configuration_name: The build_configuration_name of this BuildRecordRest.
+        :type: str
+        """
+        self._build_configuration_name = build_configuration_name
+
+    @property
     def build_configuration_rev(self):
         """
         Gets the build_configuration_rev of this BuildRecordRest.
@@ -276,6 +304,28 @@ class BuildRecordRest(object):
         :type: int
         """
         self._user_id = user_id
+
+    @property
+    def username(self):
+        """
+        Gets the username of this BuildRecordRest.
+
+
+        :return: The username of this BuildRecordRest.
+        :rtype: str
+        """
+        return self._username
+
+    @username.setter
+    def username(self, username):
+        """
+        Sets the username of this BuildRecordRest.
+
+
+        :param username: The username of this BuildRecordRest.
+        :type: str
+        """
+        self._username = username
 
     @property
     def scm_repo_url(self):
