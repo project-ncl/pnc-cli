@@ -257,7 +257,22 @@ def test_clone_invalid_param():
 # TODO: project_version_ids is not being cloned correctly all the time.
 def test_clone(new_config):
     cloned_bc = configs_api.clone(id=new_config.id).content
-    assert cloned_bc.to_dict() ==  new_config.to_dict()
+    expected_unchanged_fields = ['description',
+                                 'build_script',
+                                 'scm_repo_url',
+                                 'scm_revision',
+                                 'scm_mirror_repo_url',
+                                 'scm_mirror_revision',
+                                 'build_status',
+                                 'repositories',
+                                 'environment',
+                                 'dependency_ids',
+                                 'product_version_ids',
+                                 'internal_scm',
+                                 'internal_scm_revison']
+    for x in expected_unchanged_fields:
+        print('Testing {}'.format(x))
+        assert cloned_bc.to_dict().get(x) == new_config.to_dict().get(x)
     # cleanup
     configs_api.delete_specific(id=cloned_bc.id)
 
