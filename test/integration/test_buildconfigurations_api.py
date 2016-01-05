@@ -1,16 +1,19 @@
 import pytest
+from pnc_cli import projects
+from pnc_cli import environments
 from pnc_cli import buildconfigurations
 from pnc_cli.swagger_client.apis.buildconfigurations_api import BuildconfigurationsApi
 from pnc_cli.swagger_client.apis.runningbuildrecords_api import RunningbuildrecordsApi
 from pnc_cli import utils
 from test import testutils
+
 import time
 
 current_time_millis = lambda: int(round(time.time() * 1000))
 
-common_fields = ['build_script', 'build_status', 'dependency_ids', 'description', 'environment_id', 'internal_scm',
+common_fields = ['build_script', 'build_status', 'dependency_ids', 'description', 'environment', 'internal_scm',
                  'internal_scm_revison',
-                 'project_id', 'repositories', 'scm_mirror_repo_url', 'scm_mirror_revision', 'scm_repo_url',
+                 'project', 'repositories', 'scm_mirror_repo_url', 'scm_mirror_revision', 'scm_repo_url',
                  'scm_revision']
 
 
@@ -19,13 +22,28 @@ def get_configs_api():
     global configs_api
     configs_api = BuildconfigurationsApi(utils.get_api_client())
 
+@pytest.fixture(scope='function')
+def new_project(request):
+    project = projects.create_project(name=testutils.gen_random_name()+'_project')
+    def teardown():
+        projects.delete_project(id=project.id)
+    request.addfinalizer(teardown)
+    return project
 
 @pytest.fixture(scope='function')
-def new_config(request):
+def new_environment(request):
+    env = environments.create_environment(name=testutils.gen_random_name()+'_environment')
+    def teardown():
+        environments.delete_environment(id=env.id)
+    request.addfinalizer(teardown)
+    return env
+
+@pytest.fixture(scope='function')
+def new_config(request, new_project, new_environment):
     created_bc = configs_api.create_new(
         body=buildconfigurations.create_build_conf_object(name=testutils.gen_random_name(),
-                                                          project_id=1,
-                                                          environment_id=1,
+                                                          project=new_project,
+                                                          environment=new_environment,
                                                           build_status="UNKNOWN",
                                                           build_script='mvn clean install',
                                                           product_version_ids=[1],
@@ -184,8 +202,7 @@ def test_update(new_config):
     new_config.name = "pnc-cli-test-updated-" + new_config.name
     configs_api.update(id=new_config.id, body=new_config)
     updated = configs_api.get_specific(id=new_config.id).content
-    for field in common_fields:
-        assert getattr(updated, field) == getattr(new_config, field)
+    assert updated == new_config
 
 
 def test_delete_specific_no_id():
@@ -241,8 +258,7 @@ def test_clone_invalid_param():
 # TODO: project_version_ids is not being cloned correctly all the time.
 def test_clone(new_config):
     cloned_bc = configs_api.clone(id=new_config.id).content
-    for field in common_fields:
-        assert getattr(cloned_bc, field) == getattr(new_config, field)
+    assert cloned_bc == new_config
     # cleanup
     configs_api.delete_specific(id=cloned_bc.id)
 
