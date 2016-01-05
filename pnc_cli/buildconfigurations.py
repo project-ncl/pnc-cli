@@ -9,6 +9,7 @@ from pnc_cli.swagger_client.apis.projects_api import ProjectsApi
 from pnc_cli import products
 from pnc_cli import productversions
 from pnc_cli import projects
+from pnc_cli import environments
 
 projects_api = ProjectsApi(utils.get_api_client())
 envs_api = EnvironmentsApi(utils.get_api_client())
@@ -113,6 +114,23 @@ def update_build_configuration(id=None, name=None, **kwargs):
         return
 
     bc_to_update = configs_api.get_specific(id=to_update_id).content
+
+    project_id = kwargs.get('project')
+    if project_id:
+        project_rest = projects.get_project(id=project_id)
+        if not project_rest:
+            return
+        update_project = {'project' : project_rest}
+        kwargs.update(update_project)
+
+    env_id = kwargs.get('environment')
+    if env_id:
+        env_rest = environments.get_environment(id=env_id)
+        if not env_rest:
+            return
+        update_env = {'environment' : env_rest}
+        kwargs.update(update_env)
+
     for key, value in kwargs.items():
         if value is not None:
             setattr(bc_to_update, key, value)
@@ -147,14 +165,14 @@ def create_build_configuration(**kwargs):
     Create a new BuildConfiguration
     """
     project_id = kwargs.get('project')
-    project_rest = utils.checked_api_call(projects_api, 'get_specific', id=project_id).content
+    project_rest = projects.get_project(id=project_id)
     if not project_rest:
-        return 'No project with id {} exists'.format(project_id)
+        return
 
     env_id = kwargs.get('environment')
-    env_rest = utils.checked_api_call(envs_api, 'get_specific', id=env_id).content
+    env_rest = environments.get_environment(id=env_id)
     if not env_rest:
-        return 'No environment with id {} exists'.format(env_id)
+        return
     update_kwargs = {'project': project_rest,
                      'environment' : env_rest}
     kwargs.update(update_kwargs)
