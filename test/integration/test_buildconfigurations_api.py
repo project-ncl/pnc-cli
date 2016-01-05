@@ -50,8 +50,7 @@ def new_config(request, new_project, new_environment):
                                                           scm_repo_url='https://github.com/thauser/simple-maven-build-pnc.git')).content
 
     def teardown():
-        existing = [x.id for x in configs_api.get_all(page_size=10000000).content]
-        if created_bc.id in existing:
+        if utils.checked_api_call(configs_api, 'get_specific',id=created_bc.id):
             configs_api.delete_specific(id=created_bc.id)
 
     request.addfinalizer(teardown)
@@ -202,7 +201,7 @@ def test_update(new_config):
     new_config.name = "pnc-cli-test-updated-" + new_config.name
     configs_api.update(id=new_config.id, body=new_config)
     updated = configs_api.get_specific(id=new_config.id).content
-    assert updated == new_config
+    assert updated.to_dict() == new_config.to_dict()
 
 
 def test_delete_specific_no_id():
@@ -258,7 +257,7 @@ def test_clone_invalid_param():
 # TODO: project_version_ids is not being cloned correctly all the time.
 def test_clone(new_config):
     cloned_bc = configs_api.clone(id=new_config.id).content
-    assert cloned_bc == new_config
+    assert cloned_bc.to_dict() ==  new_config.to_dict()
     # cleanup
     configs_api.delete_specific(id=cloned_bc.id)
 
