@@ -5,7 +5,6 @@ __author__ = 'aabulawi'
 
 class PNCFormatter(argparse.ArgumentDefaultsHelpFormatter,
                    argparse.RawDescriptionHelpFormatter):
-
     def _expand_help(self, action):
         params = dict(vars(action), prog=self._prog)
         for name in list(params):

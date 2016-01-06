@@ -21,6 +21,7 @@ def _create_environment_object(**kwargs):
                 setattr(created_environment, key, value)
     return created_environment
 
+
 def _get_environment_id_by_name(name):
     """
     Return the ID of a BuildEnvironment given the name
@@ -90,7 +91,7 @@ def update_environment(id, **kwargs):
 
     to_update = envs_api.get_specific(id=id).content
 
-    for key,value in iteritems(kwargs):
+    for key, value in iteritems(kwargs):
         if value:
             if key == 'build_type':
                 setattr(to_update, key, value.upper())
@@ -128,6 +129,7 @@ def get_environment(id=None, name=None):
     response = utils.checked_api_call(envs_api, 'get_specific', id=search_id)
     if response:
         return response.content
+
 
 @arg("-p", "--page-size", help="Limit the amount of product releases returned")
 @arg("-s", "--sort", help="Sorting RSQL")

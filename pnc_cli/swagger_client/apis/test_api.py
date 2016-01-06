@@ -96,13 +96,13 @@ class TestApi(object):
             body_params = params['body']
 
         # HTTP header `Accept`
-        header_params['Accept'] = self.api_client.\
+        header_params['Accept'] = self.api_client. \
             select_header_accept(['application/json'])
         if not header_params['Accept']:
             del header_params['Accept']
 
         # HTTP header `Content-Type`
-        header_params['Content-Type'] = self.api_client.\
+        header_params['Content-Type'] = self.api_client. \
             select_header_content_type(['application/json'])
 
         # Authentication setting
@@ -171,13 +171,13 @@ class TestApi(object):
             body_params = params['body']
 
         # HTTP header `Accept`
-        header_params['Accept'] = self.api_client.\
+        header_params['Accept'] = self.api_client. \
             select_header_accept(['application/json'])
         if not header_params['Accept']:
             del header_params['Accept']
 
         # HTTP header `Content-Type`
-        header_params['Content-Type'] = self.api_client.\
+        header_params['Content-Type'] = self.api_client. \
             select_header_content_type(['application/json'])
 
         # Authentication setting

@@ -8,9 +8,11 @@ from pnc_cli.swagger_client.apis.buildrecords_api import BuildrecordsApi
 
 records_api = BuildrecordsApi(utils.get_api_client())
 
+
 def record_exists(id):
     existing = [str(x.id) for x in records_api.get_all().content]
     return str(id) in existing
+
 
 @arg("-p", "--page-size", help="Limit the amount of BuildRecords returned")
 @arg("-s", "--sort", help="Sorting RSQL")

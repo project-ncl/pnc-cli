@@ -202,6 +202,7 @@ def add_build_configuration_to_set(
     if response:
         return response.content
 
+
 @arg("-i", "--id", help="ID of the BuildConfigurationSet")
 @arg("-n", "--name", help="Name of the BuildConfigurationSet")
 @arg("-p", "--page-size", help="Limit the amount of build records returned")

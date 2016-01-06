@@ -43,7 +43,7 @@ def list_records_for_build_config_set(id, page_size=200, sort="", q=""):
     """
     Get a list of BuildRecords for the given BuildConfigSetRecord
     """
-    bcrs_check = utils.checked_api_call(sets_api, 'get_all', q="id=="+id)
+    bcrs_check = utils.checked_api_call(sets_api, 'get_all', q="id==" + id)
     if not bcrs_check:
         logging.error("A BuildConfigurationSet with ID {} does not exist.".format(id))
         return

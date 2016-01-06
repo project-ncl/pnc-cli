@@ -26,7 +26,8 @@ def create_build_conf_object(**kwargs):
         setattr(created_build_configuration, "build_status", "UNKNOWN")
     return created_build_configuration
 
-#TODO: use rsql to streamline this
+
+# TODO: use rsql to streamline this
 def get_build_configuration_id_by_name(name):
     """
     Returns the id of the build configuration matching name
@@ -121,7 +122,7 @@ def update_build_configuration(id=None, name=None, **kwargs):
         project_rest = projects.get_project(id=project_id)
         if not project_rest:
             return
-        update_project = {'project' : project_rest}
+        update_project = {'project': project_rest}
         kwargs.update(update_project)
 
     env_id = kwargs.get('environment')
@@ -129,7 +130,7 @@ def update_build_configuration(id=None, name=None, **kwargs):
         env_rest = environments.get_environment(id=env_id)
         if not env_rest:
             return
-        update_env = {'environment' : env_rest}
+        update_env = {'environment': env_rest}
         kwargs.update(update_env)
 
     for key, value in kwargs.items():
@@ -175,7 +176,7 @@ def create_build_configuration(**kwargs):
     if not env_rest:
         return
     update_kwargs = {'project': project_rest,
-                     'environment' : env_rest}
+                     'environment': env_rest}
     kwargs.update(update_kwargs)
 
     build_configuration = create_build_conf_object(**kwargs)
@@ -203,6 +204,7 @@ def list_build_configurations_for_product(id=None, name=None, page_size=200, sor
     if response:
         return response.content
 
+
 @arg("-i", "--id", help="ID of the Project to list BuildConfigurations for.")
 @arg("-n", "--name", help="Name of the Project to list BuildConfigurations for.")
 @arg("-p", "--page-size", help="Limit the amount of build records returned")
@@ -212,7 +214,7 @@ def list_build_configurations_for_project(id=None, name=None, page_size=200, sor
     """
     List all BuildConfigurations associated with the given Product.
     """
-    found_id = projects.get_project_id(id,name)
+    found_id = projects.get_project_id(id, name)
     if not found_id:
         return
 
@@ -220,7 +222,6 @@ def list_build_configurations_for_project(id=None, name=None, page_size=200, sor
                                       sort=sort, q=q)
     if response:
         return response.content
-
 
 
 # TODO: allow specifying product name / version 'version'?
@@ -233,7 +234,7 @@ def list_build_configurations_for_product_version(product_id, version_id, page_s
     """
     List all BuildConfigurations associated with the given ProductVersion
     """
-    found_product_id = products.get_product_id(product_id,None)
+    found_product_id = products.get_product_id(product_id, None)
     if not found_product_id:
         return
 
@@ -418,6 +419,7 @@ def list_build_configurations_for_project(id=None, name=None, page_size=200, sor
                                       sort=sort, q=q)
     if response:
         return response.content
+
 
 @arg("-p", "--page-size", help="Limit the amount of build records returned")
 @arg("-s", "--sort", help="Sorting RSQL")

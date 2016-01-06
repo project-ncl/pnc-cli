@@ -28,6 +28,7 @@ def version_exists(id):
 def version_exists_for_product(id, version):
     return version in [x.version for x in products_api.get_product_versions(id=id).content]
 
+
 @arg("-p", "--page-size", help="Limit the amount of build records returned")
 @arg("-s", "--sort", help="Sorting RSQL")
 @arg("-q", help="RSQL query")

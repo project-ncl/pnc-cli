@@ -118,6 +118,7 @@ def update_license(license_id, **kwargs):
     if response:
         return response.content
 
+
 @arg("-p", "--page-size", help="Limit the amount of product releases returned")
 @arg("-s", "--sort", help="Sorting RSQL")
 @arg("-q", help="RSQL query")

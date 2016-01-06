@@ -27,7 +27,7 @@ try:
 except ImportError:
     # for python3
     import http.client as httplib
-    
+
 import sys
 import logging
 
@@ -39,6 +39,7 @@ def singleton(cls, *args, **kw):
         if cls not in instances:
             instances[cls] = cls(*args, **kw)
         return instances[cls]
+
     return _singleton
 
 
@@ -84,7 +85,7 @@ class Configuration(object):
         self.verify_ssl = True
         # Set this to customize the certificate file to verify the peer.
         self.ssl_ca_cert = None
-        
+
     def init_logger(self):
         """
         Initializes logger settings.
@@ -151,8 +152,8 @@ class Configuration(object):
 
         :return: The token for basic HTTP authentication.
         """
-        return urllib3.util.make_headers(basic_auth=self.username + ':' + self.password)\
-                           .get('authorization')
+        return urllib3.util.make_headers(basic_auth=self.username + ':' + self.password) \
+            .get('authorization')
 
     def auth_settings(self):
         """
@@ -169,9 +170,9 @@ class Configuration(object):
 
         :return: The report for debugging.
         """
-        return "Python SDK Debug Report:\n"\
-               "OS: {env}\n"\
-               "Python Version: {pyversion}\n"\
-               "Version of the API: 1.0.0\n"\
-               "SDK Package Version: 1.0.0".\
-               format(env=sys.platform, pyversion=sys.version)
+        return "Python SDK Debug Report:\n" \
+               "OS: {env}\n" \
+               "Python Version: {pyversion}\n" \
+               "Version of the API: 1.0.0\n" \
+               "SDK Package Version: 1.0.0". \
+            format(env=sys.platform, pyversion=sys.version)

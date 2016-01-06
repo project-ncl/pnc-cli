@@ -5,6 +5,7 @@ from pnc_cli.swagger_client import RunningbuildrecordsApi
 
 running_api = RunningbuildrecordsApi(utils.get_api_client())
 
+
 @arg("-p", "--page-size", help="Limit the amount of BuildRecords returned")
 @arg("-s", "--sort", help="Sorting RSQL")
 @arg("-q", help="RSQL query")

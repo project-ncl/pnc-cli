@@ -63,7 +63,8 @@ def get_product_id_by_name(search_name):
      help="The abbreviation or \"short name\" of the new Product")
 @arg("-p", "--product-code", help="The Product code for the new Product")
 @arg("-sn", "--pgm-system-name", help="The system code for the new Product")
-@arg("-pvids", "--product-version-ids", type=int, nargs='+', help="Space separated list of associated ProductVersion ids.")
+@arg("-pvids", "--product-version-ids", type=int, nargs='+',
+     help="Space separated list of associated ProductVersion ids.")
 def create_product(name, **kwargs):
     """
     Create a new Product

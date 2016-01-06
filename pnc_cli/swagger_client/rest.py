@@ -44,12 +44,10 @@ except ImportError:
     # for python2
     from urllib import urlencode
 
-
 logger = logging.getLogger(__name__)
 
 
 class RESTResponse(io.IOBase):
-
     def __init__(self, resp):
         self.urllib3_response = resp
         self.status = resp.status
@@ -70,7 +68,6 @@ class RESTResponse(io.IOBase):
 
 
 class RESTClientObject(object):
-
     def __init__(self, pools_size=4):
         if Configuration().verify_ssl:
             cert_reqs = ssl.CERT_REQUIRED
@@ -200,7 +197,6 @@ class RESTClientObject(object):
 
 
 class ApiException(Exception):
-
     def __init__(self, status=None, reason=None, http_resp=None):
         if http_resp:
             self.status = http_resp.status
@@ -217,7 +213,7 @@ class ApiException(Exception):
         """
         Custom error messages for exception
         """
-        error_message = "({0})\n"\
+        error_message = "({0})\n" \
                         "Reason: {1}\n".format(self.status, self.reason)
         if self.headers:
             error_message += "HTTP response headers: {0}\n".format(self.headers)

@@ -57,7 +57,7 @@ def _project_exists(search_id):
     :param search_id: id to test for
     :return: True if a Project with search_id exists
     """
-    response = utils.checked_api_call(projects_api, 'get_all', q="id=="+search_id)
+    response = utils.checked_api_call(projects_api, 'get_all', q="id==" + search_id)
     if not response:
         return False
     return True
@@ -108,6 +108,7 @@ def update_project(id, **kwargs):
             setattr(to_update, key, value)
     response = utils.checked_api_call(projects_api, 'update', id=id, body=to_update)
     return response
+
 
 @arg("-id", "--id", help="ID of the Project to retrieve")
 @arg("-n", "--name", help="Name of the Project to retrieve")

@@ -18,6 +18,7 @@ def create_product_release_object(**kwargs):
         setattr(created_release, key, value)
     return created_release
 
+
 @arg("-p", "--page-size", help="Limit the amount of ProductReleases returned")
 @arg("-s", "--sort", help="Sorting RSQL")
 @arg("-q", help="RSQL query")
@@ -28,6 +29,7 @@ def list_product_releases(page_size=200, sort="", q=""):
     response = utils.checked_api_call(releases_api, 'get_all', page_size=page_size, sort=sort, q=q)
     if response:
         return response.content
+
 
 # no more than one release per milestone
 # need ProductVersion id (version is not enough)
@@ -40,7 +42,8 @@ def list_product_releases(page_size=200, sort="", q=""):
 @arg("product_version_id",
      help="ID of the ProductVersion this release is associated with.")
 @arg("product_milestone_id", help="ProductMilestone which is the basis of this release")
-@arg("support_level", help="Level of support committed to for this release. Possible values: 'UNRELEASED', 'EARLYACCESS', 'SUPPORTED', 'EXTENDED_SUPPORT', 'EOL'")
+@arg("support_level",
+     help="Level of support committed to for this release. Possible values: 'UNRELEASED', 'EARLYACCESS', 'SUPPORTED', 'EXTENDED_SUPPORT', 'EOL'")
 def create_release(**kwargs):
     version = kwargs.get('version')
     if not utils.is_valid_version(version):

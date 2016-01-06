@@ -12,6 +12,7 @@ from pnc_cli.swagger_client import ProductmilestonesApi
 productversions_api = ProductversionsApi(utils.get_api_client())
 milestones_api = ProductmilestonesApi(utils.get_api_client())
 
+
 def product_version_exists(search_id):
     return str(search_id) in [str(x.id) for x in productversions_api.get_all().content]
 
