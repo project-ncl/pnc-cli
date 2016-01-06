@@ -24,16 +24,16 @@ def get_project_id(proj_id, name):
     """
     if proj_id:
         if not _project_exists(proj_id):
-            print("No Project with ID {} exists.".format(proj_id))
+            logging.error("No Project with ID {} exists.".format(proj_id))
             return
         found_id = proj_id
     elif name:
         found_id = _get_project_id_by_name(name)
         if not found_id:
-            print("No project with name {0} exists.".format(name))
+            logging.error("No project with name {0} exists.".format(name))
             return
     else:
-        print("Either a project name or id is required")
+        logging.warn("Either a project name or id is required")
         return
     return found_id
 
@@ -93,10 +93,10 @@ def update_project(id, **kwargs):
     Update an existing Project with new information
     """
     if not id:
-        logging.warn("A Project ID must be specified.")
+        logging.error("A Project ID must be specified.")
         return
     if utils.contains_only_none_values(kwargs):
-        logging.warn("Updating a Project requires at least one modified field.")
+        logging.error("Updating a Project requires at least one modified field.")
         return
     response = utils.checked_api_call(projects_api, 'get_specific', id=id)
     if not response:
