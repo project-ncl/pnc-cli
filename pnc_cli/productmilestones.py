@@ -3,6 +3,7 @@ from pprint import pprint
 from argh import arg
 from six import iteritems
 
+import logging
 from pnc_cli import utils
 from pnc_cli.swagger_client import ProductMilestoneRest
 from pnc_cli.swagger_client import ProductversionsApi
@@ -22,7 +23,7 @@ def create_milestone_object(**kwargs):
     return created_milestone
 
 
-@arg("-p", "--page-size", help="Limit the amount of product releases returned")
+@arg("-p", "--page-size", help="Limit the amount of ProductReleases returned")
 @arg("-s", "--sort", help="Sorting RSQL")
 @arg("-q", help="RSQL query")
 def list_milestones(page_size=200, q="", sort=""):
@@ -34,22 +35,22 @@ def list_milestones(page_size=200, q="", sort=""):
         return response
 
 
-@arg("product_version_id", help="ID of the product version to create a milestone from.")
-@arg("version", help="Version of the milestone. Will be appended to the version from product_version_id.")
-@arg("starting_date", help="Planned starting date for the milestone.")
-@arg("planned_release_date", help="Planned date for the milestone release.")
+@arg("product_version_id", help="ID of the ProductVersion to create a ProductMilestone from.")
+@arg("version", help="Version of the ProductMilestone. Will be appended to the version from product_version_id.")
+@arg("starting_date", help="Planned starting date for the ProductMilestone.")
+@arg("planned_release_date", help="Planned date for the ProductMilestone release.")
 def create_milestone(**kwargs):
     """
     Create a new ProductMilestone
     """
     if not product_version_exists(kwargs.get('product_version_id')):
-        print("No product version exists with the ID {}.".format(
+        logging.error("No ProductVersion exists with the ID {}.".format(
             kwargs.get('product_version_id')))
         return
     version = kwargs.get('version')
 
     if not utils.is_valid_version(version):
-        print("Version must start with a number, followed by a dot and then a qualifier (e.g ER1).")
+        logging.error("Version must start with a number, followed by a dot and then a qualifier (e.g ER1).")
         return
     base_version = str(productversions_api.get_specific(
         id=kwargs.get('product_version_id')).content.version)
@@ -63,7 +64,7 @@ def create_milestone(**kwargs):
         return response.content
 
 
-@arg("id", help="Product version ID to retrieve milestones for.")
+@arg("id", help="ProductVersion ID to retrieve milestones for.")
 def list_milestones_for_version(id):
     """
     List ProductMilestones for a specific ProductVersion
@@ -76,17 +77,17 @@ def list_milestones_for_version(id):
         return response
 
 
-@arg("id", help="Product milestone ID to retrieve.")
+@arg("id", help="ProductMilestone ID to retrieve.")
 def get_milestone(id):
     response = utils.checked_api_call(milestones_api, 'get_specific', id=id).content
     if response:
         return response
 
 
-@arg("id", help="Product milestone ID to update.")
-@arg("version", help="New version for the milestone.")
-@arg("start_date", help="New start date for the milestone.")
-@arg("release_date", help="New release date for the milestone.")
+@arg("id", help="ProductMilestone ID to update.")
+@arg("version", help="New version for the ProductMilestone.")
+@arg("start_date", help="New start date for the ProductMilestone.")
+@arg("release_date", help="New release date for the ProductMilestone.")
 def update_milestone(id, **kwargs):
     existing_milestone = milestones_api.get_specific(id=id).content
     for key, value in iteritems(kwargs):

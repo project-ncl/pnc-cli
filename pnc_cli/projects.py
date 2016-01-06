@@ -20,7 +20,7 @@ def get_project_id(proj_id, name):
     """
     :param proj_id: id to check existence
     :param name: name to resolve to ID
-    :return: a valid ID of a project
+    :return: a valid ID of a Project
     """
     if proj_id:
         if not _project_exists(proj_id):
@@ -30,19 +30,19 @@ def get_project_id(proj_id, name):
     elif name:
         found_id = _get_project_id_by_name(name)
         if not found_id:
-            logging.error("No project with name {0} exists.".format(name))
+            logging.error("No Project with name {0} exists.".format(name))
             return
     else:
-        logging.warn("Either a project name or id is required")
+        logging.warn("Either a Project name or id is required")
         return
     return found_id
 
 
 def _get_project_id_by_name(search_name):
     """
-    Returns the id of the project in which name matches search_name
-    :param search_name: name of the project
-    :return: id of the matching project, or None if no match found
+    Returns the id of the Project in which name matches search_name
+    :param search_name: name of the Project
+    :return: id of the matching Project, or None if no match found
     """
     response = projects_api.get_all(q='name==' + search_name)
     if not response:
@@ -53,9 +53,9 @@ def _get_project_id_by_name(search_name):
 
 def _project_exists(search_id):
     """
-    Test if a project with the given id exists
+    Test if a Project with the given id exists
     :param search_id: id to test for
-    :return: True if a project with search_id exists
+    :return: True if a Project with search_id exists
     """
     response = utils.checked_api_call(projects_api, 'get_all', q="id=="+search_id)
     if not response:
@@ -63,13 +63,13 @@ def _project_exists(search_id):
     return True
 
 
-@arg("name", help="Name for the project")
+@arg("name", help="Name for the Project")
 @arg("-c", "--configuration-ids", type=int, nargs='+',
      help="Space separated list of BuildConfigurationIDs this Project should be associated with.")
-@arg("-d", "--description", help="Detailed description of the new project")
-@arg("-p", "--project_url", help="SCM Url for the project")
-@arg("-i", "--issue-tracker-url", help="Issue tracker URL for the new project")
-@arg("-l", "--license_id", help="License ID for the new project")
+@arg("-d", "--description", help="Detailed description of the new Project")
+@arg("-p", "--project_url", help="SCM Url for the Project")
+@arg("-i", "--issue-tracker-url", help="Issue tracker URL for the new Project")
+@arg("-l", "--license_id", help="License ID for the new Project")
 def create_project(**kwargs):
     """
     Create a new Project
@@ -80,14 +80,14 @@ def create_project(**kwargs):
         return response.content
 
 
-@arg("id", help="ID for the project that will be updated.")
-@arg("-n", "--name", help="New name for the project that will be updated.")
+@arg("id", help="ID for the Project that will be updated.")
+@arg("-n", "--name", help="New name for the Project that will be updated.")
 @arg("-c", "--configuration-ids", type=int, nargs='+',
      help="Space separated list of BuildConfiguration IDs this Project should be associated with.")
-@arg("-d", "--description", help="Detailed description of the new project.")
-@arg("-p", "--project_url", help="SCM Url for the project.")
-@arg("-i", "--issue_url", help="Issue tracker URL for the new project")
-@arg("-l", "--license_id", help="License ID for the new project")
+@arg("-d", "--description", help="Detailed description of the new Project.")
+@arg("-p", "--project_url", help="SCM Url for the Project.")
+@arg("-i", "--issue_url", help="Issue tracker URL for the new Project")
+@arg("-l", "--license_id", help="License ID for the new Project")
 def update_project(id, **kwargs):
     """
     Update an existing Project with new information
@@ -109,8 +109,8 @@ def update_project(id, **kwargs):
     response = utils.checked_api_call(projects_api, 'update', id=id, body=to_update)
     return response
 
-@arg("-id", "--id", help="ID of the project to retrieve")
-@arg("-n", "--name", help="Name of the project to retrieve")
+@arg("-id", "--id", help="ID of the Project to retrieve")
+@arg("-n", "--name", help="Name of the Project to retrieve")
 def get_project(id=None, name=None):
     """
     Get a specific Project by ID or name
@@ -123,8 +123,8 @@ def get_project(id=None, name=None):
         return response.content
 
 
-@arg("-id", "--id", help="ID of the project to delete")
-@arg("-n", "--name", help="Name of the project to delete")
+@arg("-id", "--id", help="ID of the Project to delete")
+@arg("-n", "--name", help="Name of the Project to delete")
 def delete_project(id=None, name=None):
     """
     Delete a Project by ID or name.

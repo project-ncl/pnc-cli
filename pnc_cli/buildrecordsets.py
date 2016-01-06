@@ -1,6 +1,7 @@
 from argh import arg
 from six import iteritems
 
+import logging
 __author__ = 'thauser'
 from pnc_cli import utils
 from pnc_cli.swagger_client import BuildrecordsetsApi
@@ -18,11 +19,11 @@ def create_buildrecordset_object(**kwargs):
 
 def get_brs_id(id):
     if not str(id) in [str(x.id) for x in brs_api.get_all().content]:
-        print("No BuildRecordSet with ID {} exists.".format(id))
+        logging.error("No BuildRecordSet with ID {} exists.".format(id))
         return
     return id
 
-@arg("-p", "--page-size", help="Limit the amount of build record sets returned")
+@arg("-p", "--page-size", help="Limit the amount of BuildRecordSets returned")
 @arg("-s", "--sort", help="Sorting RSQL")
 @arg("-q", help="RSQL query")
 def list_build_record_sets(page_size=200, sort="", q=""):
@@ -62,7 +63,7 @@ def create_build_record_set(**kwargs):
 
 
 @arg('id', help='ID of the BuildRecord.')
-@arg("-p", "--page-size", help="Limit the amount of build record sets returned")
+@arg("-p", "--page-size", help="Limit the amount of BuildRecordSets returned")
 @arg("-s", "--sort", help="Sorting RSQL")
 @arg("-q", help="RSQL query")
 def list_sets_containing_build_record(id, page_size=200, sort="", q=""):
@@ -74,7 +75,7 @@ def list_sets_containing_build_record(id, page_size=200, sort="", q=""):
     if response:
         return response.content
 
-@arg("-p", "--page-size", help="Limit the amount of build record sets returned")
+@arg("-p", "--page-size", help="Limit the amount of BuildRecordSets returned")
 @arg("-s", "--sort", help="Sorting RSQL")
 @arg("-q", help="RSQL query")
 @arg('id', help='ID of the BuildRecord.')

@@ -1,6 +1,7 @@
 from argh import arg
 from six import iteritems
 
+import logging
 from pnc_cli import swagger_client
 from pnc_cli.swagger_client.apis.productversions_api import ProductversionsApi
 from pnc_cli.swagger_client.apis.products_api import ProductsApi
@@ -54,7 +55,7 @@ def create_product_version(product_id, version, **kwargs):
     Create a new ProductVersion
     """
     if version_exists_for_product(product_id, version):
-        print("Version {} already exists for product: {}".format(
+        logging.error("Version {} already exists for product: {}".format(
             version, products_api.get_specific(id=product_id).content.name))
         return
     kwargs['product_id'] = product_id
@@ -65,20 +66,20 @@ def create_product_version(product_id, version, **kwargs):
     if response: return response.content
 
 
-@arg("id", help="ID of the product version to retrieve")
+@arg("id", help="ID of the ProductVersion to retrieve")
 def get_product_version(id):
     """
     Get a specific ProductVersion by ID
     """
     if not version_exists(id):
-        print("No ProductVersion with ID {} exists.".format(id))
+        logging.error("No ProductVersion with ID {} exists.".format(id))
         return
     response = utils.checked_api_call(versions_api, 'get_specific', id=id)
     if response: return response.content
 
 
 # TODO: how should constraints be defined? Can a new productId be specified?
-@arg("id", help="ID of the product version to update.")
+@arg("id", help="ID of the ProductVersion to update.")
 @arg("-pid", "--product-id", help="ID of product to add a version to")
 @arg("-v", "--version", help="Version to add")
 @arg("-cm", "--current-product-milestone-id", type=int,
@@ -94,7 +95,7 @@ def update_product_version(id, **kwargs):
     Update the ProductVersion with the given ID with new values.
     """
     if not version_exists(id):
-        print("A product version with id {} doesn't exist.".format(id))
+        logging.error("A ProductVersion with id {} doesn't exist.".format(id))
         return
 
     to_update = versions_api.get_specific(id=id).content

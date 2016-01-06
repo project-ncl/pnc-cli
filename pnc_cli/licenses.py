@@ -1,5 +1,5 @@
 from pprint import pprint
-
+import logging
 from argh import arg
 from six import iteritems
 
@@ -21,15 +21,15 @@ def get_license_id(id, name):
     if id:
         l_id = id
         if not _license_exists(l_id):
-            print("No license with ID {} exists.".format(l_id))
+            logging.error("No License with ID {} exists.".format(l_id))
             return
     elif name:
         l_id = _get_license_id_by_name(name)
         if not l_id:
-            print("No license with name {0} exists.".format(name))
+            logging.error("No License with name {0} exists.".format(name))
             return
     else:
-        print("A license ID or name is required.")
+        logging.error("A License ID or name is required.")
         return
     return l_id
 
@@ -41,31 +41,31 @@ def _license_exists(license_id):
 
 def _get_license_id_by_name(name):
     licenses = licenses_api.get_all().content
-    for license in licenses:
-        if license.full_name == name:
-            return license.id
+    for License in licenses:
+        if License.full_name == name:
+            return License.id
     return None
 
 
-@arg("full_name", help="Name for the new license")
-@arg("full_content", help="Full textual content of the new license")
-@arg("-r", "--ref-url", help="URL containing a reference for the license")
-@arg("-sn", "--short-name", help="Abbreviation or \"short name\" for the license")
+@arg("full_name", help="Name for the new License")
+@arg("full_content", help="Full textual content of the new License")
+@arg("-r", "--ref-url", help="URL containing a reference for the License")
+@arg("-sn", "--short-name", help="Abbreviation or \"short name\" for the License")
 @arg("-pids", "--projects-ids", type=int, nargs='+',
-     help="List of project ids that should be associated with the new license. IDs must denote existing projects")
+     help="List of project ids that should be associated with the new License. IDs must denote existing projects")
 # TODO: read full_content from a file.
 def create_license(**kwargs):
     """
     Create a new License
     """
-    license = _create_license_object(**kwargs)
-    response = utils.checked_api_call(licenses_api, 'create_new', body=license)
+    License = _create_license_object(**kwargs)
+    response = utils.checked_api_call(licenses_api, 'create_new', body=License)
     if response:
         return response.content
 
 
-@arg("-i", "--id", help="ID for the license to retrieve")
-@arg("-n", "--name", help="Name for the license to retrieve")
+@arg("-i", "--id", help="ID for the License to retrieve")
+@arg("-n", "--name", help="Name for the License to retrieve")
 def get_license(id=None, name=None):
     """
     Get a specific License by either ID or fullname
@@ -79,7 +79,7 @@ def get_license(id=None, name=None):
         return response.content
 
 
-@arg("license_id", help="ID of the license to delete")
+@arg("license_id", help="ID of the License to delete")
 # TODO: delete by name? collisions? Name not unique.
 def delete_license(license_id):
     """
@@ -91,24 +91,24 @@ def delete_license(license_id):
         return response.content
 
 
-# TODO: preserve existing license fields that aren't supplied by user, to
+# TODO: preserve existing License fields that aren't supplied by user, to
 # make it a true update
 
 
-@arg("license_id", help="ID of the license to update")
-@arg("full_name", help="Name for the new license")
-@arg("full_content", help="Full textual content of the new license")
-@arg("-r", "--ref-url", help="URL containing a reference for the license")
-@arg("-sn", "--short-name", help="Abbreviation or \"short name\" for the license")
+@arg("license_id", help="ID of the License to update")
+@arg("full_name", help="Name for the new License")
+@arg("full_content", help="Full textual content of the new License")
+@arg("-r", "--ref-url", help="URL containing a reference for the License")
+@arg("-sn", "--short-name", help="Abbreviation or \"short name\" for the License")
 @arg("-pids", "--projects-ids", type=int, nargs='+',
-     help="List of project ids that should be associated with the new license. IDs must denote existing projects")
+     help="List of project ids that should be associated with the new License. IDs must denote existing projects")
 def update_license(license_id, **kwargs):
     """
     Replace the License with given ID with a new License
     """
     updated_license = _create_license_object(**kwargs)
     if not _license_exists(license_id):
-        print("No license with id {0} exists.".format(license_id))
+        logging.error("No License with id {0} exists.".format(license_id))
         return
     response = utils.checked_api_call(
         licenses_api,

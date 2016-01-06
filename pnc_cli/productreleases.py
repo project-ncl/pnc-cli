@@ -1,6 +1,7 @@
 from argh import arg
 from six import iteritems
 
+import logging
 from pnc_cli import utils
 from pnc_cli.swagger_client import ProductReleaseRest
 from pnc_cli.swagger_client import ProductversionsApi
@@ -17,7 +18,7 @@ def create_product_release_object(**kwargs):
         setattr(created_release, key, value)
     return created_release
 
-@arg("-p", "--page-size", help="Limit the amount of product releases returned")
+@arg("-p", "--page-size", help="Limit the amount of ProductReleases returned")
 @arg("-s", "--sort", help="Sorting RSQL")
 @arg("-q", help="RSQL query")
 def list_product_releases(page_size=200, sort="", q=""):
@@ -29,21 +30,21 @@ def list_product_releases(page_size=200, sort="", q=""):
         return response.content
 
 # no more than one release per milestone
-# need product version id (version is not enough)
+# need ProductVersion id (version is not enough)
 # version is created by appending product_version.<new info>
 
 
-@arg("version", help="Version of the release. Appended to the Product Version.")
+@arg("version", help="Version of the release. Appended to the ProductVersion.")
 @arg("release_date", help="Date of the release. Format: yyyy-mm-dd")
-@arg("download_url", help="URL where deliverables are located.")
+@arg("download_url", help="URL where deliverable(s) are located.")
 @arg("product_version_id",
-     help="ID of the product version this release is associated with.")
-@arg("product_milestone_id", help="Milestone which is the basis of this release")
+     help="ID of the ProductVersion this release is associated with.")
+@arg("product_milestone_id", help="ProductMilestone which is the basis of this release")
 @arg("support_level", help="Level of support committed to for this release. Possible values: 'UNRELEASED', 'EARLYACCESS', 'SUPPORTED', 'EXTENDED_SUPPORT', 'EOL'")
 def create_release(**kwargs):
     version = kwargs.get('version')
     if not utils.is_valid_version(version):
-        print("Version must start with a number, followed by a dot and then a qualifier (e.g ER1).")
+        logging.error("Version must start with a number, followed by a dot and then a qualifier (e.g ER1).")
         return
     base_version = productversions_api.get_specific(
         id=kwargs.get('product_version_id')).content.version
@@ -55,7 +56,7 @@ def create_release(**kwargs):
         return response.content
 
 
-@arg("id", help="Product version ID to retrieve releases for.")
+@arg("id", help="ProductVersion ID to retrieve releases for.")
 def list_releases_for_version(id):
     """
     List all ProductReleases for a ProductVersion
@@ -66,7 +67,7 @@ def list_releases_for_version(id):
         return response.content
 
 
-@arg("id", help="ID of the product version to retrieve.")
+@arg("id", help="ID of the ProductVersion to retrieve.")
 def get_release(id):
     """
     Get a specific ProductRelease
@@ -85,20 +86,20 @@ def _product_release_exists(search_id):
 
 
 @arg("id", help="ID of the release to update.")
-@arg("-v", "--version", help="Version of the release. Appended to the Product Version.")
+@arg("-v", "--version", help="Version of the release. Appended to the ProductVersion.")
 @arg("-rd", "--release-date", help="Date of the release.")
-@arg("-du", "--download-url", help="URL where deliverables are located.")
+@arg("-du", "--download-url", help="URL where deliverable(s) are located.")
 @arg("-pvid", "--product-version-id",
-     help="ID of the product version this release is associated with.")
+     help="ID of the ProductVersion     this release is associated with.")
 @arg("-msid", "--product-milestone-id",
-     help="Milestone which is the basis of this release")
-@arg("-sl", "--support-level", help="Level of support comitted to for this release.")
+     help="ProductMilestone which is the basis of this release")
+@arg("-sl", "--support-level", help="Level of support committed to for this release.")
 def update_release(id, **kwargs):
     """
     Update an existing ProductRelease with new information
     """
     if not _product_release_exists(id):
-        print("No ProductRelease with ID {} exists.".format(id))
+        logging.error("No ProductRelease with ID {} exists.".format(id))
         return
 
     to_update = releases_api.get_specific(id=id).content

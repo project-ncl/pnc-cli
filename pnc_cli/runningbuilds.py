@@ -5,22 +5,22 @@ from pnc_cli.swagger_client import RunningbuildrecordsApi
 
 running_api = RunningbuildrecordsApi(utils.get_api_client())
 
-@arg("-p", "--page-size", help="Limit the amount of build records returned")
+@arg("-p", "--page-size", help="Limit the amount of BuildRecords returned")
 @arg("-s", "--sort", help="Sorting RSQL")
 @arg("-q", help="RSQL query")
 def list_running_builds(page_size=200, sort="", q=""):
     """
-    List all running builds
+    List all RunningBuilds
     """
     response = utils.checked_api_call(running_api, 'get_all', page_size=page_size, sort=sort, q=q)
     if response:
         return response.content
 
 
-@arg("id", help="ID of the running build to retrieve.")
+@arg("id", help="ID of the RunningBuild to retrieve.")
 def get_running_build(id):
     """
-    Get info about a specific running build
+    Get info about a specific RunningBuild
     """
     response = utils.checked_api_call(running_api, 'get_specific', id=id)
     if response:

@@ -1,5 +1,6 @@
 from argh import arg
 
+import logging
 from pnc_cli import utils
 
 from pnc_cli import swagger_client
@@ -57,16 +58,16 @@ def get_config_id(search_id, name):
     """
     if search_id:
         if not config_id_exists(search_id):
-            print("No BuildConfiguration with ID {} exists.".format(search_id))
+            logging.error("No BuildConfiguration with ID {} exists.".format(search_id))
             return
         config_id = search_id
     elif name:
         config_id = get_build_configuration_id_by_name(name)
         if not config_id:
-            print("No BuildConfiguration with the name {} exists.".format(name))
+            logging.error("No BuildConfiguration with the name {} exists.".format(name))
             return
     else:
-        print("Either a name or an ID of a BuildConfiguration is required.")
+        logging.error("Either a name or an ID of a BuildConfiguration is required.")
         return
     return config_id
 
@@ -237,7 +238,7 @@ def list_build_configurations_for_product_version(product_id, version_id, page_s
         return
 
     if not productversions.version_exists(version_id):
-        print("No ProductVersion with ID {} exists.".format(version_id))
+        logging.error("No ProductVersion with ID {} exists.".format(version_id))
         return
 
     response = utils.checked_api_call(configs_api, 'get_all_by_product_version_id', product_id=found_product_id,
@@ -335,7 +336,7 @@ def add_product_version_to_build_configuration(id=None, name=None, product_versi
         return
 
     if not productversions.version_exists(product_version_id):
-        print("No ProductVersion with ID {} exists.".format(product_version_id))
+        logging.error("No ProductVersion with ID {} exists.".format(product_version_id))
         return
 
     to_add = productversions.get_product_version(id=product_version_id).content
@@ -356,7 +357,7 @@ def remove_product_version_from_build_configuration(id=None, name=None, product_
         return
 
     if product_version_id not in [x.id for x in configs_api.get_product_versions(id=found_id).content]:
-        print("The specified ProductVersion is not associated with BuildConfiguration {}.".format(found_id))
+        logging.error("The specified ProductVersion is not associated with BuildConfiguration {}.".format(found_id))
         return
 
     response = utils.checked_api_call(configs_api, 'remove_product_version', id=found_id,

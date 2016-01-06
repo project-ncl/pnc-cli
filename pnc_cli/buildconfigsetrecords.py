@@ -1,6 +1,7 @@
 __author__ = 'thauser'
 from argh import arg
 
+import logging
 from pnc_cli import utils
 from pnc_cli.swagger_client.apis import BuildconfigurationsetsApi
 from pnc_cli.swagger_client.apis import BuildconfigsetrecordsApi
@@ -9,9 +10,6 @@ from pnc_cli.swagger_client.apis import BuildconfigsetrecordsApi
 sets_api = BuildconfigurationsetsApi(utils.get_api_client())
 bcsr_api = BuildconfigsetrecordsApi(utils.get_api_client())
 
-
-def _config_set_record_exists(id):
-    return id in [str(x.id) for x in bcsr_api.get_all().content]
 
 @arg("-p", "--page-size", help="Limit the amount of build records returned")
 @arg("-s", "--sort", help="Sorting RSQL")
@@ -30,12 +28,11 @@ def get_build_configuration_set_record(id):
     """
     Get a specific BuildConfigSetRecord
     """
-    if not _config_set_record_exists(id):
-        print("A build configuration set record with ID {} does not exist.".format(id))
-        return
     response = utils.checked_api_call(bcsr_api, 'get_specific', id=id)
-    if response:
-        return response.content
+    if not response:
+        logging.error("A BuildConfigurationSetRecord with ID {} does not exist.".format(id))
+        return
+    return response.content
 
 
 @arg("id", help="ID of BuildConfigSetRecord to retrieve build records from.")
@@ -46,8 +43,9 @@ def list_records_for_build_config_set(id, page_size=200, sort="", q=""):
     """
     Get a list of BuildRecords for the given BuildConfigSetRecord
     """
-    if not id in [str(x.id) for x in sets_api.get_all().content]:
-        print("A BuildConfigurationSet with ID {} does not exist.".format(id))
+    bcrs_check = utils.checked_api_call(sets_api, 'get_all', q="id=="+id)
+    if not bcrs_check:
+        logging.error("A BuildConfigurationSet with ID {} does not exist.".format(id))
         return
     response = utils.checked_api_call(bcsr_api, 'get_build_records', id=id, page_size=page_size, sort=sort, q=q)
     if response:

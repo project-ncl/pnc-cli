@@ -1,5 +1,6 @@
 from argh import arg
 
+import logging
 from pnc_cli import utils
 from pnc_cli import buildconfigurations
 from pnc_cli import projects
@@ -11,21 +12,21 @@ def record_exists(id):
     existing = [str(x.id) for x in records_api.get_all().content]
     return str(id) in existing
 
-@arg("-p", "--page-size", help="Limit the amount of build records returned")
+@arg("-p", "--page-size", help="Limit the amount of BuildRecords returned")
 @arg("-s", "--sort", help="Sorting RSQL")
 @arg("-q", help="RSQL query")
 def list_build_records(page_size=200, sort="", q=""):
     """
-    List all build records
+    List all BuildRecords
     """
     response = utils.checked_api_call(records_api, 'get_all', page_size=page_size, sort=sort, q=q)
     if response:
         return response.content
 
 
-@arg("-i", "--id", help="Build configuration ID to retrieve build records of.")
-@arg("-n", "--name", help="Build configuration name to retrieve build records of.")
-@arg("-p", "--page-size", help="Limit the amount of build records returned")
+@arg("-i", "--id", help="BuildConfiguration ID to retrieve BuildRecords of.")
+@arg("-n", "--name", help="BuildConfiguration name to retrieve BuildRecords of.")
+@arg("-p", "--page-size", help="Limit the amount of BuildRecords returned")
 @arg("-s", "--sort", help="Sorting RSQL")
 @arg("-q", help="RSQL query")
 def list_records_for_build_configuration(id=None, name=None, page_size=200, sort="", q=""):
@@ -41,9 +42,9 @@ def list_records_for_build_configuration(id=None, name=None, page_size=200, sort
         return response.content
 
 
-@arg("-i", "--id", help="Project ID to retrieve build records of.")
-@arg("-n", "--name", help="Project name to retrieve build records of.")
-@arg("-p", "--page-size", help="Limit the amount of build records returned")
+@arg("-i", "--id", help="Project ID to retrieve BuildRecords of.")
+@arg("-n", "--name", help="Project name to retrieve BuildRecords of.")
+@arg("-p", "--page-size", help="Limit the amount of BuildRecords returned")
 @arg("-s", "--sort", help="Sorting RSQL")
 @arg("-q", help="RSQL query")
 def list_records_for_project(id=None, name=None, page_size=200, sort="", q=""):
@@ -59,21 +60,21 @@ def list_records_for_project(id=None, name=None, page_size=200, sort="", q=""):
         return response.content
 
 
-@arg("id", help="Build record ID to retrieve.")
+@arg("id", help="BuildRecord ID to retrieve.")
 def get_build_record(id):
     """
     Get a specific BuildRecord by ID
     """
     if not record_exists(id):
-        print("No BuildRecord with ID {} exists.".format(id))
+        logging.error("No BuildRecord with ID {} exists.".format(id))
         return
     response = utils.checked_api_call(records_api, 'get_specific', id=id)
     if response:
         return response.content
 
 
-@arg("id", help="Build record ID to retrieve artifacts from.")
-@arg("-p", "--page-size", help="Limit the amount of build records returned")
+@arg("id", help="BuildRecord ID to retrieve artifacts from.")
+@arg("-p", "--page-size", help="Limit the amount of BuildRecords returned")
 @arg("-s", "--sort", help="Sorting RSQL")
 @arg("-q", help="RSQL query")
 def list_build_artifacts(id, page_size=200, sort="", q=""):
@@ -85,7 +86,7 @@ def list_build_artifacts(id, page_size=200, sort="", q=""):
         return response.content
 
 
-@arg("id", help="Build record ID to retrieve audited build configuration from.")
+@arg("id", help="BuildRecord ID to retrieve audited BuildConfiguration from.")
 def get_audited_configuration_for_record(id):
     """
     Get the BuildConfigurationAudited for a given BuildRecord
@@ -95,7 +96,7 @@ def get_audited_configuration_for_record(id):
         return response.content
 
 
-@arg("id", help="Build record ID to retrieve the log from.")
+@arg("id", help="BuildRecord ID to retrieve the log from.")
 def get_log_for_record(id):
     """
     Get the log for a given BuildRecord

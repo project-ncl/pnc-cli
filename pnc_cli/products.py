@@ -1,6 +1,7 @@
 from argh import arg
 from six import iteritems
 
+import logging
 from pnc_cli.swagger_client import ProductRest
 from pnc_cli.swagger_client import ProductsApi
 from pnc_cli import utils
@@ -30,24 +31,24 @@ def _product_exists(prod_id):
 def get_product_id(prod_id, name):
     if prod_id:
         if not _product_exists(prod_id):
-            print("No product with id {0} exists.".format(prod_id))
+            logging.error("No Product with id {0} exists.".format(prod_id))
             return
     elif name:
         prod_id = get_product_id_by_name(name)
         if not prod_id:
-            print("No product with the name {0} exists.".format(name))
+            logging.error("No Product with the name {0} exists.".format(name))
             return
     else:
-        print("Either a product ID or product name is required.")
+        logging.error("Either a Product ID or Product name is required.")
         return
     return prod_id
 
 
 def get_product_id_by_name(search_name):
     """
-    Returns the id of the product in which name or abbreviation matches search_name
+    Returns the id of the Product in which name or abbreviation matches search_name
     :param search_name: the name or abbreviation to search for
-    :return: the ID of the matching product
+    :return: the ID of the matching Product
     """
     products = products_api.get_all().content
     for product in products:
@@ -56,13 +57,13 @@ def get_product_id_by_name(search_name):
     return None
 
 
-@arg("name", help="Name for the product")
-@arg("-d", "--description", help="Detailed description of the new product")
+@arg("name", help="Name for the Product")
+@arg("-d", "--description", help="Detailed description of the new Product")
 @arg("-a", "--abbreviation",
-     help="The abbreviation or \"short name\" of the new product")
-@arg("-p", "--product-code", help="The product code for the new product")
-@arg("-sn", "--pgm-system-name", help="The system code for the new product")
-@arg("-pvids", "--product-version-ids", type=int, nargs='+', help="Space separated list of associated product version ids.")
+     help="The abbreviation or \"short name\" of the new Product")
+@arg("-p", "--product-code", help="The Product code for the new Product")
+@arg("-sn", "--pgm-system-name", help="The system code for the new Product")
+@arg("-pvids", "--product-version-ids", type=int, nargs='+', help="Space separated list of associated ProductVersion ids.")
 def create_product(name, **kwargs):
     """
     Create a new Product
@@ -73,13 +74,13 @@ def create_product(name, **kwargs):
         return response.content
 
 
-@arg("product-id", help="ID of the product to update")
-@arg("-n", "--name", help="New name for the product")
-@arg("-d", "--description", help="New product description")
+@arg("product-id", help="ID of the Product to update")
+@arg("-n", "--name", help="New name for the Product")
+@arg("-d", "--description", help="New Product description")
 @arg("-a", "--abbreviation", help="New abbreviation")
-@arg("-p", "--product-code", help="New product code")
+@arg("-p", "--product-code", help="New Product code")
 @arg("-sn", "--pgm-system-name", help="New system name")
-# @arg("--product-version-ids", type=int, nargs='+', help="Space separated list of associated product version ids.")
+# @arg("--product-version-ids", type=int, nargs='+', help="Space separated list of associated ProductVersion ids.")
 def update_product(product_id, **kwargs):
     """
     Update a Product with new information
@@ -100,8 +101,8 @@ def update_product(product_id, **kwargs):
         return response.content
 
 
-@arg("-i", "--id", help="ID of the product to retrieve")
-@arg("-n", "--name", help="Name of the product to retrieve")
+@arg("-i", "--id", help="ID of the Product to retrieve")
+@arg("-n", "--name", help="Name of the Product to retrieve")
 def get_product(id=None, name=None):
     """
     Get a specific Product by name or ID
@@ -114,8 +115,8 @@ def get_product(id=None, name=None):
         return response.content
 
 
-@arg("-i", "--id", help="ID of the product to retrieve versions from")
-@arg("-n", "--name", help="Name of the product to retrieve versions from")
+@arg("-i", "--id", help="ID of the Product to retrieve versions from")
+@arg("-n", "--name", help="Name of the Product to retrieve versions from")
 def list_versions_for_product(id=None, name=None):
     """
     List all ProductVersions for a given Product
@@ -129,7 +130,7 @@ def list_versions_for_product(id=None, name=None):
         return response.content
 
 
-@arg("-p", "--page-size", help="Limit the amount of products returned")
+@arg("-p", "--page-size", help="Limit the amount of Products returned")
 @arg("-s", "--sort", help="Sorting RSQL")
 @arg("-q", help="RSQL query")
 def list_products(page_size=200, sort="", q=""):
