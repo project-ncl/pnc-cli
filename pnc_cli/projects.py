@@ -8,6 +8,7 @@ from pnc_cli import utils
 
 projects_api = ProjectsApi(utils.get_api_client())
 
+
 def _create_project_object(**kwargs):
     created_project = ProjectRest()
     for key, value in iteritems(kwargs):
@@ -36,13 +37,18 @@ def get_project_id(proj_id, name):
         return
     return found_id
 
+
 def _get_project_id_by_name(search_name):
     """
     Returns the id of the project in which name matches search_name
     :param search_name: name of the project
     :return: id of the matching project, or None if no match found
     """
-    return projects_api.get_all(q='name=='+search_name).content[0].id
+    response = projects_api.get_all(q='name==' + search_name)
+    if not response:
+        return None
+    else:
+        return response.content[0].id
 
 
 def _project_exists(search_id):
@@ -51,8 +57,10 @@ def _project_exists(search_id):
     :param search_id: id to test for
     :return: True if a project with search_id exists
     """
-    existing_ids = [str(x.id) for x in projects_api.get_all(page_size=search_id).content]
-    return str(search_id) in existing_ids
+    response = utils.checked_api_call(projects_api, 'get_all', q="id=="+search_id)
+    if not response:
+        return False
+    return True
 
 
 @arg("name", help="Name for the project")
@@ -87,13 +95,19 @@ def update_project(id, **kwargs):
     if not id:
         logging.warn("A Project ID must be specified.")
         return
-    to_udpate = projects_api.get_specific(id=id).content
+    if utils.contains_only_none_values(kwargs):
+        logging.warn("Updating a Project requires at least one modified field.")
+        return
+    response = utils.checked_api_call(projects_api, 'get_specific', id=id)
+    if not response:
+        logging.error("No Project with ID {} exists.".format(id))
+        return
+    to_update = response.content
     for key, value in iteritems(kwargs):
-        setattr(to_udpate, key, value)
-    response = utils.checked_api_call(projects_api, 'update', id=id, body=to_udpate)
-    if response:
-        return response.content
-
+        if value is not None:
+            setattr(to_update, key, value)
+    response = utils.checked_api_call(projects_api, 'update', id=id, body=to_update)
+    return response
 
 @arg("-id", "--id", help="ID of the project to retrieve")
 @arg("-n", "--name", help="Name of the project to retrieve")
@@ -121,6 +135,7 @@ def delete_project(id=None, name=None):
     response = utils.checked_api_call(projects_api, 'delete_specific', id=proj_id)
     if response:
         return response.content
+
 
 @arg("-p", "--page-size", help="Limit the amount of build records returned")
 @arg("-s", "--sort", help="Sorting RSQL")

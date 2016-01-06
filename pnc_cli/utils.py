@@ -125,3 +125,9 @@ epoch = datetime.datetime.utcfromtimestamp(0)
 def unix_time_millis(dt):
     millis = int((dt - epoch).total_seconds() * 1000.0)
     return millis
+
+def contains_only_none_values(dictionary):
+    for key in dictionary.keys():
+        if dictionary[key] is not None:
+            return False
+    return True
