@@ -49,28 +49,28 @@ def test_get_project_id_none():
 @patch('pnc_cli.projects.projects_api.get_all', return_value=testutils.create_mock_list_with_name_attribute())
 def test_get_project_id_by_name(mock):
     result = projects._get_project_id_by_name('testerino')
-    mock.assert_called_once_with()
+    mock.assert_called_once_with(q='name==testerino')
     assert result == 1
 
 
-@patch('pnc_cli.projects.projects_api.get_all', return_value=testutils.create_mock_list_with_name_attribute())
+@patch('pnc_cli.projects.projects_api.get_all', return_value=None)
 def test_get_project_id_by_name_notexist(mock):
     result = projects._get_project_id_by_name('doesntexist')
-    mock.assert_called_once_with()
+    mock.assert_called_once_with(q='name==doesntexist')
     assert not result
 
 
 @patch('pnc_cli.projects.projects_api.get_all', return_value=MagicMock(content=[MagicMock(id=1), MagicMock(id=2)]))
 def test_project_exists(mock):
     result = projects._project_exists(1)
-    mock.assert_called_once_with()
+    mock.assert_called_once_with(q='id==1')
     assert result
 
 
-@patch('pnc_cli.projects.projects_api.get_all', return_value=MagicMock(content=[MagicMock(id=1), MagicMock(id=2)]))
+@patch('pnc_cli.projects.projects_api.get_all', return_value=None)
 def test_project_exists_notexist(mock):
     result = projects._project_exists(10)
-    mock.assert_called_once_with()
+    mock.assert_called_once_with(q='id==10')
     assert not result
 
 
@@ -89,7 +89,7 @@ def test_update_project_no_id():
 
 
 @patch('pnc_cli.projects.projects_api.get_specific')
-@patch('pnc_cli.projects.projects_api.update', return_value=MagicMock(content='SUCCESS'))
+@patch('pnc_cli.projects.projects_api.update', return_value='SUCCESS')
 def test_update_project(mock_update, mock_get_specific):
     mock = MagicMock()
     mockcontent = MagicMock(content=mock)

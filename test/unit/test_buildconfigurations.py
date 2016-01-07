@@ -47,19 +47,19 @@ def test_get_config_id_none():
     assert not result
 
 
-@patch('pnc_cli.buildconfigurations.configs_api.get_all',
-       return_value=MagicMock(content=[MagicMock(id=1), MagicMock(id=2)]))
+@patch('pnc_cli.buildconfigurations.configs_api.get_specific',
+       return_value=MagicMock(content=MagicMock(id=1)))
 def test_config_id_exists(mock):
     result = buildconfigurations.config_id_exists(1)
-    mock.assert_called_once_with()
+    mock.assert_called_once_with(id=1)
     assert result
 
 
-@patch('pnc_cli.buildconfigurations.configs_api.get_all',
-       return_value=MagicMock(content=[MagicMock(id=1), MagicMock(id=2)]))
+@patch('pnc_cli.buildconfigurations.configs_api.get_specific',
+       return_value=None)
 def test_config_id_exists_false(mock):
     result = buildconfigurations.config_id_exists(5)
-    mock.assert_called_once_with()
+    mock.assert_called_once_with(id=5)
     assert not result
 
 
@@ -67,15 +67,15 @@ def test_config_id_exists_false(mock):
 def test_get_build_configuration_id_by_name(mock):
     mock.return_value = test.testutils.create_mock_list_with_name_attribute()
     result = buildconfigurations.get_build_configuration_id_by_name('testerino')
-    mock.assert_called_once_with()
+    mock.assert_called_once_with(q='name==testerino')
     assert result == 1
 
 
 @patch('pnc_cli.buildconfigurations.configs_api.get_all',
-       return_value=MagicMock(content=[MagicMock(name='testerino', id=1), MagicMock(name='another', id=2)]))
+       return_value=None)
 def test_get_build_configuration_id_by_name_notexist(mock):
     result = buildconfigurations.get_build_configuration_id_by_name('doesntexist')
-    mock.assert_called_once_with()
+    mock.assert_called_once_with(q='name==doesntexist')
     assert not result
 
 
@@ -178,9 +178,13 @@ def test_update_build_configuration_notexist(mock_update, mock_get_specific, moc
 
 @patch('pnc_cli.buildconfigurations.create_build_conf_object', return_value='test-build-config-object')
 @patch('pnc_cli.buildconfigurations.configs_api.create_new', return_value=MagicMock(content='test-build-config-object'))
-def test_create_build_configuration(mock_create_new, mock_create_build_conf_object):
-    result = buildconfigurations.create_build_configuration(name='testerino', description='test description')
-    mock_create_build_conf_object.assert_called_once_with(name='testerino', description='test description')
+@patch('pnc_cli.buildconfigurations.projects.get_project', return_value='mock-project')
+@patch('pnc_cli.buildconfigurations.environments.get_environment', return_value='mock-environment')
+def test_create_build_configuration( mock_environments, mock_projects, mock_create_new, mock_create_build_conf_object):
+    result = buildconfigurations.create_build_configuration(name='testerino', description='test description', project=1, environment=1)
+    mock_create_build_conf_object.assert_called_once_with(name='testerino', description='test description', project='mock-project', environment='mock-environment')
+    mock_projects.assert_called_once_with(id=1)
+    mock_environments.assert_called_once_with(id=1)
     mock_create_new.assert_called_once_with(body='test-build-config-object')
     assert result == 'test-build-config-object'
 

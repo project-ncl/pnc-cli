@@ -34,10 +34,10 @@ def get_build_configuration_id_by_name(name):
     :param name: name of build configuration
     :return: id of the matching build configuration, or None if no match found
     """
-    for config in configs_api.get_all(page_size=10000000).content:
-        if config.name == name:
-            return config.id
-    return None
+    response = utils.checked_api_call(configs_api, 'get_all', q='name=='+name)
+    if not response:
+        return None
+    return response.content[0].id
 
 
 def config_id_exists(search_id):
@@ -46,8 +46,11 @@ def config_id_exists(search_id):
     :param search_id: id to test for
     :return: True if a build configuration with search_id exists, False otherwise
     """
-    existing_ids = [str(x.id) for x in configs_api.get_all(page_size=search_id).content]
-    return str(search_id) in existing_ids
+    response = utils.checked_api_call(configs_api, 'get_specific', id=search_id)
+    if not response:
+        return False
+    return True
+
 
 
 def get_config_id(search_id, name):
@@ -170,14 +173,12 @@ def create_build_configuration(**kwargs):
     project_rest = projects.get_project(id=project_id)
     if not project_rest:
         return
-
+    kwargs['project'] = project_rest
     env_id = kwargs.get('environment')
     env_rest = environments.get_environment(id=env_id)
     if not env_rest:
         return
-    update_kwargs = {'project': project_rest,
-                     'environment': env_rest}
-    kwargs.update(update_kwargs)
+    kwargs['environment'] = env_rest
 
     build_configuration = create_build_conf_object(**kwargs)
     response = utils.checked_api_call(

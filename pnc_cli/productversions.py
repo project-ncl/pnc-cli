@@ -21,8 +21,10 @@ def create_product_version_object(**kwargs):
 
 
 def version_exists(id):
-    version_ids = [str(x.id) for x in versions_api.get_all(page_size=1000000).content]
-    return str(id) in version_ids
+    response = utils.checked_api_call(versions_api, 'get_all', q='id=='+str(id))
+    if not response:
+        return False
+    return True
 
 
 def version_exists_for_product(id, version):
