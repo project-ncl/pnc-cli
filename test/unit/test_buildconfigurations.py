@@ -152,15 +152,21 @@ def test_update_build_configuration_id(mock_update, mock_get_specific, mock_get_
 @patch('pnc_cli.buildconfigurations.get_config_id', return_value=1)
 @patch('pnc_cli.buildconfigurations.configs_api.get_specific')
 @patch('pnc_cli.buildconfigurations.configs_api.update', return_value=MagicMock(content='SUCCESS'))
-def test_update_build_configuration_name(mock_update, mock_get_specific, mock_get_config_id):
+@patch('pnc_cli.buildconfigurations.projects.get_project', return_value='different-mock-project')
+@patch('pnc_cli.buildconfigurations.environments.get_environment', return_value='different-mock-environment')
+def test_update_build_configuration_name(mock_environments, mock_projects, mock_update, mock_get_specific, mock_get_config_id):
     mock = MagicMock()
     mockcontent = MagicMock(content=mock)
     mock_get_specific.return_value = mockcontent
-    result = buildconfigurations.update_build_configuration(name='testerino', build_script='mvn install')
+    result = buildconfigurations.update_build_configuration(name='testerino', build_script='mvn install',project=2, environment=2)
     mock_get_config_id.assert_called_once_with(None, 'testerino')
+    mock_projects.assert_called_once_with(id=2)
+    mock_environments.assert_called_once_with(id=2)
     mock_get_specific.assert_called_once_with(id=1)
     # object returned by get_specific is appropriately modified
     assert getattr(mock, 'build_script') == 'mvn install'
+    assert getattr(mock, 'project') == 'different-mock-project'
+    assert getattr(mock, 'environment') == 'different-mock-environment'
     mock_update.assert_called_once_with(id=1, body=mock)
     assert result == 'SUCCESS'
 
@@ -175,18 +181,52 @@ def test_update_build_configuration_notexist(mock_update, mock_get_specific, moc
     assert not mock_update.called
     assert not result
 
+@patch('pnc_cli.buildconfigurations.projects.get_project', return_value=None)
+@patch('pnc_cli.buildconfigurations.get_config_id', return_value=1)
+@patch('pnc_cli.buildconfigurations.configs_api.get_specific')
+def test_update_build_configuration_no_project(mock_get_specific, mock_get_config_id, mock_projects):
+    result = buildconfigurations.update_build_configuration(name='testerino', project=200)
+    mock_get_config_id.assert_called_once_with(None, 'testerino')
+    mock_get_specific.assert_called_once_with(id=1)
+    mock_projects.assert_called_once_with(id=200)
+    assert not result
+
+@patch('pnc_cli.buildconfigurations.environments.get_environment', return_value=None)
+@patch('pnc_cli.buildconfigurations.get_config_id', return_value=1)
+@patch('pnc_cli.buildconfigurations.configs_api.get_specific')
+def test_update_build_configuration_no_environment(mock_get_specific, mock_get_config_id, mock_environments):
+    result = buildconfigurations.update_build_configuration(name='testerino', environment=200)
+    mock_get_config_id.assert_called_once_with(None, 'testerino')
+    mock_get_specific.assert_called_once_with(id=1)
+    mock_environments.assert_called_once_with(id=200)
+    assert not result
 
 @patch('pnc_cli.buildconfigurations.create_build_conf_object', return_value='test-build-config-object')
 @patch('pnc_cli.buildconfigurations.configs_api.create_new', return_value=MagicMock(content='test-build-config-object'))
 @patch('pnc_cli.buildconfigurations.projects.get_project', return_value='mock-project')
 @patch('pnc_cli.buildconfigurations.environments.get_environment', return_value='mock-environment')
-def test_create_build_configuration( mock_environments, mock_projects, mock_create_new, mock_create_build_conf_object):
+def test_create_build_configuration(mock_environments, mock_projects, mock_create_new, mock_create_build_conf_object):
     result = buildconfigurations.create_build_configuration(name='testerino', description='test description', project=1, environment=1)
     mock_create_build_conf_object.assert_called_once_with(name='testerino', description='test description', project='mock-project', environment='mock-environment')
     mock_projects.assert_called_once_with(id=1)
     mock_environments.assert_called_once_with(id=1)
     mock_create_new.assert_called_once_with(body='test-build-config-object')
     assert result == 'test-build-config-object'
+
+
+@patch('pnc_cli.buildconfigurations.projects.get_project', return_value=None)
+def test_create_build_configuration_no_project(mock_projects):
+    result = buildconfigurations.create_build_configuration(name='testerino', project=1, environment=1)
+    mock_projects.assert_called_once_with(id=1)
+    assert not result
+
+@patch('pnc_cli.buildconfigurations.projects.get_project', return_value='project')
+@patch('pnc_cli.buildconfigurations.environments.get_environment', return_value='mock-environment')
+def test_create_build_configuration_no_environment(mock_environments, mock_project):
+    result = buildconfigurations.create_build_conf_object(name='testerino', project=1, environment=1)
+    mock_project.assert_called_once_with(id=1)
+    mock_environments.assert_called_once_with(id=1)
+    assert not result
 
 
 @patch('pnc_cli.buildconfigurations.get_config_id', return_value=1)
