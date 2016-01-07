@@ -87,6 +87,18 @@ def test_update_project_no_id():
     result = projects.update_project(None, name='hi')
     assert not result
 
+def test_update_project_no_modifications():
+    result = projects.update_project(1)
+    assert not result
+
+
+@patch('pnc_cli.projects.projects_api.get_specific', return_value=None)
+def test_update_project_notexist(mock_get_specific):
+    result = projects.update_project(1, name='teter')
+    mock_get_specific.assert_called_once_with(id=1)
+    assert not result
+
+
 
 @patch('pnc_cli.projects.projects_api.get_specific')
 @patch('pnc_cli.projects.projects_api.update', return_value='SUCCESS')
