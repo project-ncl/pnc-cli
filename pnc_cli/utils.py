@@ -63,8 +63,7 @@ def get_auth_token(config):
     r = requests.post(server, params, verify=False)
     if r.status_code == 200:
         reply = json.loads(r.content.decode('utf-8'))
-        global authtoken
-        authtoken = str(reply.get('access_token'))
+        return str(reply.get('access_token'))
 
 
 config = configparser.ConfigParser(allow_no_value=False)
@@ -92,11 +91,11 @@ if not found:
     logging.warning(
         "New config file written to ~/.config/pnc-cli/pnc-cli.conf. Configure pncUrl and keycloakUrl values.")
     exit(0)
+global authtoken
 authtoken = get_auth_token(config)
 
 def get_api_client():
     pnc_rest_url = config.get('PNC', 'pncUrl').rstrip('/') + '/pnc-rest/rest'
-    global authtoken
     if authtoken:
         apiclient = swagger_client.ApiClient(pnc_rest_url, header_name='Authorization',
                                              header_value="Bearer " + authtoken)
