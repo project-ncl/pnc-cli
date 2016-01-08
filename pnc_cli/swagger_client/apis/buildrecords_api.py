@@ -105,13 +105,13 @@ class BuildrecordsApi(object):
         body_params = None
 
         # HTTP header `Accept`
-        header_params['Accept'] = self.api_client. \
+        header_params['Accept'] = self.api_client.\
             select_header_accept(['application/json'])
         if not header_params['Accept']:
             del header_params['Accept']
 
         # HTTP header `Content-Type`
-        header_params['Content-Type'] = self.api_client. \
+        header_params['Content-Type'] = self.api_client.\
             select_header_content_type(['application/json'])
 
         # Authentication setting
@@ -155,8 +155,7 @@ class BuildrecordsApi(object):
         """
         # verify the required parameter 'configuration_id' is set
         if configuration_id is None:
-            raise ValueError(
-                "Missing the required parameter `configuration_id` when calling `get_all_for_build_configuration`")
+            raise ValueError("Missing the required parameter `configuration_id` when calling `get_all_for_build_configuration`")
 
         all_params = ['configuration_id', 'page_index', 'page_size', 'sort', 'q']
         all_params.append('callback')
@@ -196,13 +195,13 @@ class BuildrecordsApi(object):
         body_params = None
 
         # HTTP header `Accept`
-        header_params['Accept'] = self.api_client. \
+        header_params['Accept'] = self.api_client.\
             select_header_accept(['application/json'])
         if not header_params['Accept']:
             del header_params['Accept']
 
         # HTTP header `Content-Type`
-        header_params['Content-Type'] = self.api_client. \
+        header_params['Content-Type'] = self.api_client.\
             select_header_content_type(['application/json'])
 
         # Authentication setting
@@ -286,13 +285,13 @@ class BuildrecordsApi(object):
         body_params = None
 
         # HTTP header `Accept`
-        header_params['Accept'] = self.api_client. \
+        header_params['Accept'] = self.api_client.\
             select_header_accept(['application/json'])
         if not header_params['Accept']:
             del header_params['Accept']
 
         # HTTP header `Content-Type`
-        header_params['Content-Type'] = self.api_client. \
+        header_params['Content-Type'] = self.api_client.\
             select_header_content_type(['application/json'])
 
         # Authentication setting
@@ -364,13 +363,13 @@ class BuildrecordsApi(object):
         body_params = None
 
         # HTTP header `Accept`
-        header_params['Accept'] = self.api_client. \
+        header_params['Accept'] = self.api_client.\
             select_header_accept(['application/json'])
         if not header_params['Accept']:
             del header_params['Accept']
 
         # HTTP header `Content-Type`
-        header_params['Content-Type'] = self.api_client. \
+        header_params['Content-Type'] = self.api_client.\
             select_header_content_type(['application/json'])
 
         # Authentication setting
@@ -454,13 +453,13 @@ class BuildrecordsApi(object):
         body_params = None
 
         # HTTP header `Accept`
-        header_params['Accept'] = self.api_client. \
+        header_params['Accept'] = self.api_client.\
             select_header_accept(['application/json'])
         if not header_params['Accept']:
             del header_params['Accept']
 
         # HTTP header `Content-Type`
-        header_params['Content-Type'] = self.api_client. \
+        header_params['Content-Type'] = self.api_client.\
             select_header_content_type(['application/json'])
 
         # Authentication setting
@@ -532,13 +531,13 @@ class BuildrecordsApi(object):
         body_params = None
 
         # HTTP header `Accept`
-        header_params['Accept'] = self.api_client. \
+        header_params['Accept'] = self.api_client.\
             select_header_accept(['application/json'])
         if not header_params['Accept']:
             del header_params['Accept']
 
         # HTTP header `Content-Type`
-        header_params['Content-Type'] = self.api_client. \
+        header_params['Content-Type'] = self.api_client.\
             select_header_content_type(['application/json'])
 
         # Authentication setting
@@ -610,13 +609,13 @@ class BuildrecordsApi(object):
         body_params = None
 
         # HTTP header `Accept`
-        header_params['Accept'] = self.api_client. \
+        header_params['Accept'] = self.api_client.\
             select_header_accept(['application/json'])
         if not header_params['Accept']:
             del header_params['Accept']
 
         # HTTP header `Content-Type`
-        header_params['Content-Type'] = self.api_client. \
+        header_params['Content-Type'] = self.api_client.\
             select_header_content_type(['application/json'])
 
         # Authentication setting
@@ -688,13 +687,13 @@ class BuildrecordsApi(object):
         body_params = None
 
         # HTTP header `Accept`
-        header_params['Accept'] = self.api_client. \
+        header_params['Accept'] = self.api_client.\
             select_header_accept(['text/plain'])
         if not header_params['Accept']:
             del header_params['Accept']
 
         # HTTP header `Content-Type`
-        header_params['Content-Type'] = self.api_client. \
+        header_params['Content-Type'] = self.api_client.\
             select_header_content_type(['application/json'])
 
         # Authentication setting
