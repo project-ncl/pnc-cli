@@ -170,6 +170,12 @@ class BuildEnvironmentRest(object):
         :param build_type: The build_type of this BuildEnvironmentRest.
         :type: str
         """
+        allowed_values = ["JAVA", "DOCKER", "NATIVE"]
+        if build_type not in allowed_values:
+            raise ValueError(
+                "Invalid value for `build_type`, must be one of {0}"
+                .format(allowed_values)
+            )
         self._build_type = build_type
 
     @property

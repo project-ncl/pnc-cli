@@ -45,7 +45,91 @@ class BuildtasksApi(object):
                 config.api_client = ApiClient()
             self.api_client = config.api_client
 
-    def build_task_completed(self, task_id, build_status, **kwargs):
+    def build(self, build_execution_configuration, **kwargs):
+        """
+        Triggers the build execution for a given configuration.
+        
+
+        This method makes a synchronous HTTP request by default. To make an
+        asynchronous HTTP request, please define a `callback` function
+        to be invoked when receiving the response.
+        >>> def callback_function(response):
+        >>>     pprint(response)
+        >>>
+        >>> thread = api.build(build_execution_configuration, callback=callback_function)
+
+        :param callback function: The callback function
+            for asynchronous request. (optional)
+        :param str build_execution_configuration: Build Execution Configuration. See org.jboss.pnc.spi.executor.BuildExecutionConfiguration. (required)
+        :param str username_triggered: Username who triggered the build. If empty current user is used.
+        :param str callback_url: Optional Callback URL
+        :return: None
+                 If the method is called asynchronously,
+                 returns the request thread.
+        """
+        # verify the required parameter 'build_execution_configuration' is set
+        if build_execution_configuration is None:
+            raise ValueError("Missing the required parameter `build_execution_configuration` when calling `build`")
+
+        all_params = ['build_execution_configuration', 'username_triggered', 'callback_url']
+        all_params.append('callback')
+
+        params = locals()
+        for key, val in iteritems(params['kwargs']):
+            if key not in all_params:
+                raise TypeError(
+                    "Got an unexpected keyword argument '%s'"
+                    " to method build" % key
+                )
+            params[key] = val
+        del params['kwargs']
+
+        resource_path = '/build-tasks/execute-build'.replace('{format}', 'json')
+        method = 'POST'
+
+        path_params = {}
+
+        query_params = {}
+
+        header_params = {}
+
+        form_params = {}
+        files = {}
+        if 'build_execution_configuration' in params:
+            form_params['buildExecutionConfiguration'] = params['build_execution_configuration']
+        if 'username_triggered' in params:
+            form_params['usernameTriggered'] = params['username_triggered']
+        if 'callback_url' in params:
+            form_params['callbackUrl'] = params['callback_url']
+
+        body_params = None
+
+        # HTTP header `Accept`
+        header_params['Accept'] = self.api_client.\
+            select_header_accept(['application/json'])
+        if not header_params['Accept']:
+            del header_params['Accept']
+
+        # HTTP header `Content-Type`
+        header_params['Content-Type'] = self.api_client.\
+            select_header_content_type(['application/json'])
+
+        # Authentication setting
+        auth_settings = []
+
+        response = self.api_client.call_api(resource_path, method,
+                                            path_params,
+                                            query_params,
+                                            header_params,
+                                            body=body_params,
+                                            post_params=form_params,
+                                            files=files,
+                                            response_type=None,
+                                            auth_settings=auth_settings,
+                                            callback=params.get('callback'))
+        return response
+
+    def build_task_completed(self, task_id, build_result, **kwargs):
         """
         Notifies the completion of externally managed build task process.
         
@@ -56,12 +140,12 @@ class BuildtasksApi(object):
         >>> def callback_function(response):
         >>>     pprint(response)
         >>>
-        >>> thread = api.build_task_completed(task_id, build_status, callback=callback_function)
+        >>> thread = api.build_task_completed(task_id, build_result, callback=callback_function)
 
         :param callback function: The callback function
             for asynchronous request. (optional)
         :param int task_id: Build task id (required)
-        :param str build_status: Build status (required)
+        :param str build_result: Build result (required)
         :return: None
                  If the method is called asynchronously,
                  returns the request thread.
@@ -69,11 +153,11 @@ class BuildtasksApi(object):
         # verify the required parameter 'task_id' is set
         if task_id is None:
             raise ValueError("Missing the required parameter `task_id` when calling `build_task_completed`")
-        # verify the required parameter 'build_status' is set
-        if build_status is None:
-            raise ValueError("Missing the required parameter `build_status` when calling `build_task_completed`")
+        # verify the required parameter 'build_result' is set
+        if build_result is None:
+            raise ValueError("Missing the required parameter `build_result` when calling `build_task_completed`")
 
-        all_params = ['task_id', 'build_status']
+        all_params = ['task_id', 'build_result']
         all_params.append('callback')
 
         params = locals()
@@ -94,13 +178,13 @@ class BuildtasksApi(object):
             path_params['taskId'] = params['task_id']
 
         query_params = {}
-        if 'build_status' in params:
-            query_params['buildStatus'] = params['build_status']
 
         header_params = {}
 
         form_params = {}
         files = {}
+        if 'build_result' in params:
+            form_params['buildResult'] = params['build_result']
 
         body_params = None
 

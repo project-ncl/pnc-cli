@@ -217,6 +217,12 @@ class ProductReleaseRest(object):
         :param support_level: The support_level of this ProductReleaseRest.
         :type: str
         """
+        allowed_values = ["UNRELEASED", "EARLYACCESS", "SUPPORTED", "EXTENDED_SUPPORT", "EOL"]
+        if support_level not in allowed_values:
+            raise ValueError(
+                "Invalid value for `support_level`, must be one of {0}"
+                .format(allowed_values)
+            )
         self._support_level = support_level
 
     def to_dict(self):

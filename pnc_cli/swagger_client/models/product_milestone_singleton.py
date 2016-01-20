@@ -51,7 +51,7 @@ class ProductMilestoneSingleton(object):
     def content(self):
         """
         Gets the content of this ProductMilestoneSingleton.
-        Content of the response
+
 
         :return: The content of this ProductMilestoneSingleton.
         :rtype: ProductMilestoneRest
@@ -62,7 +62,7 @@ class ProductMilestoneSingleton(object):
     def content(self, content):
         """
         Sets the content of this ProductMilestoneSingleton.
-        Content of the response
+
 
         :param content: The content of this ProductMilestoneSingleton.
         :type: ProductMilestoneRest

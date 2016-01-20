@@ -51,7 +51,7 @@ class ProjectSingleton(object):
     def content(self):
         """
         Gets the content of this ProjectSingleton.
-        Content of the response
+
 
         :return: The content of this ProjectSingleton.
         :rtype: ProjectRest
@@ -62,7 +62,7 @@ class ProjectSingleton(object):
     def content(self, content):
         """
         Sets the content of this ProjectSingleton.
-        Content of the response
+
 
         :param content: The content of this ProjectSingleton.
         :type: ProjectRest

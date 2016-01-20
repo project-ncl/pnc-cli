@@ -51,7 +51,7 @@ class ProductSingleton(object):
     def content(self):
         """
         Gets the content of this ProductSingleton.
-        Content of the response
+
 
         :return: The content of this ProductSingleton.
         :rtype: ProductRest
@@ -62,7 +62,7 @@ class ProductSingleton(object):
     def content(self, content):
         """
         Sets the content of this ProductSingleton.
-        Content of the response
+
 
         :param content: The content of this ProductSingleton.
         :type: ProductRest

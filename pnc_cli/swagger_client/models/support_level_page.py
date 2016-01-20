@@ -60,7 +60,7 @@ class SupportLevelPage(object):
     def page_index(self):
         """
         Gets the page_index of this SupportLevelPage.
-        Page index
+
 
         :return: The page_index of this SupportLevelPage.
         :rtype: int
@@ -71,7 +71,7 @@ class SupportLevelPage(object):
     def page_index(self, page_index):
         """
         Sets the page_index of this SupportLevelPage.
-        Page index
+
 
         :param page_index: The page_index of this SupportLevelPage.
         :type: int
@@ -82,7 +82,7 @@ class SupportLevelPage(object):
     def page_size(self):
         """
         Gets the page_size of this SupportLevelPage.
-        Number of records per page
+
 
         :return: The page_size of this SupportLevelPage.
         :rtype: int
@@ -93,7 +93,7 @@ class SupportLevelPage(object):
     def page_size(self, page_size):
         """
         Sets the page_size of this SupportLevelPage.
-        Number of records per page
+
 
         :param page_size: The page_size of this SupportLevelPage.
         :type: int
@@ -104,7 +104,7 @@ class SupportLevelPage(object):
     def total_pages(self):
         """
         Gets the total_pages of this SupportLevelPage.
-        Total pages provided by this query or -1 if unknown
+
 
         :return: The total_pages of this SupportLevelPage.
         :rtype: int
@@ -115,7 +115,7 @@ class SupportLevelPage(object):
     def total_pages(self, total_pages):
         """
         Sets the total_pages of this SupportLevelPage.
-        Total pages provided by this query or -1 if unknown
+
 
         :param total_pages: The total_pages of this SupportLevelPage.
         :type: int
@@ -126,7 +126,7 @@ class SupportLevelPage(object):
     def content(self):
         """
         Gets the content of this SupportLevelPage.
-        Embedded collection of data
+
 
         :return: The content of this SupportLevelPage.
         :rtype: list[str]
@@ -137,7 +137,7 @@ class SupportLevelPage(object):
     def content(self, content):
         """
         Sets the content of this SupportLevelPage.
-        Embedded collection of data
+
 
         :param content: The content of this SupportLevelPage.
         :type: list[str]

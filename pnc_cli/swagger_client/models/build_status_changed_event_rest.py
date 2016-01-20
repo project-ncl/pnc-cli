@@ -42,7 +42,10 @@ class BuildStatusChangedEventRest(object):
             'new_status': 'str',
             'build_task_id': 'int',
             'user_id': 'int',
-            'build_configuration_id': 'int'
+            'build_configuration_id': 'int',
+            'build_configuration_name': 'str',
+            'build_start_time': 'datetime',
+            'build_end_time': 'datetime'
         }
 
         self.attribute_map = {
@@ -50,7 +53,10 @@ class BuildStatusChangedEventRest(object):
             'new_status': 'newStatus',
             'build_task_id': 'buildTaskId',
             'user_id': 'userId',
-            'build_configuration_id': 'buildConfigurationId'
+            'build_configuration_id': 'buildConfigurationId',
+            'build_configuration_name': 'buildConfigurationName',
+            'build_start_time': 'buildStartTime',
+            'build_end_time': 'buildEndTime'
         }
 
         self._old_status = None
@@ -58,6 +64,9 @@ class BuildStatusChangedEventRest(object):
         self._build_task_id = None
         self._user_id = None
         self._build_configuration_id = None
+        self._build_configuration_name = None
+        self._build_start_time = None
+        self._build_end_time = None
 
     @property
     def old_status(self):
@@ -79,7 +88,7 @@ class BuildStatusChangedEventRest(object):
         :param old_status: The old_status of this BuildStatusChangedEventRest.
         :type: str
         """
-        allowed_values = ["NEW", "WAITING_FOR_DEPENDENCIES", "REPO_SETTING_UP", "BUILD_ENV_SETTING_UP", "BUILD_ENV_WAITING", "BUILD_ENV_SETUP_COMPLETE_SUCCESS", "BUILD_ENV_SETUP_COMPLETE_WITH_ERROR", "BUILD_SETTING_UP", "BUILD_WAITING", "BUILD_COMPLETED_SUCCESS", "BUILD_COMPLETED_WITH_ERROR", "COLLECTING_RESULTS_FROM_BUILD_DRIVER", "COLLECTING_RESULTS_FROM_REPOSITORY_NAMAGER", "BUILD_ENV_DESTROYING", "BUILD_ENV_DESTROYED", "STORING_RESULTS", "DONE", "REJECTED", "REJECTED_ALREADY_BUILT", "SYSTEM_ERROR", "DONE_WITH_ERRORS"]
+        allowed_values = ["NEW", "WAITING_FOR_DEPENDENCIES", "BUILDING", "BUILD_COMPLETED", "DONE", "REJECTED", "REJECTED_ALREADY_BUILT", "SYSTEM_ERROR", "DONE_WITH_ERRORS"]
         if old_status not in allowed_values:
             raise ValueError(
                 "Invalid value for `old_status`, must be one of {0}"
@@ -107,7 +116,7 @@ class BuildStatusChangedEventRest(object):
         :param new_status: The new_status of this BuildStatusChangedEventRest.
         :type: str
         """
-        allowed_values = ["NEW", "WAITING_FOR_DEPENDENCIES", "REPO_SETTING_UP", "BUILD_ENV_SETTING_UP", "BUILD_ENV_WAITING", "BUILD_ENV_SETUP_COMPLETE_SUCCESS", "BUILD_ENV_SETUP_COMPLETE_WITH_ERROR", "BUILD_SETTING_UP", "BUILD_WAITING", "BUILD_COMPLETED_SUCCESS", "BUILD_COMPLETED_WITH_ERROR", "COLLECTING_RESULTS_FROM_BUILD_DRIVER", "COLLECTING_RESULTS_FROM_REPOSITORY_NAMAGER", "BUILD_ENV_DESTROYING", "BUILD_ENV_DESTROYED", "STORING_RESULTS", "DONE", "REJECTED", "REJECTED_ALREADY_BUILT", "SYSTEM_ERROR", "DONE_WITH_ERRORS"]
+        allowed_values = ["NEW", "WAITING_FOR_DEPENDENCIES", "BUILDING", "BUILD_COMPLETED", "DONE", "REJECTED", "REJECTED_ALREADY_BUILT", "SYSTEM_ERROR", "DONE_WITH_ERRORS"]
         if new_status not in allowed_values:
             raise ValueError(
                 "Invalid value for `new_status`, must be one of {0}"
@@ -180,6 +189,72 @@ class BuildStatusChangedEventRest(object):
         :type: int
         """
         self._build_configuration_id = build_configuration_id
+
+    @property
+    def build_configuration_name(self):
+        """
+        Gets the build_configuration_name of this BuildStatusChangedEventRest.
+
+
+        :return: The build_configuration_name of this BuildStatusChangedEventRest.
+        :rtype: str
+        """
+        return self._build_configuration_name
+
+    @build_configuration_name.setter
+    def build_configuration_name(self, build_configuration_name):
+        """
+        Sets the build_configuration_name of this BuildStatusChangedEventRest.
+
+
+        :param build_configuration_name: The build_configuration_name of this BuildStatusChangedEventRest.
+        :type: str
+        """
+        self._build_configuration_name = build_configuration_name
+
+    @property
+    def build_start_time(self):
+        """
+        Gets the build_start_time of this BuildStatusChangedEventRest.
+
+
+        :return: The build_start_time of this BuildStatusChangedEventRest.
+        :rtype: datetime
+        """
+        return self._build_start_time
+
+    @build_start_time.setter
+    def build_start_time(self, build_start_time):
+        """
+        Sets the build_start_time of this BuildStatusChangedEventRest.
+
+
+        :param build_start_time: The build_start_time of this BuildStatusChangedEventRest.
+        :type: datetime
+        """
+        self._build_start_time = build_start_time
+
+    @property
+    def build_end_time(self):
+        """
+        Gets the build_end_time of this BuildStatusChangedEventRest.
+
+
+        :return: The build_end_time of this BuildStatusChangedEventRest.
+        :rtype: datetime
+        """
+        return self._build_end_time
+
+    @build_end_time.setter
+    def build_end_time(self, build_end_time):
+        """
+        Sets the build_end_time of this BuildStatusChangedEventRest.
+
+
+        :param build_end_time: The build_end_time of this BuildStatusChangedEventRest.
+        :type: datetime
+        """
+        self._build_end_time = build_end_time
 
     def to_dict(self):
         """

@@ -338,6 +338,12 @@ class BuildConfigurationRest(object):
         :param build_status: The build_status of this BuildConfigurationRest.
         :type: str
         """
+        allowed_values = ["SUCCESS", "FAILED", "UNSTABLE", "BUILDING", "ABORTED", "CANCELLED", "SYSTEM_ERROR", "UNKNOWN"]
+        if build_status not in allowed_values:
+            raise ValueError(
+                "Invalid value for `build_status`, must be one of {0}"
+                .format(allowed_values)
+            )
         self._build_status = build_status
 
     @property

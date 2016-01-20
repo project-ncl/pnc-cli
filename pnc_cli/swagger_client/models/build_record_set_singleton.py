@@ -51,7 +51,7 @@ class BuildRecordSetSingleton(object):
     def content(self):
         """
         Gets the content of this BuildRecordSetSingleton.
-        Content of the response
+
 
         :return: The content of this BuildRecordSetSingleton.
         :rtype: BuildRecordSetRest
@@ -62,7 +62,7 @@ class BuildRecordSetSingleton(object):
     def content(self, content):
         """
         Sets the content of this BuildRecordSetSingleton.
-        Content of the response
+
 
         :param content: The content of this BuildRecordSetSingleton.
         :type: BuildRecordSetRest

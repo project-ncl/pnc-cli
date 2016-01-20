@@ -51,7 +51,7 @@ class UserSingleton(object):
     def content(self):
         """
         Gets the content of this UserSingleton.
-        Content of the response
+
 
         :return: The content of this UserSingleton.
         :rtype: UserRest
@@ -62,7 +62,7 @@ class UserSingleton(object):
     def content(self, content):
         """
         Sets the content of this UserSingleton.
-        Content of the response
+
 
         :param content: The content of this UserSingleton.
         :type: UserRest

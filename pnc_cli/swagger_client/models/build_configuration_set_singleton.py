@@ -51,7 +51,7 @@ class BuildConfigurationSetSingleton(object):
     def content(self):
         """
         Gets the content of this BuildConfigurationSetSingleton.
-        Content of the response
+
 
         :return: The content of this BuildConfigurationSetSingleton.
         :rtype: BuildConfigurationSetRest
@@ -62,7 +62,7 @@ class BuildConfigurationSetSingleton(object):
     def content(self, content):
         """
         Sets the content of this BuildConfigurationSetSingleton.
-        Content of the response
+
 
         :param content: The content of this BuildConfigurationSetSingleton.
         :type: BuildConfigurationSetRest
