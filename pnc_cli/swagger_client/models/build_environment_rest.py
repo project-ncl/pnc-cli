@@ -170,7 +170,7 @@ class BuildEnvironmentRest(object):
         :param build_type: The build_type of this BuildEnvironmentRest.
         :type: str
         """
-        allowed_values = ["JAVA", "DOCKER", "NATIVE"]
+        allowed_values = ["JAVA", "DOCKER", "NATIVE", None]
         if build_type not in allowed_values:
             raise ValueError(
                 "Invalid value for `build_type`, must be one of {0}"
