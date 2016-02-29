@@ -11,11 +11,6 @@ import time
 
 current_time_millis = lambda: int(round(time.time() * 1000))
 
-common_fields = ['build_script', 'build_status', 'dependency_ids', 'description', 'environment', 'internal_scm',
-                 'internal_scm_revison',
-                 'project', 'repositories', 'scm_mirror_repo_url', 'scm_mirror_revision', 'scm_repo_url',
-                 'scm_revision']
-
 
 @pytest.fixture(scope='function', autouse=True)
 def get_configs_api():
@@ -165,11 +160,14 @@ def test_update_invalid_param():
 
 
 def test_update(new_config):
+    ignored_keys = ('last_modification_time')
     new_config.description = "This is a new description for testing update functionality"
     new_config.name = "pnc-cli-test-updated-" + new_config.name
     configs_api.update(id=new_config.id, body=new_config)
     updated = configs_api.get_specific(id=new_config.id).content
-    assert updated.to_dict() == new_config.to_dict()
+    keys_updated = set(updated.attribute_map).difference(ignored_keys)
+    keys_new_config = set(new_config.attribute_map).difference(ignored_keys)
+    assert keys_updated == keys_new_config and (getattr(updated, key) == getattr(new_config, key) for key in keys_updated)
 
 
 def test_delete_specific_no_id():
