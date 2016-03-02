@@ -17,7 +17,8 @@ setup(
 	    "argh >= 0.26.1",
         "requests >= 2.4.3",
         "certifi >= 2015.04.28",
-	"urllib3 >= 1.12"
+	"urllib3 >= 1.12",
+	"six >= 1.9.0"
     ],
     classifiers=[
 	'Development Status :: 3 - Alpha',
