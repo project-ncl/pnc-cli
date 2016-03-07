@@ -39,7 +39,7 @@ def list_milestones(page_size=200, q="", sort=""):
 @arg("product_version_id", help="ID of the ProductVersion to create a ProductMilestone from.")
 @arg("version", help="Version of the ProductMilestone. Will be appended to the version from product_version_id.")
 @arg("starting_date", help="Planned starting date for the ProductMilestone.")
-@arg("planned_release_date", help="Planned date for the ProductMilestone release.")
+@arg("planned_end_date", help="Planned date for the ProductMilestone release.")
 def create_milestone(**kwargs):
     """
     Create a new ProductMilestone
@@ -84,11 +84,13 @@ def get_milestone(id):
     if response:
         return response
 
-
+#TODO: problem setting end date.
+#TODO: incorrect date parsing.
+#TODO: update_milestone does not work.
 @arg("id", help="ProductMilestone ID to update.")
 @arg("version", help="New version for the ProductMilestone.")
 @arg("start_date", help="New start date for the ProductMilestone.")
-@arg("release_date", help="New release date for the ProductMilestone.")
+@arg("end_date", help="New release date for the ProductMilestone.")
 def update_milestone(id, **kwargs):
     existing_milestone = milestones_api.get_specific(id=id).content
     for key, value in iteritems(kwargs):

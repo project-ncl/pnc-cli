@@ -81,7 +81,7 @@ def list_sets_containing_build_record(id, page_size=200, sort="", q=""):
 @arg("-p", "--page-size", help="Limit the amount of BuildRecordSets returned")
 @arg("-s", "--sort", help="Sorting RSQL")
 @arg("-q", help="RSQL query")
-@arg('id', help='ID of the BuildRecord.')
+@arg('id', help='ID of the ProductMilestone.')
 def list_build_record_sets_for_milestone(id, page_size=200, sort="", q=""):
     """
     List all BuildRecordSets containing the given ProductMilestone

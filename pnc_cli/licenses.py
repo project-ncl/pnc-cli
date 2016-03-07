@@ -96,8 +96,8 @@ def delete_license(license_id):
 
 
 @arg("license_id", help="ID of the License to update")
-@arg("full_name", help="Name for the new License")
-@arg("full_content", help="Full textual content of the new License")
+@arg("-n, --full-name", help="Name for the new License")
+@arg("-c, --full-content", help="Full textual content of the new License")
 @arg("-r", "--ref-url", help="URL containing a reference for the License")
 @arg("-sn", "--short-name", help="Abbreviation or \"short name\" for the License")
 @arg("-pids", "--projects-ids", type=int, nargs='+',

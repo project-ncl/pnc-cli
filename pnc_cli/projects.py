@@ -67,9 +67,9 @@ def _project_exists(search_id):
 @arg("-c", "--configuration-ids", type=int, nargs='+',
      help="Space separated list of BuildConfigurationIDs this Project should be associated with.")
 @arg("-d", "--description", help="Detailed description of the new Project")
-@arg("-p", "--project_url", help="SCM Url for the Project")
+@arg("-p", "--project-url", help="SCM Url for the Project")
 @arg("-i", "--issue-tracker-url", help="Issue tracker URL for the new Project")
-@arg("-l", "--license_id", help="License ID for the new Project")
+@arg("-l", "--license-id", help="License ID for the new Project")
 def create_project(**kwargs):
     """
     Create a new Project
@@ -85,9 +85,9 @@ def create_project(**kwargs):
 @arg("-c", "--configuration-ids", type=int, nargs='+',
      help="Space separated list of BuildConfiguration IDs this Project should be associated with.")
 @arg("-d", "--description", help="Detailed description of the new Project.")
-@arg("-p", "--project_url", help="SCM Url for the Project.")
-@arg("-i", "--issue_url", help="Issue tracker URL for the new Project")
-@arg("-l", "--license_id", help="License ID for the new Project")
+@arg("-p", "--project-url", help="SCM Url for the Project.")
+@arg("-i", "--issue-url", help="Issue tracker URL for the new Project")
+@arg("-l", "--license-id", help="License ID for the new Project")
 def update_project(id, **kwargs):
     """
     Update an existing Project with new information

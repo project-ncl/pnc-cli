@@ -65,7 +65,7 @@ def list_releases_for_version(id):
     List all ProductReleases for a ProductVersion
     """
     response = utils.checked_api_call(
-        releases_api, 'get_all_by_product_version_id', id=id)
+        releases_api, 'get_all_by_product_version_id', version_id=id)
     if response:
         return response.content
 

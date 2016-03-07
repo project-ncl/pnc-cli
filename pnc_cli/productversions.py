@@ -43,6 +43,7 @@ def list_product_versions(page_size=200, sort="", q=""):
         return response.content
 
 
+# TODO: Version needs to be checked for validity.
 @arg("product_id", help="ID of product to add a version to")
 @arg("version", help="Version to add")
 @arg("-cm", "--current-product-milestone-id",
@@ -82,6 +83,7 @@ def get_product_version(id):
 
 
 # TODO: how should constraints be defined? Can a new productId be specified?
+# TODO: Version needs to be checked for validity.
 @arg("id", help="ID of the ProductVersion to update.")
 @arg("-pid", "--product-id", help="ID of product to add a version to")
 @arg("-v", "--version", help="Version to add")
