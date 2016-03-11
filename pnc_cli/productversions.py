@@ -28,7 +28,11 @@ def version_exists(id):
 
 
 def version_exists_for_product(id, version):
-    return version in [x.version for x in products_api.get_product_versions(id=id).content]
+    existing_products = products_api.get_product_versions(id=id).content
+    if existing_products:
+        return version in [x.version for x in products_api.get_product_versions(id=id).content]
+    else:
+        return False
 
 
 @arg("-p", "--page-size", help="Limit the amount of build records returned")

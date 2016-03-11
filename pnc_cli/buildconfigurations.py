@@ -27,7 +27,6 @@ def create_build_conf_object(**kwargs):
     return created_build_configuration
 
 
-# TODO: use rsql to streamline this
 def get_build_configuration_id_by_name(name):
     """
     Returns the id of the build configuration matching name

@@ -224,7 +224,7 @@ class ProductreleasesApi(object):
         :param int page_size: Pagination size
         :param str sort: Sorting RSQL
         :param str q: RSQL Query
-        :return: ProductReleaseSingleton
+        :return: ProductReleasePage
                  If the method is called asynchronously,
                  returns the request thread.
         """

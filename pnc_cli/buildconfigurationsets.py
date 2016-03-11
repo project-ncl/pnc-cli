@@ -97,15 +97,38 @@ def get_build_configuration_set(id=None, name=None):
      help="Updated product version ID for the BuildConfigurationSet.")
 @arg("-bcs", "--build-configuration_ids", type=int, nargs='+',
      help="Space separated list of build-configurations to include in the set.")
-# TODO: get the actual existing set and modify it, instead of creating a new one
+# TODO: seems like a bug in PNC prevents us from updating the buildconfigurationset
 def update_build_configuration_set(id, **kwargs):
     """
     Update a BuildConfigurationSet
     """
-    if not get_set_id(id):
+    invalid_bcs = False
+    if not get_set_id(id, None):
         return
-    updated_build_config_set = _create_build_config_set_object(**kwargs)
-    response = utils.checked_api_call(sets_api, 'update', id=id, body=updated_build_config_set)
+    set_to_update = utils.checked_api_call(sets_api, 'get_specific', id=id).content
+
+    pvi = kwargs.get('product_version_id')
+    if pvi and not productversions.get_product_version(id=pvi):
+        logging.error("There is no ProductVersion with ID {}".format(pvi))
+        return
+
+    bc_ids = kwargs.get('build_configuration_ids')
+
+    if bc_ids:
+        for id in bc_ids:
+            if not buildconfigurations.get_build_configuration(id=id):
+                logging.error("There is no BuildConfiguration with ID {}".format(id))
+                invalid_bcs = True
+
+    if invalid_bcs:
+        logging.error("Attempted to add non-existing BuildConfigurations to BuildConfigurationSet.")
+        return
+
+    for key, value in kwargs.items():
+        if value is not None:
+            setattr(set_to_update, key, value)
+
+    response = utils.checked_api_call(sets_api, 'update', id=id, body=set_to_update)
     if response:
         return response.content
 
