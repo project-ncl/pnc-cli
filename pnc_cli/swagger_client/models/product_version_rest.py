@@ -41,6 +41,7 @@ class ProductVersionRest(object):
             'id': 'int',
             'version': 'str',
             'product_id': 'int',
+            'product_name': 'str',
             'current_product_milestone_id': 'int',
             'product_milestones': 'list[ProductMilestoneRest]',
             'product_releases': 'list[ProductReleaseRest]',
@@ -52,6 +53,7 @@ class ProductVersionRest(object):
             'id': 'id',
             'version': 'version',
             'product_id': 'productId',
+            'product_name': 'productName',
             'current_product_milestone_id': 'currentProductMilestoneId',
             'product_milestones': 'productMilestones',
             'product_releases': 'productReleases',
@@ -62,6 +64,7 @@ class ProductVersionRest(object):
         self._id = None
         self._version = None
         self._product_id = None
+        self._product_name = None
         self._current_product_milestone_id = None
         self._product_milestones = None
         self._product_releases = None
@@ -133,6 +136,28 @@ class ProductVersionRest(object):
         :type: int
         """
         self._product_id = product_id
+
+    @property
+    def product_name(self):
+        """
+        Gets the product_name of this ProductVersionRest.
+
+
+        :return: The product_name of this ProductVersionRest.
+        :rtype: str
+        """
+        return self._product_name
+
+    @product_name.setter
+    def product_name(self, product_name):
+        """
+        Sets the product_name of this ProductVersionRest.
+
+
+        :param product_name: The product_name of this ProductVersionRest.
+        :type: str
+        """
+        self._product_name = product_name
 
     @property
     def current_product_milestone_id(self):

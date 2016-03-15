@@ -41,8 +41,9 @@ class BuildEnvironment(object):
             'id': 'int',
             'name': 'str',
             'description': 'str',
-            'image_repository_url': 'str',
+            'system_image_repository_url': 'str',
             'system_image_id': 'str',
+            'attributes': 'dict(str, str)',
             'build_type': 'str',
             'field_handler': 'FieldHandler'
         }
@@ -51,8 +52,9 @@ class BuildEnvironment(object):
             'id': 'id',
             'name': 'name',
             'description': 'description',
-            'image_repository_url': 'imageRepositoryUrl',
+            'system_image_repository_url': 'systemImageRepositoryUrl',
             'system_image_id': 'systemImageId',
+            'attributes': 'attributes',
             'build_type': 'buildType',
             'field_handler': 'fieldHandler'
         }
@@ -60,8 +62,9 @@ class BuildEnvironment(object):
         self._id = None
         self._name = None
         self._description = None
-        self._image_repository_url = None
+        self._system_image_repository_url = None
         self._system_image_id = None
+        self._attributes = None
         self._build_type = None
         self._field_handler = None
 
@@ -132,26 +135,26 @@ class BuildEnvironment(object):
         self._description = description
 
     @property
-    def image_repository_url(self):
+    def system_image_repository_url(self):
         """
-        Gets the image_repository_url of this BuildEnvironment.
+        Gets the system_image_repository_url of this BuildEnvironment.
 
 
-        :return: The image_repository_url of this BuildEnvironment.
+        :return: The system_image_repository_url of this BuildEnvironment.
         :rtype: str
         """
-        return self._image_repository_url
+        return self._system_image_repository_url
 
-    @image_repository_url.setter
-    def image_repository_url(self, image_repository_url):
+    @system_image_repository_url.setter
+    def system_image_repository_url(self, system_image_repository_url):
         """
-        Sets the image_repository_url of this BuildEnvironment.
+        Sets the system_image_repository_url of this BuildEnvironment.
 
 
-        :param image_repository_url: The image_repository_url of this BuildEnvironment.
+        :param system_image_repository_url: The system_image_repository_url of this BuildEnvironment.
         :type: str
         """
-        self._image_repository_url = image_repository_url
+        self._system_image_repository_url = system_image_repository_url
 
     @property
     def system_image_id(self):
@@ -174,6 +177,28 @@ class BuildEnvironment(object):
         :type: str
         """
         self._system_image_id = system_image_id
+
+    @property
+    def attributes(self):
+        """
+        Gets the attributes of this BuildEnvironment.
+
+
+        :return: The attributes of this BuildEnvironment.
+        :rtype: dict(str, str)
+        """
+        return self._attributes
+
+    @attributes.setter
+    def attributes(self, attributes):
+        """
+        Sets the attributes of this BuildEnvironment.
+
+
+        :param attributes: The attributes of this BuildEnvironment.
+        :type: dict(str, str)
+        """
+        self._attributes = attributes
 
     @property
     def build_type(self):

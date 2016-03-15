@@ -48,6 +48,7 @@ class BuildConfigurationRest(object):
             'scm_mirror_revision': 'str',
             'creation_time': 'datetime',
             'last_modification_time': 'datetime',
+            'archived': 'bool',
             'build_status': 'str',
             'repositories': 'str',
             'project': 'ProjectRest',
@@ -69,6 +70,7 @@ class BuildConfigurationRest(object):
             'scm_mirror_revision': 'scmMirrorRevision',
             'creation_time': 'creationTime',
             'last_modification_time': 'lastModificationTime',
+            'archived': 'archived',
             'build_status': 'buildStatus',
             'repositories': 'repositories',
             'project': 'project',
@@ -89,6 +91,7 @@ class BuildConfigurationRest(object):
         self._scm_mirror_revision = None
         self._creation_time = None
         self._last_modification_time = None
+        self._archived = None
         self._build_status = None
         self._repositories = None
         self._project = None
@@ -319,6 +322,28 @@ class BuildConfigurationRest(object):
         self._last_modification_time = last_modification_time
 
     @property
+    def archived(self):
+        """
+        Gets the archived of this BuildConfigurationRest.
+
+
+        :return: The archived of this BuildConfigurationRest.
+        :rtype: bool
+        """
+        return self._archived
+
+    @archived.setter
+    def archived(self, archived):
+        """
+        Sets the archived of this BuildConfigurationRest.
+
+
+        :param archived: The archived of this BuildConfigurationRest.
+        :type: bool
+        """
+        self._archived = archived
+
+    @property
     def build_status(self):
         """
         Gets the build_status of this BuildConfigurationRest.
@@ -338,7 +363,7 @@ class BuildConfigurationRest(object):
         :param build_status: The build_status of this BuildConfigurationRest.
         :type: str
         """
-        allowed_values = ["SUCCESS", "FAILED", "UNSTABLE", "BUILDING", "ABORTED", "CANCELLED", "SYSTEM_ERROR", "UNKNOWN", None]
+        allowed_values = ["SUCCESS", "FAILED", "UNSTABLE", "BUILDING", "REJECTED", "CANCELLED", "SYSTEM_ERROR", "UNKNOWN"]
         if build_status not in allowed_values:
             raise ValueError(
                 "Invalid value for `build_status`, must be one of {0}"

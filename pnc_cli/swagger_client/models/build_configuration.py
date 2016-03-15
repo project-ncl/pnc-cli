@@ -53,13 +53,14 @@ class BuildConfiguration(object):
             'build_configuration_sets': 'list[BuildConfigurationSet]',
             'creation_time': 'datetime',
             'last_modification_time': 'datetime',
+            'archived': 'bool',
             'build_status': 'str',
             'dependencies': 'list[BuildConfiguration]',
             'dependants': 'list[BuildConfiguration]',
             'repositories': 'str',
             'all_dependencies': 'list[BuildConfiguration]',
-            'field_handler': 'FieldHandler',
-            'indirect_dependencies': 'list[BuildConfiguration]'
+            'indirect_dependencies': 'list[BuildConfiguration]',
+            'field_handler': 'FieldHandler'
         }
 
         self.attribute_map = {
@@ -78,13 +79,14 @@ class BuildConfiguration(object):
             'build_configuration_sets': 'buildConfigurationSets',
             'creation_time': 'creationTime',
             'last_modification_time': 'lastModificationTime',
+            'archived': 'archived',
             'build_status': 'buildStatus',
             'dependencies': 'dependencies',
             'dependants': 'dependants',
             'repositories': 'repositories',
             'all_dependencies': 'allDependencies',
-            'field_handler': 'fieldHandler',
-            'indirect_dependencies': 'indirectDependencies'
+            'indirect_dependencies': 'indirectDependencies',
+            'field_handler': 'fieldHandler'
         }
 
         self._id = None
@@ -102,13 +104,14 @@ class BuildConfiguration(object):
         self._build_configuration_sets = None
         self._creation_time = None
         self._last_modification_time = None
+        self._archived = None
         self._build_status = None
         self._dependencies = None
         self._dependants = None
         self._repositories = None
         self._all_dependencies = None
-        self._field_handler = None
         self._indirect_dependencies = None
+        self._field_handler = None
 
     @property
     def id(self):
@@ -441,6 +444,28 @@ class BuildConfiguration(object):
         self._last_modification_time = last_modification_time
 
     @property
+    def archived(self):
+        """
+        Gets the archived of this BuildConfiguration.
+
+
+        :return: The archived of this BuildConfiguration.
+        :rtype: bool
+        """
+        return self._archived
+
+    @archived.setter
+    def archived(self, archived):
+        """
+        Sets the archived of this BuildConfiguration.
+
+
+        :param archived: The archived of this BuildConfiguration.
+        :type: bool
+        """
+        self._archived = archived
+
+    @property
     def build_status(self):
         """
         Gets the build_status of this BuildConfiguration.
@@ -460,7 +485,7 @@ class BuildConfiguration(object):
         :param build_status: The build_status of this BuildConfiguration.
         :type: str
         """
-        allowed_values = ["SUCCESS", "FAILED", "UNSTABLE", "BUILDING", "ABORTED", "CANCELLED", "SYSTEM_ERROR", "UNKNOWN"]
+        allowed_values = ["SUCCESS", "FAILED", "UNSTABLE", "BUILDING", "REJECTED", "CANCELLED", "SYSTEM_ERROR", "UNKNOWN"]
         if build_status not in allowed_values:
             raise ValueError(
                 "Invalid value for `build_status`, must be one of {0}"
@@ -557,28 +582,6 @@ class BuildConfiguration(object):
         self._all_dependencies = all_dependencies
 
     @property
-    def field_handler(self):
-        """
-        Gets the field_handler of this BuildConfiguration.
-
-
-        :return: The field_handler of this BuildConfiguration.
-        :rtype: FieldHandler
-        """
-        return self._field_handler
-
-    @field_handler.setter
-    def field_handler(self, field_handler):
-        """
-        Sets the field_handler of this BuildConfiguration.
-
-
-        :param field_handler: The field_handler of this BuildConfiguration.
-        :type: FieldHandler
-        """
-        self._field_handler = field_handler
-
-    @property
     def indirect_dependencies(self):
         """
         Gets the indirect_dependencies of this BuildConfiguration.
@@ -599,6 +602,28 @@ class BuildConfiguration(object):
         :type: list[BuildConfiguration]
         """
         self._indirect_dependencies = indirect_dependencies
+
+    @property
+    def field_handler(self):
+        """
+        Gets the field_handler of this BuildConfiguration.
+
+
+        :return: The field_handler of this BuildConfiguration.
+        :rtype: FieldHandler
+        """
+        return self._field_handler
+
+    @field_handler.setter
+    def field_handler(self, field_handler):
+        """
+        Sets the field_handler of this BuildConfiguration.
+
+
+        :param field_handler: The field_handler of this BuildConfiguration.
+        :type: FieldHandler
+        """
+        self._field_handler = field_handler
 
     def to_dict(self):
         """

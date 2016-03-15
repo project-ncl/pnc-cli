@@ -88,7 +88,7 @@ class BuildStatusChangedEventRest(object):
         :param old_status: The old_status of this BuildStatusChangedEventRest.
         :type: str
         """
-        allowed_values = ["NEW", "WAITING_FOR_DEPENDENCIES", "BUILDING", "BUILD_COMPLETED", "DONE", "REJECTED", "REJECTED_ALREADY_BUILT", "SYSTEM_ERROR", "DONE_WITH_ERRORS"]
+        allowed_values = ["NEW", "WAITING_FOR_DEPENDENCIES", "BUILDING", "BUILD_COMPLETED", "DONE", "REJECTED", "REJECTED_FAILED_DEPENDENCIES", "REJECTED_ALREADY_BUILT", "SYSTEM_ERROR", "DONE_WITH_ERRORS"]
         if old_status not in allowed_values:
             raise ValueError(
                 "Invalid value for `old_status`, must be one of {0}"
@@ -116,7 +116,7 @@ class BuildStatusChangedEventRest(object):
         :param new_status: The new_status of this BuildStatusChangedEventRest.
         :type: str
         """
-        allowed_values = ["NEW", "WAITING_FOR_DEPENDENCIES", "BUILDING", "BUILD_COMPLETED", "DONE", "REJECTED", "REJECTED_ALREADY_BUILT", "SYSTEM_ERROR", "DONE_WITH_ERRORS"]
+        allowed_values = ["NEW", "WAITING_FOR_DEPENDENCIES", "BUILDING", "BUILD_COMPLETED", "DONE", "REJECTED", "REJECTED_FAILED_DEPENDENCIES", "REJECTED_ALREADY_BUILT", "SYSTEM_ERROR", "DONE_WITH_ERRORS"]
         if new_status not in allowed_values:
             raise ValueError(
                 "Invalid value for `new_status`, must be one of {0}"

@@ -525,6 +525,96 @@ class BuildconfigurationsetsApi(object):
                                             callback=params.get('callback'))
         return response
 
+    def get_all_build_config_set_records(self, id, **kwargs):
+        """
+        Get all build config set execution records associated with this build config set, returns empty list if none are found
+        
+
+        This method makes a synchronous HTTP request by default. To make an
+        asynchronous HTTP request, please define a `callback` function
+        to be invoked when receiving the response.
+        >>> def callback_function(response):
+        >>>     pprint(response)
+        >>>
+        >>> thread = api.get_all_build_config_set_records(id, callback=callback_function)
+
+        :param callback function: The callback function
+            for asynchronous request. (optional)
+        :param int id: Build config set id (required)
+        :param int page_index: Page Index
+        :param int page_size: Pagination size
+        :param str sort: Sorting RSQL
+        :param str q: RSQL Query
+        :return: BuildRecordPage
+                 If the method is called asynchronously,
+                 returns the request thread.
+        """
+        # verify the required parameter 'id' is set
+        if id is None:
+            raise ValueError("Missing the required parameter `id` when calling `get_all_build_config_set_records`")
+
+        all_params = ['id', 'page_index', 'page_size', 'sort', 'q']
+        all_params.append('callback')
+
+        params = locals()
+        for key, val in iteritems(params['kwargs']):
+            if key not in all_params:
+                raise TypeError(
+                    "Got an unexpected keyword argument '%s'"
+                    " to method get_all_build_config_set_records" % key
+                )
+            params[key] = val
+        del params['kwargs']
+
+        resource_path = '/build-configuration-sets/{id}/build-config-set-records'.replace('{format}', 'json')
+        method = 'GET'
+
+        path_params = {}
+        if 'id' in params:
+            path_params['id'] = params['id']
+
+        query_params = {}
+        if 'page_index' in params:
+            query_params['pageIndex'] = params['page_index']
+        if 'page_size' in params:
+            query_params['pageSize'] = params['page_size']
+        if 'sort' in params:
+            query_params['sort'] = params['sort']
+        if 'q' in params:
+            query_params['q'] = params['q']
+
+        header_params = {}
+
+        form_params = {}
+        files = {}
+
+        body_params = None
+
+        # HTTP header `Accept`
+        header_params['Accept'] = self.api_client.\
+            select_header_accept(['application/json'])
+        if not header_params['Accept']:
+            del header_params['Accept']
+
+        # HTTP header `Content-Type`
+        header_params['Content-Type'] = self.api_client.\
+            select_header_content_type(['application/json'])
+
+        # Authentication setting
+        auth_settings = []
+
+        response = self.api_client.call_api(resource_path, method,
+                                            path_params,
+                                            query_params,
+                                            header_params,
+                                            body=body_params,
+                                            post_params=form_params,
+                                            files=files,
+                                            response_type='BuildRecordPage',
+                                            auth_settings=auth_settings,
+                                            callback=params.get('callback'))
+        return response
+
     def get_configurations(self, id, **kwargs):
         """
         Gets the Configurations for the Specified Set

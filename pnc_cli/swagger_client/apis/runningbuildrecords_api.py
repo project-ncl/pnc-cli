@@ -62,13 +62,14 @@ class RunningbuildrecordsApi(object):
             for asynchronous request. (optional)
         :param int page_index: Page Index
         :param int page_size: Pagination size
+        :param str sort: Sorting RSQL
         :param str search: Since this endpoint does not support queries, fulltext search is hard-coded for some predefined fields (record id, configuration name) and performed using this argument. Empty string leaves all data unfiltered.
         :return: BuildRecordPage
                  If the method is called asynchronously,
                  returns the request thread.
         """
 
-        all_params = ['page_index', 'page_size', 'search']
+        all_params = ['page_index', 'page_size', 'sort', 'search']
         all_params.append('callback')
 
         params = locals()
@@ -91,6 +92,8 @@ class RunningbuildrecordsApi(object):
             query_params['pageIndex'] = params['page_index']
         if 'page_size' in params:
             query_params['pageSize'] = params['page_size']
+        if 'sort' in params:
+            query_params['sort'] = params['sort']
         if 'search' in params:
             query_params['search'] = params['search']
 

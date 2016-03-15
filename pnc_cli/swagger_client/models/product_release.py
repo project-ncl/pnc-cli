@@ -43,6 +43,7 @@ class ProductRelease(object):
             'support_level': 'str',
             'release_date': 'datetime',
             'download_url': 'str',
+            'issue_tracker_url': 'str',
             'product_milestone': 'ProductMilestone',
             'field_handler': 'FieldHandler',
             'product_version': 'ProductVersion'
@@ -54,6 +55,7 @@ class ProductRelease(object):
             'support_level': 'supportLevel',
             'release_date': 'releaseDate',
             'download_url': 'downloadUrl',
+            'issue_tracker_url': 'issueTrackerUrl',
             'product_milestone': 'productMilestone',
             'field_handler': 'fieldHandler',
             'product_version': 'productVersion'
@@ -64,6 +66,7 @@ class ProductRelease(object):
         self._support_level = None
         self._release_date = None
         self._download_url = None
+        self._issue_tracker_url = None
         self._product_milestone = None
         self._field_handler = None
         self._product_version = None
@@ -183,6 +186,28 @@ class ProductRelease(object):
         :type: str
         """
         self._download_url = download_url
+
+    @property
+    def issue_tracker_url(self):
+        """
+        Gets the issue_tracker_url of this ProductRelease.
+
+
+        :return: The issue_tracker_url of this ProductRelease.
+        :rtype: str
+        """
+        return self._issue_tracker_url
+
+    @issue_tracker_url.setter
+    def issue_tracker_url(self, issue_tracker_url):
+        """
+        Sets the issue_tracker_url of this ProductRelease.
+
+
+        :param issue_tracker_url: The issue_tracker_url of this ProductRelease.
+        :type: str
+        """
+        self._issue_tracker_url = issue_tracker_url
 
     @property
     def product_milestone(self):

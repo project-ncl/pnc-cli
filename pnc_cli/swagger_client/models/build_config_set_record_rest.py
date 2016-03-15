@@ -204,7 +204,7 @@ class BuildConfigSetRecordRest(object):
         :param status: The status of this BuildConfigSetRecordRest.
         :type: str
         """
-        allowed_values = ["SUCCESS", "FAILED", "UNSTABLE", "BUILDING", "ABORTED", "CANCELLED", "SYSTEM_ERROR", "UNKNOWN"]
+        allowed_values = ["SUCCESS", "FAILED", "UNSTABLE", "BUILDING", "REJECTED", "CANCELLED", "SYSTEM_ERROR", "UNKNOWN"]
         if status not in allowed_values:
             raise ValueError(
                 "Invalid value for `status`, must be one of {0}"

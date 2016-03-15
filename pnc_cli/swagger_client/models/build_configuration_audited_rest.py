@@ -51,7 +51,9 @@ class BuildConfigurationAuditedRest(object):
             'last_modification_time': 'datetime',
             'repositories': 'str',
             'project_id': 'int',
-            'environment_id': 'int'
+            'environment_id': 'int',
+            'project': 'ProjectRest',
+            'environment': 'BuildEnvironmentRest'
         }
 
         self.attribute_map = {
@@ -68,7 +70,9 @@ class BuildConfigurationAuditedRest(object):
             'last_modification_time': 'lastModificationTime',
             'repositories': 'repositories',
             'project_id': 'projectId',
-            'environment_id': 'environmentId'
+            'environment_id': 'environmentId',
+            'project': 'project',
+            'environment': 'environment'
         }
 
         self._id = None
@@ -85,6 +89,8 @@ class BuildConfigurationAuditedRest(object):
         self._repositories = None
         self._project_id = None
         self._environment_id = None
+        self._project = None
+        self._environment = None
 
     @property
     def id(self):
@@ -393,6 +399,50 @@ class BuildConfigurationAuditedRest(object):
         :type: int
         """
         self._environment_id = environment_id
+
+    @property
+    def project(self):
+        """
+        Gets the project of this BuildConfigurationAuditedRest.
+
+
+        :return: The project of this BuildConfigurationAuditedRest.
+        :rtype: ProjectRest
+        """
+        return self._project
+
+    @project.setter
+    def project(self, project):
+        """
+        Sets the project of this BuildConfigurationAuditedRest.
+
+
+        :param project: The project of this BuildConfigurationAuditedRest.
+        :type: ProjectRest
+        """
+        self._project = project
+
+    @property
+    def environment(self):
+        """
+        Gets the environment of this BuildConfigurationAuditedRest.
+
+
+        :return: The environment of this BuildConfigurationAuditedRest.
+        :rtype: BuildEnvironmentRest
+        """
+        return self._environment
+
+    @environment.setter
+    def environment(self, environment):
+        """
+        Sets the environment of this BuildConfigurationAuditedRest.
+
+
+        :param environment: The environment of this BuildConfigurationAuditedRest.
+        :type: BuildEnvironmentRest
+        """
+        self._environment = environment
 
     def to_dict(self):
         """

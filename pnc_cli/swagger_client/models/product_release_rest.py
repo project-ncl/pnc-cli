@@ -42,6 +42,7 @@ class ProductReleaseRest(object):
             'version': 'str',
             'release_date': 'datetime',
             'download_url': 'str',
+            'issue_tracker_url': 'str',
             'product_version_id': 'int',
             'product_milestone_id': 'int',
             'support_level': 'str'
@@ -52,6 +53,7 @@ class ProductReleaseRest(object):
             'version': 'version',
             'release_date': 'releaseDate',
             'download_url': 'downloadUrl',
+            'issue_tracker_url': 'issueTrackerUrl',
             'product_version_id': 'productVersionId',
             'product_milestone_id': 'productMilestoneId',
             'support_level': 'supportLevel'
@@ -61,6 +63,7 @@ class ProductReleaseRest(object):
         self._version = None
         self._release_date = None
         self._download_url = None
+        self._issue_tracker_url = None
         self._product_version_id = None
         self._product_milestone_id = None
         self._support_level = None
@@ -152,6 +155,28 @@ class ProductReleaseRest(object):
         :type: str
         """
         self._download_url = download_url
+
+    @property
+    def issue_tracker_url(self):
+        """
+        Gets the issue_tracker_url of this ProductReleaseRest.
+
+
+        :return: The issue_tracker_url of this ProductReleaseRest.
+        :rtype: str
+        """
+        return self._issue_tracker_url
+
+    @issue_tracker_url.setter
+    def issue_tracker_url(self, issue_tracker_url):
+        """
+        Sets the issue_tracker_url of this ProductReleaseRest.
+
+
+        :param issue_tracker_url: The issue_tracker_url of this ProductReleaseRest.
+        :type: str
+        """
+        self._issue_tracker_url = issue_tracker_url
 
     @property
     def product_version_id(self):

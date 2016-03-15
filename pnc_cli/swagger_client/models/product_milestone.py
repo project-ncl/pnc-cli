@@ -44,6 +44,7 @@ class ProductMilestone(object):
             'starting_date': 'datetime',
             'planned_end_date': 'datetime',
             'download_url': 'str',
+            'issue_tracker_url': 'str',
             'product_version': 'ProductVersion',
             'product_release': 'ProductRelease',
             'performed_build_record_set': 'BuildRecordSet',
@@ -58,6 +59,7 @@ class ProductMilestone(object):
             'starting_date': 'startingDate',
             'planned_end_date': 'plannedEndDate',
             'download_url': 'downloadUrl',
+            'issue_tracker_url': 'issueTrackerUrl',
             'product_version': 'productVersion',
             'product_release': 'productRelease',
             'performed_build_record_set': 'performedBuildRecordSet',
@@ -71,6 +73,7 @@ class ProductMilestone(object):
         self._starting_date = None
         self._planned_end_date = None
         self._download_url = None
+        self._issue_tracker_url = None
         self._product_version = None
         self._product_release = None
         self._performed_build_record_set = None
@@ -208,6 +211,28 @@ class ProductMilestone(object):
         :type: str
         """
         self._download_url = download_url
+
+    @property
+    def issue_tracker_url(self):
+        """
+        Gets the issue_tracker_url of this ProductMilestone.
+
+
+        :return: The issue_tracker_url of this ProductMilestone.
+        :rtype: str
+        """
+        return self._issue_tracker_url
+
+    @issue_tracker_url.setter
+    def issue_tracker_url(self, issue_tracker_url):
+        """
+        Sets the issue_tracker_url of this ProductMilestone.
+
+
+        :param issue_tracker_url: The issue_tracker_url of this ProductMilestone.
+        :type: str
+        """
+        self._issue_tracker_url = issue_tracker_url
 
     @property
     def product_version(self):

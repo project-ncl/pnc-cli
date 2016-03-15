@@ -44,7 +44,8 @@ class ProductRest(object):
             'abbreviation': 'str',
             'product_code': 'str',
             'pgm_system_name': 'str',
-            'product_version_ids': 'list[int]'
+            'product_version_ids': 'list[int]',
+            'product_versions': 'list[ProductVersionRest]'
         }
 
         self.attribute_map = {
@@ -54,7 +55,8 @@ class ProductRest(object):
             'abbreviation': 'abbreviation',
             'product_code': 'productCode',
             'pgm_system_name': 'pgmSystemName',
-            'product_version_ids': 'productVersionIds'
+            'product_version_ids': 'productVersionIds',
+            'product_versions': 'productVersions'
         }
 
         self._id = None
@@ -64,6 +66,7 @@ class ProductRest(object):
         self._product_code = None
         self._pgm_system_name = None
         self._product_version_ids = None
+        self._product_versions = None
 
     @property
     def id(self):
@@ -218,6 +221,28 @@ class ProductRest(object):
         :type: list[int]
         """
         self._product_version_ids = product_version_ids
+
+    @property
+    def product_versions(self):
+        """
+        Gets the product_versions of this ProductRest.
+
+
+        :return: The product_versions of this ProductRest.
+        :rtype: list[ProductVersionRest]
+        """
+        return self._product_versions
+
+    @product_versions.setter
+    def product_versions(self, product_versions):
+        """
+        Sets the product_versions of this ProductRest.
+
+
+        :param product_versions: The product_versions of this ProductRest.
+        :type: list[ProductVersionRest]
+        """
+        self._product_versions = product_versions
 
     def to_dict(self):
         """
