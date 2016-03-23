@@ -4,7 +4,6 @@ from pnc_cli.swagger_client.apis.environments_api import EnvironmentsApi
 from pnc_cli import utils
 from test import testutils
 
-
 @pytest.fixture(scope='function', autouse=True)
 def get_envs_api():
     global envs_api
@@ -13,14 +12,9 @@ def get_envs_api():
 
 @pytest.fixture(scope='function')
 def new_env(request):
+    randname = testutils.gen_random_name()
     env = envs_api.create_new(
-        body=environments._create_environment_object(name=testutils.gen_random_name())).content
-
-    def teardown():
-        if env.id in [x.id for x in envs_api.get_all(page_size=1000000).content]:
-            envs_api.delete(id=env.id)
-
-    request.addfinalizer(teardown)
+        body=environments._create_environment_object(name=randname, build_type='JAVA', image_id=randname)).content
     return env
 
 
@@ -64,10 +58,13 @@ def test_update_invalid_param():
 
 def test_update(new_env):
     randname = testutils.gen_random_name()
-    updated_env = environments._create_environment_object(description="DOCKER", name=randname)
+    updated_env = environments._create_environment_object(description="DOCKER", build_type='NATIVE', name=randname, image_id=randname)
     envs_api.update(id=new_env.id, body=updated_env)
     retrieved_env = envs_api.get_specific(new_env.id).content
-    assert (retrieved_env.description == 'DOCKER') and (retrieved_env.name == randname)
+    assert (retrieved_env.description == 'DOCKER')
+    assert (retrieved_env.build_type == 'NATIVE')
+    assert (retrieved_env.name == randname)
+    assert (retrieved_env.image_id == randname)
 
 
 def test_delete_no_id():
