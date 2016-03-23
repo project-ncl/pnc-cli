@@ -16,6 +16,7 @@ from pnc_cli import runningbuilds
 from pnc_cli import productreleases
 from pnc_cli import buildrecordsets
 from pnc_cli import users
+from pnc_cli import builds
 
 parser = argh.ArghParser()
 parser.add_commands([products.create_product,
@@ -98,7 +99,8 @@ parser.add_commands([products.create_product,
                      users.create_user,
                      users.list_users,
                      users.update_user,
-                     users.get_user])
+                     users.get_user,
+                     builds.list_builds])
 parser.autocomplete()
 
 
