@@ -19,15 +19,13 @@ def get_configs_api():
 
 @pytest.fixture(scope='function')
 def new_project(request):
-    project = projects.create_project(name=testutils.gen_random_name()+'_project')
-    def teardown():
-        projects.delete_project(id=project.id)
-    request.addfinalizer(teardown)
+    project = projects.create_project(name=testutils.gen_random_name()+'-project')
     return project
 
 @pytest.fixture(scope='function')
 def new_environment(request):
-    env = environments.create_environment(name=testutils.gen_random_name()+'_environment', build_type='JAVA')
+    randname = testutils.gen_random_name()
+    env = environments.create_environment(name=randname + '-environment', build_type='JAVA', image_id=randname)
     return env
 
 @pytest.fixture(scope='function')
