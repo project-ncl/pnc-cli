@@ -28,9 +28,6 @@ def new_project(request):
 @pytest.fixture(scope='function')
 def new_environment(request):
     env = environments.create_environment(name=testutils.gen_random_name()+'_environment', build_type='JAVA')
-    def teardown():
-        environments.delete_environment(id=env.id)
-    request.addfinalizer(teardown)
     return env
 
 @pytest.fixture(scope='function')
@@ -44,11 +41,6 @@ def new_config(request, new_project, new_environment):
                                                           product_version_ids=[1],
                                                           scm_repo_url='https://github.com/thauser/simple-maven-build-pnc.git')).content
 
-    def teardown():
-        if utils.checked_api_call(configs_api, 'get_specific',id=created_bc.id):
-            configs_api.delete_specific(id=created_bc.id)
-
-    request.addfinalizer(teardown)
     return created_bc
 
 
