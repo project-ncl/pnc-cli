@@ -139,24 +139,24 @@ def test_get_build_configuration_set_name_notexist(mock_get_specific, mock_get_s
     assert not result
 
 
-@patch('pnc_cli.buildconfigurationsets._create_build_config_set_object', return_value='testobject')
+@patch('pnc_cli.sets_api.get_specific', return_value=MagicMock(content={'product_version_id': 'before'}))
+@patch('pnc_cli.productversions.get_product_version', return_value=True)
 @patch('pnc_cli.buildconfigurationsets.get_set_id', return_value=1)
 @patch('pnc_cli.buildconfigurationsets.sets_api.update', return_value=MagicMock(content='SUCCESS'))
-def test_update_build_configuration_set(mock_update, mock_get_set_id, mock_build_object):
-    result = buildconfigurationsets.update_build_configuration_set(1, product_version_id='herpaderpa')
-    mock_get_set_id.assert_called_once_with(1)
-    mock_build_object.assert_called_once_with(product_version_id='herpaderpa')
-    mock_update.assert_called_once_with(id=1, body='testobject')
+def test_update_build_configuration_set(mock_update, mock_get_set_id, mock_get_product_version, mock_get_specific):
+    result = buildconfigurationsets.update_build_configuration_set(1, product_version_id='updated')
+    mock_get_specific.assert_called_once_with(id=1)
+    mock_get_product_version.assert_called_once_with(id='updated')
+    mock_get_set_id.assert_called_once_with(1, None)
+    mock_update.assert_called_once_with(id=1, body={'product_version_id': 'updated'})
     assert result == 'SUCCESS'
 
 
-@patch('pnc_cli.buildconfigurationsets._create_build_config_set_object')
 @patch('pnc_cli.buildconfigurationsets.get_set_id', return_value=None)
 @patch('pnc_cli.buildconfigurationsets.sets_api.update')
-def test_update_build_configuration_set_notexist(mock_update, mock_get_set_id, mock_build_object):
+def test_update_build_configuration_set_notexist(mock_update, mock_get_set_id):
     result = buildconfigurationsets.update_build_configuration_set(1, product_version_id='herpaderpa')
-    mock_get_set_id.assert_called_once_with(1)
-    assert not mock_build_object.called
+    mock_get_set_id.assert_called_once_with(1, None)
     assert not mock_update.called
     assert not result
 

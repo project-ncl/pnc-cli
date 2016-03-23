@@ -56,7 +56,7 @@ def test_create_release(mock_get_specific, mock_create_new, mock_create_object):
        return_value=MagicMock(content='list of releases for version'))
 def test_list_releases_for_version(mock):
     result = productreleases.list_releases_for_version(1)
-    mock.assert_called_once_with(id=1)
+    mock.assert_called_once_with(version_id=1)
     assert result == 'list of releases for version'
 
 
