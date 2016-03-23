@@ -22,33 +22,18 @@ def new_set(request):
     set = sets_api.create_new(
         body=buildconfigurationsets._create_build_config_set_object(name=testutils.gen_random_name(),
                                                                     productVersionId=1)).content
-
-    def teardown():
-        sets_api.delete_specific(id=set.id)
-
-    request.addfinalizer(teardown)
     return set
 
 
 @pytest.fixture(scope='function')
 def new_project(request):
     project = projects.create_project(name=testutils.gen_random_name() + '_project')
-
-    def teardown():
-        projects.delete_project(id=project.id)
-
-    request.addfinalizer(teardown)
     return project
 
 
 @pytest.fixture(scope='function')
 def new_environment(request):
     env = environments.create_environment(name=testutils.gen_random_name() + '_environment')
-
-    def teardown():
-        environments.delete_environment(id=env.id)
-
-    request.addfinalizer(teardown)
     return env
 
 
@@ -62,10 +47,6 @@ def new_config(request, new_project, new_environment):
                                                                 product_version_ids=[1],
                                                                 scm_repo_url='https://github.com/thauser/simple-maven-build-pnc.git')
 
-    def teardown():
-        buildconfigurations.delete_build_configuration(id=created_bc.id)
-
-    request.addfinalizer(teardown)
     return created_bc
 
 
