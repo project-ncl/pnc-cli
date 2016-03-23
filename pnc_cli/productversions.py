@@ -30,7 +30,7 @@ def version_exists(id):
 def version_exists_for_product(id, version):
     existing_products = products_api.get_product_versions(id=id).content
     if existing_products:
-        return version in [x.version for x in products_api.get_product_versions(id=id).content]
+        return version in [x.version for x in existing_products]
     else:
         return False
 
