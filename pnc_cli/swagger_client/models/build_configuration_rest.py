@@ -55,8 +55,8 @@ class BuildConfigurationRest(object):
             'environment': 'BuildEnvironmentRest',
             'dependency_ids': 'list[int]',
             'product_version_ids': 'list[int]',
-            'internal_scm': 'str',
-            'internal_scm_revison': 'str'
+            'internal_scm_revison': 'str',
+            'internal_scm': 'str'
         }
 
         self.attribute_map = {
@@ -77,8 +77,8 @@ class BuildConfigurationRest(object):
             'environment': 'environment',
             'dependency_ids': 'dependencyIds',
             'product_version_ids': 'productVersionIds',
-            'internal_scm': 'internalScm',
-            'internal_scm_revison': 'internalScmRevison'
+            'internal_scm_revison': 'internalScmRevison',
+            'internal_scm': 'internalScm'
         }
 
         self._id = None
@@ -98,8 +98,8 @@ class BuildConfigurationRest(object):
         self._environment = None
         self._dependency_ids = None
         self._product_version_ids = None
-        self._internal_scm = None
         self._internal_scm_revison = None
+        self._internal_scm = None
 
     @property
     def id(self):
@@ -482,28 +482,6 @@ class BuildConfigurationRest(object):
         self._product_version_ids = product_version_ids
 
     @property
-    def internal_scm(self):
-        """
-        Gets the internal_scm of this BuildConfigurationRest.
-
-
-        :return: The internal_scm of this BuildConfigurationRest.
-        :rtype: str
-        """
-        return self._internal_scm
-
-    @internal_scm.setter
-    def internal_scm(self, internal_scm):
-        """
-        Sets the internal_scm of this BuildConfigurationRest.
-
-
-        :param internal_scm: The internal_scm of this BuildConfigurationRest.
-        :type: str
-        """
-        self._internal_scm = internal_scm
-
-    @property
     def internal_scm_revison(self):
         """
         Gets the internal_scm_revison of this BuildConfigurationRest.
@@ -524,6 +502,28 @@ class BuildConfigurationRest(object):
         :type: str
         """
         self._internal_scm_revison = internal_scm_revison
+
+    @property
+    def internal_scm(self):
+        """
+        Gets the internal_scm of this BuildConfigurationRest.
+
+
+        :return: The internal_scm of this BuildConfigurationRest.
+        :rtype: str
+        """
+        return self._internal_scm
+
+    @internal_scm.setter
+    def internal_scm(self, internal_scm):
+        """
+        Sets the internal_scm of this BuildConfigurationRest.
+
+
+        :param internal_scm: The internal_scm of this BuildConfigurationRest.
+        :type: str
+        """
+        self._internal_scm = internal_scm
 
     def to_dict(self):
         """

@@ -49,6 +49,7 @@ class Artifact(object):
             'dependant_build_records': 'list[BuildRecord]',
             'origin_url': 'str',
             'import_date': 'datetime',
+            'distributed_in_product_milestones': 'list[ProductMilestone]',
             'field_handler': 'FieldHandler'
         }
 
@@ -64,6 +65,7 @@ class Artifact(object):
             'dependant_build_records': 'dependantBuildRecords',
             'origin_url': 'originUrl',
             'import_date': 'importDate',
+            'distributed_in_product_milestones': 'distributedInProductMilestones',
             'field_handler': 'fieldHandler'
         }
 
@@ -78,6 +80,7 @@ class Artifact(object):
         self._dependant_build_records = None
         self._origin_url = None
         self._import_date = None
+        self._distributed_in_product_milestones = None
         self._field_handler = None
 
     @property
@@ -333,6 +336,28 @@ class Artifact(object):
         :type: datetime
         """
         self._import_date = import_date
+
+    @property
+    def distributed_in_product_milestones(self):
+        """
+        Gets the distributed_in_product_milestones of this Artifact.
+
+
+        :return: The distributed_in_product_milestones of this Artifact.
+        :rtype: list[ProductMilestone]
+        """
+        return self._distributed_in_product_milestones
+
+    @distributed_in_product_milestones.setter
+    def distributed_in_product_milestones(self, distributed_in_product_milestones):
+        """
+        Sets the distributed_in_product_milestones of this Artifact.
+
+
+        :param distributed_in_product_milestones: The distributed_in_product_milestones of this Artifact.
+        :type: list[ProductMilestone]
+        """
+        self._distributed_in_product_milestones = distributed_in_product_milestones
 
     @property
     def field_handler(self):

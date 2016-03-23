@@ -47,7 +47,7 @@ class ProductMilestoneRest(object):
             'issue_tracker_url': 'str',
             'product_version_id': 'int',
             'performed_build_record_set_id': 'int',
-            'distributed_build_record_set_id': 'int',
+            'distributed_artifact_ids': 'list[int]',
             'product_release_id': 'int'
         }
 
@@ -61,7 +61,7 @@ class ProductMilestoneRest(object):
             'issue_tracker_url': 'issueTrackerUrl',
             'product_version_id': 'productVersionId',
             'performed_build_record_set_id': 'performedBuildRecordSetId',
-            'distributed_build_record_set_id': 'distributedBuildRecordSetId',
+            'distributed_artifact_ids': 'distributedArtifactIds',
             'product_release_id': 'productReleaseId'
         }
 
@@ -74,7 +74,7 @@ class ProductMilestoneRest(object):
         self._issue_tracker_url = None
         self._product_version_id = None
         self._performed_build_record_set_id = None
-        self._distributed_build_record_set_id = None
+        self._distributed_artifact_ids = None
         self._product_release_id = None
 
     @property
@@ -276,26 +276,26 @@ class ProductMilestoneRest(object):
         self._performed_build_record_set_id = performed_build_record_set_id
 
     @property
-    def distributed_build_record_set_id(self):
+    def distributed_artifact_ids(self):
         """
-        Gets the distributed_build_record_set_id of this ProductMilestoneRest.
+        Gets the distributed_artifact_ids of this ProductMilestoneRest.
 
 
-        :return: The distributed_build_record_set_id of this ProductMilestoneRest.
-        :rtype: int
+        :return: The distributed_artifact_ids of this ProductMilestoneRest.
+        :rtype: list[int]
         """
-        return self._distributed_build_record_set_id
+        return self._distributed_artifact_ids
 
-    @distributed_build_record_set_id.setter
-    def distributed_build_record_set_id(self, distributed_build_record_set_id):
+    @distributed_artifact_ids.setter
+    def distributed_artifact_ids(self, distributed_artifact_ids):
         """
-        Sets the distributed_build_record_set_id of this ProductMilestoneRest.
+        Sets the distributed_artifact_ids of this ProductMilestoneRest.
 
 
-        :param distributed_build_record_set_id: The distributed_build_record_set_id of this ProductMilestoneRest.
-        :type: int
+        :param distributed_artifact_ids: The distributed_artifact_ids of this ProductMilestoneRest.
+        :type: list[int]
         """
-        self._distributed_build_record_set_id = distributed_build_record_set_id
+        self._distributed_artifact_ids = distributed_artifact_ids
 
     @property
     def product_release_id(self):
