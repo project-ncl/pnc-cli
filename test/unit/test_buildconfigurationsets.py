@@ -165,6 +165,38 @@ def test_update_build_configuration_set_notexist(mock_update, mock_get_set_id):
 
 
 @patch('pnc_cli.buildconfigurationsets.get_set_id', return_value=1)
+@patch('pnc_cli.buildconfigurationsets.sets_api.get_specific')
+@patch('pnc_cli.buildconfigurationsets.productversions.get_product_version', return_value=None)
+@patch('pnc_cli.buildconfigurationsets.sets_api.update')
+def test_update_build_configuration_set_invalid_project_version_id(mock_update, mock_get_product_version, mock_get_specific, mock_get_set_id):
+    mock = MagicMock()
+    mockcontent = MagicMock(content=mock)
+    mock_get_specific.return_value=mockcontent
+    result = buildconfigurationsets.update_build_configuration_set(1, product_version_id='notexist')
+    mock_get_set_id.assert_called_once_with(1, None)
+    mock_get_specific.assert_called_once_with(id=1)
+    mock_get_product_version.assert_called_once_with(id='notexist')
+    assert not mock_update.called
+    assert not result
+
+
+@patch('pnc_cli.buildconfigurationsets.get_set_id', return_value=1)
+@patch('pnc_cli.buildconfigurationsets.sets_api.get_specific')
+@patch('pnc_cli.buildconfigurationsets.buildconfigurations.get_build_configuration', return_value=None)
+@patch('pnc_cli.buildconfigurationsets.sets_api.update')
+def test_update_build_configuration_set_invalid_build_configuration_id(mock_update,mock_get_build_configuration, mock_get_specific, mock_get_set_id):
+    mock = MagicMock()
+    mockcontent = MagicMock(content=mock)
+    mock_get_specific.return_value=mockcontent
+    result = buildconfigurationsets.update_build_configuration_set(1, build_configuration_ids=[1,2,3])
+    mock_get_set_id.assert_called_once_with(1, None)
+    mock_get_specific.assert_called_once_with(id=1)
+    mock_get_build_configuration.assert_has_calls([call(id=1), call(id=2), call(id=3)])
+    assert not mock_update.called
+    assert not result
+
+
+@patch('pnc_cli.buildconfigurationsets.get_set_id', return_value=1)
 @patch('pnc_cli.buildconfigurationsets.sets_api.delete_specific', return_value=MagicMock(content='SUCCESS'))
 def test_delete_build_config_set(mock_delete, mock_get_set_id):
     result = buildconfigurationsets.delete_build_config_set(id=1)
