@@ -19,12 +19,13 @@ from .models.build_configuration_singleton import BuildConfigurationSingleton
 from .models.build_configuration_audited_rest import BuildConfigurationAuditedRest
 from .models.build_config_set_record import BuildConfigSetRecord
 from .models.build_record_rest import BuildRecordRest
-from .models.field_handler import FieldHandler
 from .models.build_status_changed_event_rest import BuildStatusChangedEventRest
+from .models.field_handler import FieldHandler
 from .models.license_rest import LicenseRest
 from .models.user_rest import UserRest
 from .models.product_milestone_singleton import ProductMilestoneSingleton
 from .models.product_release_page import ProductReleasePage
+from .models.built_artifact import BuiltArtifact
 from .models.build_config_set_record_singleton import BuildConfigSetRecordSingleton
 from .models.build_configuration_audited import BuildConfigurationAudited
 from .models.project import Project
@@ -38,8 +39,8 @@ from .models.build_configuration_set_record_page import BuildConfigurationSetRec
 from .models.build_record_set_page import BuildRecordSetPage
 from .models.product_milestone_page import ProductMilestonePage
 from .models.license_singleton import LicenseSingleton
-from .models.product_rest import ProductRest
 from .models.user import User
+from .models.product_rest import ProductRest
 from .models.project_page import ProjectPage
 from .models.product_version import ProductVersion
 from .models.product_version_rest import ProductVersionRest
@@ -49,8 +50,8 @@ from .models.build_set_status_changed_event import BuildSetStatusChangedEvent
 from .models.build_environment_page import BuildEnvironmentPage
 from .models.id_rev import IdRev
 from .models.build_config_set_record_rest import BuildConfigSetRecordRest
-from .models.build_record_set import BuildRecordSet
 from .models.license_page import LicensePage
+from .models.build_record_set import BuildRecordSet
 from .models.product_milestone import ProductMilestone
 from .models.build_configuration_audited_singleton import BuildConfigurationAuditedSingleton
 from .models.build_configuration_set_singleton import BuildConfigurationSetSingleton

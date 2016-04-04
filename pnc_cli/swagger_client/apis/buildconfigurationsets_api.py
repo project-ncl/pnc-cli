@@ -508,7 +508,7 @@ class BuildconfigurationsetsApi(object):
 
         # HTTP header `Content-Type`
         header_params['Content-Type'] = self.api_client.\
-            select_header_content_type(['application/json'])
+            select_header_content_type(['*/*'])
 
         # Authentication setting
         auth_settings = []

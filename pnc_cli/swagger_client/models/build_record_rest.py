@@ -57,7 +57,8 @@ class BuildRecordRest(object):
             'build_config_set_record_id': 'int',
             'build_content_id': 'str',
             'build_record_set_ids': 'list[int]',
-            'performed_milestone_build_record_set_ids': 'list[int]'
+            'performed_milestone_build_record_set_ids': 'list[int]',
+            'distributed_milestone_build_record_set_ids': 'list[int]'
         }
 
         self.attribute_map = {
@@ -80,7 +81,8 @@ class BuildRecordRest(object):
             'build_config_set_record_id': 'buildConfigSetRecordId',
             'build_content_id': 'buildContentId',
             'build_record_set_ids': 'buildRecordSetIds',
-            'performed_milestone_build_record_set_ids': 'performedMilestoneBuildRecordSetIds'
+            'performed_milestone_build_record_set_ids': 'performedMilestoneBuildRecordSetIds',
+            'distributed_milestone_build_record_set_ids': 'distributedMilestoneBuildRecordSetIds'
         }
 
         self._id = None
@@ -103,6 +105,7 @@ class BuildRecordRest(object):
         self._build_content_id = None
         self._build_record_set_ids = None
         self._performed_milestone_build_record_set_ids = None
+        self._distributed_milestone_build_record_set_ids = None
 
     @property
     def id(self):
@@ -212,7 +215,7 @@ class BuildRecordRest(object):
         :param status: The status of this BuildRecordRest.
         :type: str
         """
-        allowed_values = ["NEW", "WAITING_FOR_DEPENDENCIES", "BUILDING", "BUILD_COMPLETED", "DONE", "REJECTED", "REJECTED_FAILED_DEPENDENCIES", "REJECTED_ALREADY_BUILT", "SYSTEM_ERROR", "DONE_WITH_ERRORS", None]
+        allowed_values = ["NEW", "WAITING_FOR_DEPENDENCIES", "BUILDING", "BUILD_COMPLETED", "DONE", "REJECTED", "REJECTED_FAILED_DEPENDENCIES", "REJECTED_ALREADY_BUILT", "SYSTEM_ERROR", "DONE_WITH_ERRORS"]
         if status not in allowed_values:
             raise ValueError(
                 "Invalid value for `status`, must be one of {0}"
@@ -549,6 +552,28 @@ class BuildRecordRest(object):
         :type: list[int]
         """
         self._performed_milestone_build_record_set_ids = performed_milestone_build_record_set_ids
+
+    @property
+    def distributed_milestone_build_record_set_ids(self):
+        """
+        Gets the distributed_milestone_build_record_set_ids of this BuildRecordRest.
+
+
+        :return: The distributed_milestone_build_record_set_ids of this BuildRecordRest.
+        :rtype: list[int]
+        """
+        return self._distributed_milestone_build_record_set_ids
+
+    @distributed_milestone_build_record_set_ids.setter
+    def distributed_milestone_build_record_set_ids(self, distributed_milestone_build_record_set_ids):
+        """
+        Sets the distributed_milestone_build_record_set_ids of this BuildRecordRest.
+
+
+        :param distributed_milestone_build_record_set_ids: The distributed_milestone_build_record_set_ids of this BuildRecordRest.
+        :type: list[int]
+        """
+        self._distributed_milestone_build_record_set_ids = distributed_milestone_build_record_set_ids
 
     def to_dict(self):
         """

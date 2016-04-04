@@ -50,7 +50,7 @@ class BuildRecord(object):
             'scm_revision': 'str',
             'build_log': 'str',
             'status': 'str',
-            'built_artifacts': 'list[Artifact]',
+            'built_artifacts': 'list[BuiltArtifact]',
             'dependencies': 'list[Artifact]',
             'build_driver_id': 'str',
             'system_image': 'BuildEnvironment',
@@ -381,7 +381,7 @@ class BuildRecord(object):
 
 
         :return: The built_artifacts of this BuildRecord.
-        :rtype: list[Artifact]
+        :rtype: list[BuiltArtifact]
         """
         return self._built_artifacts
 
@@ -392,7 +392,7 @@ class BuildRecord(object):
 
 
         :param built_artifacts: The built_artifacts of this BuildRecord.
-        :type: list[Artifact]
+        :type: list[BuiltArtifact]
         """
         self._built_artifacts = built_artifacts
 

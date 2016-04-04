@@ -19,12 +19,13 @@ from .build_configuration_singleton import BuildConfigurationSingleton
 from .build_configuration_audited_rest import BuildConfigurationAuditedRest
 from .build_config_set_record import BuildConfigSetRecord
 from .build_record_rest import BuildRecordRest
-from .field_handler import FieldHandler
 from .build_status_changed_event_rest import BuildStatusChangedEventRest
+from .field_handler import FieldHandler
 from .license_rest import LicenseRest
 from .user_rest import UserRest
 from .product_milestone_singleton import ProductMilestoneSingleton
 from .product_release_page import ProductReleasePage
+from .built_artifact import BuiltArtifact
 from .build_config_set_record_singleton import BuildConfigSetRecordSingleton
 from .build_configuration_audited import BuildConfigurationAudited
 from .project import Project
@@ -38,8 +39,8 @@ from .build_configuration_set_record_page import BuildConfigurationSetRecordPage
 from .build_record_set_page import BuildRecordSetPage
 from .product_milestone_page import ProductMilestonePage
 from .license_singleton import LicenseSingleton
-from .product_rest import ProductRest
 from .user import User
+from .product_rest import ProductRest
 from .project_page import ProjectPage
 from .product_version import ProductVersion
 from .product_version_rest import ProductVersionRest
@@ -49,8 +50,8 @@ from .build_set_status_changed_event import BuildSetStatusChangedEvent
 from .build_environment_page import BuildEnvironmentPage
 from .id_rev import IdRev
 from .build_config_set_record_rest import BuildConfigSetRecordRest
-from .build_record_set import BuildRecordSet
 from .license_page import LicensePage
+from .build_record_set import BuildRecordSet
 from .product_milestone import ProductMilestone
 from .build_configuration_audited_singleton import BuildConfigurationAuditedSingleton
 from .build_configuration_set_singleton import BuildConfigurationSetSingleton
