@@ -223,7 +223,6 @@ def test_clone(new_config):
                                  'repositories',
                                  'environment',
                                  'dependency_ids',
-                                 'product_version_ids',
                                  'internal_scm',
                                  'internal_scm_revison']
     for x in expected_unchanged_fields:
