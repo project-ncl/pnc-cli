@@ -59,16 +59,28 @@ def test_get_all_for_project():
     assert records is not None
 
 
-def test_get_artifacts_no_id():
-    testutils.assert_raises_valueerror(builds_api, 'get_artifacts', id=None)
+def test_get_built_artifacts_no_id():
+    testutils.assert_raises_valueerror(builds_api, 'get_built_artifacts', id=None)
 
 
-def test_get_artifacts_invalid_param():
-    testutils.assert_raises_typeerror(builds_api, 'get_artifacts', id=1)
+def test_get_built_artifacts_invalid_param():
+    testutils.assert_raises_typeerror(builds_api, 'get_built_artifacts', id=1)
 
 
-def test_get_artifacts():
-    artifacts = builds_api.get_artifacts(id=1).content
+def test_get_built_artifacts():
+    artifacts = builds_api.get_built_artifacts(id=1).content
+    assert artifacts is not None
+
+def test_get_dependency_artifacts_no_id():
+    testutils.assert_raises_valueerror(builds_api, 'get_dependency_artifacts', id=None)
+
+
+def test_get_dependency_artifacts_invalid_param():
+    testutils.assert_raises_typeerror(builds_api, 'get_dependency_artifacts', id=1)
+
+
+def test_get_dependency_artifacts():
+    artifacts = builds_api.get_dependency_artifacts(id=1).content
     assert artifacts is not None
 
 

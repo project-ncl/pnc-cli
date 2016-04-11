@@ -77,16 +77,32 @@ def test_get_build_record_notexist(mock):
     assert not result
 
 
-@patch('pnc_cli.buildrecords.records_api.get_artifacts', return_value=MagicMock(content=['artifact1', 'artifact2']))
+@patch('pnc_cli.buildrecords.records_api.get_built_artifacts',
+       return_value=MagicMock(content=['artifact1', 'artifact2']))
 def test_list_build_artifacts(mock):
-    result = buildrecords.list_build_artifacts('1')
+    result = buildrecords.list_built_artifacts('1')
     mock.assert_called_once_with(id='1', page_size=200, q="", sort="")
     assert result == ['artifact1', 'artifact2']
 
 
-@patch('pnc_cli.buildrecords.records_api.get_artifacts', return_value=None)
-def test_list_build_artifacts_notexist(mock):
-    result = buildrecords.list_build_artifacts('100')
+@patch('pnc_cli.buildrecords.records_api.get_built_artifacts', return_value=None)
+def test_list_built_artifacts_notexist(mock):
+    result = buildrecords.list_built_artifacts('100')
+    mock.assert_called_once_with(id='100', page_size=200, q="", sort="")
+    assert not result
+
+
+@patch('pnc_cli.buildrecords.records_api.get_dependency_artifacts',
+       return_value=MagicMock(content=['artifact1', 'artifact2']))
+def test_list_dependency_artifacts(mock):
+    result = buildrecords.list_dependency_artifacts('1')
+    mock.assert_called_once_with(id='1', page_size=200, q="", sort="")
+    assert result == ['artifact1', 'artifact2']
+
+
+@patch('pnc_cli.buildrecords.records_api.get_dependency_artifacts', return_value=None)
+def test_list_dependency_artifacts_notexist(mock):
+    result = buildrecords.list_dependency_artifacts('100')
     mock.assert_called_once_with(id='100', page_size=200, q="", sort="")
     assert not result
 

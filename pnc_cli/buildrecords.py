@@ -79,14 +79,21 @@ def get_build_record(id):
 @arg("-p", "--page-size", help="Limit the amount of BuildRecords returned")
 @arg("-s", "--sort", help="Sorting RSQL")
 @arg("-q", help="RSQL query")
-def list_build_artifacts(id, page_size=200, sort="", q=""):
+def list_built_artifacts(id, page_size=200, sort="", q=""):
     """
     List Artifacts associated with a BuildRecord
     """
-    response = utils.checked_api_call(records_api, 'get_artifacts', id=id, page_size=page_size, sort=sort, q=q)
+    response = utils.checked_api_call(records_api, 'get_built_artifacts', id=id, page_size=page_size, sort=sort, q=q)
     if response:
         return response.content
 
+def list_dependency_artifacts(id, page_size=200, sort="", q=""):
+    """
+    List dependency artifacts associated with a BuildRecord
+    """
+    response = utils.checked_api_call(records_api, 'get_dependency_artifacts', id=id, page_size=page_size, sort=sort, q=q)
+    if response:
+        return response.content
 
 @arg("id", help="BuildRecord ID to retrieve audited BuildConfiguration from.")
 def get_audited_configuration_for_record(id):
