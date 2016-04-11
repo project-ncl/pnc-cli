@@ -26,6 +26,7 @@ from .user_rest import UserRest
 from .product_milestone_singleton import ProductMilestoneSingleton
 from .product_release_page import ProductReleasePage
 from .build_config_set_record_singleton import BuildConfigSetRecordSingleton
+from .built_artifact import BuiltArtifact
 from .build_configuration_audited import BuildConfigurationAudited
 from .project import Project
 from .error_response_rest import ErrorResponseRest
@@ -49,16 +50,16 @@ from .build_set_status_changed_event import BuildSetStatusChangedEvent
 from .build_environment_page import BuildEnvironmentPage
 from .id_rev import IdRev
 from .build_config_set_record_rest import BuildConfigSetRecordRest
-from .build_record_set import BuildRecordSet
 from .license_page import LicensePage
+from .build_record_set import BuildRecordSet
 from .product_milestone import ProductMilestone
 from .build_configuration_audited_singleton import BuildConfigurationAuditedSingleton
 from .build_configuration_set_singleton import BuildConfigurationSetSingleton
 from .user_page import UserPage
 from .artifact import Artifact
 from .build_configuration_set import BuildConfigurationSet
-from .project_singleton import ProjectSingleton
 from .build_configuration_set_rest import BuildConfigurationSetRest
+from .project_singleton import ProjectSingleton
 from .product_release_rest import ProductReleaseRest
 from .product_release import ProductRelease
 from .user_singleton import UserSingleton

@@ -224,7 +224,7 @@ class ProductreleasesApi(object):
         :param int page_size: Pagination size
         :param str sort: Sorting RSQL
         :param str q: RSQL Query
-        :return: ProductReleasePage
+        :return: ProductReleaseSingleton
                  If the method is called asynchronously,
                  returns the request thread.
         """
@@ -289,7 +289,7 @@ class ProductreleasesApi(object):
                                             body=body_params,
                                             post_params=form_params,
                                             files=files,
-                                            response_type='ProductReleasePage',
+                                            response_type='ProductReleaseSingleton',
                                             auth_settings=auth_settings,
                                             callback=params.get('callback'))
         return response
@@ -541,10 +541,6 @@ class ProductreleasesApi(object):
         :param callback function: The callback function
             for asynchronous request. (optional)
         :param int id: Product Release id (required)
-        :param int page_index: Page Index
-        :param int page_size: Pagination size
-        :param str sort: Sorting RSQL
-        :param str q: RSQL Query
         :return: BuildRecordIds
                  If the method is called asynchronously,
                  returns the request thread.
@@ -553,7 +549,7 @@ class ProductreleasesApi(object):
         if id is None:
             raise ValueError("Missing the required parameter `id` when calling `get_all_builds_in_distributed_recordset_of_product_release`")
 
-        all_params = ['id', 'page_index', 'page_size', 'sort', 'q']
+        all_params = ['id']
         all_params.append('callback')
 
         params = locals()
@@ -574,14 +570,6 @@ class ProductreleasesApi(object):
             path_params['id'] = params['id']
 
         query_params = {}
-        if 'page_index' in params:
-            query_params['pageIndex'] = params['page_index']
-        if 'page_size' in params:
-            query_params['pageSize'] = params['page_size']
-        if 'sort' in params:
-            query_params['sort'] = params['sort']
-        if 'q' in params:
-            query_params['q'] = params['q']
 
         header_params = {}
 

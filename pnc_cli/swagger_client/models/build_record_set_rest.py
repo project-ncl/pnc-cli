@@ -40,17 +40,20 @@ class BuildRecordSetRest(object):
         self.swagger_types = {
             'id': 'int',
             'performed_in_product_milestone_id': 'int',
+            'distributed_in_product_milestone_id': 'int',
             'build_record_ids': 'list[int]'
         }
 
         self.attribute_map = {
             'id': 'id',
             'performed_in_product_milestone_id': 'performedInProductMilestoneId',
+            'distributed_in_product_milestone_id': 'distributedInProductMilestoneId',
             'build_record_ids': 'buildRecordIds'
         }
 
         self._id = None
         self._performed_in_product_milestone_id = None
+        self._distributed_in_product_milestone_id = None
         self._build_record_ids = None
 
     @property
@@ -96,6 +99,28 @@ class BuildRecordSetRest(object):
         :type: int
         """
         self._performed_in_product_milestone_id = performed_in_product_milestone_id
+
+    @property
+    def distributed_in_product_milestone_id(self):
+        """
+        Gets the distributed_in_product_milestone_id of this BuildRecordSetRest.
+
+
+        :return: The distributed_in_product_milestone_id of this BuildRecordSetRest.
+        :rtype: int
+        """
+        return self._distributed_in_product_milestone_id
+
+    @distributed_in_product_milestone_id.setter
+    def distributed_in_product_milestone_id(self, distributed_in_product_milestone_id):
+        """
+        Sets the distributed_in_product_milestone_id of this BuildRecordSetRest.
+
+
+        :param distributed_in_product_milestone_id: The distributed_in_product_milestone_id of this BuildRecordSetRest.
+        :type: int
+        """
+        self._distributed_in_product_milestone_id = distributed_in_product_milestone_id
 
     @property
     def build_record_ids(self):

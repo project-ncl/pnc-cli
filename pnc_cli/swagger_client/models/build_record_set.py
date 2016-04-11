@@ -41,6 +41,7 @@ class BuildRecordSet(object):
             'id': 'int',
             'description': 'str',
             'performed_in_product_milestone': 'ProductMilestone',
+            'distributed_in_product_milestone': 'ProductMilestone',
             'build_records': 'list[BuildRecord]',
             'field_handler': 'FieldHandler'
         }
@@ -49,6 +50,7 @@ class BuildRecordSet(object):
             'id': 'id',
             'description': 'description',
             'performed_in_product_milestone': 'performedInProductMilestone',
+            'distributed_in_product_milestone': 'distributedInProductMilestone',
             'build_records': 'buildRecords',
             'field_handler': 'fieldHandler'
         }
@@ -56,6 +58,7 @@ class BuildRecordSet(object):
         self._id = None
         self._description = None
         self._performed_in_product_milestone = None
+        self._distributed_in_product_milestone = None
         self._build_records = None
         self._field_handler = None
 
@@ -124,6 +127,28 @@ class BuildRecordSet(object):
         :type: ProductMilestone
         """
         self._performed_in_product_milestone = performed_in_product_milestone
+
+    @property
+    def distributed_in_product_milestone(self):
+        """
+        Gets the distributed_in_product_milestone of this BuildRecordSet.
+
+
+        :return: The distributed_in_product_milestone of this BuildRecordSet.
+        :rtype: ProductMilestone
+        """
+        return self._distributed_in_product_milestone
+
+    @distributed_in_product_milestone.setter
+    def distributed_in_product_milestone(self, distributed_in_product_milestone):
+        """
+        Sets the distributed_in_product_milestone of this BuildRecordSet.
+
+
+        :param distributed_in_product_milestone: The distributed_in_product_milestone of this BuildRecordSet.
+        :type: ProductMilestone
+        """
+        self._distributed_in_product_milestone = distributed_in_product_milestone
 
     @property
     def build_records(self):

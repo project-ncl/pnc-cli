@@ -40,10 +40,10 @@ class BuildSetStatusChangedEvent(object):
         self.swagger_types = {
             'user_id': 'int',
             'old_status': 'str',
-            'build_set_start_time': 'datetime',
-            'build_set_end_time': 'datetime',
             'build_set_task_id': 'int',
             'build_set_configuration_name': 'str',
+            'build_set_start_time': 'datetime',
+            'build_set_end_time': 'datetime',
             'build_set_configuration_id': 'int',
             'new_status': 'str'
         }
@@ -51,20 +51,20 @@ class BuildSetStatusChangedEvent(object):
         self.attribute_map = {
             'user_id': 'userId',
             'old_status': 'oldStatus',
-            'build_set_start_time': 'buildSetStartTime',
-            'build_set_end_time': 'buildSetEndTime',
             'build_set_task_id': 'buildSetTaskId',
             'build_set_configuration_name': 'buildSetConfigurationName',
+            'build_set_start_time': 'buildSetStartTime',
+            'build_set_end_time': 'buildSetEndTime',
             'build_set_configuration_id': 'buildSetConfigurationId',
             'new_status': 'newStatus'
         }
 
         self._user_id = None
         self._old_status = None
-        self._build_set_start_time = None
-        self._build_set_end_time = None
         self._build_set_task_id = None
         self._build_set_configuration_name = None
+        self._build_set_start_time = None
+        self._build_set_end_time = None
         self._build_set_configuration_id = None
         self._new_status = None
 
@@ -119,50 +119,6 @@ class BuildSetStatusChangedEvent(object):
         self._old_status = old_status
 
     @property
-    def build_set_start_time(self):
-        """
-        Gets the build_set_start_time of this BuildSetStatusChangedEvent.
-
-
-        :return: The build_set_start_time of this BuildSetStatusChangedEvent.
-        :rtype: datetime
-        """
-        return self._build_set_start_time
-
-    @build_set_start_time.setter
-    def build_set_start_time(self, build_set_start_time):
-        """
-        Sets the build_set_start_time of this BuildSetStatusChangedEvent.
-
-
-        :param build_set_start_time: The build_set_start_time of this BuildSetStatusChangedEvent.
-        :type: datetime
-        """
-        self._build_set_start_time = build_set_start_time
-
-    @property
-    def build_set_end_time(self):
-        """
-        Gets the build_set_end_time of this BuildSetStatusChangedEvent.
-
-
-        :return: The build_set_end_time of this BuildSetStatusChangedEvent.
-        :rtype: datetime
-        """
-        return self._build_set_end_time
-
-    @build_set_end_time.setter
-    def build_set_end_time(self, build_set_end_time):
-        """
-        Sets the build_set_end_time of this BuildSetStatusChangedEvent.
-
-
-        :param build_set_end_time: The build_set_end_time of this BuildSetStatusChangedEvent.
-        :type: datetime
-        """
-        self._build_set_end_time = build_set_end_time
-
-    @property
     def build_set_task_id(self):
         """
         Gets the build_set_task_id of this BuildSetStatusChangedEvent.
@@ -205,6 +161,50 @@ class BuildSetStatusChangedEvent(object):
         :type: str
         """
         self._build_set_configuration_name = build_set_configuration_name
+
+    @property
+    def build_set_start_time(self):
+        """
+        Gets the build_set_start_time of this BuildSetStatusChangedEvent.
+
+
+        :return: The build_set_start_time of this BuildSetStatusChangedEvent.
+        :rtype: datetime
+        """
+        return self._build_set_start_time
+
+    @build_set_start_time.setter
+    def build_set_start_time(self, build_set_start_time):
+        """
+        Sets the build_set_start_time of this BuildSetStatusChangedEvent.
+
+
+        :param build_set_start_time: The build_set_start_time of this BuildSetStatusChangedEvent.
+        :type: datetime
+        """
+        self._build_set_start_time = build_set_start_time
+
+    @property
+    def build_set_end_time(self):
+        """
+        Gets the build_set_end_time of this BuildSetStatusChangedEvent.
+
+
+        :return: The build_set_end_time of this BuildSetStatusChangedEvent.
+        :rtype: datetime
+        """
+        return self._build_set_end_time
+
+    @build_set_end_time.setter
+    def build_set_end_time(self, build_set_end_time):
+        """
+        Sets the build_set_end_time of this BuildSetStatusChangedEvent.
+
+
+        :param build_set_end_time: The build_set_end_time of this BuildSetStatusChangedEvent.
+        :type: datetime
+        """
+        self._build_set_end_time = build_set_end_time
 
     @property
     def build_set_configuration_id(self):
