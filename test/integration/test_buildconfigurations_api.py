@@ -34,10 +34,11 @@ def new_config(request, new_project, new_environment):
         body=buildconfigurations.create_build_conf_object(name=testutils.gen_random_name(),
                                                           project=new_project,
                                                           environment=new_environment,
-                                                          build_status="UNKNOWN",
+                                                          build_status="SUCCESS",
                                                           build_script='mvn clean install',
                                                           product_version_ids=[1],
-                                                          scm_repo_url='https://github.com/thauser/simple-maven-build-pnc.git')).content
+                                                          scm_repo_url='https://github.com/thauser/simple-maven-build-pnc.git',
+                                                          )).content
 
     return created_bc
 
@@ -210,7 +211,6 @@ def test_clone_invalid_param():
     testutils.assert_raises_typeerror(configs_api, 'clone', id=1)
 
 
-# TODO: project_version_ids is not being cloned correctly all the time.
 def test_clone(new_config):
     cloned_bc = configs_api.clone(id=new_config.id).content
     expected_unchanged_fields = ['description',
@@ -338,3 +338,18 @@ def test_revision_operations(new_config):
     assert revisions is not None
     revision = configs_api.get_revision(id=new_config.id, rev=revisions[0].id)
     assert revision is not None
+
+
+def test_get_build_configuration_sets_no_id():
+    testutils.assert_raises_typeerror(configs_api, 'get_build_configuration_sets')
+
+
+def test_get_build_configuration_sets_invalid_param():
+    testutils.assert_raises_valueerror(configs_api, 'get_build_configuration_sets', id=None)
+
+
+def test_get_build_configuration_sets():
+    build_configuration_sets = configs_api.get_build_configuration_sets(id=1).content
+    assert build_configuration_sets is not None
+
+

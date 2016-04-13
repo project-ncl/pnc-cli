@@ -18,7 +18,7 @@ def get_sets_api():
 
 
 @pytest.fixture(scope='function')
-def new_set(request):
+def new_set():
     set = sets_api.create_new(
         body=buildconfigurationsets._create_build_config_set_object(name=testutils.gen_random_name(),
                                                                     productVersionId=1)).content
@@ -26,20 +26,20 @@ def new_set(request):
 
 
 @pytest.fixture(scope='function')
-def new_project(request):
+def new_project():
     project = projects.create_project(name=testutils.gen_random_name() + '_project')
     return project
 
 
 @pytest.fixture(scope='function')
-def new_environment(request):
+def new_environment():
     randname = testutils.gen_random_name()
     env = environments.create_environment(name=randname + '_environment', build_type='JAVA', image_id=randname)
     return env
 
 
 @pytest.fixture(scope='function')
-def new_config(request, new_project, new_environment):
+def new_config(new_project, new_environment):
     created_bc = buildconfigurations.create_build_configuration(name=testutils.gen_random_name(),
                                                                 project=new_project.id,
                                                                 environment=new_environment.id,
@@ -74,9 +74,10 @@ def test_update(new_set):
     assert retrieved_set.name == newname
 
 
-@pytest.mark.xfail(reason='delete is only possible for sets which do not have any buildrecords')
-def test_delete():
-    pass
+def test_delete(new_set):
+    sets_api.delete_specific(id=new_set.id)
+    response = sets_api.get_specific(id=new_set.id)
+    assert response is None
 
 
 @pytest.mark.xfail(reason="doesn't reliably return valid json.")
@@ -98,4 +99,5 @@ def test_add_configuration(new_config, new_set):
 
 
 def test_get_build_records():
-    pass
+    response = sets_api.get_build_records()
+    assert response
