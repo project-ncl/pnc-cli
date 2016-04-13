@@ -21,31 +21,30 @@ def _create_environment_object(**kwargs):
                 setattr(created_environment, key, value)
     return created_environment
 
+def _environment_exists(id):
+    response = utils.checked_api_call(envs_api, 'get_all', q="id==" + str(id))
+    if not response:
+        return False
+    return True
+
 
 def _get_environment_id_by_name(name):
     """
     Return the ID of a BuildEnvironment given the name
     """
-    for env in envs_api.get_all().content:
-        if env.name == name:
-            return env.id
-    return None
-
-
-def _environment_exists(search_id):
-    """
-    Returns true if search_id is a valid BuildEnvironment id.
-    """
-    existing_ids = [str(x.id) for x in envs_api.get_all().content]
-    return str(search_id) in existing_ids
-
+    response = utils.checked_api_call(envs_api, 'get_all', q='name==' + name)
+    if not response:
+        return None
+    else:
+        return response.content[0].id
 
 def get_environment_id(search_id, name):
     """
     Given either a name or id, checks for BuildEnvironment existence and returns the valid id, or prints a message otherwise
     """
     if search_id:
-        if not _environment_exists(search_id):
+        found_env = envs_api.get_all(q='id=='+str(search_id))
+        if not found_env:
             print("No environment with ID {} exists.".format(search_id))
             return
         found_id = search_id
