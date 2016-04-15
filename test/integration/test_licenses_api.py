@@ -15,13 +15,6 @@ def get_licenses_api():
 def new_license(request):
     license = licenses_api.create_new(body=licenses._create_license_object(full_name=testutils.gen_random_name(),
                                                                            full_content="pnc_cli-cli test license")).content
-
-    def teardown():
-        existing_licenses = licenses_api.get_all(page_size=1000000).content
-        if existing_licenses and license.id in [x.id for x in existing_licenses]:
-            licenses_api.delete(id=license.id)
-
-    request.addfinalizer(teardown)
     return license
 
 

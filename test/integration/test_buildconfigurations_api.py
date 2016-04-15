@@ -2,8 +2,8 @@ import pytest
 from pnc_cli import projects
 from pnc_cli import environments
 from pnc_cli import buildconfigurations
-from pnc_cli.swagger_client.apis.buildconfigurations_api import BuildconfigurationsApi
-from pnc_cli.swagger_client.apis.runningbuildrecords_api import RunningbuildrecordsApi
+from pnc_cli.swagger_client import BuildconfigurationsApi
+from pnc_cli.swagger_client import RunningbuildrecordsApi
 from pnc_cli import utils
 from test import testutils
 
@@ -264,7 +264,8 @@ def test_remove_dependency_invalid_param():
 # get_dependencies
 # remove_dependency
 def test_dependency_operations(new_config):
-    dep = configs_api.get_specific(id=1).content
+    depname = testutils.gen_random_name()
+    dep = buildconfigurations.create_build_configuration(name=depname,project=1,environment=1)
     configs_api.add_dependency(id=new_config.id, body=dep)
     dependency_ids = [dep.id for dep in
                       configs_api.get_dependencies(id=new_config.id, page_index=0, page_size=1000000, sort='',

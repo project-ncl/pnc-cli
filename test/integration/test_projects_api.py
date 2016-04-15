@@ -13,13 +13,6 @@ def get_projects_api():
 @pytest.fixture(scope='function')
 def new_project(request):
     project = projects_api.create_new(body=projects._create_project_object(name=testutils.gen_random_name())).content
-
-    def teardown():
-        existing = projects_api.get_all(page_size=1000000).content
-        if existing and project.id in [x.id for x in existing]:
-            projects_api.delete_specific(id=project.id)
-
-    request.addfinalizer(teardown)
     return project
 
 

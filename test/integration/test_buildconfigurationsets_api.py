@@ -76,7 +76,7 @@ def test_update(new_set):
 
 def test_delete(new_set):
     sets_api.delete_specific(id=new_set.id)
-    response = sets_api.get_specific(id=new_set.id)
+    response = utils.checked_api_call(sets_api, 'get_specific', id=new_set.id)
     assert response is None
 
 
@@ -98,6 +98,6 @@ def test_add_configuration(new_config, new_set):
     assert new_config.id in set_config_ids
 
 
-def test_get_build_records():
-    response = sets_api.get_build_records()
+def test_get_build_records(new_set):
+    response = sets_api.get_build_records(id=new_set.id)
     assert response
