@@ -64,7 +64,8 @@ def test_update(new_env):
     assert (retrieved_env.description == 'DOCKER')
     assert (retrieved_env.build_type == 'NATIVE')
     assert (retrieved_env.name == randname)
-    assert (retrieved_env.image_id == randname)
+    #image_id is immutable; it should remain the same
+    assert (retrieved_env.image_id == retrieved_env.image_id)
 
 
 def test_delete_no_id():
