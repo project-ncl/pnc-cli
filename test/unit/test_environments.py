@@ -13,17 +13,17 @@ def test_create_environment_object():
     assert result.to_dict() == compare.to_dict()
 
 
-@patch('pnc_cli.environments._environment_exists', return_value=True)
+@patch('pnc_cli.environments.envs_api.get_all', return_value=MagicMock(content=1))
 def test_get_environment_id_id(mock):
     result = environments.get_environment_id(1, None)
-    mock.assert_called_once_with(1)
+    mock.assert_called_once_with(q='id==1')
     assert result == 1
 
 
-@patch('pnc_cli.environments._environment_exists', return_value=False)
+@patch('pnc_cli.environments.envs_api.get_all', return_value=False)
 def test_get_environment_id_notexist(mock):
     result = environments.get_environment_id(1, None)
-    mock.assert_called_once_with(1)
+    mock.assert_called_once_with(q='id==1')
     assert not result
 
 
@@ -49,14 +49,14 @@ def test_get_environment_id_none():
 @patch('pnc_cli.environments.envs_api.get_all', return_value=MagicMock(content=[MagicMock(id=1)]))
 def test_environment_exists(mock):
     result = environments._environment_exists(1)
-    mock.assert_called_once_with()
+    mock.assert_called_once_with(q='id==1')
     assert result
 
 
-@patch('pnc_cli.environments.envs_api.get_all', return_value=MagicMock(content=[MagicMock(id=1)]))
+@patch('pnc_cli.environments.envs_api.get_all', return_value=None)
 def test_environment_exists_false(mock):
     result = environments._environment_exists(2)
-    mock.assert_called_once_with()
+    mock.assert_called_once_with(q='id==2')
     assert not result
 
 
@@ -64,15 +64,15 @@ def test_environment_exists_false(mock):
 def test_get_environment_id_by_name(mock):
     mock.return_value = test.testutils.create_mock_list_with_name_attribute()
     result = environments._get_environment_id_by_name('testerino')
-    mock.assert_called_once_with()
+    mock.assert_called_once_with(q='name==testerino')
     assert result == 1
 
 
 @patch('pnc_cli.environments.envs_api.get_all')
 def test_get_environment_id_by_name_notexist(mock):
-    mock.return_value = test.testutils.create_mock_list_with_name_attribute()
+    mock.return_value = None
     result = environments._get_environment_id_by_name('doesntexist')
-    mock.assert_called_once_with()
+    mock.assert_called_once_with(q='name==doesntexist')
     assert not result
 
 
