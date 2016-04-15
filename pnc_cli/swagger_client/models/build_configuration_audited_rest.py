@@ -40,6 +40,7 @@ class BuildConfigurationAuditedRest(object):
         self.swagger_types = {
             'id': 'int',
             'rev': 'int',
+            'id_rev': 'IdRev',
             'name': 'str',
             'description': 'str',
             'build_script': 'str',
@@ -59,6 +60,7 @@ class BuildConfigurationAuditedRest(object):
         self.attribute_map = {
             'id': 'id',
             'rev': 'rev',
+            'id_rev': 'idRev',
             'name': 'name',
             'description': 'description',
             'build_script': 'buildScript',
@@ -77,6 +79,7 @@ class BuildConfigurationAuditedRest(object):
 
         self._id = None
         self._rev = None
+        self._id_rev = None
         self._name = None
         self._description = None
         self._build_script = None
@@ -135,6 +138,28 @@ class BuildConfigurationAuditedRest(object):
         :type: int
         """
         self._rev = rev
+
+    @property
+    def id_rev(self):
+        """
+        Gets the id_rev of this BuildConfigurationAuditedRest.
+
+
+        :return: The id_rev of this BuildConfigurationAuditedRest.
+        :rtype: IdRev
+        """
+        return self._id_rev
+
+    @id_rev.setter
+    def id_rev(self, id_rev):
+        """
+        Sets the id_rev of this BuildConfigurationAuditedRest.
+
+
+        :param id_rev: The id_rev of this BuildConfigurationAuditedRest.
+        :type: IdRev
+        """
+        self._id_rev = id_rev
 
     @property
     def name(self):

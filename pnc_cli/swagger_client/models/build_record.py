@@ -50,11 +50,10 @@ class BuildRecord(object):
             'scm_revision': 'str',
             'build_log': 'str',
             'status': 'str',
-            'built_artifacts': 'list[BuiltArtifact]',
+            'built_artifacts': 'list[Artifact]',
             'dependencies': 'list[Artifact]',
-            'build_driver_id': 'str',
-            'system_image': 'BuildEnvironment',
-            'build_record_sets': 'list[BuildRecordSet]',
+            'build_environment': 'BuildEnvironment',
+            'product_milestone': 'ProductMilestone',
             'build_config_set_record': 'BuildConfigSetRecord',
             'external_archive_id': 'int',
             'field_handler': 'FieldHandler'
@@ -75,9 +74,8 @@ class BuildRecord(object):
             'status': 'status',
             'built_artifacts': 'builtArtifacts',
             'dependencies': 'dependencies',
-            'build_driver_id': 'buildDriverId',
-            'system_image': 'systemImage',
-            'build_record_sets': 'buildRecordSets',
+            'build_environment': 'buildEnvironment',
+            'product_milestone': 'productMilestone',
             'build_config_set_record': 'buildConfigSetRecord',
             'external_archive_id': 'externalArchiveId',
             'field_handler': 'fieldHandler'
@@ -97,9 +95,8 @@ class BuildRecord(object):
         self._status = None
         self._built_artifacts = None
         self._dependencies = None
-        self._build_driver_id = None
-        self._system_image = None
-        self._build_record_sets = None
+        self._build_environment = None
+        self._product_milestone = None
         self._build_config_set_record = None
         self._external_archive_id = None
         self._field_handler = None
@@ -381,7 +378,7 @@ class BuildRecord(object):
 
 
         :return: The built_artifacts of this BuildRecord.
-        :rtype: list[BuiltArtifact]
+        :rtype: list[Artifact]
         """
         return self._built_artifacts
 
@@ -392,7 +389,7 @@ class BuildRecord(object):
 
 
         :param built_artifacts: The built_artifacts of this BuildRecord.
-        :type: list[BuiltArtifact]
+        :type: list[Artifact]
         """
         self._built_artifacts = built_artifacts
 
@@ -419,70 +416,48 @@ class BuildRecord(object):
         self._dependencies = dependencies
 
     @property
-    def build_driver_id(self):
+    def build_environment(self):
         """
-        Gets the build_driver_id of this BuildRecord.
+        Gets the build_environment of this BuildRecord.
 
 
-        :return: The build_driver_id of this BuildRecord.
-        :rtype: str
-        """
-        return self._build_driver_id
-
-    @build_driver_id.setter
-    def build_driver_id(self, build_driver_id):
-        """
-        Sets the build_driver_id of this BuildRecord.
-
-
-        :param build_driver_id: The build_driver_id of this BuildRecord.
-        :type: str
-        """
-        self._build_driver_id = build_driver_id
-
-    @property
-    def system_image(self):
-        """
-        Gets the system_image of this BuildRecord.
-
-
-        :return: The system_image of this BuildRecord.
+        :return: The build_environment of this BuildRecord.
         :rtype: BuildEnvironment
         """
-        return self._system_image
+        return self._build_environment
 
-    @system_image.setter
-    def system_image(self, system_image):
+    @build_environment.setter
+    def build_environment(self, build_environment):
         """
-        Sets the system_image of this BuildRecord.
+        Sets the build_environment of this BuildRecord.
 
 
-        :param system_image: The system_image of this BuildRecord.
+        :param build_environment: The build_environment of this BuildRecord.
         :type: BuildEnvironment
         """
-        self._system_image = system_image
+        self._build_environment = build_environment
 
     @property
-    def build_record_sets(self):
+    def product_milestone(self):
         """
-        Gets the build_record_sets of this BuildRecord.
+        Gets the product_milestone of this BuildRecord.
 
 
-        :return: The build_record_sets of this BuildRecord.
-        :rtype: list[BuildRecordSet]
+        :return: The product_milestone of this BuildRecord.
+        :rtype: ProductMilestone
         """
-        return self._build_record_sets
+        return self._product_milestone
 
-    @build_record_sets.setter
-    def build_record_sets(self, build_record_sets):
+    @product_milestone.setter
+    def product_milestone(self, product_milestone):
         """
-        Sets the build_record_sets of this BuildRecord.
+        Sets the product_milestone of this BuildRecord.
 
 
-        :param build_record_sets: The build_record_sets of this BuildRecord.
-        :type: list[BuildRecordSet]
+        :param product_milestone: The product_milestone of this BuildRecord.
+        :type: ProductMilestone
         """
-        self._build_record_sets = build_record_sets
+        self._product_milestone = product_milestone
 
     @property
     def build_config_set_record(self):

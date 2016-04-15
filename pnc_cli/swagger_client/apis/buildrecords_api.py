@@ -407,7 +407,7 @@ class BuildrecordsApi(object):
         :param int page_size: Pagination size
         :param str sort: Sorting RSQL
         :param str q: RSQL Query
-        :return: BuildRecordPage
+        :return: ArtifactPage
                  If the method is called asynchronously,
                  returns the request thread.
         """
@@ -472,7 +472,7 @@ class BuildrecordsApi(object):
                                             body=body_params,
                                             post_params=form_params,
                                             files=files,
-                                            response_type='BuildRecordPage',
+                                            response_type='ArtifactPage',
                                             auth_settings=auth_settings,
                                             callback=params.get('callback'))
         return response
@@ -575,7 +575,7 @@ class BuildrecordsApi(object):
         :param int page_size: Pagination size
         :param str sort: Sorting RSQL
         :param str q: RSQL Query
-        :return: BuildRecordPage
+        :return: ArtifactPage
                  If the method is called asynchronously,
                  returns the request thread.
         """
@@ -640,7 +640,7 @@ class BuildrecordsApi(object):
                                             body=body_params,
                                             post_params=form_params,
                                             files=files,
-                                            response_type='BuildRecordPage',
+                                            response_type='ArtifactPage',
                                             auth_settings=auth_settings,
                                             callback=params.get('callback'))
         return response
@@ -743,7 +743,7 @@ class BuildrecordsApi(object):
         :param int page_size: Pagination size
         :param str sort: Sorting RSQL
         :param str q: RSQL Query
-        :return: BuildRecordPage
+        :return: ArtifactPage
                  If the method is called asynchronously,
                  returns the request thread.
         """
@@ -808,7 +808,7 @@ class BuildrecordsApi(object):
                                             body=body_params,
                                             post_params=form_params,
                                             files=files,
-                                            response_type='BuildRecordPage',
+                                            response_type='ArtifactPage',
                                             auth_settings=auth_settings,
                                             callback=params.get('callback'))
         return response

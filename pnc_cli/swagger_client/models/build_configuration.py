@@ -46,7 +46,7 @@ class BuildConfiguration(object):
             'scm_mirror_repo_url': 'str',
             'scm_mirror_revision': 'str',
             'description': 'str',
-            'product_versions': 'list[ProductVersion]',
+            'product_version': 'ProductVersion',
             'project': 'Project',
             'build_environment': 'BuildEnvironment',
             'build_records': 'list[BuildRecord]',
@@ -72,7 +72,7 @@ class BuildConfiguration(object):
             'scm_mirror_repo_url': 'scmMirrorRepoURL',
             'scm_mirror_revision': 'scmMirrorRevision',
             'description': 'description',
-            'product_versions': 'productVersions',
+            'product_version': 'productVersion',
             'project': 'project',
             'build_environment': 'buildEnvironment',
             'build_records': 'buildRecords',
@@ -97,7 +97,7 @@ class BuildConfiguration(object):
         self._scm_mirror_repo_url = None
         self._scm_mirror_revision = None
         self._description = None
-        self._product_versions = None
+        self._product_version = None
         self._project = None
         self._build_environment = None
         self._build_records = None
@@ -290,26 +290,26 @@ class BuildConfiguration(object):
         self._description = description
 
     @property
-    def product_versions(self):
+    def product_version(self):
         """
-        Gets the product_versions of this BuildConfiguration.
+        Gets the product_version of this BuildConfiguration.
 
 
-        :return: The product_versions of this BuildConfiguration.
-        :rtype: list[ProductVersion]
+        :return: The product_version of this BuildConfiguration.
+        :rtype: ProductVersion
         """
-        return self._product_versions
+        return self._product_version
 
-    @product_versions.setter
-    def product_versions(self, product_versions):
+    @product_version.setter
+    def product_version(self, product_version):
         """
-        Sets the product_versions of this BuildConfiguration.
+        Sets the product_version of this BuildConfiguration.
 
 
-        :param product_versions: The product_versions of this BuildConfiguration.
-        :type: list[ProductVersion]
+        :param product_version: The product_version of this BuildConfiguration.
+        :type: ProductVersion
         """
-        self._product_versions = product_versions
+        self._product_version = product_version
 
     @property
     def project(self):
@@ -485,7 +485,7 @@ class BuildConfiguration(object):
         :param build_status: The build_status of this BuildConfiguration.
         :type: str
         """
-        allowed_values = ["SUCCESS", "FAILED", "UNSTABLE", "BUILDING", "REJECTED", "CANCELLED", "SYSTEM_ERROR", "UNKNOWN"]
+        allowed_values = ["SUCCESS", "FAILED", "UNSTABLE", "BUILDING", "REJECTED", "CANCELLED", "SYSTEM_ERROR", "UNKNOWN", None]
         if build_status not in allowed_values:
             raise ValueError(
                 "Invalid value for `build_status`, must be one of {0}"

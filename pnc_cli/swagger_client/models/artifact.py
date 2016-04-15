@@ -40,35 +40,47 @@ class Artifact(object):
         self.swagger_types = {
             'id': 'int',
             'identifier': 'str',
-            'repo_type': 'str',
             'checksum': 'str',
+            'artifact_quality': 'str',
+            'repo_type': 'str',
             'filename': 'str',
             'deploy_url': 'str',
-            'type': 'str',
+            'build_records': 'list[BuildRecord]',
             'dependant_build_records': 'list[BuildRecord]',
+            'origin_url': 'str',
+            'import_date': 'datetime',
+            'distributed_in_product_milestones': 'list[ProductMilestone]',
             'field_handler': 'FieldHandler'
         }
 
         self.attribute_map = {
             'id': 'id',
             'identifier': 'identifier',
-            'repo_type': 'repoType',
             'checksum': 'checksum',
+            'artifact_quality': 'artifactQuality',
+            'repo_type': 'repoType',
             'filename': 'filename',
             'deploy_url': 'deployUrl',
-            'type': 'type',
+            'build_records': 'buildRecords',
             'dependant_build_records': 'dependantBuildRecords',
+            'origin_url': 'originUrl',
+            'import_date': 'importDate',
+            'distributed_in_product_milestones': 'distributedInProductMilestones',
             'field_handler': 'fieldHandler'
         }
 
         self._id = None
         self._identifier = None
-        self._repo_type = None
         self._checksum = None
+        self._artifact_quality = None
+        self._repo_type = None
         self._filename = None
         self._deploy_url = None
-        self._type = None
+        self._build_records = None
         self._dependant_build_records = None
+        self._origin_url = None
+        self._import_date = None
+        self._distributed_in_product_milestones = None
         self._field_handler = None
 
     @property
@@ -116,6 +128,56 @@ class Artifact(object):
         self._identifier = identifier
 
     @property
+    def checksum(self):
+        """
+        Gets the checksum of this Artifact.
+
+
+        :return: The checksum of this Artifact.
+        :rtype: str
+        """
+        return self._checksum
+
+    @checksum.setter
+    def checksum(self, checksum):
+        """
+        Sets the checksum of this Artifact.
+
+
+        :param checksum: The checksum of this Artifact.
+        :type: str
+        """
+        self._checksum = checksum
+
+    @property
+    def artifact_quality(self):
+        """
+        Gets the artifact_quality of this Artifact.
+
+
+        :return: The artifact_quality of this Artifact.
+        :rtype: str
+        """
+        return self._artifact_quality
+
+    @artifact_quality.setter
+    def artifact_quality(self, artifact_quality):
+        """
+        Sets the artifact_quality of this Artifact.
+
+
+        :param artifact_quality: The artifact_quality of this Artifact.
+        :type: str
+        """
+        allowed_values = ["BUILT", "VERIFIED", "TESTED", "DEPRECATED", "BLACKLISTED", "IMPORTED"]
+        if artifact_quality not in allowed_values:
+            raise ValueError(
+                "Invalid value for `artifact_quality`, must be one of {0}"
+                .format(allowed_values)
+            )
+        self._artifact_quality = artifact_quality
+
+    @property
     def repo_type(self):
         """
         Gets the repo_type of this Artifact.
@@ -142,28 +204,6 @@ class Artifact(object):
                 .format(allowed_values)
             )
         self._repo_type = repo_type
-
-    @property
-    def checksum(self):
-        """
-        Gets the checksum of this Artifact.
-
-
-        :return: The checksum of this Artifact.
-        :rtype: str
-        """
-        return self._checksum
-
-    @checksum.setter
-    def checksum(self, checksum):
-        """
-        Sets the checksum of this Artifact.
-
-
-        :param checksum: The checksum of this Artifact.
-        :type: str
-        """
-        self._checksum = checksum
 
     @property
     def filename(self):
@@ -210,26 +250,26 @@ class Artifact(object):
         self._deploy_url = deploy_url
 
     @property
-    def type(self):
+    def build_records(self):
         """
-        Gets the type of this Artifact.
+        Gets the build_records of this Artifact.
 
 
-        :return: The type of this Artifact.
-        :rtype: str
+        :return: The build_records of this Artifact.
+        :rtype: list[BuildRecord]
         """
-        return self._type
+        return self._build_records
 
-    @type.setter
-    def type(self, type):
+    @build_records.setter
+    def build_records(self, build_records):
         """
-        Sets the type of this Artifact.
+        Sets the build_records of this Artifact.
 
 
-        :param type: The type of this Artifact.
-        :type: str
+        :param build_records: The build_records of this Artifact.
+        :type: list[BuildRecord]
         """
-        self._type = type
+        self._build_records = build_records
 
     @property
     def dependant_build_records(self):
@@ -252,6 +292,72 @@ class Artifact(object):
         :type: list[BuildRecord]
         """
         self._dependant_build_records = dependant_build_records
+
+    @property
+    def origin_url(self):
+        """
+        Gets the origin_url of this Artifact.
+
+
+        :return: The origin_url of this Artifact.
+        :rtype: str
+        """
+        return self._origin_url
+
+    @origin_url.setter
+    def origin_url(self, origin_url):
+        """
+        Sets the origin_url of this Artifact.
+
+
+        :param origin_url: The origin_url of this Artifact.
+        :type: str
+        """
+        self._origin_url = origin_url
+
+    @property
+    def import_date(self):
+        """
+        Gets the import_date of this Artifact.
+
+
+        :return: The import_date of this Artifact.
+        :rtype: datetime
+        """
+        return self._import_date
+
+    @import_date.setter
+    def import_date(self, import_date):
+        """
+        Sets the import_date of this Artifact.
+
+
+        :param import_date: The import_date of this Artifact.
+        :type: datetime
+        """
+        self._import_date = import_date
+
+    @property
+    def distributed_in_product_milestones(self):
+        """
+        Gets the distributed_in_product_milestones of this Artifact.
+
+
+        :return: The distributed_in_product_milestones of this Artifact.
+        :rtype: list[ProductMilestone]
+        """
+        return self._distributed_in_product_milestones
+
+    @distributed_in_product_milestones.setter
+    def distributed_in_product_milestones(self, distributed_in_product_milestones):
+        """
+        Sets the distributed_in_product_milestones of this Artifact.
+
+
+        :param distributed_in_product_milestones: The distributed_in_product_milestones of this Artifact.
+        :type: list[ProductMilestone]
+        """
+        self._distributed_in_product_milestones = distributed_in_product_milestones
 
     @property
     def field_handler(self):

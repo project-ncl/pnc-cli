@@ -17,4 +17,3 @@ from .productmilestones_api import ProductmilestonesApi
 from .buildconfigsetrecords_api import BuildconfigsetrecordsApi
 from .buildrecords_api import BuildrecordsApi
 from .runningbuildrecords_api import RunningbuildrecordsApi
-from .buildrecordsets_api import BuildrecordsetsApi
