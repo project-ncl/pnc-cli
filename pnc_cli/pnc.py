@@ -14,7 +14,6 @@ from pnc_cli import licenses
 from pnc_cli import environments
 from pnc_cli import runningbuilds
 from pnc_cli import productreleases
-from pnc_cli import buildrecordsets
 from pnc_cli import users
 from pnc_cli import builds
 
@@ -90,13 +89,6 @@ parser.add_commands([products.create_product,
                      buildconfigsetrecords.list_build_configuration_set_records,
                      buildconfigsetrecords.get_build_configuration_set_record,
                      buildconfigsetrecords.list_records_for_build_config_set,
-                     buildrecordsets.list_build_record_sets,
-                     buildrecordsets.get_build_record_set,
-                     buildrecordsets.create_build_record_set,
-                     buildrecordsets.list_sets_containing_build_record,
-                     buildrecordsets.list_build_record_sets_for_milestone,
-                     buildrecordsets.delete_build_record_set,
-                     buildrecordsets.update_build_record_set,
                      users.create_user,
                      users.list_users,
                      users.update_user,
