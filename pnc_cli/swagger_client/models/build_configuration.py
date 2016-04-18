@@ -58,9 +58,9 @@ class BuildConfiguration(object):
             'dependencies': 'list[BuildConfiguration]',
             'dependants': 'list[BuildConfiguration]',
             'repositories': 'str',
-            'all_dependencies': 'list[BuildConfiguration]',
             'indirect_dependencies': 'list[BuildConfiguration]',
-            'field_handler': 'FieldHandler'
+            'field_handler': 'FieldHandler',
+            'all_dependencies': 'list[BuildConfiguration]'
         }
 
         self.attribute_map = {
@@ -84,9 +84,9 @@ class BuildConfiguration(object):
             'dependencies': 'dependencies',
             'dependants': 'dependants',
             'repositories': 'repositories',
-            'all_dependencies': 'allDependencies',
             'indirect_dependencies': 'indirectDependencies',
-            'field_handler': 'fieldHandler'
+            'field_handler': 'fieldHandler',
+            'all_dependencies': 'allDependencies'
         }
 
         self._id = None
@@ -109,9 +109,9 @@ class BuildConfiguration(object):
         self._dependencies = None
         self._dependants = None
         self._repositories = None
-        self._all_dependencies = None
         self._indirect_dependencies = None
         self._field_handler = None
+        self._all_dependencies = None
 
     @property
     def id(self):
@@ -485,7 +485,7 @@ class BuildConfiguration(object):
         :param build_status: The build_status of this BuildConfiguration.
         :type: str
         """
-        allowed_values = ["SUCCESS", "FAILED", "UNSTABLE", "BUILDING", "REJECTED", "CANCELLED", "SYSTEM_ERROR", "UNKNOWN", None]
+        allowed_values = ["SUCCESS", "FAILED", "UNSTABLE", "BUILDING", "REJECTED", "CANCELLED", "SYSTEM_ERROR", "UNKNOWN", "NONE"]
         if build_status not in allowed_values:
             raise ValueError(
                 "Invalid value for `build_status`, must be one of {0}"
@@ -560,28 +560,6 @@ class BuildConfiguration(object):
         self._repositories = repositories
 
     @property
-    def all_dependencies(self):
-        """
-        Gets the all_dependencies of this BuildConfiguration.
-
-
-        :return: The all_dependencies of this BuildConfiguration.
-        :rtype: list[BuildConfiguration]
-        """
-        return self._all_dependencies
-
-    @all_dependencies.setter
-    def all_dependencies(self, all_dependencies):
-        """
-        Sets the all_dependencies of this BuildConfiguration.
-
-
-        :param all_dependencies: The all_dependencies of this BuildConfiguration.
-        :type: list[BuildConfiguration]
-        """
-        self._all_dependencies = all_dependencies
-
-    @property
     def indirect_dependencies(self):
         """
         Gets the indirect_dependencies of this BuildConfiguration.
@@ -624,6 +602,28 @@ class BuildConfiguration(object):
         :type: FieldHandler
         """
         self._field_handler = field_handler
+
+    @property
+    def all_dependencies(self):
+        """
+        Gets the all_dependencies of this BuildConfiguration.
+
+
+        :return: The all_dependencies of this BuildConfiguration.
+        :rtype: list[BuildConfiguration]
+        """
+        return self._all_dependencies
+
+    @all_dependencies.setter
+    def all_dependencies(self, all_dependencies):
+        """
+        Sets the all_dependencies of this BuildConfiguration.
+
+
+        :param all_dependencies: The all_dependencies of this BuildConfiguration.
+        :type: list[BuildConfiguration]
+        """
+        self._all_dependencies = all_dependencies
 
     def to_dict(self):
         """
