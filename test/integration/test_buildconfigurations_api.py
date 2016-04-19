@@ -1,7 +1,9 @@
 import pytest
+from pnc_cli import products
 from pnc_cli import projects
 from pnc_cli import environments
 from pnc_cli import buildconfigurations
+from pnc_cli import productversions
 from pnc_cli.swagger_client import BuildconfigurationsApi
 from pnc_cli.swagger_client import RunningbuildrecordsApi
 from pnc_cli import utils
@@ -17,16 +19,25 @@ def get_configs_api():
     global configs_api
     configs_api = BuildconfigurationsApi(utils.get_api_client())
 
+
+@pytest.fixture(scope='function')
+def new_product(request):
+    product = products.create_product(name=testutils.gen_random_name() + '-product')
+    return product
+
+
 @pytest.fixture(scope='function')
 def new_project(request):
-    project = projects.create_project(name=testutils.gen_random_name()+'-project')
+    project = projects.create_project(name=testutils.gen_random_name() + '-project')
     return project
+
 
 @pytest.fixture(scope='function')
 def new_environment(request):
     randname = testutils.gen_random_name()
     env = environments.create_environment(name=randname + '-environment', build_type='JAVA', image_id=randname)
     return env
+
 
 @pytest.fixture(scope='function')
 def new_config(request, new_project, new_environment):
@@ -38,7 +49,7 @@ def new_config(request, new_project, new_environment):
                                                           build_script='mvn clean install',
                                                           product_version_ids=[1],
                                                           scm_repo_url='https://github.com/thauser/simple-maven-build-pnc.git',
-                                                          )).content
+        )).content
 
     return created_bc
 
@@ -158,7 +169,8 @@ def test_update(new_config):
     updated = configs_api.get_specific(id=new_config.id).content
     keys_updated = set(updated.attribute_map).difference(ignored_keys)
     keys_new_config = set(new_config.attribute_map).difference(ignored_keys)
-    assert keys_updated == keys_new_config and (getattr(updated, key) == getattr(new_config, key) for key in keys_updated)
+    assert keys_updated == keys_new_config and (getattr(updated, key) == getattr(new_config, key) for key in
+                                                keys_updated)
 
 
 def test_delete_specific_no_id():
@@ -308,8 +320,24 @@ def test_add_product_version_invalid_param():
 # get_product_versions
 # remove_product_version
 # TODO: cannot test due to test_productversions_api incomplete
-def test_product_version_operations(new_config):
-    pass
+def test_product_version_operations(new_product, new_config):
+    randversion = testutils.gen_random_version()
+
+    #create a test ProductVersion
+    version_rest = productversions.create_product_version(product_id=new_product.id,version=randversion)
+
+    #add_product_version
+    configs_api.add_product_version(id=new_config.id, body=version_rest)
+
+    #get_product_versions
+    config_versions = configs_api.get_product_versions(id=new_config.id)
+    assert version_rest.id in [x.id for x in config_versions.content]
+
+    #remove_product_version
+    configs_api.remove_product_version(id=new_config.id, product_version_id=version_rest.id)
+    config_versions = configs_api.get_product_versions(id=new_config.id)
+    if config_versions.content is not None:
+        assert version_rest.id not in [x.id for x in config_versions.content]
 
 
 def test_get_revisions_no_id():
@@ -334,7 +362,7 @@ def test_get_revision_invalid_param():
 
 # get_revisions
 # get_revision
-@pytest.mark.xfail(reason='get_revisions is currently non-functional.')
+@pytest.mark.xfail(reason='need to be able to create revisions on the new_config.')
 def test_revision_operations(new_config):
     revisions = configs_api.get_revisions(id=new_config.id).content
     assert revisions is not None
