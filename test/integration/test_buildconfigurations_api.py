@@ -265,7 +265,8 @@ def test_remove_dependency_invalid_param():
 # remove_dependency
 def test_dependency_operations(new_config):
     depname = testutils.gen_random_name()
-    dep = buildconfigurations.create_build_configuration(name=depname,project=1,environment=1)
+    dep = buildconfigurations.create_build_configuration(name=depname, project=1, environment=1,
+                                                         scm_repo_url='http://someurl.com')
     configs_api.add_dependency(id=new_config.id, body=dep)
     dependency_ids = [dep.id for dep in
                       configs_api.get_dependencies(id=new_config.id, page_index=0, page_size=1000000, sort='',
@@ -352,5 +353,19 @@ def test_get_build_configuration_sets_invalid_param():
 def test_get_build_configuration_sets():
     build_configuration_sets = configs_api.get_build_configuration_sets(id=1).content
     assert build_configuration_sets is not None
+
+
+def test_get_builds_no_id():
+    testutils.assert_raises_typeerror(configs_api, 'get_builds')
+
+
+def test_get_builds_invalid_param():
+    testutils.assert_raises_valueerror(configs_api, 'get_builds', id=None)
+
+
+def test_get_builds():
+    builds = configs_api.get_builds(id=1)
+    assert builds is not None
+
 
 
