@@ -133,12 +133,18 @@ def test_remove_configuration(new_config, new_set):
     set_config_ids = [x.id for x in sets_api.get_configurations(id=new_set.id).content]
     # config is added successfully
     assert new_config.id in set_config_ids
-    #remove config
+    # remove config
     sets_api.remove_configuration(id=new_set.id, config_id=new_config.id)
     #removed successfully
     assert sets_api.get_configurations(id=new_set.id).content is None
 
 
+def test_get_build_records_no_id():
+    testutils.assert_raises_valueerror(sets_api, 'get_build_records', id=None)
+
+
+def test_get_build_records_invalid_param():
+    testutils.assert_raises_typeerror(sets_api, 'get_build_records', id=1)
 
 
 def test_get_build_records(new_set):
