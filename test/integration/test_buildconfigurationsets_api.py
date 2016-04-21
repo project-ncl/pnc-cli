@@ -61,6 +61,14 @@ def test_create(new_set):
     assert new_set.name in set_names
 
 
+def test_get_specific_no_id():
+    testutils.assert_raises_valueerror(sets_api, 'get_specific', id=None)
+
+
+def test_get_specific_invalid_param():
+    testutils.assert_raises_typeerror(sets_api, 'get_specific', id=1)
+
+
 def test_get_specific(new_set):
     set = sets_api.get_specific(id=new_set.id)
     assert set is not None
@@ -74,16 +82,26 @@ def test_update(new_set):
     assert retrieved_set.name == newname
 
 
+def test_delete_no_id():
+    testutils.assert_raises_valueerror(sets_api, 'delete_specific', id=None)
+
+
+def test_delete_invalid_param():
+    testutils.assert_raises_typeerror(sets_api, 'delete_specific', id=1)
+
+
 def test_delete(new_set):
     sets_api.delete_specific(id=new_set.id)
     response = utils.checked_api_call(sets_api, 'get_specific', id=new_set.id)
     assert response is None
 
 
-@pytest.mark.xfail(reason="doesn't reliably return valid json.")
-def test_trigger(new_set):
-    running_set = sets_api.trigger(id=new_set.id)
-    assert running_set.ok
+def test_get_configurations_no_id():
+    testutils.assert_raises_valueerror(sets_api, 'get_configurations', id=None)
+
+
+def test_get_configurations_invalid_param():
+    testutils.assert_raises_typeerror(sets_api, 'get_configurations', id=1)
 
 
 def test_get_configurations(new_config, new_set):
@@ -98,6 +116,62 @@ def test_add_configuration(new_config, new_set):
     assert new_config.id in set_config_ids
 
 
+def test_remove_configuration_no_set_id():
+    testutils.assert_raises_valueerror(sets_api, 'remove_configuration', id=None, config_id=1)
+
+
+def test_remove_configuration_no_config_id():
+    testutils.assert_raises_valueerror(sets_api, 'remove_configuration', id=1, config_id=None)
+
+
+def test_remove_configuration_invalid_param():
+    testutils.assert_raises_typeerror(sets_api, 'remove_configuration', id=1, config_id=1)
+
+
+def test_remove_configuration(new_config, new_set):
+    sets_api.add_configuration(id=new_set.id, body=new_config)
+    set_config_ids = [x.id for x in sets_api.get_configurations(id=new_set.id).content]
+    # config is added successfully
+    assert new_config.id in set_config_ids
+    #remove config
+    sets_api.remove_configuration(id=new_set.id, config_id=new_config.id)
+    #removed successfully
+    assert sets_api.get_configurations(id=new_set.id).content is None
+
+
+
+
 def test_get_build_records(new_set):
     response = sets_api.get_build_records(id=new_set.id)
     assert response
+
+
+def test_build_no_id():
+    testutils.assert_raises_valueerror(sets_api, 'build', id=None)
+
+
+def test_build_invalid_param():
+    testutils.assert_raises_typeerror(sets_api, 'build', id=1)
+
+
+def test_build(new_config, new_set):
+    sets_api.add_configuration(id=new_set.id, body=new_config)
+    build_records = sets_api.build(id=new_set.id, rebuild_all=False)
+    assert build_records is not None
+
+
+def test_get_all_build_config_set_records_no_id():
+    testutils.assert_raises_valueerror(sets_api, 'get_all_build_config_set_records', id=None)
+
+
+def test_get_all_build_config_set_records_invalid_param():
+    testutils.assert_raises_typeerror(sets_api, 'get_all_build_config_set_records', id=1)
+
+
+def test_get_all_build_config_set_records(new_set):
+    response = sets_api.get_all_build_config_set_records(id=new_set.id)
+    assert response is not None
+
+
+
+
