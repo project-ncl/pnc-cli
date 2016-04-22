@@ -1756,7 +1756,7 @@ class BuildconfigurationsApi(object):
         :param int page_index: Page Index
         :param int page_size: Pagination size
         :param str sort: Sorting RSQL
-        :return: BuildConfigurationPage
+        :return: BuildConfigurationAuditedPage
                  If the method is called asynchronously,
                  returns the request thread.
         """
@@ -1819,7 +1819,7 @@ class BuildconfigurationsApi(object):
                                             body=body_params,
                                             post_params=form_params,
                                             files=files,
-                                            response_type='BuildConfigurationPage',
+                                            response_type='BuildConfigurationAuditedPage',
                                             auth_settings=auth_settings,
                                             callback=params.get('callback'))
         return response
