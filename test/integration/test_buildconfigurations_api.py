@@ -319,7 +319,6 @@ def test_add_product_version_invalid_param():
 # add_product_version
 # get_product_versions
 # remove_product_version
-# TODO: cannot test due to test_productversions_api incomplete
 def test_product_version_operations(new_product, new_config):
     randversion = testutils.gen_random_version()
 
@@ -362,11 +361,10 @@ def test_get_revision_invalid_param():
 
 # get_revisions
 # get_revision
-@pytest.mark.xfail(reason='need to be able to create revisions on the new_config.')
 def test_revision_operations(new_config):
     revisions = configs_api.get_revisions(id=new_config.id).content
     assert revisions is not None
-    revision = configs_api.get_revision(id=new_config.id, rev=revisions[0].id)
+    revision = configs_api.get_revision(id=new_config.id, rev=revisions[0].rev)
     assert revision is not None
 
 
