@@ -43,7 +43,7 @@ def list_build_configuration_sets(page_size=200, sort="", q=""):
 @arg("name", help="Name for the new BuildConfigurationSet.")
 @arg("-pvi", "--product-version-id",
      help="ID of the product version to associate this BuildConfigurationSet.")
-@arg("-bcs", "--build-configuration_ids", type=int, nargs='+',
+@arg("-bcs", "--build-configuration-ids", type=int, nargs='+',
      help="Space separated list of build-configurations to include in the set.")
 def create_build_configuration_set(**kwargs):
     """
