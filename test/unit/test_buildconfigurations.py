@@ -221,7 +221,7 @@ def test_create_build_configuration_no_project(mock_projects):
     assert not result
 
 @patch('pnc_cli.buildconfigurations.projects.get_project', return_value='project')
-@patch('pnc_cli.buildconfigurations.environments.get_environment', return_value='mock-environment')
+@patch('pnc_cli.buildconfigurations.environments.get_environment', return_value=None)
 def test_create_build_configuration_no_environment(mock_environments, mock_project):
     result = buildconfigurations.create_build_configuration(name='testerino', project=1, environment=1)
     mock_project.assert_called_once_with(id=1)
