@@ -21,9 +21,6 @@ def create_build_conf_object(**kwargs):
     created_build_configuration = swagger_client.BuildConfigurationRest()
     for key, value in kwargs.items():
         setattr(created_build_configuration, str(key), value)
-    # workaround for current REST client
-    if "build_status" not in kwargs.keys():
-        setattr(created_build_configuration, "build_status", "UNKNOWN")
     return created_build_configuration
 
 
