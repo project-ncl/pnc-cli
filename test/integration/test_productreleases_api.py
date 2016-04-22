@@ -2,7 +2,6 @@ __author__ = 'thauser'
 import pytest
 import datetime
 
-
 from pnc_cli.swagger_client.apis import ProductsApi
 from pnc_cli.swagger_client.apis import ProductreleasesApi
 from pnc_cli.swagger_client.apis import ProductmilestonesApi
@@ -20,16 +19,19 @@ def get_product_api():
     global product_api
     product_api = ProductsApi(utils.get_api_client())
 
+
 milestones_api = ProductmilestonesApi(utils.get_api_client())
 releases_api = ProductreleasesApi(utils.get_api_client())
 versions_api = ProductversionsApi(utils.get_api_client())
+
 
 @pytest.fixture(scope='function')
 def new_product():
     product = product_api.create_new(body=products._create_product_object(name=testutils.gen_random_name(),
                                                                           description="PNC CLI: test_productreleases_api product"
-                                                                          )).content
+    )).content
     return product
+
 
 @pytest.fixture(scope='function')
 def new_version(new_product):
@@ -50,7 +52,7 @@ def new_milestone(new_version):
     starting = utils.unix_time_millis(datetime.datetime(2016, 1, 2, 12, 0, 0))
     ending = utils.unix_time_millis(datetime.datetime(2017, 1, 2, 12, 0, 0))
     milestone = milestones_api.create_new(body=productmilestones.create_milestone_object(
-        version=new_version.version+'.1.build3',
+        version=new_version.version + '.1.build3',
         starting_date=starting,
         planned_end_date=ending,
         download_url='localhost:8080/build3',
@@ -64,7 +66,7 @@ def new_release(new_milestone):
     release_time = utils.unix_time_millis(datetime.datetime(2016, 1, 2, 12, 0, 0))
     associated_version = versions_api.get_specific(id=new_milestone.product_version_id).content.version
     release = releases_api.create_new(body=productreleases.create_product_release_object(
-        version= associated_version + ".1.DR1",
+        version=associated_version + ".1.DR1",
         release_date=release_time,
         download_url="pnc-cli-test-url",
         product_version_id=new_milestone.product_version_id,
@@ -139,3 +141,16 @@ def test_update(new_release):
     releases_api.update(id=new_release.id, body=new_release)
     updated = releases_api.get_specific(id=new_release.id).content
     assert updated.to_dict() == new_release.to_dict()
+
+
+def test_get_all_builds_in_distributed_recordset_of_product_release_no_id():
+    testutils.assert_raises_valueerror(releases_api, 'get_all_builds_in_distributed_recordset_of_product_release', id=None)
+
+
+def test_get_all_builds_in_distributed_recordset_of_product_release_invalid_param():
+    testutils.assert_raises_typeerror(releases_api, 'get_all_builds_in_distributed_recordset_of_product_release', id=1)
+
+
+def test_get_all_builds_in_distributed_recordset_of_product_release(new_release):
+    response = releases_api.get_all_builds_in_distributed_recordset_of_product_release(id=new_release.id)
+    assert response
