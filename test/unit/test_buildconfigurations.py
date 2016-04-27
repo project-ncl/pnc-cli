@@ -8,7 +8,6 @@ from pnc_cli.swagger_client import BuildConfigurationRest
 
 def test_create_build_conf_object():
     compare = BuildConfigurationRest()
-    compare.build_status = 'UNKNOWN'
     compare.name = 'test'
     result = buildconfigurations.create_build_conf_object(name='test')
     assert compare.to_dict() == result.to_dict()
