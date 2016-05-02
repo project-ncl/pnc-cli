@@ -54,7 +54,7 @@ def new_config(request, new_project, new_environment):
             build_status="UNKNOWN",
             build_script='mvn clean install',
             product_version_ids=[1],
-            scm_repo_url='https://github.com/thauser/simple-maven-build-pnc.git',
+            scm_repo_url='https://github.com/project-ncl/pnc-simple-test-project.git',
             scm_revision='master')).content
 
     return created_bc
