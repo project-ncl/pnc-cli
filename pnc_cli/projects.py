@@ -72,7 +72,7 @@ def _project_exists(search_id):
 @arg("-l", "--license-id", help="License ID for the new Project")
 def create_project(**kwargs):
     """
-    Create a new Project
+    Create a new Project. Typically, a Project represents a single source code repository, as well as the information related to development of those sources.
     """
     project = _create_project_object(**kwargs)
     response = utils.checked_api_call(projects_api, 'create_new', body=project)

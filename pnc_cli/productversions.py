@@ -60,7 +60,13 @@ def list_product_versions(page_size=200, sort="", q=""):
      help="List of build configuration set IDs to associate with the new version")
 def create_product_version(product_id, version, **kwargs):
     """
-    Create a new ProductVersion
+    Create a new ProductVersion.
+    Each ProductVersion represents a supported product release stream, which includes milestones and releases typically associated with a single major.minor version of a Product.
+    Follows the Red Hat product support cycle, and typically includes Alpha, Beta, GA, and CP releases with the same major.minor version.
+
+    Example:
+    ProductVersion 1.0 includes the following releases:
+    1.0.Beta1, 1.0.GA, 1.0.1, etc.
     """
     if version_exists_for_product(product_id, version):
         logging.error("Version {} already exists for product: {}".format(
@@ -77,7 +83,7 @@ def create_product_version(product_id, version, **kwargs):
 @arg("id", help="ID of the ProductVersion to retrieve")
 def get_product_version(id):
     """
-    Get a specific ProductVersion by ID
+    Retrieve a specific ProductVersion by ProductVersion ID
     """
     if not version_exists(id):
         logging.error("No ProductVersion with ID {} exists.".format(id))
@@ -101,7 +107,7 @@ def get_product_version(id):
      help="List of BuildConfigurationSet IDs to associate with the new version")
 def update_product_version(id, **kwargs):
     """
-    Update the ProductVersion with the given ID with new values.
+    Update the ProductVersion with ID id with new values.
     """
     if not version_exists(id):
         logging.error("A ProductVersion with id {} doesn't exist.".format(id))
