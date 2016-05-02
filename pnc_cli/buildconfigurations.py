@@ -89,7 +89,7 @@ def build(id=None, name=None):
 @arg("-n", "--name", help="Name of the BuildConfiguration to retrieve.")
 def get_build_configuration(id=None, name=None):
     """
-    Get a specific BuildConfiguration
+    Retrieve a specific BuildConfiguration
     """
     found_id = get_config_id(id, name)
     if not found_id:
@@ -109,6 +109,13 @@ def get_build_configuration(id=None, name=None):
 @arg("-srev", "--scm-revision", help="Revision of the sources in scm-url for this BuildConfiguration.")
 @arg("-bs", "--build-script", help="Script to execute for the BuildConfiguration.")
 def update_build_configuration(id=None, name=None, **kwargs):
+    """
+    Update an existing BuildConfiguration with new information
+
+    :param id: ID of BuildConfiguration to update
+    :param name: Name of BuildConfiguration to update
+    :return:
+    """
     to_update_id = get_config_id(id, name)
     if not to_update_id:
         return
@@ -143,6 +150,12 @@ def update_build_configuration(id=None, name=None, **kwargs):
 @arg("-i", "--id", help="ID of the BuildConfiguration to delete.")
 @arg("-n", "--name", help="Name of the BuildConfiguration to delete.")
 def delete_build_configuration(id=None, name=None):
+    """
+    Delete an existing BuildConfiguration
+    :param id:
+    :param name:
+    :return:
+    """
     to_delete_id = get_config_id(id, name)
     if not to_delete_id:
         return
@@ -156,13 +169,17 @@ def delete_build_configuration(id=None, name=None):
 # allow specifying project by name?
 @arg("project", help="ID of the Project to associate the BuildConfiguration with.")
 @arg("environment", help="ID of the Environment for the new BuildConfiguration.")
+@arg("scm_repo_url", help="URL to the sources of the BuildConfiguration.")
+@arg("scm_revision", help="Revision of the sources in scm-url for this BuildConfiguration.")
+@arg("build_script", help="Script to execute for the BuildConfiguration.")
 @arg("-d", "--description", help="Description of the new build configuration.")
-@arg("-surl", "--scm-repo-url", help="URL to the sources of the BuildConfiguration.")
-@arg("-srev", "--scm-revision", help="Revision of the sources in scm-url for this BuildConfiguration.")
-@arg("-bs", "--build-script", help="Script to execute for the BuildConfiguration.")
+@arg("-pvi", "--product-version-id", help="Associated ProductVersion ID.")
+@arg("-dids", "--dependency-ids", type=int, nargs="+", help="List of BuildConfiguration IDs that are dependencies of this BuildConfiguration.")
+#@arg("-bcsid", "--")
 def create_build_configuration(**kwargs):
     """
-    Create a new BuildConfiguration
+    Create a new BuildConfiguration. BuildConfigurations represent the settings and configuration required to run a build of a specific version of the associated Project's source code.
+    If a ProductVersion ID is provided, the BuildConfiguration will have access to artifacts which were produced for that version, but may not have been released yet.
     """
     project_id = kwargs.get('project')
     project_rest = projects.get_project(id=project_id)
@@ -208,7 +225,7 @@ def list_build_configurations_for_product(id=None, name=None, page_size=200, sor
 @arg("-q", help="RSQL query")
 def list_build_configurations_for_project(id=None, name=None, page_size=200, sort="", q=""):
     """
-    List all BuildConfigurations associated with the given Product.
+    List all BuildConfigurations associated with the given Project.
     """
     found_id = projects.get_project_id(id, name)
     if not found_id:
@@ -267,10 +284,16 @@ def add_dependency(id=None, name=None, dependency_id=None, dependency_name=None)
     """
     Add an existing BuildConfiguration as a dependency to another BuildConfiguration.
     """
+    if not id and not name:
+        logging.error("Please provide the name or ID of the BuildConfiguration to add a dependency to.")
+        return;
     add_to = get_config_id(id, name)
     if not add_to:
         return
 
+    if not dependency_id and not dependency_name:
+        logging.error("Please provide the name or ID of the BuildConfiguration to add as a dependency.")
+        return
     to_add = get_config_id(dependency_id, dependency_name)
     if not to_add:
         return
@@ -289,10 +312,17 @@ def remove_dependency(id=None, name=None, dependency_id=None, dependency_name=No
     """
     Remove a BuildConfiguration from the dependency list of another BuildConfiguration
     """
+
+    if not id and not name:
+        logging.error("Please provide the name or ID of the BuildConfiguration to remove a dependency from.")
+        return;
     found_id = get_config_id(id, name)
     if not found_id:
         return
 
+    if not dependency_id and not dependency_name:
+        logging.error("Please provide the name or ID of the BuildConfiguration to remove as a dependency.")
+        return
     found_dep_id = get_config_id(dependency_id, dependency_name)
     if not found_dep_id:
         return
