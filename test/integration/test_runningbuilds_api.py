@@ -32,20 +32,20 @@ def get_sets_api():
 
 
 @pytest.fixture(scope='function')
-def new_project(request):
+def new_project():
     project = projects.create_project(name=testutils.gen_random_name() + '-project')
     return project
 
 
 @pytest.fixture(scope='function')
-def new_environment(request):
+def new_environment():
     randname = testutils.gen_random_name()
     env = environments.create_environment(name=randname + '-environment', build_type='JAVA', image_id=randname)
     return env
 
 
 @pytest.fixture(scope='function')
-def new_config(request, new_project, new_environment):
+def new_config(new_project, new_environment):
     created_bc = configs_api.create_new(
         body=buildconfigurations.create_build_conf_object(
             name=testutils.gen_random_name() + '-config-running-builds-test',
@@ -61,10 +61,13 @@ def new_config(request, new_project, new_environment):
 
 
 @pytest.fixture(scope='function')
-def new_set(request, new_config):
+def new_set(new_project, new_environment):
+    config_one = new_config(new_project, new_environment)
+    config_two = new_config(new_project, new_environment)
+    config_three = new_config(new_project, new_environment)
     created_set = buildconfigurationsets.create_build_configuration_set(
         name=testutils.gen_random_name() + '-set-running-builds-test',
-        build_configuration_ids=[new_config.id])
+        build_configuration_ids=[config_one.id, config_two.id, config_three.id])
     return created_set
 
 

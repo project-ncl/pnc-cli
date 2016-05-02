@@ -160,8 +160,13 @@ def test_build_invalid_param():
     testutils.assert_raises_typeerror(sets_api, 'build', id=1)
 
 
-def test_build(new_config, new_set):
-    sets_api.add_configuration(id=new_set.id, body=new_config)
+def test_build(new_set, new_project, new_environment):
+    config_one = new_config(new_project, new_environment)
+    config_two = new_config(new_project, new_environment)
+    config_three = new_config(new_project, new_environment)
+    sets_api.add_configuration(id=new_set.id, body=config_one)
+    sets_api.add_configuration(id=new_set.id, body=config_two)
+    sets_api.add_configuration(id=new_set.id, body=config_three)
     build_records = sets_api.build(id=new_set.id, rebuild_all=False)
     assert build_records is not None
 
