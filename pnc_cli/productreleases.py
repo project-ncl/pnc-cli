@@ -36,15 +36,26 @@ def list_product_releases(page_size=200, sort="", q=""):
 # version is created by appending product_version.<new info>
 
 
-@arg("version", help="Version of the release. Appended to the ProductVersion.")
+@arg("version", help="Version of the release. Appended to the ProductVersion's version.")
 @arg("release_date", help="Date of the release. Format: yyyy-mm-dd")
 @arg("download_url", help="URL where deliverable(s) are located.")
 @arg("product_version_id",
      help="ID of the ProductVersion this release is associated with.")
 @arg("product_milestone_id", help="ProductMilestone which is the basis of this release")
+@arg("issue_tracker_url", help="Link to the Issue tracker for this ProductRelease")
 @arg("support_level",
      help="Level of support committed to for this release. Possible values: 'UNRELEASED', 'EARLYACCESS', 'SUPPORTED', 'EXTENDED_SUPPORT', 'EOL'")
 def create_release(**kwargs):
+    """
+    Create a new ProductRelease.
+    A ProductRelease represents a build / set of builds that is ready for release to the public.
+    Each ProductRelease is associated with exactly one ProductMilestone and exactly one ProductVersion.
+
+    Example:
+    ProductVersion: 1.0
+    ProductMilestone: 1.0.0.CR2
+    ProductRelease: 1.0.0.GA
+    """
     version = kwargs.get('version')
     if not utils.is_valid_version(version):
         logging.error("Version must start with a number, followed by a dot and then a qualifier (e.g ER1).")
@@ -73,7 +84,7 @@ def list_releases_for_version(id):
 @arg("id", help="ID of the ProductVersion to retrieve.")
 def get_release(id):
     """
-    Get a specific ProductRelease
+    Retrieve a specific ProductRelease
     """
     response = utils.checked_api_call(releases_api, 'get_specific', id=id)
     if response:

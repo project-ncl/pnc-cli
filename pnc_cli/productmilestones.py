@@ -39,7 +39,8 @@ def list_milestones(page_size=200, q="", sort=""):
 @arg("product_version_id", help="ID of the ProductVersion to create a ProductMilestone from.")
 @arg("version", help="Version of the ProductMilestone. Will be appended to the version from product_version_id.")
 @arg("starting_date", help="Planned starting date for the ProductMilestone.")
-@arg("planned_end_date", help="Planned date for the ProductMilestone release.")
+@arg("planned_end_date", help="Planned date for the end of this ProductMilestone.")
+@arg("issue_tracker_url", help="Issue tracker URL for this ProductMilestone.")
 def create_milestone(**kwargs):
     """
     Create a new ProductMilestone
