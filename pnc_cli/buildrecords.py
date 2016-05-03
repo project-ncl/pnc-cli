@@ -10,7 +10,7 @@ records_api = BuildrecordsApi(utils.get_api_client())
 
 
 def record_exists(id):
-    existing = [str(x.id) for x in records_api.get_all().content]
+    existing = [str(x.id) for x in records_api.get_all(q='id=='+id).content]
     return str(id) in existing
 
 
