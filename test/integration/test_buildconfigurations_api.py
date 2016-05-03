@@ -59,7 +59,6 @@ def new_config(request, new_project, new_environment):
     def teardown():
         buildconfigurations.delete_build_configuration(id=created_bc.id)
     request.addfinalizer(teardown)
-
     return created_bc
 
 
