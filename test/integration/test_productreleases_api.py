@@ -25,7 +25,7 @@ releases_api = ProductreleasesApi(utils.get_api_client())
 versions_api = ProductversionsApi(utils.get_api_client())
 
 
-@pytest.fixture(scope='function')
+@pytest.fixture(scope='module')
 def new_product():
     product = product_api.create_new(body=products._create_product_object(name=testutils.gen_random_name(),
                                                                           description="PNC CLI: test_productreleases_api product"
@@ -33,7 +33,7 @@ def new_product():
     return product
 
 
-@pytest.fixture(scope='function')
+@pytest.fixture(scope='module')
 def new_version(new_product):
     version_number = testutils.gen_random_version()
     existing = product_api.get_product_versions(id=new_product.id).content
@@ -47,7 +47,7 @@ def new_version(new_product):
     return version
 
 
-@pytest.fixture(scope='function')
+@pytest.fixture(scope='module')
 def new_milestone(new_version):
     starting = utils.unix_time_millis(datetime.datetime(2016, 1, 2, 12, 0, 0))
     ending = utils.unix_time_millis(datetime.datetime(2017, 1, 2, 12, 0, 0))
@@ -61,7 +61,7 @@ def new_milestone(new_version):
     return milestone
 
 
-@pytest.fixture(scope='function')
+@pytest.fixture(scope='module')
 def new_release(new_milestone):
     release_time = utils.unix_time_millis(datetime.datetime(2016, 1, 2, 12, 0, 0))
     associated_version = versions_api.get_specific(id=new_milestone.product_version_id).content.version
