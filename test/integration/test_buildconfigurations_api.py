@@ -20,22 +20,28 @@ def get_configs_api():
     configs_api = BuildconfigurationsApi(utils.get_api_client())
 
 
-@pytest.fixture(scope='function')
-def new_product(request):
+@pytest.fixture(scope='module')
+def new_product():
     product = products.create_product(name=testutils.gen_random_name() + '-product')
     return product
 
 
-@pytest.fixture(scope='function')
+@pytest.fixture(scope='module')
 def new_project(request):
     project = projects.create_project(name=testutils.gen_random_name() + '-project')
+    def teardown():
+        projects.delete_project(id=project.id)
+    request.addfinalizer(teardown)
     return project
 
 
-@pytest.fixture(scope='function')
+@pytest.fixture(scope='module')
 def new_environment(request):
     randname = testutils.gen_random_name()
     env = environments.create_environment(name=randname + '-environment', build_type='JAVA', image_id=randname)
+    def teardown():
+        environments.delete_environment(id=env.id)
+    request.addfinalizer(teardown)
     return env
 
 
@@ -50,6 +56,9 @@ def new_config(request, new_project, new_environment):
                                                           product_version_ids=[1],
                                                           scm_repo_url='https://github.com/project-ncl/pnc-simple-test-project.git',
         )).content
+    def teardown():
+        buildconfigurations.delete_build_configuration(id=created_bc.id)
+    request.addfinalizer(teardown)
 
     return created_bc
 
@@ -286,6 +295,7 @@ def test_dependency_operations(new_config):
     assert dep.id in dependency_ids
     configs_api.remove_dependency(id=new_config.id, dependency_id=dep.id)
     assert not configs_api.get_dependencies(id=new_config.id).content
+    configs_api.delete_specific(id=dep.id)
 
 
 def test_get_product_versions_no_id():
