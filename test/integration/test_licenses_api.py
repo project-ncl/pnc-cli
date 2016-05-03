@@ -11,10 +11,13 @@ def get_licenses_api():
     licenses_api = LicensesApi(utils.get_api_client())
 
 
-@pytest.fixture(scope='function')
+@pytest.fixture(scope='module')
 def new_license(request):
     license = licenses_api.create_new(body=licenses._create_license_object(full_name=testutils.gen_random_name(),
                                                                            full_content="pnc_cli-cli test license")).content
+    def teardown():
+        licenses.delete_license(license.id)
+    request.addfinalizer(teardown)
     return license
 
 

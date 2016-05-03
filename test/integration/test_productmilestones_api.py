@@ -17,7 +17,7 @@ def get_milestone_api():
     milestone_api = ProductmilestonesApi(utils.get_api_client())
 
 
-@pytest.fixture(scope='function')
+@pytest.fixture(scope='module')
 def new_product():
     product_api = ProductsApi(utils.get_api_client())
     product = product_api.create_new(body=products._create_product_object(name=testutils.gen_random_name(),
@@ -26,7 +26,7 @@ def new_product():
     return product
 
 
-@pytest.fixture(scope='function')
+@pytest.fixture(scope='module')
 def new_version(new_product):
     product_api = ProductsApi(utils.get_api_client())
     versions_api = ProductversionsApi(utils.get_api_client())
@@ -36,13 +36,13 @@ def new_version(new_product):
         version_number = testutils.gen_random_version()
     version = versions_api.create_new_product_version(body=productversions.create_product_version_object(
         version=version_number,
-        product_id=1,
+        product_id=new_product.id,
         current_product_milestone_id=1
     )).content
     return version
 
 
-@pytest.fixture(scope='function')
+@pytest.fixture(scope='module')
 def new_milestone(new_version):
     milestone = milestone_api.create_new(body=productmilestones.create_milestone_object(
         product_version_id=new_version.id, version=new_version.version + ".1.GA", start_date="2015-01-01",
