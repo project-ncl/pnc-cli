@@ -10,11 +10,14 @@ def get_envs_api():
     envs_api = EnvironmentsApi(utils.get_api_client())
 
 
-@pytest.fixture(scope='function')
+@pytest.fixture(scope='module')
 def new_env(request):
     randname = testutils.gen_random_name()
     env = envs_api.create_new(
         body=environments._create_environment_object(name=randname, build_type='JAVA', image_id=randname)).content
+    def teardown():
+        environments.delete_environment(id=env.id)
+    request.addfinalizer(teardown)
     return env
 
 
