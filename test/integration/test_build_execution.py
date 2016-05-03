@@ -59,6 +59,9 @@ def get_records_api():
 @pytest.fixture(scope='module')
 def new_project(request):
     project = projects.create_project(name=testutils.gen_random_name() + '-project')
+    def teardown():
+        projects.delete_project(id=project.id)
+    request.addfinalizer(teardown)
     return project
 
 
@@ -66,11 +69,14 @@ def new_project(request):
 def new_environment(request):
     randname = testutils.gen_random_name()
     env = environments.create_environment(name=randname + '-environment', build_type='JAVA', image_id=randname)
+    def teardown():
+        environments.delete_environment(id=env.id)
+    request.addfinalizer(teardown)
     return env
 
 
 @pytest.fixture(scope='function')
-def new_config(new_environment, new_project):
+def new_config(request, new_environment, new_project):
     created_bc = configs_api.create_new(
         body=buildconfigurations.create_build_conf_object(
             name=testutils.gen_random_name() + '-config-build-exec-test',
@@ -80,13 +86,18 @@ def new_config(new_environment, new_project):
             product_version_ids=[1],
             scm_repo_url='https://github.com/project-ncl/pnc-simple-test-project.git',
             scm_revision='1.0')).content
-
+    def teardown():
+        buildconfigurations.delete_build_configuration(id=created_bc.id)
+    request.addfinalizer(teardown)
     return created_bc
 
 @pytest.fixture(scope='function')
-def new_set(request, new_environment, new_project):
+def new_set(request):
     set = sets_api.create_new(
         body=buildconfigurationsets._create_build_config_set_object(name=testutils.gen_random_name() + '-config-build-set-exec-test')).content
+    def teardown():
+        buildconfigurationsets.delete_build_config_set(id=set.id)
+    request.addfinalizer(teardown)
     return set
 
 
@@ -109,12 +120,12 @@ def test_run_single_build(new_config):
     build_record = records_api.get_specific(triggered_build.id).content
     build_record_checks(build_record)
 
-def test_run_group_build(new_set, new_environment, new_project):
+def test_run_group_build(request, new_set, new_environment, new_project):
     assert (new_set is not None, 'Unable to create Build Configuration Group')
 
-    config_one = new_config(new_environment, new_project)
-    config_two = new_config(new_environment, new_project)
-    config_three = new_config(new_environment, new_project)
+    config_one = new_config(request, new_environment, new_project)
+    config_two = new_config(request, new_environment, new_project)
+    config_three = new_config(request, new_environment, new_project)
     sets_api.add_configuration(id=new_set.id, body=config_one)
     sets_api.add_configuration(id=new_set.id, body=config_two)
     sets_api.add_configuration(id=new_set.id, body=config_three)
