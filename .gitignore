@@ -1,2 +1,9 @@
 .idea/
 *.pyc
+__pycache__
+.project
+.pydevproject
+.settings
+.cache
+results.xml
+
