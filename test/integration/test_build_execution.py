@@ -54,14 +54,15 @@ def get_records_api():
     global records_api
     records_api = BuildrecordsApi(utils.get_api_client())
 
-
-@pytest.fixture(scope='function')
+#'module' scope means this fixture will be executed only once for this test module, instead of
+# per 'function', reducing the amount of entities created in PNC-CLI
+@pytest.fixture(scope='module')
 def new_project(request):
     project = projects.create_project(name=testutils.gen_random_name() + '-project')
     return project
 
 
-@pytest.fixture(scope='function')
+@pytest.fixture(scope='module')
 def new_environment(request):
     randname = testutils.gen_random_name()
     env = environments.create_environment(name=randname + '-environment', build_type='JAVA', image_id=randname)
@@ -69,7 +70,7 @@ def new_environment(request):
 
 
 @pytest.fixture(scope='function')
-def new_config(request, new_environment, new_project):
+def new_config(new_environment, new_project):
     created_bc = configs_api.create_new(
         body=buildconfigurations.create_build_conf_object(
             name=testutils.gen_random_name() + '-config-build-exec-test',
@@ -81,6 +82,13 @@ def new_config(request, new_environment, new_project):
             scm_revision='1.0')).content
 
     return created_bc
+
+@pytest.fixture(scope='function')
+def new_set(request, new_environment, new_project):
+    set = sets_api.create_new(
+        body=buildconfigurationsets._create_build_config_set_object(name=testutils.gen_random_name() + '-config-build-set-exec-test')).content
+    return set
+
 
 
 def test_run_single_build(new_config):
@@ -99,6 +107,38 @@ def test_run_single_build(new_config):
     logger.info("Build %s is done!", triggered_build.id)
 
     build_record = records_api.get_specific(triggered_build.id).content
+    build_record_checks(build_record)
+
+def test_run_group_build(new_set, new_environment, new_project):
+    assert (new_set is not None, 'Unable to create Build Configuration Group')
+
+    config_one = new_config(new_environment, new_project)
+    config_two = new_config(new_environment, new_project)
+    config_three = new_config(new_environment, new_project)
+    sets_api.add_configuration(id=new_set.id, body=config_one)
+    sets_api.add_configuration(id=new_set.id, body=config_two)
+    sets_api.add_configuration(id=new_set.id, body=config_three)
+
+    # this returns a list of build_records, one for each build configuration in the set
+    triggered_build = sets_api.build(id=new_set.id).content
+    assert(triggered_build is not None, 'Unable to start build')
+
+    triggered_build_ids = [x.id for x in triggered_build]
+    for id in triggered_build_ids:
+        logger.info("Group Build: Build %s is running...", id)
+
+    while True:
+        if not running_api.get_all_for_bc_set(id=new_set.id).content:
+            break
+        time.sleep(5)
+    for id in triggered_build_ids:
+        logger.info("Build group %s is done!", id)
+
+    for id in triggered_build_ids:
+        build_record = records_api.get_specific(id=id).content
+        build_record_checks(build_record)
+
+def build_record_checks(build_record):
     logger.info(str(build_record))
     assert(build_record is not None)
     assert(build_record.status == BUILD_STATUS_DONE)
@@ -116,6 +156,7 @@ def test_run_single_build(new_config):
     artifacts = records_api.get_built_artifacts(build_record.id).content
     assert(artifacts is not None)
     assert(len(artifacts) > 0)
+
 
 def checkout_git_sources(repo_url, revision):
     repo_dir = os.path.join(tempfile.gettempdir(), revision)
