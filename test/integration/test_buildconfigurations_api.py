@@ -22,13 +22,13 @@ def get_configs_api():
 
 @pytest.fixture(scope='module')
 def new_product():
-    product = products.create_product(name=testutils.gen_random_name() + '-product')
+    product = products.create_product(name=testutils.gen_random_name(), description="PNC CLI: test_buildconfigurations_api product")
     return product
 
 
 @pytest.fixture(scope='module')
 def new_project(request):
-    project = projects.create_project(name=testutils.gen_random_name() + '-project')
+    project = projects.create_project(name=testutils.gen_random_name(),description="PNC CLI: test_buildconfigurations_api project")
     def teardown():
         projects.delete_project(id=project.id)
     request.addfinalizer(teardown)
@@ -38,7 +38,7 @@ def new_project(request):
 @pytest.fixture(scope='module')
 def new_environment(request):
     randname = testutils.gen_random_name()
-    env = environments.create_environment(name=randname + '-environment', build_type='JAVA', image_id=randname)
+    env = environments.create_environment(name=randname, build_type='JAVA', image_id=randname)
     def teardown():
         environments.delete_environment(id=env.id)
     request.addfinalizer(teardown)
