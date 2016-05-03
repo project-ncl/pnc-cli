@@ -17,7 +17,7 @@ def get_sets_api():
     sets_api = BuildconfigurationsetsApi(utils.get_api_client())
 
 
-@pytest.fixture(scope='module')
+@pytest.fixture(scope='function')
 def new_set(request):
     set = sets_api.create_new(
         body=buildconfigurationsets._create_build_config_set_object(name=testutils.gen_random_name(),
