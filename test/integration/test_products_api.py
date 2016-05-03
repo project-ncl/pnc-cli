@@ -13,7 +13,7 @@ def get_product_api():
 
 
 
-@pytest.fixture(scope='function')
+@pytest.fixture(scope='module')
 def new_product():
     product = product_api.create_new(body=products._create_product_object(name=testutils.gen_random_name(),
                                                                           description="PNC-CLI: test_products_api product"
