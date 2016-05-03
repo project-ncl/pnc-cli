@@ -18,20 +18,23 @@ def get_sets_api():
 
 
 @pytest.fixture(scope='function')
-def new_set():
+def new_set(request):
     set = sets_api.create_new(
         body=buildconfigurationsets._create_build_config_set_object(name=testutils.gen_random_name(),
                                                                     productVersionId=1)).content
+    def teardown():
+        buildconfigurationsets.delete_build_config_set(id=set.id)
+    request.addfinalizer(teardown)
     return set
 
 
-@pytest.fixture(scope='function')
+@pytest.fixture(scope='module')
 def new_project():
     project = projects.create_project(name=testutils.gen_random_name() + '_project')
     return project
 
 
-@pytest.fixture(scope='function')
+@pytest.fixture(scope='module')
 def new_environment():
     randname = testutils.gen_random_name()
     env = environments.create_environment(name=randname + '_environment', build_type='JAVA', image_id=randname)
@@ -39,7 +42,7 @@ def new_environment():
 
 
 @pytest.fixture(scope='function')
-def new_config(new_project, new_environment):
+def new_config(request, new_project, new_environment):
     created_bc = buildconfigurations.create_build_configuration(name=testutils.gen_random_name(),
                                                                 project=new_project.id,
                                                                 environment=new_environment.id,
@@ -47,7 +50,9 @@ def new_config(new_project, new_environment):
                                                                 build_script='mvn clean install',
                                                                 product_version_ids=[1],
                                                                 scm_repo_url='https://github.com/project-ncl/pnc-simple-test-project.git')
-
+    def teardown():
+        buildconfigurations.delete_build_configuration(id=created_bc.id)
+    request.addfinalizer(teardown)
     return created_bc
 
 
@@ -160,10 +165,10 @@ def test_build_invalid_param():
     testutils.assert_raises_typeerror(sets_api, 'build', id=1)
 
 
-def test_build(new_set, new_project, new_environment):
-    config_one = new_config(new_project, new_environment)
-    config_two = new_config(new_project, new_environment)
-    config_three = new_config(new_project, new_environment)
+def test_build(request, new_set, new_project, new_environment):
+    config_one = new_config(request, new_project, new_environment)
+    config_two = new_config(request, new_project, new_environment)
+    config_three = new_config(request, new_project, new_environment)
     sets_api.add_configuration(id=new_set.id, body=config_one)
     sets_api.add_configuration(id=new_set.id, body=config_two)
     sets_api.add_configuration(id=new_set.id, body=config_three)
