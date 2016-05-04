@@ -1,4 +1,5 @@
 
+import httplib
 import logging
 import os
 import re
@@ -9,6 +10,7 @@ import time
 import pytest
 
 from git import Repo
+from urlparse import urlparse
 
 from pnc_cli import buildconfigurationsets
 from pnc_cli import buildconfigurations
@@ -153,9 +155,28 @@ def build_record_checks(build_record):
     # Cleanup the local git repo
     shutil.rmtree(git_repo.working_dir)
 
-    artifacts = records_api.get_built_artifacts(build_record.id).content
+    build_record_artifact_checks(build_record.id)
+
+
+def build_record_artifact_checks(build_record_id):
+    ''' Check the the artifacts exist in the repository and have valid checksums'''
+    artifacts = records_api.get_built_artifacts(build_record_id).content
     assert(artifacts is not None)
     assert(len(artifacts) > 0)
+
+    # Check that each artifact URL points to a valid file and the checksums match
+    for artifact in artifacts:
+        parsed_url = urlparse(artifact.deploy_url)
+        conn = httplib.HTTPConnection(parsed_url.netloc)
+        conn.request('HEAD', parsed_url.path)
+        response = conn.getresponse()
+        assert(response.status == httplib.OK)
+
+        conn = httplib.HTTPConnection(parsed_url.netloc)
+        conn.request('GET', parsed_url.path + str('.sha1'))
+        response_body = conn.getresponse().read()
+        # skip this check temporarily until Indy checksums match db checksums
+        # assert(response_body == artifact.checksum)
 
 
 def checkout_git_sources(repo_url, revision):
