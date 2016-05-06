@@ -168,7 +168,6 @@ def build_record_checks(build_record):
 
     build_record_artifact_checks(build_record.id)
 
-
 def build_record_artifact_checks(build_record_id):
     ''' Check the the artifacts exist in the repository and have valid checksums'''
     artifacts = records_api.get_built_artifacts(build_record_id).content
@@ -184,10 +183,9 @@ def build_record_artifact_checks(build_record_id):
         assert(response.status == httplib.OK)
 
         conn = httplib.HTTPConnection(parsed_url.netloc)
-        conn.request('GET', parsed_url.path + str('.sha1'))
+        conn.request('GET', parsed_url.path + str('.md5'))
         response_body = conn.getresponse().read()
-        # skip this check temporarily until Indy checksums match db checksums
-        # assert(response_body == artifact.checksum)
+        assert(response_body == artifact.checksum)
 
 
 def checkout_git_sources(repo_url, revision):
