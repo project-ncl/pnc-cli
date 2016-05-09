@@ -199,7 +199,7 @@ def test_update_build_configuration_set_invalid_build_configuration_id(mock_upda
 @patch('pnc_cli.buildconfigurationsets.get_set_id', return_value=1)
 @patch('pnc_cli.buildconfigurationsets.sets_api.delete_specific', return_value=MagicMock(content='SUCCESS'))
 def test_delete_build_config_set(mock_delete, mock_get_set_id):
-    result = buildconfigurationsets.delete_build_config_set(id=1)
+    result = buildconfigurationsets.delete_build_configuration_set(id=1)
     mock_get_set_id.assert_called_once_with(1, None)
     mock_delete.assert_called_once_with(id=1)
     assert result == 'SUCCESS'
@@ -208,7 +208,7 @@ def test_delete_build_config_set(mock_delete, mock_get_set_id):
 @patch('pnc_cli.buildconfigurationsets.get_set_id', return_value=None)
 @patch('pnc_cli.buildconfigurationsets.sets_api.delete_specific')
 def test_delete_build_config_set_id_notexist(mock_delete, mock_get_set_id):
-    result = buildconfigurationsets.delete_build_config_set(id=1)
+    result = buildconfigurationsets.delete_build_configuration_set(id=1)
     mock_get_set_id.assert_called_once_with(1, None)
     assert not mock_delete.called
     assert not result
@@ -217,7 +217,7 @@ def test_delete_build_config_set_id_notexist(mock_delete, mock_get_set_id):
 @patch('pnc_cli.buildconfigurationsets.get_set_id', return_value=1)
 @patch('pnc_cli.buildconfigurationsets.sets_api.delete_specific', return_value=MagicMock(content='SUCCESS'))
 def test_delete_build_config_set_name(mock_delete, mock_get_set_id):
-    result = buildconfigurationsets.delete_build_config_set(name='testerino')
+    result = buildconfigurationsets.delete_build_configuration_set(name='testerino')
     mock_get_set_id.assert_called_once_with(None, 'testerino')
     mock_delete.assert_called_once_with(id=1)
     assert result == 'SUCCESS'
@@ -226,7 +226,7 @@ def test_delete_build_config_set_name(mock_delete, mock_get_set_id):
 @patch('pnc_cli.buildconfigurationsets.get_set_id', return_value=None)
 @patch('pnc_cli.buildconfigurationsets.sets_api.delete_specific')
 def test_delete_build_config_set_name_notexist(mock_delete, mock_get_set_id):
-    result = buildconfigurationsets.delete_build_config_set(name='testerino')
+    result = buildconfigurationsets.delete_build_configuration_set(name='testerino')
     mock_get_set_id.assert_called_once_with(None, 'testerino')
     assert not mock_delete.called
     assert not result

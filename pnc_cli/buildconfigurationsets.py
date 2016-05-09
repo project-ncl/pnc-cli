@@ -138,7 +138,7 @@ def update_build_configuration_set(id, **kwargs):
 # TODO: in order to delete a config set successfully, any buildconfigsetrecords must be deleted first
 # TODO: it may be impossible / undesireable to remove
 # buildconfigsetrecords. so perhaps just check and abort
-def delete_build_config_set(id=None, name=None):
+def delete_build_configuration_set(id=None, name=None):
     set_id = get_set_id(id, name)
     if not set_id:
         return

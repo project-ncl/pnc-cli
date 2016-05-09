@@ -76,7 +76,7 @@ def new_set(request, new_project, new_environment):
         name=testutils.gen_random_name() + '-running-builds-test',
         build_configuration_ids=[config_one.id, config_two.id, config_three.id])
     def teardown():
-        buildconfigurationsets.delete_build_config_set(id=created_set.id)
+        buildconfigurationsets.delete_build_configuration_set(id=created_set.id)
     request.addfinalizer(teardown)
     return created_set
 

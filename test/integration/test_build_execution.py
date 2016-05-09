@@ -98,7 +98,7 @@ def new_set(request):
     set = sets_api.create_new(
         body=buildconfigurationsets._create_build_config_set_object(name=testutils.gen_random_name() + '-config-build-set-exec-test')).content
     def teardown():
-        buildconfigurationsets.delete_build_config_set(id=set.id)
+        buildconfigurationsets.delete_build_configuration_set(id=set.id)
     request.addfinalizer(teardown)
     return set
 

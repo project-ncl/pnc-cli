@@ -23,7 +23,7 @@ def new_set(request):
         body=buildconfigurationsets._create_build_config_set_object(name=testutils.gen_random_name(),
                                                                     productVersionId=1)).content
     def teardown():
-        buildconfigurationsets.delete_build_config_set(id=set.id)
+        buildconfigurationsets.delete_build_configuration_set(id=set.id)
     request.addfinalizer(teardown)
     return set
 
