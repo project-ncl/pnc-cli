@@ -48,7 +48,7 @@ class BuildconfigsetrecordsApi(object):
     def get_all(self, **kwargs):
         """
         Gets all build config set execution records
-        
+
 
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please define a `callback` function
@@ -132,7 +132,7 @@ class BuildconfigsetrecordsApi(object):
     def get_specific(self, id, **kwargs):
         """
         Gets specific build config set execution record
-        
+
 
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please define a `callback` function
@@ -210,7 +210,7 @@ class BuildconfigsetrecordsApi(object):
     def get_build_records(self, id, **kwargs):
         """
         Gets the build records associated with this set
-        
+
 
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please define a `callback` function
