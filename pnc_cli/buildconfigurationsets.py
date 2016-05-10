@@ -216,12 +216,31 @@ def add_build_configuration_to_set(
     bc_id = buildconfigurations.get_config_id(config_id, config_name)
     if not bc_id:
         return
-    bc = configs_api.get_specific(id=bc_id).content
+    bc = buildconfigurations.get_build_configuration(id=bc_id)
     response = utils.checked_api_call(
         sets_api,
         'add_configuration',
         id=config_set_id,
         body=bc)
+    if response:
+        return response.content
+
+@arg("-sid", "--set-id", help="ID of the BuildConfigurationSet to remove from")
+@arg("-sn", "--set-name", help="Name of the BuildConfigurationSet to remove from")
+@arg("-cid", "--config-id", help="ID of the BuildConfiguration to remove from the set")
+@arg("-cn", "--config-name", help="Name of the BuildConfiguration to remove from the set")
+def remove_build_configuration_from_set(set_id=None, set_name=None, config_id=None, config_name=None):
+    config_set_id = get_set_id(set_id,set_name)
+    if not config_set_id:
+        return
+    bc_id = buildconfigurations.get_config_id(config_id,config_name)
+    if not bc_id:
+        return
+    response = utils.checked_api_call(
+        sets_api,
+        'remove_configuration',
+        id=config_set_id,
+        config_id=bc_id)
     if response:
         return response.content
 
