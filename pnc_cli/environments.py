@@ -77,7 +77,6 @@ def create_environment(**kwargs):
 @arg("id", help="ID of the environment to update.")
 @arg("-bt", "--build-type", help="Updated type of build for the new BuildEnvironment.")
 @arg("-d", "--description", help="Updated description of the BuildEnvironment.")
-@arg("-iid", "--image-id", help="Updated ID of the Docker image for this BuildEnvironment.")
 @arg("-iru", "--image-repository-url", help="Updated URL for the Docker repository in which the image resides.")
 @arg("-n", "--name", help="Updated unique name of the BuildEnvironment")
 def update_environment(id, **kwargs):
