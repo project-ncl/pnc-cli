@@ -121,3 +121,7 @@ def test_get_completed_or_runnning_invalid_param():
 def test_get_completed_or_runnning():
     response = builds_api.get_completed_or_runnning(id=1)
     assert response is not None
+
+def test_get_artifacts():
+    response = builds_api.get_artifacts(id=1)
+    assert response is not None

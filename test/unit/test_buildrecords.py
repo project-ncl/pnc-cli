@@ -133,3 +133,16 @@ def test_get_log_for_record_notexist(mock):
     result = buildrecords.get_log_for_record(id=100)
     mock.assert_called_once_with(id=100)
     assert not result
+
+@patch('pnc_cli.buildrecords.records_api.get_artifacts', return_value=MagicMock(content="list of artifacts"))
+def test_get_artifacts(mock):
+    result = buildrecords.get_artifacts(id=100)
+    mock.assert_called_once_with(id=100, page_size=200, sort="", q="")
+    assert result == "list of artifacts"
+
+
+@patch('pnc_cli.buildrecords.records_api.get_artifacts', return_value=None)
+def test_get_artifacts_notexist(mock):
+    result = buildrecords.get_artifacts(id=100)
+    mock.assert_called_once_with(id=100, page_size=200, sort="", q="")
+    assert not result
