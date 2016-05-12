@@ -103,7 +103,7 @@ def new_set(request):
     return set
 
 
-
+@pytest.mark.skip()
 def test_run_single_build(new_config):
     """ Run a single build configuration defined by the 'new_config' method
     and verify the build output """
@@ -122,6 +122,7 @@ def test_run_single_build(new_config):
     build_record = records_api.get_specific(triggered_build.id).content
     build_record_checks(build_record)
 
+@pytest.mark.skip()
 def test_run_group_build(request, new_set, new_environment, new_project):
     assert (new_set is not None, 'Unable to create Build Configuration Group')
 
@@ -167,6 +168,7 @@ def build_record_checks(build_record):
     shutil.rmtree(git_repo.working_dir)
 
     build_record_artifact_checks(build_record.id)
+
 
 def build_record_artifact_checks(build_record_id):
     ''' Check the the artifacts exist in the repository and have valid checksums'''
