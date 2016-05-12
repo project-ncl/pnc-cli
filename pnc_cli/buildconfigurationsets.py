@@ -95,7 +95,7 @@ def get_build_configuration_set(id=None, name=None):
 @arg("-n", "--name", help="Updated name for the BuildConfigurationSet.")
 @arg("-pvi", "--product-version-id",
      help="Updated product version ID for the BuildConfigurationSet.")
-@arg("-bcs", "--build-configuration_ids", type=int, nargs='+',
+@arg("-bcs", "--build-configuration-ids", type=int, nargs='+',
      help="Space separated list of build-configurations to include in the set.")
 # TODO: seems like a bug in PNC prevents us from updating the buildconfigurationset
 def update_build_configuration_set(id, **kwargs):
@@ -213,10 +213,11 @@ def add_build_configuration_to_set(
     config_set_id = get_set_id(set_id, set_name)
     if not config_set_id:
         return
-    bc_id = buildconfigurations.get_config_id(config_id, config_name)
-    if not bc_id:
+
+    bc = buildconfigurations.get_build_configuration(id=config_id, name=config_name)
+    if not bc:
         return
-    bc = buildconfigurations.get_build_configuration(id=bc_id)
+
     response = utils.checked_api_call(
         sets_api,
         'add_configuration',
