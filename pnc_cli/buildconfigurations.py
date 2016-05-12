@@ -366,7 +366,7 @@ def add_product_version_to_build_configuration(id=None, name=None, product_versi
         logging.error("No ProductVersion with ID {} exists.".format(product_version_id))
         return
 
-    to_add = productversions.get_product_version(id=product_version_id).content
+    to_add = productversions.get_product_version(id=product_version_id)
     response = utils.checked_api_call(configs_api, 'add_product_version', id=found_id, body=to_add)
     if response:
         return response.content
