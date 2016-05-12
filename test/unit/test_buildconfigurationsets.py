@@ -334,26 +334,22 @@ def test_list_build_configurations_for_set_name(mock_get_configurations, mock_ge
 
 
 @patch('pnc_cli.buildconfigurationsets.get_set_id', return_value=1)
-@patch('pnc_cli.buildconfigurations.get_config_id', return_value=1)
-@patch('pnc_cli.buildconfigurationsets.configs_api.get_specific', return_value=MagicMock(content='BuildConfiguration'))
+@patch('pnc_cli.buildconfigurations.get_build_configuration', return_value='BuildConfiguration')
 @patch('pnc_cli.buildconfigurationsets.sets_api.add_configuration', return_value=MagicMock(content='SUCCESS'))
-def test_add_build_configuration_to_set_id(mock_add_config, mock_get_config, mock_get_config_id, mock_get_set_id):
+def test_add_build_configuration_to_set_id(mock_add_config, mock_get_build_configuration, mock_get_set_id):
     result = buildconfigurationsets.add_build_configuration_to_set(set_id=1, config_id=1)
     mock_get_set_id.assert_called_once_with(1, None)
-    mock_get_config_id.assert_called_once_with(1, None)
-    mock_get_config.assert_called_once_with(id=1)
+    mock_get_build_configuration.assert_called_once_with(id=1, name=None)
     mock_add_config.assert_called_once_with(id=1, body='BuildConfiguration')
     assert result == 'SUCCESS'
 
 @patch('pnc_cli.buildconfigurationsets.get_set_id', return_value=1)
-@patch('pnc_cli.buildconfigurations.get_config_id', return_value=1)
-@patch('pnc_cli.buildconfigurationsets.configs_api.get_specific', return_value=MagicMock(content='BuildConfiguration'))
+@patch('pnc_cli.buildconfigurations.get_build_configuration', return_value='BuildConfiguration')
 @patch('pnc_cli.buildconfigurationsets.sets_api.add_configuration', return_value=MagicMock(content='SUCCESS'))
-def test_add_build_configuration_to_set_name(mock_add_config, mock_get_config, mock_get_config_id, mock_get_set_id):
+def test_add_build_configuration_to_set_name(mock_add_config, mock_get_build_configuration, mock_get_set_id):
     result = buildconfigurationsets.add_build_configuration_to_set(set_name='testerino', config_id=1)
     mock_get_set_id.assert_called_once_with(None, 'testerino')
-    mock_get_config_id.assert_called_once_with(1, None)
-    mock_get_config.assert_called_once_with(id=1)
+    mock_get_build_configuration.assert_called_once_with(id=1, name=None)
     mock_add_config.assert_called_once_with(id=1, body='BuildConfiguration')
     assert result == 'SUCCESS'
 
