@@ -507,7 +507,7 @@ def test_list_product_versions_for_build_configuration_notexist(mock_get_product
 
 @patch('pnc_cli.buildconfigurations.get_config_id', return_value=1)
 @patch('pnc_cli.productversions.version_exists', return_value=True)
-@patch('pnc_cli.productversions.get_product_version', return_value=MagicMock(content='productversion'))
+@patch('pnc_cli.productversions.get_product_version', return_value='productversion')
 @patch('pnc_cli.buildconfigurations.configs_api.add_product_version', return_value=MagicMock(content='testresponse'))
 def test_add_product_version_to_build_configuration_id(mock_add_product_version,
                                                        mock_get_product_version,
@@ -523,7 +523,7 @@ def test_add_product_version_to_build_configuration_id(mock_add_product_version,
 
 @patch('pnc_cli.buildconfigurations.get_config_id', return_value=1)
 @patch('pnc_cli.productversions.version_exists', return_value=True)
-@patch('pnc_cli.productversions.get_product_version', return_value=MagicMock(content='productversion'))
+@patch('pnc_cli.productversions.get_product_version', return_value='productversion')
 @patch('pnc_cli.buildconfigurations.configs_api.add_product_version', return_value=MagicMock(content='testresponse'))
 def test_add_product_version_to_build_configuration_name(mock_add_product_version,
                                                          mock_get_product_version,
