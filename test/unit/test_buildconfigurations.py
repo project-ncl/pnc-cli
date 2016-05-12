@@ -153,11 +153,13 @@ def test_update_build_configuration_id(mock_update, mock_get_specific, mock_get_
 @patch('pnc_cli.buildconfigurations.configs_api.update', return_value=MagicMock(content='SUCCESS'))
 @patch('pnc_cli.buildconfigurations.projects.get_project', return_value='different-mock-project')
 @patch('pnc_cli.buildconfigurations.environments.get_environment', return_value='different-mock-environment')
-def test_update_build_configuration_name(mock_environments, mock_projects, mock_update, mock_get_specific, mock_get_config_id):
+def test_update_build_configuration_name(mock_environments, mock_projects, mock_update, mock_get_specific,
+                                         mock_get_config_id):
     mock = MagicMock()
     mockcontent = MagicMock(content=mock)
     mock_get_specific.return_value = mockcontent
-    result = buildconfigurations.update_build_configuration(name='testerino', build_script='mvn install',project=2, environment=2)
+    result = buildconfigurations.update_build_configuration(name='testerino', build_script='mvn install', project=2,
+                                                            environment=2)
     mock_get_config_id.assert_called_once_with(None, 'testerino')
     mock_projects.assert_called_once_with(id=2)
     mock_environments.assert_called_once_with(id=2)
@@ -180,6 +182,7 @@ def test_update_build_configuration_notexist(mock_update, mock_get_specific, moc
     assert not mock_update.called
     assert not result
 
+
 @patch('pnc_cli.buildconfigurations.projects.get_project', return_value=None)
 @patch('pnc_cli.buildconfigurations.get_config_id', return_value=1)
 @patch('pnc_cli.buildconfigurations.configs_api.get_specific')
@@ -189,6 +192,7 @@ def test_update_build_configuration_no_project(mock_get_specific, mock_get_confi
     mock_get_specific.assert_called_once_with(id=1)
     mock_projects.assert_called_once_with(id=200)
     assert not result
+
 
 @patch('pnc_cli.buildconfigurations.environments.get_environment', return_value=None)
 @patch('pnc_cli.buildconfigurations.get_config_id', return_value=1)
@@ -200,13 +204,16 @@ def test_update_build_configuration_no_environment(mock_get_specific, mock_get_c
     mock_environments.assert_called_once_with(id=200)
     assert not result
 
+
 @patch('pnc_cli.buildconfigurations.create_build_conf_object', return_value='test-build-config-object')
 @patch('pnc_cli.buildconfigurations.configs_api.create_new', return_value=MagicMock(content='test-build-config-object'))
 @patch('pnc_cli.buildconfigurations.projects.get_project', return_value='mock-project')
 @patch('pnc_cli.buildconfigurations.environments.get_environment', return_value='mock-environment')
 def test_create_build_configuration(mock_environments, mock_projects, mock_create_new, mock_create_build_conf_object):
-    result = buildconfigurations.create_build_configuration(name='testerino', description='test description', project=1, environment=1)
-    mock_create_build_conf_object.assert_called_once_with(name='testerino', description='test description', project='mock-project', environment='mock-environment')
+    result = buildconfigurations.create_build_configuration(name='testerino', description='test description', project=1,
+                                                            environment=1)
+    mock_create_build_conf_object.assert_called_once_with(name='testerino', description='test description',
+                                                          project='mock-project', environment='mock-environment')
     mock_projects.assert_called_once_with(id=1)
     mock_environments.assert_called_once_with(id=1)
     mock_create_new.assert_called_once_with(body='test-build-config-object')
@@ -218,6 +225,7 @@ def test_create_build_configuration_no_project(mock_projects):
     result = buildconfigurations.create_build_configuration(name='testerino', project=1, environment=1)
     mock_projects.assert_called_once_with(id=1)
     assert not result
+
 
 @patch('pnc_cli.buildconfigurations.projects.get_project', return_value='project')
 @patch('pnc_cli.buildconfigurations.environments.get_environment', return_value=None)
@@ -419,6 +427,28 @@ def test_add_dependency_no_dep(mock_add_dependency, mock_get_specific, mock_get_
     assert not result
 
 
+@patch('pnc_cli.buildconfigurations.get_config_id')
+@patch('pnc_cli.buildconfigurations.configs_api.get_specific')
+@patch('pnc_cli.buildconfigurations.configs_api.add_dependency')
+def test_add_dependency_no_conf_id_or_name(mock_add_dependency, mock_get_specific, mock_get_config_id):
+    result = buildconfigurations.add_dependency(id=None, name=None)
+    assert not mock_get_config_id.called
+    assert not mock_get_specific.called
+    assert not mock_add_dependency.called
+    assert not result
+
+
+@patch('pnc_cli.buildconfigurations.get_config_id', return_value=1)
+@patch('pnc_cli.buildconfigurations.configs_api.get_specific')
+@patch('pnc_cli.buildconfigurations.configs_api.add_dependency')
+def test_add_dependency_no_dep_id_or_name(mock_add_dependency, mock_get_specific, mock_get_config_id):
+    result = buildconfigurations.add_dependency(id=1, dependency_id=None, dependency_name=None)
+    mock_get_config_id.assert_called_once_with(1, None)
+    assert not mock_get_specific.called
+    assert not mock_add_dependency.called
+    assert not result
+
+
 @patch('pnc_cli.buildconfigurations.get_config_id', side_effect=[1, 2])
 @patch('pnc_cli.buildconfigurations.configs_api.remove_dependency', return_value=MagicMock(content='SUCCESS'))
 def test_remove_dependency_ids(mock_remove_dependency, mock_get_config_id):
@@ -474,6 +504,23 @@ def test_remove_dependency_no_dep(mock_remove_dependency, mock_get_config_id):
     result = buildconfigurations.remove_dependency(id=1, dependency_id=2)
     calls = [call(1, None), call(2, None)]
     mock_get_config_id.assert_has_calls(calls)
+    assert not mock_remove_dependency.called
+    assert not result
+
+@patch('pnc_cli.buildconfigurations.get_config_id')
+@patch('pnc_cli.buildconfigurations.configs_api.remove_dependency')
+def test_remove_dependency_no_conf_id_or_name(mock_remove_dependency, mock_get_config_id):
+    result = buildconfigurations.remove_dependency(id=None, name=None)
+    assert not mock_get_config_id.called
+    assert not mock_remove_dependency.called
+    assert not result
+
+
+@patch('pnc_cli.buildconfigurations.get_config_id', return_value=1)
+@patch('pnc_cli.buildconfigurations.configs_api.remove_dependency')
+def test_remove_dependency_no_dep_id_or_name(mock_remove_dependency, mock_get_config_id):
+    result = buildconfigurations.remove_dependency(id=1, dependency_name=None, dependency_id=None)
+    mock_get_config_id.assert_called_once_with(1, None)
     assert not mock_remove_dependency.called
     assert not result
 
