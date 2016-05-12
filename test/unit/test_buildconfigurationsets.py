@@ -392,6 +392,61 @@ def test_add_build_configuration_to_set_name_notexist(mock_add_config, mock_get_
     assert not result
 
 @patch('pnc_cli.buildconfigurationsets.get_set_id', return_value=1)
+@patch('pnc_cli.buildconfigurations.get_config_id', return_value=100)
+@patch('pnc_cli.buildconfigurationsets.sets_api.remove_configuration', return_value=MagicMock(content="removed"))
+def test_remove_build_configuration_from_set_id(mock_remove_configuration, mock_get_config_id, mock_get_set_id):
+    response = buildconfigurationsets.remove_build_configuration_from_set(set_id=1, config_id=100)
+    mock_get_set_id.assert_called_once_with(1, None)
+    mock_get_config_id.assert_called_once_with(100, None)
+    mock_remove_configuration.assert_called_once_with(id=1, config_id=100)
+    assert response == "removed"
+
+
+@patch('pnc_cli.buildconfigurationsets.get_set_id', return_value=1)
+@patch('pnc_cli.buildconfigurations.get_config_id', return_value=100)
+@patch('pnc_cli.buildconfigurationsets.sets_api.remove_configuration', return_value=MagicMock(content="removed"))
+def test_remove_build_configuration_from_set_name(mock_remove_configuration, mock_get_config_id, mock_get_set_id):
+    response = buildconfigurationsets.remove_build_configuration_from_set(set_name='test', config_name='test_conf')
+    mock_get_set_id.assert_called_once_with(None, 'test')
+    mock_get_config_id.assert_called_once_with(None, 'test_conf')
+    mock_remove_configuration.assert_called_once_with(id=1, config_id=100)
+    assert response == "removed"
+
+
+@patch('pnc_cli.buildconfigurationsets.get_set_id', return_value=None)
+@patch('pnc_cli.buildconfigurations.get_config_id')
+@patch('pnc_cli.buildconfigurationsets.sets_api.remove_configuration')
+def test_remove_build_configuration_from_set_notexist(mock_remove_configuration, mock_get_config_id, mock_get_set_id):
+    response = buildconfigurationsets.remove_build_configuration_from_set(set_id=1, config_id=100)
+    mock_get_set_id.assert_called_once_with(1, None)
+    assert not mock_get_config_id.called
+    assert not mock_remove_configuration.called
+    assert not response
+
+
+@patch('pnc_cli.buildconfigurationsets.get_set_id', return_value=1)
+@patch('pnc_cli.buildconfigurations.get_config_id', return_value=None)
+@patch('pnc_cli.buildconfigurationsets.sets_api.remove_configuration')
+def test_remove_build_configuration_from_set_id_notexist(mock_remove_configuration, mock_get_config_id, mock_get_set_id):
+    response = buildconfigurationsets.remove_build_configuration_from_set(set_id=1, config_id=100)
+    mock_get_set_id.assert_called_once_with(1, None)
+    mock_get_config_id.assert_called_once_with(100, None)
+    assert not mock_remove_configuration.called
+    assert not response
+
+
+@patch('pnc_cli.buildconfigurationsets.get_set_id', return_value=1)
+@patch('pnc_cli.buildconfigurations.get_config_id', return_value=None)
+@patch('pnc_cli.buildconfigurationsets.sets_api.remove_configuration')
+def test_remove_build_configuration_from_set_name_notexist(mock_remove_configuration, mock_get_config_id, mock_get_set_id):
+    response = buildconfigurationsets.remove_build_configuration_from_set(set_id=1, config_name="test_conf")
+    mock_get_set_id.assert_called_once_with(1, None)
+    mock_get_config_id.assert_called_once_with(None, "test_conf")
+    assert not mock_remove_configuration.called
+    assert not response
+
+
+@patch('pnc_cli.buildconfigurationsets.get_set_id', return_value=1)
 @patch('pnc_cli.buildconfigurationsets.sets_api.get_build_records', return_value=MagicMock(content='SUCCESS'))
 def test_list_build_records_for_set_id(mock_get_records, mock_get_set_id):
     result = buildconfigurationsets.list_build_records_for_set(id=1)
