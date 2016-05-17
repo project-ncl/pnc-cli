@@ -9,9 +9,9 @@ from .product_version_page import ProductVersionPage
 from .project_rest import ProjectRest
 from .build_record import BuildRecord
 from .support_level_page import SupportLevelPage
-from .artifact_page import ArtifactPage
 from .build_environment_rest import BuildEnvironmentRest
 from .product_singleton import ProductSingleton
+from .artifact_page import ArtifactPage
 from .build_configuration_page import BuildConfigurationPage
 from .build_configuration_singleton import BuildConfigurationSingleton
 from .build_configuration_audited_rest import BuildConfigurationAuditedRest
@@ -22,8 +22,8 @@ from .build_status_changed_event_rest import BuildStatusChangedEventRest
 from .license_rest import LicenseRest
 from .user_rest import UserRest
 from .product_milestone_singleton import ProductMilestoneSingleton
-from .product_release_page import ProductReleasePage
 from .build_config_set_record_singleton import BuildConfigSetRecordSingleton
+from .product_release_page import ProductReleasePage
 from .build_configuration_audited import BuildConfigurationAudited
 from .project import Project
 from .error_response_rest import ErrorResponseRest
@@ -33,10 +33,10 @@ from .singleton import Singleton
 from .build_record_ids import BuildRecordIds
 from .build_environment_singleton import BuildEnvironmentSingleton
 from .build_configuration_set_record_page import BuildConfigurationSetRecordPage
-from .product_milestone_page import ProductMilestonePage
 from .license_singleton import LicenseSingleton
-from .user import User
+from .product_milestone_page import ProductMilestonePage
 from .product_rest import ProductRest
+from .user import User
 from .project_page import ProjectPage
 from .product_version import ProductVersion
 from .product_version_rest import ProductVersionRest

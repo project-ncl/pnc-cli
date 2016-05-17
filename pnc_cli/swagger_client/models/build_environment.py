@@ -43,8 +43,8 @@ class BuildEnvironment(object):
             'description': 'str',
             'system_image_repository_url': 'str',
             'system_image_id': 'str',
+            'system_image_type': 'str',
             'attributes': 'dict(str, str)',
-            'build_type': 'str',
             'field_handler': 'FieldHandler'
         }
 
@@ -54,8 +54,8 @@ class BuildEnvironment(object):
             'description': 'description',
             'system_image_repository_url': 'systemImageRepositoryUrl',
             'system_image_id': 'systemImageId',
+            'system_image_type': 'systemImageType',
             'attributes': 'attributes',
-            'build_type': 'buildType',
             'field_handler': 'fieldHandler'
         }
 
@@ -64,8 +64,8 @@ class BuildEnvironment(object):
         self._description = None
         self._system_image_repository_url = None
         self._system_image_id = None
+        self._system_image_type = None
         self._attributes = None
-        self._build_type = None
         self._field_handler = None
 
     @property
@@ -179,6 +179,34 @@ class BuildEnvironment(object):
         self._system_image_id = system_image_id
 
     @property
+    def system_image_type(self):
+        """
+        Gets the system_image_type of this BuildEnvironment.
+
+
+        :return: The system_image_type of this BuildEnvironment.
+        :rtype: str
+        """
+        return self._system_image_type
+
+    @system_image_type.setter
+    def system_image_type(self, system_image_type):
+        """
+        Sets the system_image_type of this BuildEnvironment.
+
+
+        :param system_image_type: The system_image_type of this BuildEnvironment.
+        :type: str
+        """
+        allowed_values = ["DOCKER_IMAGE", "VIRTUAL_MACHINE_RAW", "VIRTUAL_MACHINE_QCOW2", "LOCAL_WORKSPACE"]
+        if system_image_type not in allowed_values:
+            raise ValueError(
+                "Invalid value for `system_image_type`, must be one of {0}"
+                .format(allowed_values)
+            )
+        self._system_image_type = system_image_type
+
+    @property
     def attributes(self):
         """
         Gets the attributes of this BuildEnvironment.
@@ -199,34 +227,6 @@ class BuildEnvironment(object):
         :type: dict(str, str)
         """
         self._attributes = attributes
-
-    @property
-    def build_type(self):
-        """
-        Gets the build_type of this BuildEnvironment.
-
-
-        :return: The build_type of this BuildEnvironment.
-        :rtype: str
-        """
-        return self._build_type
-
-    @build_type.setter
-    def build_type(self, build_type):
-        """
-        Sets the build_type of this BuildEnvironment.
-
-
-        :param build_type: The build_type of this BuildEnvironment.
-        :type: str
-        """
-        allowed_values = ["JAVA", "DOCKER", "NATIVE"]
-        if build_type not in allowed_values:
-            raise ValueError(
-                "Invalid value for `build_type`, must be one of {0}"
-                .format(allowed_values)
-            )
-        self._build_type = build_type
 
     @property
     def field_handler(self):
@@ -265,8 +265,8 @@ class BuildEnvironment(object):
                 ))
             elif hasattr(value, "to_dict"):
                 result[attr] = value.to_dict()
-            elif isinstance(value, datetime):
-                result[attr] = str(value.date())
+	    elif isinstance(value, datetime):
+		result[attr] = str(value.date())
             else:
                 result[attr] = value
 

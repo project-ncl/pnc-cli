@@ -48,7 +48,7 @@ class ProductversionsApi(object):
     def get_all(self, **kwargs):
         """
         Gets all Product Versions
-
+        
 
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please define a `callback` function
@@ -132,7 +132,7 @@ class ProductversionsApi(object):
     def create_new_product_version(self, **kwargs):
         """
         Create a new ProductVersion for a Product
-
+        
 
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please define a `callback` function
@@ -144,7 +144,7 @@ class ProductversionsApi(object):
 
         :param callback function: The callback function
             for asynchronous request. (optional)
-        :param ProductVersionRest body:
+        :param ProductVersionRest body: 
         :return: ProductVersionSingleton
                  If the method is called asynchronously,
                  returns the request thread.
@@ -207,7 +207,7 @@ class ProductversionsApi(object):
     def get_specific(self, id, **kwargs):
         """
         Gets specific Product Version
-
+        
 
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please define a `callback` function
@@ -285,7 +285,7 @@ class ProductversionsApi(object):
     def update(self, id, **kwargs):
         """
         Updates an existing Product Version
-
+        
 
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please define a `callback` function
@@ -298,7 +298,7 @@ class ProductversionsApi(object):
         :param callback function: The callback function
             for asynchronous request. (optional)
         :param int id: Product Version id (required)
-        :param ProductVersionRest body:
+        :param ProductVersionRest body: 
         :return: None
                  If the method is called asynchronously,
                  returns the request thread.
@@ -366,7 +366,7 @@ class ProductversionsApi(object):
     def get_build_configuration_sets(self, id, **kwargs):
         """
         Gets build configuration sets associated with a product version
-
+        
 
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please define a `callback` function

@@ -43,7 +43,7 @@ class BuildEnvironmentRest(object):
             'description': 'str',
             'system_image_repository_url': 'str',
             'attributes': 'dict(str, str)',
-            'build_type': 'str',
+            'system_image_type': 'str',
             'image_repository_url': 'str',
             'image_id': 'str'
         }
@@ -54,7 +54,7 @@ class BuildEnvironmentRest(object):
             'description': 'description',
             'system_image_repository_url': 'systemImageRepositoryUrl',
             'attributes': 'attributes',
-            'build_type': 'buildType',
+            'system_image_type': 'systemImageType',
             'image_repository_url': 'imageRepositoryUrl',
             'image_id': 'imageId'
         }
@@ -64,7 +64,7 @@ class BuildEnvironmentRest(object):
         self._description = None
         self._system_image_repository_url = None
         self._attributes = None
-        self._build_type = None
+        self._system_image_type = None
         self._image_repository_url = None
         self._image_id = None
 
@@ -179,32 +179,32 @@ class BuildEnvironmentRest(object):
         self._attributes = attributes
 
     @property
-    def build_type(self):
+    def system_image_type(self):
         """
-        Gets the build_type of this BuildEnvironmentRest.
+        Gets the system_image_type of this BuildEnvironmentRest.
 
 
-        :return: The build_type of this BuildEnvironmentRest.
+        :return: The system_image_type of this BuildEnvironmentRest.
         :rtype: str
         """
-        return self._build_type
+        return self._system_image_type
 
-    @build_type.setter
-    def build_type(self, build_type):
+    @system_image_type.setter
+    def system_image_type(self, system_image_type):
         """
-        Sets the build_type of this BuildEnvironmentRest.
+        Sets the system_image_type of this BuildEnvironmentRest.
 
 
-        :param build_type: The build_type of this BuildEnvironmentRest.
+        :param system_image_type: The system_image_type of this BuildEnvironmentRest.
         :type: str
         """
-        allowed_values = ["JAVA", "DOCKER", "NATIVE"]
-        if build_type not in allowed_values:
+        allowed_values = ["DOCKER_IMAGE", "VIRTUAL_MACHINE_RAW", "VIRTUAL_MACHINE_QCOW2", "LOCAL_WORKSPACE"]
+        if system_image_type not in allowed_values:
             raise ValueError(
-                "Invalid value for `build_type`, must be one of {0}"
+                "Invalid value for `system_image_type`, must be one of {0}"
                 .format(allowed_values)
             )
-        self._build_type = build_type
+        self._system_image_type = system_image_type
 
     @property
     def image_repository_url(self):
@@ -265,8 +265,8 @@ class BuildEnvironmentRest(object):
                 ))
             elif hasattr(value, "to_dict"):
                 result[attr] = value.to_dict()
-            elif isinstance(value, datetime):
-                result[attr] = str(value.date())
+	    elif isinstance(value, datetime):
+		result[attr] = str(value.date())
             else:
                 result[attr] = value
 
