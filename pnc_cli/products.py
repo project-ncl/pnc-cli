@@ -118,7 +118,10 @@ def get_product(id=None, name=None):
 
 @arg("-i", "--id", help="ID of the Product to retrieve versions from")
 @arg("-n", "--name", help="Name of the Product to retrieve versions from")
-def list_versions_for_product(id=None, name=None):
+@arg("-p", "--page-size", help="Limit the amount of Product Versions returned")
+@arg("-s", "--sort", help="Sorting RSQL")
+@arg("-q", help="RSQL query")
+def list_versions_for_product(id=None, name=None, page_size=200, sort='', q=''):
     """
     List all ProductVersions for a given Product
     """
