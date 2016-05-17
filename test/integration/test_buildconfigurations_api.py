@@ -20,48 +20,6 @@ def get_configs_api():
     configs_api = BuildconfigurationsApi(utils.get_api_client())
 
 
-@pytest.fixture(scope='module')
-def new_product():
-    product = products.create_product(name=testutils.gen_random_name(), description="PNC CLI: test_buildconfigurations_api product")
-    return product
-
-
-@pytest.fixture(scope='module')
-def new_project(request):
-    project = projects.create_project(name=testutils.gen_random_name(),description="PNC CLI: test_buildconfigurations_api project")
-    def teardown():
-        projects.delete_project(id=project.id)
-    request.addfinalizer(teardown)
-    return project
-
-
-@pytest.fixture(scope='module')
-def new_environment(request):
-    randname = testutils.gen_random_name()
-    env = environments.create_environment(name=randname, build_type='JAVA', image_id=randname)
-    def teardown():
-        environments.delete_environment(id=env.id)
-    request.addfinalizer(teardown)
-    return env
-
-
-@pytest.fixture(scope='function')
-def new_config(request, new_project, new_environment):
-    created_bc = configs_api.create_new(
-        body=buildconfigurations.create_build_conf_object(name=testutils.gen_random_name(),
-                                                          project=new_project,
-                                                          environment=new_environment,
-                                                          build_status="SUCCESS",
-                                                          build_script='mvn clean install',
-                                                          product_version_ids=[1],
-                                                          scm_repo_url='https://github.com/project-ncl/pnc-simple-test-project.git',
-        )).content
-    def teardown():
-        buildconfigurations.delete_build_configuration(id=created_bc.id)
-    request.addfinalizer(teardown)
-    return created_bc
-
-
 def test_get_all_invalid_params():
     testutils.assert_raises_typeerror(configs_api, 'get_all')
 
@@ -331,8 +289,8 @@ def test_add_product_version_invalid_param():
 def test_product_version_operations(new_product, new_config):
     randversion = testutils.gen_random_version()
 
-    #create a test ProductVersion
-    version_rest = productversions.create_product_version(product_id=new_product.id,version=randversion)
+    # create a test ProductVersion
+    version_rest = productversions.create_product_version(product_id=new_product.id, version=randversion)
 
     #add_product_version
     configs_api.add_product_version(id=new_config.id, body=version_rest)

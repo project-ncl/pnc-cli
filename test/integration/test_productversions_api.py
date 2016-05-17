@@ -1,40 +1,16 @@
 import pytest
+import conftest
+
 from pnc_cli import utils
 from pnc_cli import productversions
-from pnc_cli import products
 from pnc_cli.swagger_client.apis import ProductversionsApi
-from pnc_cli.swagger_client.apis import ProductsApi
 from test import testutils
+
 
 @pytest.fixture(scope='function', autouse=True)
 def get_versions_api():
     global versions_api
     versions_api = ProductversionsApi(utils.get_api_client())
-
-
-@pytest.fixture(scope='module')
-def new_product():
-    product_api = ProductsApi(utils.get_api_client())
-    product = product_api.create_new(body=products._create_product_object(name=testutils.gen_random_name(),
-                                                                          description="PNC CLI: test_productversions_api product"
-                                                                          )).content
-    return product
-
-@pytest.fixture(scope='module')
-def new_version(new_product):
-    version = versions_api.create_new_product_version(
-        body=productversions.create_product_version_object(
-            product_id=new_product.id,
-            version=get_unique_version(new_product.id))).content
-    return version
-
-def get_unique_version(product_id):
-    product_api = ProductsApi(utils.get_api_client())
-    rand_version = testutils.gen_random_version()
-    existing = product_api.get_product_versions(id=product_id, page_size=100000).content
-    while existing is not None and rand_version in [x.version for x in existing]:
-        rand_version = testutils.gen_random_version()
-    return rand_version
 
 
 def test_get_all_invalid_param():
@@ -78,7 +54,7 @@ def test_update_invalid_param():
 
 # currently unable to update build_configuration_ids
 def test_update(new_version):
-    new_version.version = get_unique_version(new_version.product_id)
+    new_version.version = conftest.get_unique_version(new_version.product_id)
     versions_api.update(id=new_version.id, body=new_version)
     updated = versions_api.get_specific(id=new_version.id).content
     assert updated.version == new_version.version

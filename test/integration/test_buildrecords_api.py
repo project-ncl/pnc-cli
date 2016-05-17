@@ -71,6 +71,7 @@ def test_get_built_artifacts():
     artifacts = builds_api.get_built_artifacts(id=1).content
     assert artifacts is not None
 
+
 def test_get_dependency_artifacts_no_id():
     testutils.assert_raises_valueerror(builds_api, 'get_dependency_artifacts', id=None)
 
@@ -121,6 +122,7 @@ def test_get_completed_or_runnning_invalid_param():
 def test_get_completed_or_runnning():
     response = builds_api.get_completed_or_runnning(id=1)
     assert response is not None
+
 
 def test_get_artifacts():
     response = builds_api.get_artifacts(id=1)

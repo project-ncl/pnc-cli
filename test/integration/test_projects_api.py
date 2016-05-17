@@ -4,19 +4,11 @@ from pnc_cli.swagger_client.apis.projects_api import ProjectsApi
 from pnc_cli import utils
 from test import testutils
 
+
 @pytest.fixture(scope='function', autouse=True)
 def get_projects_api():
     global projects_api
     projects_api = ProjectsApi(utils.get_api_client())
-
-
-@pytest.fixture(scope='module')
-def new_project(request):
-    project = projects_api.create_new(body=projects._create_project_object(name=testutils.gen_random_name())).content
-    def teardown():
-        projects.delete_project(id=project.id)
-    request.addfinalizer(teardown)
-    return project
 
 
 def test_get_all_invalid_param():

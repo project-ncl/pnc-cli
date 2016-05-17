@@ -5,7 +5,7 @@ from pnc_cli import utils
 from test import testutils
 
 
-@pytest.fixture(scope='function', autouse=True)
+@pytest.fixture(scope='module', autouse=True)
 def get_licenses_api():
     global licenses_api
     licenses_api = LicensesApi(utils.get_api_client())

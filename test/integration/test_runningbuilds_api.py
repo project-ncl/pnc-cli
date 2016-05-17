@@ -31,56 +31,6 @@ def get_sets_api():
     sets_api = BuildconfigurationsetsApi(utils.get_api_client())
 
 
-@pytest.fixture(scope='module')
-def new_project(request):
-    project = projects.create_project(name=testutils.gen_random_name() + '-project')
-    def teardown():
-        projects.delete_project(id=project.id)
-    request.addfinalizer(teardown)
-    return project
-
-
-@pytest.fixture(scope='module')
-def new_environment(request):
-    randname = testutils.gen_random_name()
-    env = environments.create_environment(name=randname + '-environment', build_type='JAVA', image_id=randname)
-    def teardown():
-        environments.delete_environment(id=env.id)
-    request.addfinalizer(teardown)
-    return env
-
-
-@pytest.fixture(scope='module')
-def new_config(request, new_project, new_environment):
-    created_bc = configs_api.create_new(
-        body=buildconfigurations.create_build_conf_object(
-            name=testutils.gen_random_name() + '-running-builds-test',
-            project=new_project,
-            environment=new_environment,
-            build_script='mvn javadoc:jar install',
-            product_version_ids=[1],
-            scm_repo_url='https://github.com/project-ncl/pnc-simple-test-project.git',
-            scm_revision='1.0')).content
-    def teardown():
-        buildconfigurations.delete_build_configuration(id=created_bc.id)
-    request.addfinalizer(teardown)
-    return created_bc
-
-
-@pytest.fixture(scope='module')
-def new_set(request, new_project, new_environment):
-    config_one = new_config(request, new_project, new_environment)
-    config_two = new_config(request, new_project, new_environment)
-    config_three = new_config(request, new_project, new_environment)
-    created_set = buildconfigurationsets.create_build_configuration_set(
-        name=testutils.gen_random_name() + '-running-builds-test',
-        build_configuration_ids=[config_one.id, config_two.id, config_three.id])
-    def teardown():
-        buildconfigurationsets.delete_build_configuration_set(id=created_set.id)
-    request.addfinalizer(teardown)
-    return created_set
-
-
 def test_get_all(new_config):
     # start a build so that a build is running
     # need to run a legitimate build, create a buildconfiguration that will start running

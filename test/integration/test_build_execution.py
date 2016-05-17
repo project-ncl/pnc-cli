@@ -1,4 +1,3 @@
-
 import httplib
 import logging
 import os
@@ -34,6 +33,7 @@ POM_VERSION_UPDATE_REGEX = re.compile(POM_VERSION_UPDATE_REGEX_STR, re.MULTILINE
 
 BUILD_STATUS_DONE = 'DONE'
 
+
 @pytest.fixture(scope='function', autouse=True)
 def get_running_api():
     global running_api
@@ -51,66 +51,21 @@ def get_sets_api():
     global sets_api
     sets_api = BuildconfigurationsetsApi(utils.get_api_client())
 
+
 @pytest.fixture(scope='function', autouse=True)
 def get_records_api():
     global records_api
     records_api = BuildrecordsApi(utils.get_api_client())
-
-#'module' scope means this fixture will be executed only once for this test module, instead of
-# per 'function', reducing the amount of entities created in PNC-CLI
-@pytest.fixture(scope='module')
-def new_project(request):
-    project = projects.create_project(name=testutils.gen_random_name() + '-project')
-    def teardown():
-        projects.delete_project(id=project.id)
-    request.addfinalizer(teardown)
-    return project
-
-
-@pytest.fixture(scope='module')
-def new_environment(request):
-    randname = testutils.gen_random_name()
-    env = environments.create_environment(name=randname + '-environment', build_type='JAVA', image_id=randname)
-    def teardown():
-        environments.delete_environment(id=env.id)
-    request.addfinalizer(teardown)
-    return env
-
-
-@pytest.fixture(scope='function')
-def new_config(request, new_environment, new_project):
-    created_bc = configs_api.create_new(
-        body=buildconfigurations.create_build_conf_object(
-            name=testutils.gen_random_name() + '-config-build-exec-test',
-            project=new_project,
-            environment=new_environment,
-            build_script='mvn javadoc:jar install',
-            product_version_ids=[1],
-            scm_repo_url='https://github.com/project-ncl/pnc-simple-test-project.git',
-            scm_revision='1.0')).content
-    def teardown():
-        buildconfigurations.delete_build_configuration(id=created_bc.id)
-    request.addfinalizer(teardown)
-    return created_bc
-
-@pytest.fixture(scope='function')
-def new_set(request):
-    set = sets_api.create_new(
-        body=buildconfigurationsets._create_build_config_set_object(name=testutils.gen_random_name() + '-config-build-set-exec-test')).content
-    def teardown():
-        buildconfigurationsets.delete_build_configuration_set(id=set.id)
-    request.addfinalizer(teardown)
-    return set
 
 
 @pytest.mark.skip(reason="PNC doesn't complete builds in reasonable time")
 def test_run_single_build(new_config):
     """ Run a single build configuration defined by the 'new_config' method
     and verify the build output """
-    assert(new_config is not None, 'Unable to create build configuration')
+    assert (new_config is not None, 'Unable to create build configuration')
 
     triggered_build = configs_api.trigger(id=new_config.id).content
-    assert(triggered_build is not None, 'Unable to start build')
+    assert (triggered_build is not None, 'Unable to start build')
 
     logger.info("Build %s is running...", triggered_build.id)
     while True:
@@ -121,6 +76,7 @@ def test_run_single_build(new_config):
 
     build_record = records_api.get_specific(triggered_build.id).content
     build_record_checks(build_record)
+
 
 @pytest.mark.skip(reason="PNC doesn't complete builds in a reasonable time")
 def test_run_group_build(request, new_set, new_environment, new_project):
@@ -135,7 +91,7 @@ def test_run_group_build(request, new_set, new_environment, new_project):
 
     # this returns a list of build_records, one for each build configuration in the set
     triggered_build = sets_api.build(id=new_set.id).content
-    assert(triggered_build is not None, 'Unable to start build')
+    assert (triggered_build is not None, 'Unable to start build')
 
     triggered_build_ids = [x.id for x in triggered_build]
     for id in triggered_build_ids:
@@ -152,17 +108,18 @@ def test_run_group_build(request, new_set, new_environment, new_project):
         build_record = records_api.get_specific(id=id).content
         build_record_checks(build_record)
 
+
 def build_record_checks(build_record):
     logger.info(str(build_record))
-    assert(build_record is not None)
-    assert(build_record.status == BUILD_STATUS_DONE)
-    assert(build_record.scm_repo_url is not None)
-    assert(build_record.scm_revision is not None)
+    assert (build_record is not None)
+    assert (build_record.status == BUILD_STATUS_DONE)
+    assert (build_record.scm_repo_url is not None)
+    assert (build_record.scm_revision is not None)
 
     git_repo = checkout_git_sources(build_record.scm_repo_url, build_record.scm_revision)
     logger.info("Checked out sources of build " + str(build_record.id) + " to: " + git_repo.working_dir)
     diff = get_source_changes_in_last_commit(git_repo)
-    assert(check_pom_for_redhat_version_update(diff))
+    assert (check_pom_for_redhat_version_update(diff))
 
     # Cleanup the local git repo
     shutil.rmtree(git_repo.working_dir)
@@ -173,8 +130,8 @@ def build_record_checks(build_record):
 def build_record_artifact_checks(build_record_id):
     ''' Check the the artifacts exist in the repository and have valid checksums'''
     artifacts = records_api.get_built_artifacts(build_record_id).content
-    assert(artifacts is not None)
-    assert(len(artifacts) > 0)
+    assert (artifacts is not None)
+    assert (len(artifacts) > 0)
 
     # Check that each artifact URL points to a valid file and the checksums match
     for artifact in artifacts:
@@ -182,12 +139,12 @@ def build_record_artifact_checks(build_record_id):
         conn = httplib.HTTPConnection(parsed_url.netloc)
         conn.request('HEAD', parsed_url.path)
         response = conn.getresponse()
-        assert(response.status == httplib.OK)
+        assert (response.status == httplib.OK)
 
         conn = httplib.HTTPConnection(parsed_url.netloc)
         conn.request('GET', parsed_url.path + str('.md5'))
         response_body = conn.getresponse().read()
-        assert(response_body == artifact.checksum)
+        assert (response_body == artifact.checksum)
 
 
 def checkout_git_sources(repo_url, revision):
@@ -201,9 +158,11 @@ def checkout_git_sources(repo_url, revision):
     git_repo.head.reset(index=True, working_tree=True)
     return git_repo
 
+
 def get_source_changes_in_last_commit(repo):
     """ Get the changes made in the most recent commit"""
     return repo.git.diff('HEAD~1')
+
 
 def check_pom_for_redhat_version_update(diff):
     """Check the POM file diff for the redhat version update"""

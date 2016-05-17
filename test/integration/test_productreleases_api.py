@@ -14,66 +14,28 @@ from pnc_cli import products
 from test import testutils
 
 
-@pytest.fixture(scope='function', autouse=True)
+@pytest.fixture(scope='module', autouse=True)
 def get_product_api():
     global product_api
     product_api = ProductsApi(utils.get_api_client())
 
 
-milestones_api = ProductmilestonesApi(utils.get_api_client())
-releases_api = ProductreleasesApi(utils.get_api_client())
-versions_api = ProductversionsApi(utils.get_api_client())
+@pytest.fixture(scope='module', autouse=True)
+def get_milestones_api():
+    global milestones_api
+    milestones_api = ProductmilestonesApi(utils.get_api_client())
 
 
-@pytest.fixture(scope='module')
-def new_product():
-    product = product_api.create_new(body=products._create_product_object(name=testutils.gen_random_name(),
-                                                                          description="PNC CLI: test_productreleases_api product"
-    )).content
-    return product
+@pytest.fixture(scope='module', autouse=True)
+def get_releases_api():
+    global releases_api
+    releases_api = ProductreleasesApi(utils.get_api_client())
 
 
-@pytest.fixture(scope='module')
-def new_version(new_product):
-    version_number = testutils.gen_random_version()
-    existing = product_api.get_product_versions(id=new_product.id).content
-    while existing is not None and version_number in [x.version for x in existing]:
-        version_number = testutils.gen_random_version()
-    version = versions_api.create_new_product_version(body=productversions.create_product_version_object(
-        version=version_number,
-        product_id=1,
-        current_product_milestone_id=1
-    )).content
-    return version
-
-
-@pytest.fixture(scope='module')
-def new_milestone(new_version):
-    starting = utils.unix_time_millis(datetime.datetime(2016, 1, 2, 12, 0, 0))
-    ending = utils.unix_time_millis(datetime.datetime(2017, 1, 2, 12, 0, 0))
-    milestone = milestones_api.create_new(body=productmilestones.create_milestone_object(
-        version=new_version.version + '.1.build3',
-        starting_date=starting,
-        planned_end_date=ending,
-        download_url='localhost:8080/build3',
-        product_version_id=new_version.id
-    )).content
-    return milestone
-
-
-@pytest.fixture(scope='module')
-def new_release(new_milestone):
-    release_time = utils.unix_time_millis(datetime.datetime(2016, 1, 2, 12, 0, 0))
-    associated_version = versions_api.get_specific(id=new_milestone.product_version_id).content.version
-    release = releases_api.create_new(body=productreleases.create_product_release_object(
-        version=associated_version + ".1.DR1",
-        release_date=release_time,
-        download_url="pnc-cli-test-url",
-        product_version_id=new_milestone.product_version_id,
-        product_milestone_id=new_milestone.id,
-        support_level='EOL'
-    )).content
-    return release
+@pytest.fixture(scope='module', autouse=True)
+def get_version_api():
+    global versions_api
+    versions_api = ProductversionsApi(utils.get_api_client())
 
 
 def test_get_all_invalid_param():
@@ -144,7 +106,8 @@ def test_update(new_release):
 
 
 def test_get_all_builds_in_distributed_recordset_of_product_release_no_id():
-    testutils.assert_raises_valueerror(releases_api, 'get_all_builds_in_distributed_recordset_of_product_release', id=None)
+    testutils.assert_raises_valueerror(releases_api, 'get_all_builds_in_distributed_recordset_of_product_release',
+                                       id=None)
 
 
 def test_get_all_builds_in_distributed_recordset_of_product_release_invalid_param():

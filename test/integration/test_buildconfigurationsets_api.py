@@ -1,11 +1,11 @@
 import pytest
 
+from test.integration.conftest import new_config
+
+
 __author__ = 'thauser'
 
 from pnc_cli import buildconfigurationsets
-from pnc_cli import buildconfigurations
-from pnc_cli import projects
-from pnc_cli import environments
 from pnc_cli import utils
 from test import testutils
 from pnc_cli.swagger_client.apis.buildconfigurationsets_api import BuildconfigurationsetsApi
@@ -15,45 +15,6 @@ from pnc_cli.swagger_client.apis.buildconfigurationsets_api import Buildconfigur
 def get_sets_api():
     global sets_api
     sets_api = BuildconfigurationsetsApi(utils.get_api_client())
-
-
-@pytest.fixture(scope='function')
-def new_set(request):
-    set = sets_api.create_new(
-        body=buildconfigurationsets._create_build_config_set_object(name=testutils.gen_random_name(),
-                                                                    productVersionId=1)).content
-    def teardown():
-        buildconfigurationsets.delete_build_configuration_set(id=set.id)
-    request.addfinalizer(teardown)
-    return set
-
-
-@pytest.fixture(scope='module')
-def new_project():
-    project = projects.create_project(name=testutils.gen_random_name() + '_project')
-    return project
-
-
-@pytest.fixture(scope='module')
-def new_environment():
-    randname = testutils.gen_random_name()
-    env = environments.create_environment(name=randname + '_environment', build_type='JAVA', image_id=randname)
-    return env
-
-
-@pytest.fixture(scope='function')
-def new_config(request, new_project, new_environment):
-    created_bc = buildconfigurations.create_build_configuration(name=testutils.gen_random_name(),
-                                                                project=new_project.id,
-                                                                environment=new_environment.id,
-                                                                build_status="UNKNOWN",
-                                                                build_script='mvn clean install',
-                                                                product_version_ids=[1],
-                                                                scm_repo_url='https://github.com/project-ncl/pnc-simple-test-project.git')
-    def teardown():
-        buildconfigurations.delete_build_configuration(id=created_bc.id)
-    request.addfinalizer(teardown)
-    return created_bc
 
 
 def test_get_all():
@@ -140,7 +101,7 @@ def test_remove_configuration(new_config, new_set):
     assert new_config.id in set_config_ids
     # remove config
     sets_api.remove_configuration(id=new_set.id, config_id=new_config.id)
-    #removed successfully
+    # removed successfully
     assert sets_api.get_configurations(id=new_set.id).content is None
 
 

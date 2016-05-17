@@ -4,21 +4,11 @@ from pnc_cli.swagger_client.apis.environments_api import EnvironmentsApi
 from pnc_cli import utils
 from test import testutils
 
+
 @pytest.fixture(scope='function', autouse=True)
 def get_envs_api():
     global envs_api
     envs_api = EnvironmentsApi(utils.get_api_client())
-
-
-@pytest.fixture(scope='module')
-def new_env(request):
-    randname = testutils.gen_random_name()
-    env = envs_api.create_new(
-        body=environments._create_environment_object(name=randname, build_type='JAVA', image_id=randname)).content
-    def teardown():
-        environments.delete_environment(id=env.id)
-    request.addfinalizer(teardown)
-    return env
 
 
 def test_get_all_invalid_param():
@@ -34,9 +24,9 @@ def test_create_invalid_param():
     testutils.assert_raises_typeerror(envs_api, 'create_new')
 
 
-def test_create_new(new_env):
+def test_create_new(new_environment):
     env_ids = [env.id for env in envs_api.get_all(page_size=1000000).content]
-    assert new_env.id in env_ids
+    assert new_environment.id in env_ids
 
 
 def test_get_specific_no_id():
@@ -47,8 +37,8 @@ def test_get_specific_invalid_param():
     testutils.assert_raises_typeerror(envs_api, 'get_specific', id=1)
 
 
-def test_get_specific(new_env):
-    assert envs_api.get_specific(id=new_env.id).content is not None
+def test_get_specific(new_environment):
+    assert envs_api.get_specific(id=new_environment.id).content is not None
 
 
 def test_update_no_id():
@@ -59,16 +49,17 @@ def test_update_invalid_param():
     testutils.assert_raises_typeerror(envs_api, 'update', id=1)
 
 
-def test_update(new_env):
+def test_update(new_environment):
     randname = testutils.gen_random_name()
-    updated_env = environments._create_environment_object(description="DOCKER", build_type='NATIVE', name=randname, image_id=randname)
-    envs_api.update(id=new_env.id, body=updated_env)
-    retrieved_env = envs_api.get_specific(new_env.id).content
+    updated_env = environments._create_environment_object(name=randname, system_image_type='VIRTUAL_MACHINE_RAW', description='DOCKER',
+                                                          image_id=randname)
+    envs_api.update(id=new_environment.id, body=updated_env)
+    retrieved_env = envs_api.get_specific(new_environment.id).content
     assert (retrieved_env.description == 'DOCKER')
-    assert (retrieved_env.build_type == 'NATIVE')
     assert (retrieved_env.name == randname)
-    #image_id is immutable; it should remain the same
+    # the following fields are immutable, and should remain unchanged
     assert (retrieved_env.image_id == retrieved_env.image_id)
+    assert (retrieved_env.system_image_type == 'DOCKER_IMAGE')
 
 
 def test_delete_no_id():
@@ -79,7 +70,7 @@ def test_delete_invalid_param():
     testutils.assert_raises_typeerror(envs_api, 'delete', id=1)
 
 
-def test_delete(new_env):
-    envs_api.delete(new_env.id)
+def test_delete(new_environment):
+    envs_api.delete(new_environment.id)
     env_ids = [env.id for env in envs_api.get_all(page_size=1000000).content]
-    assert new_env.id not in env_ids
+    assert new_environment.id not in env_ids
