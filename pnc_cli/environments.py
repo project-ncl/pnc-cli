@@ -15,7 +15,7 @@ def _create_environment_object(**kwargs):
     created_environment = BuildEnvironmentRest()
     for key, value in iteritems(kwargs):
         if value:
-            if key == 'build_type':
+            if key == 'system_image_type':
                 setattr(created_environment, key, value.upper())
             else:
                 setattr(created_environment, key, value)
@@ -60,8 +60,8 @@ def get_environment_id(search_id, name):
 
 
 @arg("name", help="Unique name of the BuildEnvironment")
+@arg("system_image_type", help="One of DOCKER_IMAGE, VIRTUAL_MACHINE_RAW, VIRTUAL_MACHINE_QCOW2, LOCAL_WORKSPACE")
 @arg("-d", "--description", help="Description of the BuildEnvironment.")
-@arg("-bt", "--build-type", help="Type of build for the new BuildEnvironment.")
 @arg("-iid", "--image-id", help="ID of the Docker image for this BuildEnvironment.")
 @arg("-iru", "--image-repository-url", help="URL for the Docker repository in which the image resides.")
 def create_environment(**kwargs):
@@ -75,7 +75,7 @@ def create_environment(**kwargs):
 
 
 @arg("id", help="ID of the environment to update.")
-@arg("-bt", "--build-type", help="Updated type of build for the new BuildEnvironment.")
+@arg("-bt", "--system-image-type", help="Updated system image type for the new BuildEnvironment.")
 @arg("-d", "--description", help="Updated description of the BuildEnvironment.")
 @arg("-iru", "--image-repository-url", help="Updated URL for the Docker repository in which the image resides.")
 @arg("-n", "--name", help="Updated unique name of the BuildEnvironment")
@@ -91,7 +91,7 @@ def update_environment(id, **kwargs):
 
     for key, value in iteritems(kwargs):
         if value:
-            if key == 'build_type':
+            if key == 'system_image_type':
                 setattr(to_update, key, value.upper())
             else:
                 setattr(to_update, key, value)
