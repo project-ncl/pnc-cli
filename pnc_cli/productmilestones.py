@@ -14,7 +14,8 @@ milestones_api = ProductmilestonesApi(utils.get_api_client())
 
 
 def product_version_exists(search_id):
-    return str(search_id) in [str(x.id) for x in productversions_api.get_all().content]
+    response = utils.checked_api_call(productversions_api, 'get_specific', id=search_id)
+    return response is not None
 
 
 def create_milestone_object(**kwargs):

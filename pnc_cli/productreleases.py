@@ -93,10 +93,10 @@ def get_release(id):
 
 def _product_release_exists(search_id):
     """
-    Check if a ProductVersion ID exists
+    Check if a Product release with the given id exists
     """
-    existing_release_ids = [str(x.id) for x in releases_api.get_all().content]
-    return str(search_id) in existing_release_ids
+    response = utils.checked_api_call(releases_api, 'get_specific', id=search_id)
+    return response is not None
 
 
 @arg("id", help="ID of the release to update.")

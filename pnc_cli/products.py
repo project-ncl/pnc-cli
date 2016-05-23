@@ -24,8 +24,8 @@ def _product_exists(prod_id):
     :param prod_id: the ID to test for
     :return: True if found, False otherwise
     """
-    existing_ids = [str(x.id) for x in products_api.get_all().content]
-    return str(prod_id) in existing_ids
+    response = utils.checked_api_call(products_api, 'get_specific', id=prod_id)
+    return response is not None
 
 
 def get_product_id(prod_id, name):
