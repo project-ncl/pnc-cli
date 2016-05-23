@@ -95,20 +95,6 @@ def get_unique_version(product_id):
 
 
 @pytest.fixture(scope='module')
-def new_version(new_product):
-    version_number = testutils.gen_random_version()
-    existing = products.list_versions_for_product(id=new_product.id)
-    while existing is not None and version_number in [x.version for x in existing]:
-        version_number = testutils.gen_random_version()
-    version = productversions.create_product_version(
-        version=version_number,
-        product_id=1,
-        current_product_milestone_id=1
-    )
-    return version
-
-
-@pytest.fixture(scope='module')
 def new_milestone(new_version):
     starting = utils.unix_time_millis(datetime.datetime(2016, 1, 2, 12, 0, 0))
     ending = utils.unix_time_millis(datetime.datetime(2017, 1, 2, 12, 0, 0))
