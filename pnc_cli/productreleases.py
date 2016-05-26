@@ -36,11 +36,11 @@ def list_product_releases(page_size=200, sort="", q=""):
 # version is created by appending product_version.<new info>
 
 
+@arg("product_version_id",
+     help="ID of the ProductVersion this release is associated with.")
 @arg("version", help="Version of the release. Appended to the ProductVersion's version.")
 @arg("release_date", help="Date of the release. Format: yyyy-mm-dd")
 @arg("download_url", help="URL where deliverable(s) are located.")
-@arg("product_version_id",
-     help="ID of the ProductVersion this release is associated with.")
 @arg("product_milestone_id", help="ProductMilestone which is the basis of this release")
 @arg("issue_tracker_url", help="Link to the Issue tracker for this ProductRelease")
 @arg("support_level",
