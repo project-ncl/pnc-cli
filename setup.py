@@ -9,8 +9,8 @@ setup(
     description='CLI wrapper for PNC REST calls',
     author = 'Tom Hauser',
     author_email = 'thauser@redhat.com',
-    url = 'https://github.com/thauser/pnc_cli',
-    download_url='https://github.com/thauser/pnc_cli/tarball/pypi-0.1.0',
+    url = 'https://github.com/project-ncl/pnc-cli',
+    download_url='https://github.com/project-ncl/pnc-cli/tarball/pypi-0.1.0',
     keywords = ['PNC','REST'],
     long_description=README,
     install_requires=[
