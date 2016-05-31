@@ -156,13 +156,26 @@ def delete_build_configuration(id=None, name=None):
     :param name:
     :return:
     """
+
     to_delete_id = get_config_id(id, name)
     if not to_delete_id:
         return
 
-    response = utils.checked_api_call(configs_api, 'delete_specific', id=to_delete_id)
-    if response:
-        return response.content
+    #ensure that this build configuration is not a dependency of any other build configuration.
+    isDep = False
+    for config in list_build_configurations():
+        dep_ids = [str(val) for val in config.dependency_ids]
+        if dep_ids is not None and to_delete_id in dep_ids:
+            isDep = True
+            logging.error("BuildConfiguration ID {} is a dependency of BuildConfiguration {}.".format(to_delete_id, config.name))
+
+
+    if not isDep:
+        response = utils.checked_api_call(configs_api, 'delete_specific', id=to_delete_id)
+        if response:
+            return response.content
+    else:
+        logging.warn("No action taken.")
 
 
 @arg("name", help="Name for the new BuildConfiguration.")
