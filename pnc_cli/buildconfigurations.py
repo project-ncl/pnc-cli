@@ -410,9 +410,8 @@ def remove_product_version_from_build_configuration(id=None, name=None, product_
 @arg("-n", "--name", help="Name of the BuildConfiguration to list audited revisions for.")
 @arg("-p", "--page-size", help="Limit the amount of build records returned")
 @arg("-s", "--sort", help="Sorting RSQL")
-@arg("-q", help="RSQL query")
 # TODO: PNC return BuildConfigurationAuditedPage instead of BuildConfigurationPage?
-def list_revisions_of_build_configuration(id=None, name=None, page_size=200, sort="", q=""):
+def list_revisions_of_build_configuration(id=None, name=None, page_size=200, sort=""):
     """
     List audited revisions of a BuildConfiguration
     """
@@ -420,7 +419,7 @@ def list_revisions_of_build_configuration(id=None, name=None, page_size=200, sor
     if not found_id:
         return
 
-    response = utils.checked_api_call(configs_api, 'get_revisions', id=found_id, page_size=page_size, sort=sort, q=q)
+    response = utils.checked_api_call(configs_api, 'get_revisions', id=found_id, page_size=page_size, sort=sort)
     if response:
         return response.content
 

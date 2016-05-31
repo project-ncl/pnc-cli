@@ -106,8 +106,9 @@ def get_api_client():
 
 
 def is_valid_version(version):
-    pattern = re.compile('\d*\.\w*')
-    return pattern.match(version)
+    if version is not None:
+        pattern = re.compile('\d*\.\w*')
+        return pattern.match(version)
 
 
 def checked_api_call(api, func, **kwargs):
