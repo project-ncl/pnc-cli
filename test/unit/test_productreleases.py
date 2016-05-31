@@ -67,11 +67,11 @@ def test_get_release(mock):
     assert result == 'single release'
 
 
-@patch('pnc_cli.productreleases.releases_api.get_all',
-       return_value=MagicMock(content=[MagicMock(id=1), MagicMock(id=2)]))
+@patch('pnc_cli.productreleases.releases_api.get_specific',
+       return_value=MagicMock(content='release'))
 def test_product_release_exists(mock):
     result = productreleases._product_release_exists(1)
-    mock.assert_called_once_with()
+    mock.assert_called_once_with(id=1)
     assert result
 
 

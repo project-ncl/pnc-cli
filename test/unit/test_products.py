@@ -14,17 +14,17 @@ def test_create_product_object():
     assert result.to_dict() == compare.to_dict()
 
 
-@patch('pnc_cli.products.products_api.get_all', return_value=MagicMock(content=[MagicMock(id=1)]))
+@patch('pnc_cli.products.products_api.get_specific', return_value=MagicMock(content=[MagicMock(id=1)]))
 def test_product_exists(mock):
     result = products._product_exists(1)
-    mock.assert_called_once_with()
+    mock.assert_called_once_with(id=1)
     assert result
 
 
-@patch('pnc_cli.products.products_api.get_all', return_value=MagicMock(content=[MagicMock(id=1)]))
+@patch('pnc_cli.products.products_api.get_specific', return_value=None)
 def test_product_exists_notexist(mock):
     result = products._product_exists(2)
-    mock.assert_called_once_with()
+    mock.assert_called_once_with(id=2)
     assert not result
 
 

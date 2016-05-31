@@ -1,4 +1,4 @@
-from mock import patch, MagicMock
+from mock import patch, MagicMock, call
 from pnc_cli import productmilestones
 from pnc_cli.swagger_client.models import ProductMilestoneRest
 
@@ -17,44 +17,38 @@ def test_list_milestones(mock):
 
 @patch('pnc_cli.productmilestones.create_milestone_object', return_value='created milestone')
 @patch('pnc_cli.productmilestones.milestones_api.create_new', return_value=MagicMock(content='created milestone'))
-@patch('pnc_cli.productmilestones.productversions_api.get_all',
-       return_value=MagicMock(content=[MagicMock(id=1), MagicMock(id=2)]))
 @patch('pnc_cli.productmilestones.productversions_api.get_specific', return_value=MagicMock(content=MagicMock(version=1.0)))
-def test_create_milestone(mock_get_specific, mock_get_all, mock_create_new, mock_create_milestone_object):
+def test_create_milestone(mock_get_specific, mock_create_new, mock_create_milestone_object):
     result = productmilestones.create_milestone(product_version_id=1, version='1.GA', start_date='2015-01-01',
                                                 planned_release_date='2015-01-02')
-    mock_get_all.assert_called_once_with()
+
+
     mock_create_milestone_object.assert_called_once_with(product_version_id=1, version='1.0.1.GA', start_date='2015-01-01',
                                                 planned_release_date='2015-01-02')
-    mock_get_specific.assert_called_once_with(id=1)
+    get_specific_calls = [call(id=1), call(id=1)]
+    mock_get_specific.assert_has_calls(get_specific_calls)
     mock_create_new.assert_called_once_with(body='created milestone')
     assert result == 'created milestone'
 
 @patch('pnc_cli.productmilestones.create_milestone_object')
 @patch('pnc_cli.productmilestones.milestones_api.create_new')
-@patch('pnc_cli.productmilestones.productversions_api.get_all',
-       return_value=MagicMock(content=[MagicMock(id=1), MagicMock(id=2)]))
 @patch('pnc_cli.productmilestones.productversions_api.get_specific')
-def test_create_milestone_noversion(mock_get_specific, mock_get_all, mock_create_new, mock_create_milestone_object):
-    result = productmilestones.create_milestone(product_version_id=2000, version='1.GA', start_date='2015-01-01',
+def test_create_milestone_noversion(mock_get_specific, mock_create_new, mock_create_milestone_object):
+    result = productmilestones.create_milestone(product_version_id=2000, start_date='2015-01-01',
                                                 planned_release_date='2015-01-02')
-    mock_get_all.assert_called_once_with()
+    mock_get_specific.assert_called_once_with(id=2000)
     assert not mock_create_milestone_object.called
-    assert not mock_get_specific.called
     assert not mock_create_new.called
     assert not result
 
 @patch('pnc_cli.productmilestones.create_milestone_object')
 @patch('pnc_cli.productmilestones.milestones_api.create_new')
-@patch('pnc_cli.productmilestones.productversions_api.get_all',
-       return_value=MagicMock(content=[MagicMock(id=1), MagicMock(id=2)]))
 @patch('pnc_cli.productmilestones.productversions_api.get_specific')
-def test_create_milestone_badversion(mock_get_specific, mock_get_all, mock_create_new, mock_create_milestone_object):
+def test_create_milestone_badversion(mock_get_specific, mock_create_new, mock_create_milestone_object):
     result = productmilestones.create_milestone(product_version_id=1, version='gaga1.GA', start_date='2015-01-01',
                                                 planned_release_date='2015-01-02')
-    mock_get_all.assert_called_once_with()
+    mock_get_specific.assert_called_once_with(id=1)
     assert not mock_create_milestone_object.called
-    assert not mock_get_specific.called
     assert not mock_create_new.called
     assert not result
 
