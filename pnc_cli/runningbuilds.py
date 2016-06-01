@@ -8,12 +8,11 @@ running_api = RunningbuildrecordsApi(utils.get_api_client())
 
 @arg("-p", "--page-size", help="Limit the amount of BuildRecords returned")
 @arg("-s", "--sort", help="Sorting RSQL")
-@arg("-q", help="RSQL query")
-def list_running_builds(page_size=200, sort="", q=""):
+def list_running_builds(page_size=200, sort=""):
     """
     List all RunningBuilds
     """
-    response = utils.checked_api_call(running_api, 'get_all', page_size=page_size, sort=sort, q=q)
+    response = utils.checked_api_call(running_api, 'get_all', page_size=page_size, sort=sort)
     if response:
         return response.content
 

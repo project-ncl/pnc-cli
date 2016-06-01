@@ -156,13 +156,26 @@ def delete_build_configuration(id=None, name=None):
     :param name:
     :return:
     """
+
     to_delete_id = get_config_id(id, name)
     if not to_delete_id:
         return
 
-    response = utils.checked_api_call(configs_api, 'delete_specific', id=to_delete_id)
-    if response:
-        return response.content
+    #ensure that this build configuration is not a dependency of any other build configuration.
+    isDep = False
+    for config in list_build_configurations():
+        dep_ids = [str(val) for val in config.dependency_ids]
+        if dep_ids is not None and to_delete_id in dep_ids:
+            isDep = True
+            logging.error("BuildConfiguration ID {} is a dependency of BuildConfiguration {}.".format(to_delete_id, config.name))
+
+
+    if not isDep:
+        response = utils.checked_api_call(configs_api, 'delete_specific', id=to_delete_id)
+        if response:
+            return response.content
+    else:
+        logging.warn("No action taken.")
 
 
 @arg("name", help="Name for the new BuildConfiguration.")
@@ -397,9 +410,8 @@ def remove_product_version_from_build_configuration(id=None, name=None, product_
 @arg("-n", "--name", help="Name of the BuildConfiguration to list audited revisions for.")
 @arg("-p", "--page-size", help="Limit the amount of build records returned")
 @arg("-s", "--sort", help="Sorting RSQL")
-@arg("-q", help="RSQL query")
 # TODO: PNC return BuildConfigurationAuditedPage instead of BuildConfigurationPage?
-def list_revisions_of_build_configuration(id=None, name=None, page_size=200, sort="", q=""):
+def list_revisions_of_build_configuration(id=None, name=None, page_size=200, sort=""):
     """
     List audited revisions of a BuildConfiguration
     """
@@ -407,7 +419,7 @@ def list_revisions_of_build_configuration(id=None, name=None, page_size=200, sor
     if not found_id:
         return
 
-    response = utils.checked_api_call(configs_api, 'get_revisions', id=found_id, page_size=page_size, sort=sort, q=q)
+    response = utils.checked_api_call(configs_api, 'get_revisions', id=found_id, page_size=page_size, sort=sort)
     if response:
         return response.content
 
