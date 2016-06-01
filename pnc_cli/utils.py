@@ -3,6 +3,8 @@ import logging
 import getpass
 import datetime
 import requests
+import string
+import argparse
 
 requests.packages.urllib3.disable_warnings()
 
@@ -127,6 +129,11 @@ def unix_time_millis(dt):
     millis = int((dt - epoch).total_seconds() * 1000.0)
     return millis
 
+def valid_attribute(attributeInput):
+    if(attributeInput.count("=") != 1):
+        raise argparse.ArgumentTypeError("Invalid attribute syntax. Correct syntax: key=value")
+    attribute_key, attribute_value = attributeInput.split('=')
+    return {attribute_key:attribute_value}
 
 def contains_only_none_values(dictionary):
     for key in dictionary.keys():
