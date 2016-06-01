@@ -66,8 +66,9 @@ def test_list_records_for_project_notexist(mock_get_project_id):
 @patch('pnc_cli.buildrecords.records_api.get_specific', return_value=MagicMock(content='build record 2'))
 def test_get_build_record_id(mock_get_specific):
     result = buildrecords.get_build_record('2')
-    mock_get_specific.assert_called_once_with(id='2')
-    assert result == 'build record 2'
+    mock_get_specific.assert_any_call(id='2')
+    mock_get_specific.assert_any_call(id='2')
+    assert result == 'build record 2' and mock_get_specific.call_count == 2
 
 
 @patch('pnc_cli.buildrecords.record_exists', return_value=False)

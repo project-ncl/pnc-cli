@@ -19,7 +19,8 @@ def create_buildrecordset_object(**kwargs):
 
 
 def get_brs_id(id):
-    if not str(id) in [str(x.id) for x in brs_api.get_all().content]:
+    existing = brs_api.get_specific(id).content
+    if not existing:
         logging.error("No BuildRecordSet with ID {} exists.".format(id))
         return
     return id

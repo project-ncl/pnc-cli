@@ -13,17 +13,17 @@ def test_create_environment_object():
     assert result.to_dict() == compare.to_dict()
 
 
-@patch('pnc_cli.environments.envs_api.get_all', return_value=MagicMock(content=1))
-def test_get_environment_id_id(mock):
+@patch('pnc_cli.environments.envs_api.get_specific', return_value=MagicMock(content=1))
+def test_get_environment_id_id(mock_get_specific):
     result = environments.get_environment_id(1, None)
-    mock.assert_called_once_with(q='id==1')
+    mock_get_specific.assert_called_once_with(id='1')
     assert result == 1
 
 
-@patch('pnc_cli.environments.envs_api.get_all', return_value=False)
-def test_get_environment_id_notexist(mock):
+@patch('pnc_cli.environments.envs_api.get_specific', return_value=False)
+def test_get_environment_id_notexist(mock_get_specific):
     result = environments.get_environment_id(1, None)
-    mock.assert_called_once_with(q='id==1')
+    mock_get_specific.assert_called_once_with(id='1')
     assert not result
 
 
@@ -46,17 +46,17 @@ def test_get_environment_id_none():
     assert not result
 
 
-@patch('pnc_cli.environments.envs_api.get_all', return_value=MagicMock(content=[MagicMock(id=1)]))
-def test_environment_exists(mock):
+@patch('pnc_cli.environments.envs_api.get_specific', return_value=MagicMock(content=[MagicMock(id=1)]))
+def test_environment_exists(mock_get_specific):
     result = environments._environment_exists(1)
-    mock.assert_called_once_with(q='id==1')
+    mock_get_specific.assert_called_once_with(id='1')
     assert result
 
 
-@patch('pnc_cli.environments.envs_api.get_all', return_value=None)
-def test_environment_exists_false(mock):
+@patch('pnc_cli.environments.envs_api.get_specific', return_value=None)
+def test_environment_exists_false(mock_get_specific):
     result = environments._environment_exists(2)
-    mock.assert_called_once_with(q='id==2')
+    mock_get_specific.assert_called_once_with(id='2')
     assert not result
 
 

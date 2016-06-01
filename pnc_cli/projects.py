@@ -57,7 +57,7 @@ def _project_exists(search_id):
     :param search_id: id to test for
     :return: True if a Project with search_id exists
     """
-    response = utils.checked_api_call(projects_api, 'get_all', q="id==" + str(search_id))
+    response = utils.checked_api_call(projects_api, 'get_specific', id=str(search_id))
     if not response:
         return False
     return True

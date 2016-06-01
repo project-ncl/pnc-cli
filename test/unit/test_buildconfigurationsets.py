@@ -17,15 +17,15 @@ def test_create_build_config_set_object(**kwargs):
        return_value=testutils.create_mock_list_with_name_attribute())
 def test_get_build_config_set_id_by_name(mock):
     result = buildconfigurationsets.get_build_config_set_id_by_name('testerino')
-    mock.assert_called_once_with()
+    mock.assert_called_once_with(q='name==testerino')
     assert result == 1
 
 
 @patch('pnc_cli.buildconfigurationsets.sets_api.get_all',
-       return_value=testutils.create_mock_list_with_name_attribute())
+       return_value=MagicMock(content=[]))
 def test_get_build_config_set_id_by_name_notexist(mock):
     result = buildconfigurationsets.get_build_config_set_id_by_name('notexist')
-    mock.assert_called_once_with()
+    mock.assert_called_once_with(q='name==notexist')
     assert not result
 
 
@@ -232,10 +232,10 @@ def test_delete_build_config_set_name_notexist(mock_delete, mock_get_set_id):
     assert not result
 
 
-@patch('pnc_cli.buildconfigurationsets.sets_api.get_all', return_value=MagicMock(content=[MagicMock(id=1)]))
-def test_set_exists(mock):
+@patch('pnc_cli.buildconfigurationsets.sets_api.get_specific', return_value=MagicMock(content=[MagicMock(id=1)]))
+def test_set_exists(mock_get_specific):
     result = buildconfigurationsets._set_exists(1)
-    mock.assert_called_once_with()
+    mock_get_specific.assert_called_once_with(1)
     assert result
 
 

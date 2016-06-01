@@ -5,27 +5,27 @@ from pnc_cli import users
 from pnc_cli.swagger_client import UserRest
 
 
-@patch('pnc_cli.users.users_api.get_all',
+@patch('pnc_cli.users.users_api.get_specific',
        return_value=MagicMock(content=[MagicMock(id=1), MagicMock(id=2), MagicMock(id=3)]))
-def test_user_exists(mock):
+def test_user_exists(mock_get_specific):
     result = users.user_exists(1)
-    mock.assert_called_once_with()
+    mock_get_specific.assert_called_once_with(1)
     assert result
 
 
 @patch('pnc_cli.users.users_api.get_all',
-       return_value=MagicMock(content=[MagicMock(id=1, username='test1'), MagicMock(id=2, username='testerino')]))
+       return_value=MagicMock(content=[MagicMock(id=2, username='testerino')]))
 def test_get_user_id_by_name(mock):
     result = users.get_user_id_by_name('testerino')
-    mock.assert_called_once_with()
+    mock.assert_called_once_with(q='username==testerino')
     assert result == 2
 
 
 @patch('pnc_cli.users.users_api.get_all',
-       return_value=MagicMock(content=[MagicMock(id=1, username='test1'), MagicMock(id=2, username='testerino')]))
+        return_value=MagicMock(content=[]))
 def test_get_user_id_by_name_notexist(mock):
     result = users.get_user_id_by_name('notexist')
-    mock.assert_called_once_with()
+    mock.assert_called_once_with(q='username==notexist')
     assert not result
 
 @patch('pnc_cli.users.user_exists', return_value=True)

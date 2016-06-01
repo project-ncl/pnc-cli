@@ -11,15 +11,18 @@ users_api = UsersApi(utils.get_api_client())
 
 
 def user_exists(id):
-    existing = [x.id for x in users_api.get_all().content]
-    return id in existing
+    existing = users_api.get_specific(id).content
+    if existing:
+        return id
+    return None
 
 
 def get_user_id_by_name(name):
-    for user in users_api.get_all().content:
-        if user.username == name:
-            return user.id
-    return
+    users = users_api.get_all(q='username=='+name).content
+    if users:
+        user = users[0]
+        return user.id
+    return None
 
 
 def get_user_id(id, name):
