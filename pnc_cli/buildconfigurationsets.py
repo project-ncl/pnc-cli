@@ -21,10 +21,10 @@ def _create_build_config_set_object(**kwargs):
 
 
 def get_build_config_set_id_by_name(search_name):
-    sets = sets_api.get_all().content
-    for set in sets:
-        if set.name == search_name:
-            return set.id
+    sets = sets_api.get_all(q='name=='+search_name).content
+    if sets:
+        config_set = sets[0]
+        return config_set.id
     return None
 
 
@@ -148,8 +148,10 @@ def delete_build_configuration_set(id=None, name=None):
 
 
 def _set_exists(id):
-    existing_ids = [str(x.id) for x in sets_api.get_all().content]
-    return str(id) in existing_ids
+    existing = sets_api.get_specific(id).content
+    if not existing:
+        return False
+    return True
 
 
 def get_set_id(set_id, name):

@@ -60,17 +60,17 @@ def test_get_project_id_by_name_notexist(mock):
     assert not result
 
 
-@patch('pnc_cli.projects.projects_api.get_all', return_value=MagicMock(content=[MagicMock(id=1), MagicMock(id=2)]))
-def test_project_exists(mock):
+@patch('pnc_cli.projects.projects_api.get_specific', return_value=MagicMock(content=[MagicMock(id=1), MagicMock(id=2)]))
+def test_project_exists(mock_get_specific):
     result = projects._project_exists(1)
-    mock.assert_called_once_with(q='id==1')
+    mock_get_specific.assert_called_once_with(id='1')
     assert result
 
 
-@patch('pnc_cli.projects.projects_api.get_all', return_value=None)
-def test_project_exists_notexist(mock):
+@patch('pnc_cli.projects.projects_api.get_specific', return_value=None)
+def test_project_exists_notexist(mock_get_specific):
     result = projects._project_exists(10)
-    mock.assert_called_once_with(q='id==10')
+    mock_get_specific.assert_called_once_with(id='10')
     assert not result
 
 

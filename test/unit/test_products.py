@@ -65,15 +65,15 @@ def test_get_product_id_none():
        return_value=MagicMock(content=[testutils.create_mock_object_with_name_attribute('testerino')]))
 def test_get_product_id_by_name(mock):
     result = products.get_product_id_by_name('testerino')
-    mock.assert_called_once_with()
+    mock.assert_called_once_with(q='name==testerino')
     assert result == 1
 
 
 @patch('pnc_cli.products.products_api.get_all',
-       return_value=MagicMock(content=[testutils.create_mock_object_with_name_attribute('nope')]))
+       return_value=MagicMock(content=[]))
 def test_get_product_id_by_name_notexist(mock):
     result = products.get_product_id_by_name('testerino')
-    mock.assert_called_once_with()
+    mock.assert_called_once_with(q='name==testerino')
     assert not result
 
 

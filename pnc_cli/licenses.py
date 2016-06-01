@@ -35,15 +35,17 @@ def get_license_id(id, name):
 
 
 def _license_exists(license_id):
-    existing_ids = [str(x.id) for x in licenses_api.get_all().content]
-    return str(license_id) in existing_ids
+    existing = licenses_api.get_specific(license_id).content
+    if not existing:
+        return False
+    return True
 
 
 def _get_license_id_by_name(name):
-    licenses = licenses_api.get_all().content
-    for License in licenses:
-        if License.full_name == name:
-            return License.id
+    licenses = licenses_api.get_all(q='name=='+name).content
+    if licenses:
+        License = licenses[0]
+        return License.id
     return None
 
 

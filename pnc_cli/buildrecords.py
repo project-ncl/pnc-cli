@@ -10,8 +10,10 @@ records_api = BuildrecordsApi(utils.get_api_client())
 
 
 def record_exists(id):
-    existing = [str(x.id) for x in records_api.get_all(q='id=='+id).content]
-    return str(id) in existing
+    existing = records_api.get_specific(id).content
+    if not existing:
+        return False
+    return True
 
 
 @arg("-p", "--page-size", help="Limit the amount of BuildRecords returned")

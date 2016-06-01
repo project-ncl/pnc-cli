@@ -50,11 +50,11 @@ def get_product_id_by_name(search_name):
     :param search_name: the name or abbreviation to search for
     :return: the ID of the matching Product
     """
-    products = products_api.get_all().content
-    for product in products:
-        if product.name == search_name:
-            return product.id
-    return None
+    products = products_api.get_all(q='name=='+search_name).content
+    if products:
+        product = products[0]
+        return product.id
+    return
 
 
 @arg("name", help="Name for the Product")
