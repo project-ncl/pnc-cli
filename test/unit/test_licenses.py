@@ -42,10 +42,10 @@ def test_get_license_id_none():
     assert not result
 
 
-@patch('pnc_cli.licenses.licenses_api.get_all', return_value=MagicMock(content=[MagicMock(id=1)]))
+@patch('pnc_cli.licenses.licenses_api.get_specific', return_value=MagicMock(content=[MagicMock(id=1)]))
 def test_license_exists(mock):
     result = licenses._license_exists(1)
-    mock.assert_called_once_with()
+    mock.assert_called_once_with(id=1)
     assert result
 
 @patch('pnc_cli.licenses.licenses_api.get_all', return_value=MagicMock(content=[MagicMock(full_name='testerino', id=1)]))

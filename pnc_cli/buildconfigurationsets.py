@@ -147,8 +147,8 @@ def delete_build_configuration_set(id=None, name=None):
         return response.content
 
 
-def _set_exists(id):
-    existing = sets_api.get_specific(id).content
+def _set_exists(set_id):
+    existing = utils.checked_api_call(sets_api, 'get_specific', id=set_id).content
     if not existing:
         return False
     return True
