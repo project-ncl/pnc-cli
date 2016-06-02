@@ -74,6 +74,10 @@ def create_product(name, **kwargs):
         return
 
     product = _create_product_object(name=name, **kwargs)
+    if _product_exists(get_product_id_by_name(search_name=name)):
+        logging.error("A Product with the name {} already exists.".format(name))
+        return
+
     response = utils.checked_api_call(products_api, 'create_new', body=product)
     if response:
         return response.content
@@ -103,6 +107,10 @@ def update_product(product_id, **kwargs):
                  return
         if value is not None:
             setattr(to_update, key, value)
+
+    if (_product_exists(get_product_id_by_name(search_name=to_update.name))):
+        logging.error("Attempt to rename Product ID {} to {} failed because that name is already in use.".format(found_id, to_update.name))
+        return
 
     response = utils.checked_api_call(
         products_api, 'update', id=product_id, body=to_update)
