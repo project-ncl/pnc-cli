@@ -86,13 +86,13 @@ def test_create_environment(mock_create_new, mock_create_environment_object):
     assert result == 'buildenvironment1'
 
 @patch('pnc_cli.environments._create_environment_object')
-def test_create_environment_invalid_attribute(mock):
-    mock.side_effect = argparse.ArgumentTypeError("Invalid attribute syntax. Correct syntax: key=value")
+def test_create_environment_invalid_attribute(mock_create_environment_object):
+    mock_create_environment_object.side_effect = argparse.ArgumentTypeError()
     try:
         result = environments.create_environment(name='testerino', build_type='JAVA', attributes='test')
-        assert False
+        assert result
     except argparse.ArgumentTypeError:
-        assert True
+        mock_create_environment_object.assert_called_once_with(name='testerino', build_type='JAVA', attributes='test')
 
 @patch('pnc_cli.environments._environment_exists', return_value=1)
 @patch('pnc_cli.environments.envs_api.get_specific')
@@ -107,7 +107,25 @@ def test_update_environment(mock_update, mock_get_specific, mock_environment_exi
     mock_update.assert_called_once_with(id=1, body=mock)
     assert getattr(mock, 'build_type') == 'JAVA'
     assert result == 'buildenvironment1'
-    
+
+@patch('pnc_cli.environments._environment_exists', return_value=False)
+@patch('pnc_cli.environments.envs_api.update')
+def test_update_environment_notexist(mock_update, mock_environment_exists):
+    result = environments.update_environment(id=1)
+    mock_environment_exists.assert_called_once_with(1)
+    assert not mock_update.called
+    assert not result
+
+@patch('pnc_cli.environments._environment_exists', return_value=True)
+@patch('pnc_cli.environments.envs_api.update', side_effect = argparse.ArgumentTypeError())
+def test_update_environment_invalid_attribute(mock_update, mock_environment_exists):
+    try:
+        result = environments.update_environment(id=1, name='testerino2', build_type='JAVA', attributes='test')
+        assert False
+    except argparse.ArgumentTypeError:
+        mock_environment_exists.assert_called_once_with(1)
+        assert mock_update.called
+
 
 @patch('pnc_cli.environments.get_environment_id', return_value=1)
 @patch('pnc_cli.environments.envs_api.delete', return_value=True)
