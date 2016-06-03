@@ -90,7 +90,7 @@ def test_create_environment_invalid_attribute(mock_create_environment_object):
     mock_create_environment_object.side_effect = argparse.ArgumentTypeError()
     try:
         result = environments.create_environment(name='testerino', build_type='JAVA', attributes='test')
-        assert result
+        assert not result
     except argparse.ArgumentTypeError:
         mock_create_environment_object.assert_called_once_with(name='testerino', build_type='JAVA', attributes='test')
 
@@ -121,7 +121,7 @@ def test_update_environment_notexist(mock_update, mock_environment_exists):
 def test_update_environment_invalid_attribute(mock_update, mock_environment_exists):
     try:
         result = environments.update_environment(id=1, name='testerino2', build_type='JAVA', attributes='test')
-        assert False
+        assert not result
     except argparse.ArgumentTypeError:
         mock_environment_exists.assert_called_once_with(1)
         assert mock_update.called
