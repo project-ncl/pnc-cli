@@ -74,6 +74,7 @@ def create_product(name, **kwargs):
         return
 
     product = _create_product_object(name=name, **kwargs)
+
     response = utils.checked_api_call(products_api, 'create_new', body=product)
     if response:
         return response.content
