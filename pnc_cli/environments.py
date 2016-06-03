@@ -1,3 +1,4 @@
+import logging
 from argh import arg
 
 from six import iteritems
@@ -43,15 +44,15 @@ def get_environment_id(search_id, name):
     Given either a name or id, checks for BuildEnvironment existence and returns the valid id, or prints a message otherwise
     """
     if search_id:
-        found_env = envs_api.get_specific(id=str(search_id))
+        found_env = utils.checked_api_call(envs_api, 'get_specific', id=str(search_id))
         if not found_env:
-            print("No environment with ID {} exists.".format(search_id))
+            logging.error("No environment with ID {} exists.".format(search_id))
             return
         found_id = search_id
     elif name:
         found_id = _get_environment_id_by_name(name)
         if not found_id:
-            print("No environment with name {} exists.".format(name))
+            logging.error("No environment with name {} exists.".format(name))
             return
     else:
         print("Either a BuildEnvironment name or ID is required.")

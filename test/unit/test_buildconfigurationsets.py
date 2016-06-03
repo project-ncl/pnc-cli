@@ -235,14 +235,14 @@ def test_delete_build_config_set_name_notexist(mock_delete, mock_get_set_id):
 @patch('pnc_cli.buildconfigurationsets.sets_api.get_specific', return_value=MagicMock(content=[MagicMock(id=1)]))
 def test_set_exists(mock_get_specific):
     result = buildconfigurationsets._set_exists(1)
-    mock_get_specific.assert_called_once_with(1)
+    mock_get_specific.assert_called_once_with(id=1)
     assert result
 
 
-@patch('pnc_cli.buildconfigurationsets.sets_api.get_all', return_value=MagicMock(content=[MagicMock(id=1)]))
+@patch('pnc_cli.buildconfigurationsets.sets_api.get_specific', return_value=False)
 def test_set_exists_notexist(mock):
     result = buildconfigurationsets._set_exists(10)
-    mock.assert_called_once_with()
+    mock.assert_called_once_with(id=10)
     assert not result
 
 

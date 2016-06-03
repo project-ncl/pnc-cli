@@ -82,9 +82,13 @@ def list_milestones_for_version(id):
 
 @arg("id", help="ProductMilestone ID to retrieve.")
 def get_milestone(id):
-    response = utils.checked_api_call(milestones_api, 'get_specific', id=id).content
+    response = utils.checked_api_call(milestones_api, 'get_specific', id=id)
     if response:
-        return response
+        return response.content
+    else:
+        logging.error("No ProductMilestone exists with the ID {}.".format(
+            id))
+        return
 
 #TODO: problem setting end date.
 #TODO: incorrect date parsing.

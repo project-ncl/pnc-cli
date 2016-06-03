@@ -35,7 +35,7 @@ def get_license_id(id, name):
 
 
 def _license_exists(license_id):
-    existing = licenses_api.get_specific(license_id).content
+    existing = utils.checked_api_call(licenses_api, 'get_specific', id=license_id)
     if not existing:
         return False
     return True

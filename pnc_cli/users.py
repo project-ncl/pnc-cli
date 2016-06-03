@@ -10,11 +10,11 @@ from pnc_cli import utils
 users_api = UsersApi(utils.get_api_client())
 
 
-def user_exists(id):
-    existing = users_api.get_specific(id).content
+def user_exists(user_id):
+    existing = utils.checked_api_call(users_api, 'get_specific', id=user_id)
     if existing:
-        return id
-    return None
+        return True
+    return False
 
 
 def get_user_id_by_name(name):

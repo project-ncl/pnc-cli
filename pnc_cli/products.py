@@ -69,7 +69,12 @@ def create_product(name, **kwargs):
     """
     Create a new Product
     """
+    if get_product_id_by_name(name):
+        logging.error("Product with the name {0} already exists.".format(name))
+        return
+
     product = _create_product_object(name=name, **kwargs)
+
     response = utils.checked_api_call(products_api, 'create_new', body=product)
     if response:
         return response.content
@@ -86,13 +91,17 @@ def update_product(product_id, **kwargs):
     """
     Update a Product with new information
     """
-    found_id = get_product_id(1, None)
+    found_id = get_product_id(product_id, None)
     if not found_id:
         return
 
     to_update = products_api.get_specific(id=found_id).content
 
     for key, value in iteritems(kwargs):
+        if key is 'name':
+             if get_product_id_by_name(value):
+                 logging.error("Product with the name {0} already exists.".format(value))
+                 return
         if value is not None:
             setattr(to_update, key, value)
 
