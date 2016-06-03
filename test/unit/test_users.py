@@ -6,10 +6,10 @@ from pnc_cli.swagger_client import UserRest
 
 
 @patch('pnc_cli.users.users_api.get_specific',
-       return_value=MagicMock(content=[MagicMock(id=1), MagicMock(id=2), MagicMock(id=3)]))
+       return_value=MagicMock(content=MagicMock(id=1)))
 def test_user_exists(mock_get_specific):
     result = users.user_exists(1)
-    mock_get_specific.assert_called_once_with(1)
+    mock_get_specific.assert_called_once_with(id=1)
     assert result
 
 

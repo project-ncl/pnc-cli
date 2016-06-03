@@ -10,7 +10,7 @@ records_api = BuildrecordsApi(utils.get_api_client())
 
 
 def record_exists(id):
-    existing = records_api.get_specific(id).content
+    existing = utils.checked_api_call(records_api, 'get_specific', id=id)
     if not existing:
         return False
     return True

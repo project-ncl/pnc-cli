@@ -239,7 +239,7 @@ def test_set_exists(mock_get_specific):
     assert result
 
 
-@patch('pnc_cli.buildconfigurationsets.sets_api.get_specific', return_value=MagicMock(content=[]))
+@patch('pnc_cli.buildconfigurationsets.sets_api.get_specific', return_value=False)
 def test_set_exists_notexist(mock):
     result = buildconfigurationsets._set_exists(10)
     mock.assert_called_once_with(id=10)

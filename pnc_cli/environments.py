@@ -43,7 +43,7 @@ def get_environment_id(search_id, name):
     Given either a name or id, checks for BuildEnvironment existence and returns the valid id, or prints a message otherwise
     """
     if search_id:
-        found_env = envs_api.get_specific(id=str(search_id))
+        found_env = _environment_exists(str(search_id))
         if not found_env:
             print("No environment with ID {} exists.".format(search_id))
             return

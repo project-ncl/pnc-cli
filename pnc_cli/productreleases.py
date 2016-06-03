@@ -89,6 +89,10 @@ def get_release(id):
     response = utils.checked_api_call(releases_api, 'get_specific', id=id)
     if response:
         return response.content
+    else:
+        logging.error("No ProductRelease exists with the ID {}.".format(
+            id))
+        return
 
 
 def _product_release_exists(search_id):

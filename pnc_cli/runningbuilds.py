@@ -1,3 +1,4 @@
+import logging
 from argh import arg
 
 from pnc_cli import utils
@@ -25,3 +26,6 @@ def get_running_build(id):
     response = utils.checked_api_call(running_api, 'get_specific', id=id)
     if response:
         return response.content
+    else:
+        logging.error("No RunningBuild with ID {} exists.".format(id))
+        return

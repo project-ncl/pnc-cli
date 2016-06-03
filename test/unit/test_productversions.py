@@ -15,19 +15,19 @@ def test_create_product_version_object():
     assert productversion.to_dict() == test_version.to_dict()
 
 
-@patch('pnc_cli.productversions.versions_api.get_all',
+@patch('pnc_cli.productversions.versions_api.get_specific',
        return_value=MagicMock(content=[MagicMock(id=1)]))
-def test_version_exists(mock):
+def test_version_exists(mock_get_specific):
     result = productversions.version_exists(1)
-    mock.assert_called_once_with(q='id==1')
+    mock_get_specific.assert_called_once_with(id=1)
     assert result
 
 
-@patch('pnc_cli.productversions.versions_api.get_all',
+@patch('pnc_cli.productversions.versions_api.get_specific',
        return_value=None)
-def test_version_exists_notexist(mock):
+def test_version_exists_notexist(mock_get_specific):
     result = productversions.version_exists(10)
-    mock.assert_called_once_with(q='id==10')
+    mock_get_specific.assert_called_once_with(id=10)
     assert not result
 
 
