@@ -4,6 +4,7 @@ __author__ = 'thauser'
 from mock import MagicMock, patch
 from pnc_cli import environments
 from pnc_cli.swagger_client import BuildEnvironmentRest
+import argparse
 
 def test_create_environment_object():
     compare = BuildEnvironmentRest()
@@ -13,17 +14,17 @@ def test_create_environment_object():
     assert result.to_dict() == compare.to_dict()
 
 
-@patch('pnc_cli.environments.envs_api.get_specific', return_value=MagicMock(content=1))
-def test_get_environment_id_id(mock_get_specific):
+@patch('pnc_cli.environments.envs_api.get_all', return_value=MagicMock(content=1))
+def test_get_environment_id_id(mock):
     result = environments.get_environment_id(1, None)
-    mock_get_specific.assert_called_once_with(id='1')
+    mock.assert_called_once_with(q='id==1')
     assert result == 1
 
 
-@patch('pnc_cli.environments.envs_api.get_specific', return_value=False)
-def test_get_environment_id_notexist(mock_get_specific):
+@patch('pnc_cli.environments.envs_api.get_all', return_value=False)
+def test_get_environment_id_notexist(mock):
     result = environments.get_environment_id(1, None)
-    mock_get_specific.assert_called_once_with(id='1')
+    mock.assert_called_once_with(q='id==1')
     assert not result
 
 
@@ -46,17 +47,17 @@ def test_get_environment_id_none():
     assert not result
 
 
-@patch('pnc_cli.environments.envs_api.get_specific', return_value=MagicMock(content=[MagicMock(id=1)]))
-def test_environment_exists(mock_get_specific):
+@patch('pnc_cli.environments.envs_api.get_all', return_value=MagicMock(content=[MagicMock(id=1)]))
+def test_environment_exists(mock):
     result = environments._environment_exists(1)
-    mock_get_specific.assert_called_once_with(id='1')
+    mock.assert_called_once_with(q='id==1')
     assert result
 
 
-@patch('pnc_cli.environments.envs_api.get_specific', return_value=None)
-def test_environment_exists_false(mock_get_specific):
+@patch('pnc_cli.environments.envs_api.get_all', return_value=None)
+def test_environment_exists_false(mock):
     result = environments._environment_exists(2)
-    mock_get_specific.assert_called_once_with(id='2')
+    mock.assert_called_once_with(q='id==2')
     assert not result
 
 
@@ -79,11 +80,19 @@ def test_get_environment_id_by_name_notexist(mock):
 @patch('pnc_cli.environments._create_environment_object', return_value='test-environment-object')
 @patch('pnc_cli.environments.envs_api.create_new', return_value=MagicMock(content='buildenvironment1'))
 def test_create_environment(mock_create_new, mock_create_environment_object):
-    result = environments.create_environment(name='testerino', build_type='JAVA')
-    mock_create_environment_object.assert_called_once_with(name='testerino', build_type='JAVA')
+    result = environments.create_environment(name='testerino', build_type='JAVA', attributes='test=test')
+    mock_create_environment_object.assert_called_once_with(name='testerino', build_type='JAVA', attributes='test=test')
     mock_create_new.assert_called_once_with(body='test-environment-object')
     assert result == 'buildenvironment1'
 
+@patch('pnc_cli.environments._create_environment_object')
+def test_create_environment_invalid_attribute(mock):
+    mock.side_effect = argparse.ArgumentTypeError("Invalid attribute syntax. Correct syntax: key=value")
+    try:
+        result = environments.create_environment(name='testerino', build_type='JAVA', attributes='test')
+        assert False
+    except argparse.ArgumentTypeError:
+        assert True
 
 @patch('pnc_cli.environments._environment_exists', return_value=1)
 @patch('pnc_cli.environments.envs_api.get_specific')
@@ -92,22 +101,13 @@ def test_update_environment(mock_update, mock_get_specific, mock_environment_exi
     mock = MagicMock()
     mockcontent = MagicMock(content=mock)
     mock_get_specific.return_value = mockcontent
-    result = environments.update_environment(id=1, name='testerino2', build_type='JAVA')
+    result = environments.update_environment(id=1, name='testerino2', build_type='JAVA', attributes='test=test')
     mock_environment_exists.assert_called_once_with(1)
     mock_get_specific.assert_called_once_with(id=1)
     mock_update.assert_called_once_with(id=1, body=mock)
     assert getattr(mock, 'build_type') == 'JAVA'
     assert result == 'buildenvironment1'
-
-
-@patch('pnc_cli.environments._environment_exists', return_value=False)
-@patch('pnc_cli.environments.envs_api.update')
-def test_update_environment_notexist(mock_update, mock_environment_exists):
-    result = environments.update_environment(id=1)
-    mock_environment_exists.assert_called_once_with(1)
-    assert not mock_update.called
-    assert not result
-
+    
 
 @patch('pnc_cli.environments.get_environment_id', return_value=1)
 @patch('pnc_cli.environments.envs_api.delete', return_value=True)
