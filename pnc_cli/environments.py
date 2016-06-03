@@ -61,10 +61,10 @@ def get_environment_id(search_id, name):
 
 
 @arg("name", help="Unique name of the BuildEnvironment")
+@arg("image_id", help="ID of the Docker image for this BuildEnvironment.")
 @arg("system_image_type", help="One of DOCKER_IMAGE, VIRTUAL_MACHINE_RAW, VIRTUAL_MACHINE_QCOW2, LOCAL_WORKSPACE")
 @arg("-d", "--description", help="Description of the BuildEnvironment.")
 @arg("-a", "--attributes", help="Attributes of the BuildEnvironment. Syntax: Key=Value", type=utils.valid_attribute)
-@arg("-iid", "--image-id", help="ID of the Docker image for this BuildEnvironment.")
 @arg("-iru", "--image-repository-url", help="URL for the Docker repository in which the image resides.")
 def create_environment(**kwargs):
     """
