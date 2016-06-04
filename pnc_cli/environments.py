@@ -64,7 +64,7 @@ def get_environment_id(search_id, name):
 def _valid_attribute(attributeInput):
     if(attributeInput.count("=") == 0):
         raise argparse.ArgumentTypeError("Invalid attribute syntax. Correct syntax: key=value")
-    attribute_key, attribute_value = attributeInput.split('=',1)
+    attribute_key, attribute_value = attributeInput.split('=')
     return {attribute_key:attribute_value}
 
 
