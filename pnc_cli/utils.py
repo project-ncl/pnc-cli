@@ -130,7 +130,7 @@ def unix_time_millis(dt):
     return millis
 
 def valid_attribute(attributeInput):
-    if(attributeInput.count("=") < 2):
+    if(attributeInput.count("=") == 0):
         raise argparse.ArgumentTypeError("Invalid attribute syntax. Correct syntax: key=value")
     attribute_key, attribute_value = attributeInput.split('=')
     return {attribute_key:attribute_value}
