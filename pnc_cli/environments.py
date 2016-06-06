@@ -5,7 +5,8 @@ from six import iteritems
 from pnc_cli.swagger_client import BuildEnvironmentRest
 from pnc_cli.swagger_client import EnvironmentsApi
 from pnc_cli import utils
-
+import string
+import argparse
 
 envs_api = EnvironmentsApi(utils.get_api_client())
 
@@ -60,11 +61,18 @@ def get_environment_id(search_id, name):
     return found_id
 
 
+def _valid_attribute(attributeInput):
+    if(attributeInput.count("=") == 0):
+        raise argparse.ArgumentTypeError("Invalid attribute syntax. Correct syntax: key=value")
+    attribute_key, attribute_value = attributeInput.split('=',1)
+    return {attribute_key:attribute_value}
+
+
 @arg("name", help="Unique name of the BuildEnvironment")
 @arg("image_id", help="ID of the Docker image for this BuildEnvironment.")
 @arg("system_image_type", help="One of DOCKER_IMAGE, VIRTUAL_MACHINE_RAW, VIRTUAL_MACHINE_QCOW2, LOCAL_WORKSPACE")
 @arg("-d", "--description", help="Description of the BuildEnvironment.")
-@arg("-a", "--attributes", help="Attributes of the BuildEnvironment. Syntax: Key=Value", type=utils.valid_attribute)
+@arg("-a", "--attributes", help="Attributes of the BuildEnvironment. Syntax: Key=Value", type=_valid_attribute)
 @arg("-iru", "--image-repository-url", help="URL for the Docker repository in which the image resides.")
 def create_environment(**kwargs):
     """
@@ -79,7 +87,7 @@ def create_environment(**kwargs):
 @arg("id", help="ID of the environment to update.")
 @arg("-bt", "--system-image-type", help="Updated system image type for the new BuildEnvironment.")
 @arg("-d", "--description", help="Updated description of the BuildEnvironment.")
-@arg("-a", "--attributes", help="Attributes of the BuildEnvironment. Syntax: Key=Value", type=utils.valid_attribute)
+@arg("-a", "--attributes", help="Attributes of the BuildEnvironment. Syntax: Key=Value", type=_valid_attribute)
 @arg("-iru", "--image-repository-url", help="Updated URL for the Docker repository in which the image resides.")
 @arg("-n", "--name", help="Updated unique name of the BuildEnvironment")
 def update_environment(id, **kwargs):
