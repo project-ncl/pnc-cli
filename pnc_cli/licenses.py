@@ -42,7 +42,7 @@ def _license_exists(license_id):
 
 
 def _get_license_id_by_name(name):
-    licenses = licenses_api.get_all(q='name=='+name).content
+    licenses = utils.checked_api_call(licenses_api, 'get_all', q='fullName=='+name).content
     if licenses:
         License = licenses[0]
         return License.id

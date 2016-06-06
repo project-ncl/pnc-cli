@@ -71,7 +71,7 @@ def test_get_build_configuration_id_by_name(mock):
 
 
 @patch('pnc_cli.buildconfigurations.configs_api.get_all',
-       return_value=None)
+       return_value=MagicMock(content=[]))
 def test_get_build_configuration_id_by_name_notexist(mock):
     result = buildconfigurations.get_build_configuration_id_by_name('doesntexist')
     mock.assert_called_once_with(q='name==doesntexist')

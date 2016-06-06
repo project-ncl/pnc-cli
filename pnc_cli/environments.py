@@ -33,11 +33,11 @@ def _get_environment_id_by_name(name):
     """
     Return the ID of a BuildEnvironment given the name
     """
-    response = utils.checked_api_call(envs_api, 'get_all', q='name==' + name)
+    response = utils.checked_api_call(envs_api, 'get_all', q='name==' + name).content
     if not response:
         return None
     else:
-        return response.content[0].id
+        return response[0].id
 
 def get_environment_id(search_id, name):
     """
