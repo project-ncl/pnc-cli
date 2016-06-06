@@ -53,7 +53,7 @@ def test_get_project_id_by_name(mock):
     assert result == 1
 
 
-@patch('pnc_cli.projects.projects_api.get_all', return_value=None)
+@patch('pnc_cli.projects.projects_api.get_all', return_value=MagicMock(content=[]))
 def test_get_project_id_by_name_notexist(mock):
     result = projects._get_project_id_by_name('doesntexist')
     mock.assert_called_once_with(q='name==doesntexist')
