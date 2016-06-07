@@ -68,8 +68,22 @@ def _valid_attribute(attributeInput):
     return {attribute_key:attribute_value}
 
 
-@arg("name", help="Unique name of the BuildEnvironment")
-@arg("image_id", help="ID of the Docker image for this BuildEnvironment.")
+def _unique_iid(iidInput):
+    response = utils.checked_api_call(envs_api, 'get_all', q='systemImageId=='+iidInput)
+    if response.content:
+        raise argparse.ArgumentTypeError("imageId is already in use")
+    return iidInput
+
+
+def _unique_name(nameInput):
+    response = utils.checked_api_call(envs_api, 'get_all', q='name=='+nameInput)
+    if response.content:
+        raise argparse.ArgumentTypeError("name is already in use")
+    return nameInput
+
+
+@arg("name", help="Unique name of the BuildEnvironment", type=_unique_name)
+@arg("image_id", help="ID of the Docker image for this BuildEnvironment.", type=_unique_iid)
 @arg("system_image_type", help="One of DOCKER_IMAGE, VIRTUAL_MACHINE_RAW, VIRTUAL_MACHINE_QCOW2, LOCAL_WORKSPACE")
 @arg("-d", "--description", help="Description of the BuildEnvironment.")
 @arg("-a", "--attributes", help="Attributes of the BuildEnvironment. Syntax: Key=Value", type=_valid_attribute)
@@ -89,7 +103,7 @@ def create_environment(**kwargs):
 @arg("-d", "--description", help="Updated description of the BuildEnvironment.")
 @arg("-a", "--attributes", help="Attributes of the BuildEnvironment. Syntax: Key=Value", type=_valid_attribute)
 @arg("-iru", "--image-repository-url", help="Updated URL for the Docker repository in which the image resides.")
-@arg("-n", "--name", help="Updated unique name of the BuildEnvironment")
+@arg("-n", "--name", help="Updated unique name of the BuildEnvironment", type=_unique_name)
 def update_environment(id, **kwargs):
     """
     Update a BuildEnvironment with new information
