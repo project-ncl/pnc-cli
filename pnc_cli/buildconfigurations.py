@@ -1,6 +1,9 @@
+import argparse
+
 from argh import arg
 
 import logging
+import re
 from pnc_cli import utils
 
 from pnc_cli import swagger_client
@@ -15,7 +18,7 @@ from pnc_cli import environments
 projects_api = ProjectsApi(utils.get_api_client())
 envs_api = EnvironmentsApi(utils.get_api_client())
 configs_api = BuildconfigurationsApi(utils.get_api_client())
-
+bc_name_regex = "^[a-zA-Z0-9_.][a-zA-Z0-9_.-]*(?!\.git)+$"
 
 def create_build_conf_object(**kwargs):
     created_build_configuration = swagger_client.BuildConfigurationRest()
@@ -70,40 +73,76 @@ def get_config_id(search_id, name):
         return
     return config_id
 
+def _valid_name(name_input):
+    pattern = re.compile(bc_name_regex)
+    if not pattern.match(name_input):
+        raise argparse.ArgumentTypeError("name contains invalid characters")
+    return name_input
 
-@arg("-i", "--id", help="ID of the BuildConfiguration to trigger.")
-@arg("-n", "--name", help="Name of the BuildConfiguration to trigger.")
+def _unique_name(name_input):
+    response = utils.checked_api_call(configs_api, 'get_all', q='name=='+name_input)
+    if response.content:
+        raise argparse.ArgumentTypeError("name is already in use")
+    return name_input
+
+def _valid_unique_name(name_input):
+    _unique_name(_valid_name(name_input))
+    return name_input
+
+
+def _valid_existing_name(name_input):
+    _valid_name(name_input)
+    if not get_build_configuration_id_by_name(name_input):
+        raise argparse.ArgumentTypeError("no BuildConfiguration with the name {} exists.".format(name_input))
+    return name_input
+
+def _valid_id(id_input):
+    if not id_input.isdigit():
+        raise argparse.ArgumentTypeError("an ID must be a positive integer")
+    return id_input
+
+def _existing_id(id_input):
+    _valid_id(id_input)
+    if not config_id_exists(id_input):
+        raise argparse.ArgumentTypeError("no BuildConfiguration with ID {} exists.".format(id_input))
+    return id_input
+
+
+@arg("-i", "--id", help="ID of the BuildConfiguration to trigger.", type=_existing_id)
+@arg("-n", "--name", help="Name of the BuildConfiguration to trigger.", type=_valid_existing_name)
 def build(id=None, name=None):
     """
     Trigger a BuildConfiguration by name or ID
     """
-    trigger_id = get_config_id(id, name)
-    if not trigger_id:
-        return
+    trigger_id = id
+    if name:
+        trigger_id = get_build_configuration_id_by_name(name)
+
     response = utils.checked_api_call(configs_api, 'trigger', id=trigger_id)
     if response:
         return response.content
 
 
-@arg("-i", "--id", help="ID of the BuildConfiguration to retrieve.")
-@arg("-n", "--name", help="Name of the BuildConfiguration to retrieve.")
+@arg("-i", "--id", help="ID of the BuildConfiguration to retrieve.", type=_existing_id)
+@arg("-n", "--name", help="Name of the BuildConfiguration to retrieve.", type=_valid_existing_name)
 def get_build_configuration(id=None, name=None):
     """
     Retrieve a specific BuildConfiguration
     """
-    found_id = get_config_id(id, name)
-    if not found_id:
-        return
+    found_id = id
+    if name:
+        found_id = get_build_configuration_id_by_name(name)
+
     response = utils.checked_api_call(configs_api, 'get_specific', id=found_id)
     if response:
         return response.content
 
 
-@arg("-i", "--id", help="ID of the BuildConfiguration to update.")
-@arg("-n", "--name", help="Name of the BuildConfiguration to update.")
+@arg("-i", "--id", help="ID of the BuildConfiguration to update.", type=_existing_id)
+@arg("-n", "--name", help="Name of the BuildConfiguration to update.", type=_valid_unique_name)
 # allow specifying project by name?
-@arg("-pid", "--project", help="ID of the Project to associate the BuildConfiguration with.")
-@arg("-e", "--environment", help="ID of the Environment for the new BuildConfiguration.")
+@arg("-pid", "--project", help="ID of the Project to associate the BuildConfiguration with.", type=int)
+@arg("-e", "--environment", help="ID of the Environment for the new BuildConfiguration.", type=int)
 @arg("-d", "--description", help="Description of the new build configuration.")
 @arg("-surl", "--scm-url", help="URL to the sources of the BuildConfiguration.")
 @arg("-srev", "--scm-revision", help="Revision of the sources in scm-url for this BuildConfiguration.")
@@ -147,8 +186,8 @@ def update_build_configuration(id=None, name=None, **kwargs):
         return response.content
 
 
-@arg("-i", "--id", help="ID of the BuildConfiguration to delete.")
-@arg("-n", "--name", help="Name of the BuildConfiguration to delete.")
+@arg("-i", "--id", help="ID of the BuildConfiguration to delete.", type=int)
+@arg("-n", "--name", help="Name of the BuildConfiguration to delete.", type=_valid_name)
 def delete_build_configuration(id=None, name=None):
     """
     Delete an existing BuildConfiguration
@@ -178,7 +217,7 @@ def delete_build_configuration(id=None, name=None):
         logging.warn("No action taken.")
 
 
-@arg("name", help="Name for the new BuildConfiguration.")
+@arg("name", help="Name for the new BuildConfiguration.", type=_valid_name)
 # allow specifying project by name?
 @arg("project", help="ID of the Project to associate the BuildConfiguration with.")
 @arg("environment", help="ID of the Environment for the new BuildConfiguration.")
@@ -212,9 +251,9 @@ def create_build_configuration(**kwargs):
         return response.content
 
 
-@arg("-i", "--id", help="ID of the Product to list BuildConfigurations for.")
-@arg("-n", "--name", help="Name of the Product to list BuildConfigurations for.")
-@arg("-p", "--page-size", help="Limit the amount of build records returned")
+@arg("-i", "--id", help="ID of the Product to list BuildConfigurations for.", type=int)
+@arg("-n", "--name", help="Name of the Product to list BuildConfigurations for.", type=_valid_name)
+@arg("-p", "--page-size", help="Limit the amount of build records returned", type=int)
 @arg("-s", "--sort", help="Sorting RSQL")
 @arg("-q", help="RSQL query")
 def list_build_configurations_for_product(id=None, name=None, page_size=200, sort="", q=""):
@@ -231,9 +270,9 @@ def list_build_configurations_for_product(id=None, name=None, page_size=200, sor
         return response.content
 
 
-@arg("-i", "--id", help="ID of the Project to list BuildConfigurations for.")
-@arg("-n", "--name", help="Name of the Project to list BuildConfigurations for.")
-@arg("-p", "--page-size", help="Limit the amount of build records returned")
+@arg("-i", "--id", help="ID of the Project to list BuildConfigurations for.", type=int)
+@arg("-n", "--name", help="Name of the Project to list BuildConfigurations for.", type=_valid_name)
+@arg("-p", "--page-size", help="Limit the amount of build records returned", type=int)
 @arg("-s", "--sort", help="Sorting RSQL")
 @arg("-q", help="RSQL query")
 def list_build_configurations_for_project(id=None, name=None, page_size=200, sort="", q=""):
@@ -251,8 +290,8 @@ def list_build_configurations_for_project(id=None, name=None, page_size=200, sor
 
 
 # TODO: allow specifying product name / version 'version'?
-@arg("product_id", help="ID of the Product which contains the desired ProductVersion.")
-@arg("version_id", help="ID of the ProductVersion to list BuildConfigurations for.")
+@arg("product_id", help="ID of the Product which contains the desired ProductVersion.", type=int)
+@arg("version_id", help="ID of the ProductVersion to list BuildConfigurations for.", type=int)
 @arg("-p", "--page-size", help="Limit the amount of build records returned")
 @arg("-s", "--sort", help="Sorting RSQL")
 @arg("-q", help="RSQL query")
@@ -274,8 +313,8 @@ def list_build_configurations_for_product_version(product_id, version_id, page_s
         return response.content
 
 
-@arg("-i", "--id", help="ID of the BuildConfiguration to list dependencies for.")
-@arg("-n", "--name", help="Name of the BuildConfiguration to list dependencies for.")
+@arg("-i", "--id", help="ID of the BuildConfiguration to list dependencies for.", type=int)
+@arg("-n", "--name", help="Name of the BuildConfiguration to list dependencies for.", type=_valid_name)
 @arg("-p", "--page-size", help="Limit the amount of build records returned")
 @arg("-s", "--sort", help="Sorting RSQL")
 @arg("-q", help="RSQL query")
@@ -289,10 +328,10 @@ def list_dependencies(id=None, name=None, page_size=200, sort="", q=""):
         return response.content
 
 
-@arg("-i", "--id", help="ID of the BuildConfiguration to add a dependency to.")
-@arg("-n", "--name", help="Name of the BuildConfiguration to add a dependency to.")
-@arg("-di", "--dependency-id", help="ID of an existing BuildConfiguration to add as a dependency.")
-@arg("-dn", "--dependency-name", help="Name of an existing BuildConfiguration to add as a dependency.")
+@arg("-i", "--id", help="ID of the BuildConfiguration to add a dependency to.", type=int)
+@arg("-n", "--name", help="Name of the BuildConfiguration to add a dependency to.", type=_valid_name)
+@arg("-di", "--dependency-id", help="ID of an existing BuildConfiguration to add as a dependency.", type=int)
+@arg("-dn", "--dependency-name", help="Name of an existing BuildConfiguration to add as a dependency.", type=_valid_name)
 def add_dependency(id=None, name=None, dependency_id=None, dependency_name=None):
     """
     Add an existing BuildConfiguration as a dependency to another BuildConfiguration.
@@ -317,10 +356,10 @@ def add_dependency(id=None, name=None, dependency_id=None, dependency_name=None)
         return response.content
 
 
-@arg("-i", "--id", help="ID of the BuildConfiguration to remove a dependency from.")
-@arg("-n", "--name", help="Name of the BuildConfiguration to remove a dependency from.")
-@arg("-di", "--dependency-id", help="ID of the dependency BuildConfiguration to remove.")
-@arg("-dn", "--dependency-name", help="Name of the dependency BuildConfiguration to remove.")
+@arg("-i", "--id", help="ID of the BuildConfiguration to remove a dependency from.", type=int)
+@arg("-n", "--name", help="Name of the BuildConfiguration to remove a dependency from.", type=_valid_name)
+@arg("-di", "--dependency-id", help="ID of the dependency BuildConfiguration to remove.", type=int)
+@arg("-dn", "--dependency-name", help="Name of the dependency BuildConfiguration to remove.", type=_valid_name)
 def remove_dependency(id=None, name=None, dependency_id=None, dependency_name=None):
     """
     Remove a BuildConfiguration from the dependency list of another BuildConfiguration
@@ -345,9 +384,9 @@ def remove_dependency(id=None, name=None, dependency_id=None, dependency_name=No
         return response.content
 
 
-@arg("-i", "--id", help="ID of the BuildConfiguration to list ProductVersions for.")
-@arg("-n", "--name", help="Name of the BuildConfiguration to list ProductVersions for.")
-@arg("-p", "--page-size", help="Limit the amount of build records returned")
+@arg("-i", "--id", help="ID of the BuildConfiguration to list ProductVersions for.", type=int)
+@arg("-n", "--name", help="Name of the BuildConfiguration to list ProductVersions for.", type=_valid_name)
+@arg("-p", "--page-size", help="Limit the amount of build records returned", type=int)
 @arg("-s", "--sort", help="Sorting RSQL")
 @arg("-q", help="RSQL query")
 def list_product_versions_for_build_configuration(id=None, name=None, page_size=200, sort="", q=""):
@@ -364,8 +403,8 @@ def list_product_versions_for_build_configuration(id=None, name=None, page_size=
         return response.content
 
 
-@arg("-i", "--id", help="ID of the BuildConfiguration to add a ProductVersion to.")
-@arg("-n", "--name", help="Name of the BuildConfiguration to add a ProductVersions to.")
+@arg("-i", "--id", help="ID of the BuildConfiguration to add a ProductVersion to.", type=int)
+@arg("-n", "--name", help="Name of the BuildConfiguration to add a ProductVersions to.", type=_valid_name)
 @arg('product_version_id', help="ID of the ProductVersion to add.")
 def add_product_version_to_build_configuration(id=None, name=None, product_version_id=None):
     """
@@ -385,8 +424,8 @@ def add_product_version_to_build_configuration(id=None, name=None, product_versi
         return response.content
 
 
-@arg("-i", "--id", help="ID of the BuildConfiguration to remove a ProductVersion from.")
-@arg("-n", "--name", help="Name of the BuildConfiguration to remove a ProductVersions from.")
+@arg("-i", "--id", help="ID of the BuildConfiguration to remove a ProductVersion from.", type=int)
+@arg("-n", "--name", help="Name of the BuildConfiguration to remove a ProductVersions from.", type=_valid_name)
 @arg('product_version_id', help="ID of the ProductVersion to remove.")
 def remove_product_version_from_build_configuration(id=None, name=None, product_version_id=None):
     """
@@ -406,9 +445,9 @@ def remove_product_version_from_build_configuration(id=None, name=None, product_
         return response.content
 
 
-@arg("-i", "--id", help="ID of the BuildConfiguration to list audited revisions for.")
-@arg("-n", "--name", help="Name of the BuildConfiguration to list audited revisions for.")
-@arg("-p", "--page-size", help="Limit the amount of build records returned")
+@arg("-i", "--id", help="ID of the BuildConfiguration to list audited revisions for.", type=int)
+@arg("-n", "--name", help="Name of the BuildConfiguration to list audited revisions for.", type=_valid_name)
+@arg("-p", "--page-size", help="Limit the amount of build records returned", type=int)
 @arg("-s", "--sort", help="Sorting RSQL")
 # TODO: PNC return BuildConfigurationAuditedPage instead of BuildConfigurationPage?
 def list_revisions_of_build_configuration(id=None, name=None, page_size=200, sort=""):
@@ -424,8 +463,8 @@ def list_revisions_of_build_configuration(id=None, name=None, page_size=200, sor
         return response.content
 
 
-@arg("-i", "--id", help="ID of the BuildConfiguration to retrieve a revision from.")
-@arg("-n", "--name", help="Name of the BuildConfiguration to retrieve a revision from. ")
+@arg("-i", "--id", help="ID of the BuildConfiguration to retrieve a revision from.", type=int)
+@arg("-n", "--name", help="Name of the BuildConfiguration to retrieve a revision from.", type=_valid_name)
 @arg("--revision_id", help="Number of the revision to retrieve.")
 def get_revision_of_build_configuration(id=None, name=None, revision_id=None):
     """
@@ -440,7 +479,7 @@ def get_revision_of_build_configuration(id=None, name=None, revision_id=None):
         return response.content
 
 
-@arg("-p", "--page-size", help="Limit the amount of build records returned")
+@arg("-p", "--page-size", help="Limit the amount of build records returned", type=int)
 @arg("-s", "--sort", help="Sorting RSQL")
 @arg("-q", help="RSQL query")
 def list_build_configurations(page_size=200, sort="", q=""):
