@@ -17,10 +17,7 @@ def _create_environment_object(**kwargs):
     created_environment = BuildEnvironmentRest()
     for key, value in iteritems(kwargs):
         if value:
-            if key == 'system_image_type':
-                setattr(created_environment, key, value.upper())
-            else:
-                setattr(created_environment, key, value)
+            setattr(created_environment, key, value)
     return created_environment
 
 def _environment_exists(id):
@@ -60,6 +57,13 @@ def get_environment_id(search_id, name):
         return
     return found_id
 
+def _valid_sys_type(sysTypeInput):
+    VALID_TYPES=["DOCKER_IMAGE", "VIRTUAL_MACHINE_RAW", "VIRTUAL_MACHINE_QCOW2", "LOCAL_WORKSPACE"]
+    sysCaps = sysTypeInput.upper()
+    if sysCaps not in VALID_TYPES:
+        raise argparse.ArgumentTypeError("Invalid system image type")
+    return sysCaps
+
 
 def _valid_attribute(attributeInput):
     if(attributeInput.count("=") == 0):
@@ -84,7 +88,7 @@ def _unique_name(nameInput):
 
 @arg("name", help="Unique name of the BuildEnvironment", type=_unique_name)
 @arg("image_id", help="ID of the Docker image for this BuildEnvironment.", type=_unique_iid)
-@arg("system_image_type", help="One of DOCKER_IMAGE, VIRTUAL_MACHINE_RAW, VIRTUAL_MACHINE_QCOW2, LOCAL_WORKSPACE")
+@arg("system_image_type", help="One of DOCKER_IMAGE, VIRTUAL_MACHINE_RAW, VIRTUAL_MACHINE_QCOW2, LOCAL_WORKSPACE",type=_valid_sys_type)
 @arg("-d", "--description", help="Description of the BuildEnvironment.")
 @arg("-a", "--attributes", help="Attributes of the BuildEnvironment. Syntax: Key=Value", type=_valid_attribute)
 @arg("-iru", "--image-repository-url", help="URL for the Docker repository in which the image resides.")
@@ -99,7 +103,7 @@ def create_environment(**kwargs):
 
 
 @arg("id", help="ID of the environment to update.")
-@arg("-bt", "--system-image-type", help="Updated system image type for the new BuildEnvironment.")
+@arg("-bt", "--system-image-type", help="Updated system image type for the new BuildEnvironment.", type=_valid_attribute)
 @arg("-d", "--description", help="Updated description of the BuildEnvironment.")
 @arg("-a", "--attributes", help="Attributes of the BuildEnvironment. Syntax: Key=Value", type=_valid_attribute)
 @arg("-iru", "--image-repository-url", help="Updated URL for the Docker repository in which the image resides.")
@@ -116,10 +120,7 @@ def update_environment(id, **kwargs):
 
     for key, value in iteritems(kwargs):
         if value:
-            if key == 'system_image_type':
-                setattr(to_update, key, value.upper())
-            else:
-                setattr(to_update, key, value)
+            setattr(to_update, key, value)
 
     response = utils.checked_api_call(
         envs_api, 'update', id=id, body=to_update)
