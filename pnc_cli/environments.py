@@ -20,42 +20,42 @@ def _create_environment_object(**kwargs):
             setattr(created_environment, key, value)
     return created_environment
 
-def _environment_exists(id):
-    response = utils.checked_api_call(envs_api, 'get_specific', id=str(id))
+def _environment_exists_by_id(id):
+    response = utils.checked_api_call(envs_api, 'get_specific', q='id==' + id)
     if not response:
-        return False
-    return True
+        raise argparse.ArgumentTypeError("No environment exists with id {}".format(id))
+    return id
 
+def _environment_exists_by_name(name):
+    response = utils.checked_api_call(envs_api, 'get_specific', q='name==' + name)
+    if not response:
+        raise argparse.ArgumentTypeError("No environment exists with id {}".format(name))
+    return name
 
-def _get_environment_id_by_name(name):
+def _get_environment_by_name(name):
     """
-    Return the ID of a BuildEnvironment given the name
+    Return the BuildEnvironment given the name
+    No checks are made for validity here, use the type= in @arg
     """
     response = utils.checked_api_call(envs_api, 'get_all', q='name==' + name)
-    if not response:
-        return None
-    else:
-        return response.content[0].id
+    return response.content[0]
 
-def get_environment_id(search_id, name):
+def _get_environment_by_id(id):
     """
-    Given either a name or id, checks for BuildEnvironment existence and returns the valid id, or prints a message otherwise
+    Return the BuildEnvironment given the id
+    No checks are made for validity here, use the type= in @arg
     """
-    if search_id:
-        found_env = utils.checked_api_call(envs_api, 'get_specific', id=str(search_id))
-        if not found_env:
-            logging.error("No environment with ID {} exists.".format(search_id))
-            return
-        found_id = search_id
-    elif name:
-        found_id = _get_environment_id_by_name(name)
-        if not found_id:
-            logging.error("No environment with name {} exists.".format(name))
-            return
-    else:
-        print("Either a BuildEnvironment name or ID is required.")
-        return
-    return found_id
+    response = utils.checked_api_call(envs_api, 'get_all', q='id==' + id)
+    return response.content[0]
+
+def _get_environment(id, name):
+    if name is None and id is None:
+        raise argparse.ArgumentTypeError("A name and/or an id are required")
+    if name is not None:
+        env = _get_environment_by_name(name)
+    if id is not None:
+        env = _get_environment_by_id(id)
+    return env
 
 def _valid_sys_type(sysTypeInput):
     VALID_TYPES=["DOCKER_IMAGE", "VIRTUAL_MACHINE_RAW", "VIRTUAL_MACHINE_QCOW2", "LOCAL_WORKSPACE"]
@@ -102,7 +102,7 @@ def create_environment(**kwargs):
         return response.content
 
 
-@arg("id", help="ID of the environment to update.")
+@arg("id", help="ID of the environment to update.", type=_environment_exists_by_id)
 @arg("-bt", "--system-image-type", help="Updated system image type for the new BuildEnvironment.", type=_valid_attribute)
 @arg("-d", "--description", help="Updated description of the BuildEnvironment.")
 @arg("-a", "--attributes", help="Attributes of the BuildEnvironment. Syntax: Key=Value", type=_valid_attribute)
@@ -112,10 +112,6 @@ def update_environment(id, **kwargs):
     """
     Update a BuildEnvironment with new information
     """
-    if not _environment_exists(id):
-        print("No environment with id {} exists.".format(id))
-        return
-
     to_update = envs_api.get_specific(id=id).content
 
     for key, value in iteritems(kwargs):
@@ -128,32 +124,26 @@ def update_environment(id, **kwargs):
         return response.content
 
 
-@arg("-i", "--id", help="ID of the environment to delete.")
-@arg("-n", "--name", help="Name of the environment to delete.")
+@arg("-i", "--id", help="ID of the environment to delete.", type=_environment_exists_by_id)
+@arg("-n", "--name", help="Name of the environment to delete.", type=_environment_exists_by_name)
 def delete_environment(id=None, name=None):
     """
     Delete an environment by name or ID
     """
-    found_id = get_environment_id(id, name)
-    if not found_id:
-        return
+    found_id = _get_environment(id, name).id
     response = utils.checked_api_call(envs_api, 'delete', id=found_id)
     return response
 
 
-@arg("-i", "--id", help="ID of the environment to retrieve.")
-@arg("-n", "--name", help="Name of the environment to retrieve.")
+@arg("-i", "--id", help="ID of the environment to retrieve.", type=_environment_exists_by_id)
+@arg("-n", "--name", help="Name of the environment to retrieve.", type=_environment_exists_by_name)
 def get_environment(id=None, name=None):
     """
     Get a specific Environment by name or ID
     """
-    search_id = get_environment_id(id, name)
-    if not search_id:
-        return
+    search_id = _get_environment(id, name).id
     response = utils.checked_api_call(envs_api, 'get_specific', id=search_id)
-    if response:
-        return response.content
-
+    return response.content
 
 @arg("-p", "--page-size", help="Limit the amount of product releases returned")
 @arg("-s", "--sort", help="Sorting RSQL")
