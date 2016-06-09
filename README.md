@@ -10,4 +10,11 @@ Usage:
 
 Currently outputs the raw JSON. More refined output is definitely in the works :) 
 
+#Tests
 
+Requirements:
+ * py.test (pip install pytest)
+ * mock (pip install mock)
+ * GitPython (pip install GitPython)
+
+Run any of the testing scripts to see results. The tested instance is configured by the local file ~/.config/pnc-cli/pnc-cli.conf 

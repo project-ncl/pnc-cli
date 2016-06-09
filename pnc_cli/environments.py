@@ -40,6 +40,7 @@ def _get_environment_by_name(name):
     response = utils.checked_api_call(envs_api, 'get_all', q='name==' + name)
     return response.content[0]
 
+
 def _get_environment_by_id(id):
     """
     Return the BuildEnvironment given the id

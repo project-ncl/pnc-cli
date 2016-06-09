@@ -44,8 +44,8 @@ def _get_project_id_by_name(search_name):
     :param search_name: name of the Project
     :return: id of the matching Project, or None if no match found
     """
-    response = projects_api.get_all(q='name==' + search_name)
-    if not response:
+    response = utils.checked_api_call(projects_api, 'get_all', q='name==' + search_name)
+    if not response.content:
         return None
     else:
         return response.content[0].id
