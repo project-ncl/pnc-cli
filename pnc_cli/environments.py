@@ -21,13 +21,13 @@ def _create_environment_object(**kwargs):
     return created_environment
 
 def _environment_exists_by_id(id):
-    response = utils.checked_api_call(envs_api, 'get_specific', q='id==' + id)
+    response = utils.checked_api_call(envs_api, 'get_all', q='id==' + id)
     if not response:
         raise argparse.ArgumentTypeError("No environment exists with id {}".format(id))
     return id
 
 def _environment_exists_by_name(name):
-    response = utils.checked_api_call(envs_api, 'get_specific', q='name==' + name)
+    response = utils.checked_api_call(envs_api, 'get_all', q='name==' + name)
     if not response:
         raise argparse.ArgumentTypeError("No environment exists with id {}".format(name))
     return name
