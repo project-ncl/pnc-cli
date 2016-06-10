@@ -8,6 +8,47 @@ from mock import MagicMock, patch, call
 from pnc_cli import buildconfigurationsets
 from pnc_cli.swagger_client import BuildConfigurationSetRest
 
+@patch('pnc_cli.buildconfigurationsets.get_build_config_set_id_by_name', return_value=None)
+def test_unique_set_name(mock):
+    result = buildconfigurationsets.unique_set_name("test")
+    assert result == "test"
+    mock.assert_called_once_with("test")
+
+@patch('pnc_cli.buildconfigurationsets.get_build_config_set_id_by_name', return_value=1)
+def test_unique_set_name_exist(mock):
+    with (pytest.raises(argparse.ArgumentTypeError)):
+        buildconfigurationsets.unique_set_name("test")
+    mock.assert_called_once_with("test")
+
+
+@patch('pnc_cli.buildconfigurationsets.get_build_config_set_id_by_name', return_value=1)
+def test_existing_set_name(mock):
+    result = buildconfigurationsets.existing_set_name("test")
+    mock.assert_called_once_with("test")
+    assert result == "test"
+
+
+@patch('pnc_cli.buildconfigurationsets.get_build_config_set_id_by_name', return_value=None)
+def test_existing_set_name_notexist(mock):
+    with (pytest.raises(argparse.ArgumentTypeError)):
+        buildconfigurationsets.existing_set_name("test")
+    mock.assert_called_once_with("test")
+
+
+@patch('pnc_cli.buildconfigurationsets._set_exists', return_value=True)
+def test_existing_set_id(mock):
+    result = buildconfigurationsets.existing_set_id('1')
+    mock.assert_called_once_with('1')
+    assert result == '1'
+
+
+@patch('pnc_cli.buildconfigurationsets._set_exists', return_value=False)
+def test_existing_set_id_notexist(mock):
+    with (pytest.raises(argparse.ArgumentTypeError)):
+        buildconfigurationsets.existing_set_id('1')
+    mock.assert_called_once_with('1')
+
+
 
 def test_create_build_config_set_object(**kwargs):
     compare = BuildConfigurationSetRest()
