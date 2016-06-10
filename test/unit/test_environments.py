@@ -10,7 +10,7 @@ def test_create_environment_object():
     compare = BuildEnvironmentRest()
     compare.build_type = 'JAVA'
     compare.name = 'test-environment'
-    result = environments._create_environment_object(name='test-environment', build_type='java')
+    result = environments.create_environment_object(name='test-environment', build_type='java')
     assert result.to_dict() == compare.to_dict()
 
 

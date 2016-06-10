@@ -51,8 +51,8 @@ def test_update_invalid_param():
 
 def test_update(new_environment):
     randname = testutils.gen_random_name()
-    updated_env = environments._create_environment_object(name=randname, system_image_type='VIRTUAL_MACHINE_RAW', description='DOCKER',
-                                                          image_id=randname)
+    updated_env = environments.create_environment_object(name=randname, system_image_type='VIRTUAL_MACHINE_RAW', description='DOCKER',
+                                                         image_id=randname)
     envs_api.update(id=new_environment.id, body=updated_env)
     retrieved_env = envs_api.get_specific(new_environment.id).content
     assert (retrieved_env.description == 'DOCKER')
