@@ -17,7 +17,7 @@ __author__ = 'thauser'
 def existing_product_version(id_input):
     utils.valid_id(id_input)
     if not version_exists(id_input):
-        raise argparse.ArgumentTypeError("no ProductVersion with ID {} exists.")
+        raise argparse.ArgumentTypeError("no ProductVersion with ID {} exists.".format(id_input))
     return id_input
 
 def create_product_version_object(**kwargs):
