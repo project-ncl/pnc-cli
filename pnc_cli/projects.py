@@ -1,3 +1,4 @@
+import argparse
 import logging
 from six import iteritems
 from argh import arg
@@ -14,6 +15,14 @@ def _create_project_object(**kwargs):
     for key, value in iteritems(kwargs):
         setattr(created_project, key, value)
     return created_project
+
+
+def existing_project_id(id_input):
+    utils.valid_id(id_input)
+    if not _project_exists(id_input):
+        raise argparse.ArgumentTypeError("no Project with ID {} exists".format(id_input))
+    return id_input
+
 
 
 def get_project_id(proj_id, name):
