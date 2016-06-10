@@ -68,7 +68,7 @@ def get_environment_name_id(id, name):
     return env
 
 
-def _valid_sys_type(sysTypeInput):
+def valid_sys_type(sysTypeInput):
     VALID_TYPES=["DOCKER_IMAGE", "VIRTUAL_MACHINE_RAW", "VIRTUAL_MACHINE_QCOW2", "LOCAL_WORKSPACE"]
     sysCaps = sysTypeInput.upper()
     if sysCaps not in VALID_TYPES:
@@ -99,7 +99,7 @@ def unique_name(nameInput):
 
 @arg("name", help="Unique name of the BuildEnvironment", type=unique_name)
 @arg("image_id", help="ID of the Docker image for this BuildEnvironment.", type=unique_iid)
-@arg("system_image_type", help="One of DOCKER_IMAGE, VIRTUAL_MACHINE_RAW, VIRTUAL_MACHINE_QCOW2, LOCAL_WORKSPACE",type=_valid_sys_type)
+@arg("system_image_type", help="One of DOCKER_IMAGE, VIRTUAL_MACHINE_RAW, VIRTUAL_MACHINE_QCOW2, LOCAL_WORKSPACE", type=valid_sys_type)
 @arg("-d", "--description", help="Description of the BuildEnvironment.")
 @arg("-a", "--attributes", help="Attributes of the BuildEnvironment. Syntax: Key=Value", type=valid_attribute)
 @arg("-iru", "--image-repository-url", help="URL for the Docker repository in which the image resides.")
@@ -160,7 +160,7 @@ def get_environment(id=None, name=None):
 @arg("-p", "--page-size", help="Limit the amount of product releases returned")
 @arg("-s", "--sort", help="Sorting RSQL")
 @arg("-q", help="RSQL query")
-def  list_environments(page_size=200, sort="", q=""):
+def list_environments(page_size=200, sort="", q=""):
     """
     List all Environments
     """
