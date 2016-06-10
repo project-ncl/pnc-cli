@@ -20,17 +20,20 @@ def _create_environment_object(**kwargs):
             setattr(created_environment, key, value)
     return created_environment
 
+
 def _environment_exists_by_id(id):
     response = utils.checked_api_call(envs_api, 'get_all', q='id==' + id)
-    if not response:
+    if not response.content:
         raise argparse.ArgumentTypeError("No environment exists with id {}".format(id))
     return id
 
+
 def _environment_exists_by_name(name):
     response = utils.checked_api_call(envs_api, 'get_all', q='name==' + name)
-    if not response:
-        raise argparse.ArgumentTypeError("No environment exists with id {}".format(name))
+    if not response.content:
+        raise argparse.ArgumentTypeError("No environment exists with name {}".format(name))
     return name
+
 
 def _get_environment_by_name(name):
     """
@@ -49,6 +52,7 @@ def _get_environment_by_id(id):
     response = utils.checked_api_call(envs_api, 'get_all', q='id==' + id)
     return response.content[0]
 
+
 def _get_environment(id, name):
     if name is None and id is None:
         raise argparse.ArgumentTypeError("A name and/or an id are required")
@@ -57,6 +61,7 @@ def _get_environment(id, name):
     if id is not None:
         env = _get_environment_by_id(id)
     return env
+
 
 def _valid_sys_type(sysTypeInput):
     VALID_TYPES=["DOCKER_IMAGE", "VIRTUAL_MACHINE_RAW", "VIRTUAL_MACHINE_QCOW2", "LOCAL_WORKSPACE"]
@@ -67,7 +72,7 @@ def _valid_sys_type(sysTypeInput):
 
 
 def _valid_attribute(attributeInput):
-    if(attributeInput.count("=") == 0):
+    if attributeInput.count("=") == 0:
         raise argparse.ArgumentTypeError("Invalid attribute syntax. Correct syntax: key=value")
     attribute_key, attribute_value = attributeInput.split('=',1)
     return {attribute_key:attribute_value}
@@ -145,6 +150,7 @@ def get_environment(id=None, name=None):
     search_id = _get_environment(id, name).id
     response = utils.checked_api_call(envs_api, 'get_specific', id=search_id)
     return response.content
+
 
 @arg("-p", "--page-size", help="Limit the amount of product releases returned")
 @arg("-s", "--sort", help="Sorting RSQL")
