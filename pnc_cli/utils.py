@@ -1,3 +1,4 @@
+import argparse
 import json
 import logging
 import getpass
@@ -133,3 +134,9 @@ def contains_only_none_values(dictionary):
         if dictionary[key] is not None:
             return False
     return True
+
+
+def valid_id(id_input):
+    if not id_input.isdigit():
+        raise argparse.ArgumentTypeError("an ID must be a positive integer")
+    return id_input

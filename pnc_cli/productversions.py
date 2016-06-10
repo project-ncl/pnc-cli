@@ -1,3 +1,5 @@
+import argparse
+
 from argh import arg
 from six import iteritems
 
@@ -12,6 +14,11 @@ products_api = ProductsApi(utils.get_api_client())
 
 __author__ = 'thauser'
 
+def existing_product_version(id_input):
+    utils.valid_id(id_input)
+    if not version_exists(id_input):
+        raise argparse.ArgumentTypeError("no ProductVersion with ID {} exists.")
+    return id_input
 
 def create_product_version_object(**kwargs):
     created_version = swagger_client.ProductVersionRest()

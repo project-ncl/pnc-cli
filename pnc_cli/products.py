@@ -1,10 +1,13 @@
+import argparse
+import logging
+
 from argh import arg
 from six import iteritems
 
-import logging
+from pnc_cli import utils
 from pnc_cli.swagger_client import ProductRest
 from pnc_cli.swagger_client import ProductsApi
-from pnc_cli import utils
+from pnc_cli.utils import valid_id
 
 products_api = ProductsApi(utils.get_api_client())
 
@@ -16,6 +19,13 @@ def _create_product_object(**kwargs):
     for key, value in iteritems(kwargs):
         setattr(created_product, key, value)
     return created_product
+
+
+def existing_product_id(id_input):
+    utils.valid_id(id_input)
+    if not _product_exists(id_input):
+        raise argparse.ArgumentTypeError("no Product with ID {} exists".format(id_input))
+    return id_input
 
 
 def _product_exists(prod_id):
