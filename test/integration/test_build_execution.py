@@ -5,25 +5,20 @@ import re
 import shutil
 import tempfile
 import time
-
-import pytest
-
-from git import Repo
 from urlparse import urlparse
 
-from pnc_cli import buildconfigurationsets
-from pnc_cli import buildconfigurations
-from pnc_cli import buildrecords
-from pnc_cli import projects
-from pnc_cli import environments
+import pytest
+from git import Repo
+
 from pnc_cli import utils
-from test import testutils
 from pnc_cli.swagger_client.apis.buildconfigurations_api import BuildconfigurationsApi
-from pnc_cli.swagger_client.apis.runningbuildrecords_api import RunningbuildrecordsApi
 from pnc_cli.swagger_client.apis.buildconfigurationsets_api import BuildconfigurationsetsApi
 from pnc_cli.swagger_client.apis.buildrecords_api import BuildrecordsApi
+from pnc_cli.swagger_client.apis.runningbuildrecords_api import RunningbuildrecordsApi
 
 # setup logging to print timestamps
+from test.integration.conftest import new_config
+
 logging.basicConfig(format='[%(asctime)s %(levelname)s] %(message)s')
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
@@ -58,7 +53,6 @@ def get_records_api():
     records_api = BuildrecordsApi(utils.get_api_client())
 
 
-@pytest.mark.skip(reason="PNC doesn't complete builds in reasonable time")
 def test_run_single_build(new_config):
     """ Run a single build configuration defined by the 'new_config' method
     and verify the build output """
@@ -78,7 +72,6 @@ def test_run_single_build(new_config):
     build_record_checks(build_record)
 
 
-@pytest.mark.skip(reason="PNC doesn't complete builds in a reasonable time")
 def test_run_group_build(request, new_set, new_environment, new_project):
     assert (new_set is not None, 'Unable to create Build Configuration Group')
 
