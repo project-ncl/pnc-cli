@@ -11,12 +11,6 @@ envs_api = EnvironmentsApi(utils.get_api_client())
 __author__ = 'thauser'
 
 
-def existing_environment_id(id_input):
-    if not environment_exists_by_id(id_input):
-        raise argparse.ArgumentTypeError("no BuildEnvironment with ID {} exists".format(id_input))
-    return id_input
-
-
 def create_environment_object(**kwargs):
     created_environment = BuildEnvironmentRest()
     for key, value in iteritems(kwargs):
@@ -25,7 +19,7 @@ def create_environment_object(**kwargs):
     return created_environment
 
 
-def environment_exists_by_id(id):
+def existing_environment_id(id):
     id = utils.valid_id(id)
     response = utils.checked_api_call(envs_api, 'get_all', q='id==' + id)
     if not response.content:
@@ -33,7 +27,7 @@ def environment_exists_by_id(id):
     return id
 
 
-def environment_exists_by_name(name):
+def existing_environment_name(name):
     response = utils.checked_api_call(envs_api, 'get_all', q='name==' + name)
     if not response.content:
         raise argparse.ArgumentTypeError("No environment exists with name {}".format(name))
@@ -113,7 +107,7 @@ def create_environment(**kwargs):
         return response.content
 
 
-@arg("id", help="ID of the environment to update.", type=environment_exists_by_id)
+@arg("id", help="ID of the environment to update.", type=existing_environment_id)
 @arg("-bt", "--system-image-type", help="Updated system image type for the new BuildEnvironment.", type=valid_attribute)
 @arg("-d", "--description", help="Updated description of the BuildEnvironment.")
 @arg("-a", "--attributes", help="Attributes of the BuildEnvironment. Syntax: Key=Value", type=valid_attribute)
@@ -135,8 +129,8 @@ def update_environment(id, **kwargs):
         return response.content
 
 
-@arg("-i", "--id", help="ID of the environment to delete.", type=environment_exists_by_id)
-@arg("-n", "--name", help="Name of the environment to delete.", type=environment_exists_by_name)
+@arg("-i", "--id", help="ID of the environment to delete.", type=existing_environment_id)
+@arg("-n", "--name", help="Name of the environment to delete.", type=existing_environment_name)
 def delete_environment(id=None, name=None):
     """
     Delete an environment by name or ID
@@ -146,8 +140,8 @@ def delete_environment(id=None, name=None):
     return response
 
 
-@arg("-i", "--id", help="ID of the environment to retrieve.", type=environment_exists_by_id)
-@arg("-n", "--name", help="Name of the environment to retrieve.", type=environment_exists_by_name)
+@arg("-i", "--id", help="ID of the environment to retrieve.", type=existing_environment_id)
+@arg("-n", "--name", help="Name of the environment to retrieve.", type=existing_environment_name)
 def get_environment(id=None, name=None):
     """
     Get a specific Environment by name or ID
