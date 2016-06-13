@@ -1,7 +1,7 @@
 import argparse
 
 from argh import arg
-
+from argh.exceptions import CommandError
 import logging
 import re
 from pnc_cli import utils
@@ -73,7 +73,7 @@ def set_bc_id(id, name):
     elif name:
         return get_build_configuration_id_by_name(name)
     else:
-        raise argparse.ArgumentTypeError("Either a BuildConfiguration ID or name is required.")
+        raise CommandError("Either a BuildConfiguration ID or name is required.")
 
 
 def get_build_configuration_id_by_name(name):
