@@ -1,5 +1,5 @@
 from argh import arg
-
+from argh.exceptions import CommandError
 from six import iteritems
 from pnc_cli.swagger_client import BuildEnvironmentRest
 from pnc_cli.swagger_client import EnvironmentsApi
@@ -60,7 +60,7 @@ def get_environment_by_id(id):
 
 def get_environment_name_id(id, name):
     if name is None and id is None:
-        raise argparse.ArgumentTypeError("A name and/or an id are required")
+        raise CommandError("Id and/or name are required")
     if name is not None:
         env = get_environment_by_name(name)
     if id is not None:
