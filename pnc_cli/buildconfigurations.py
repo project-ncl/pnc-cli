@@ -29,9 +29,8 @@ def valid_bc_name(name_input):
 
 
 def unique_bc_name(name_input):
-    response = utils.checked_api_call(configs_api, 'get_all', q='name==' + name_input)
-    if response.content:
-        raise argparse.ArgumentTypeError("name is already in use")
+    if get_build_configuration_id_by_name(name_input):
+        raise argparse.ArgumentTypeError("BuildConfiguration name '{}' is already in use".format(name_input))
     return name_input
 
 
@@ -43,14 +42,14 @@ def valid_unique_bc_name(name_input):
 def valid_existing_bc_name(name_input):
     valid_bc_name(name_input)
     if not get_build_configuration_id_by_name(name_input):
-        raise argparse.ArgumentTypeError("no BuildConfiguration with the name {} exists.".format(name_input))
+        raise argparse.ArgumentTypeError("no BuildConfiguration with the name {} exists".format(name_input))
     return name_input
 
 
 def existing_bc_id(id_input):
     utils.valid_id(id_input)
     if not config_id_exists(id_input):
-        raise argparse.ArgumentTypeError("no BuildConfiguration with ID {} exists.".format(id_input))
+        raise argparse.ArgumentTypeError("no BuildConfiguration with ID {} exists".format(id_input))
     return id_input
 
 
@@ -73,6 +72,8 @@ def set_bc_id(id, name):
         return id
     elif name:
         return get_build_configuration_id_by_name(name)
+    else:
+        raise argparse.ArgumentTypeError("Either a BuildConfiguration ID or name is required.")
 
 
 def get_build_configuration_id_by_name(name):
