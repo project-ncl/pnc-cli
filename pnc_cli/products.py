@@ -109,9 +109,9 @@ def update_product(product_id, **kwargs):
 
     for key, value in iteritems(kwargs):
         if key is 'name':
-             if get_product_id_by_name(value):
-                 logging.error("Product with the name {0} already exists.".format(value))
-                 return
+            if get_product_id_by_name(value):
+                logging.error("Product with the name {0} already exists.".format(value))
+                return
         if value is not None:
             setattr(to_update, key, value)
 
