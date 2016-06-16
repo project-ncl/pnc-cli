@@ -18,7 +18,7 @@ def user_exists(user_id):
 
 
 def get_user_id_by_name(name):
-    users = users_api.get_all(q='username=='+name).content
+    users = users_api.get_all(q='username==' + name).content
     if users:
         user = users[0]
         return user.id
