@@ -1,24 +1,22 @@
-import argparse
-
 from argh import arg
 from argh.exceptions import CommandError
 
-import re
+import pnc_cli.common as common
 import pnc_cli.types as types
-
-
-from pnc_cli import utils
-
-
 from pnc_cli import swagger_client
-from pnc_cli.swagger_client.apis.buildconfigurations_api import BuildconfigurationsApi
-from pnc_cli import products
-from pnc_cli import productversions
-from pnc_cli import projects
-from pnc_cli import environments
+from pnc_cli import utils
+from pnc_cli.swagger_client import BuildconfigurationsApi
+from pnc_cli.swagger_client import EnvironmentsApi
+from pnc_cli.swagger_client import ProductsApi
+from pnc_cli.swagger_client import ProductversionsApi
+from pnc_cli.swagger_client import ProjectsApi
 
-configs_api = BuildconfigurationsApi(utils.get_api_client())
-bc_name_regex = "^[a-zA-Z0-9_.][a-zA-Z0-9_.-]*(?!\.git)+$"
+api_client = utils.get_api_client()
+projects_api = ProjectsApi(api_client)
+configs_api = BuildconfigurationsApi(api_client)
+envs_api = EnvironmentsApi(api_client)
+versions_api = ProductversionsApi(api_client)
+products_api = ProductsApi(api_client)
 
 
 def create_build_conf_object(**kwargs):
@@ -26,22 +24,6 @@ def create_build_conf_object(**kwargs):
     for key, value in kwargs.items():
         setattr(created_build_configuration, str(key), value)
     return created_build_configuration
-
-
-def set_bc_id(id, name):
-    """"
-    This functions returns either the given ID or find the ID given a name of a BuildConfiguration. The values passed
-    to this function should already be guaranteed to exist using the type=* argparse mechanism
-    :param id:
-    :param name:
-    :return:
-    """
-    if id:
-        return id
-    elif name:
-        return get_build_configuration_id_by_name(name)
-    else:
-        raise CommandError("Either a BuildConfiguration ID or name is required.")
 
 
 def get_build_configuration_id_by_name(name):
@@ -74,7 +56,7 @@ def build(id=None, name=None):
     """
     Trigger a BuildConfiguration by name or ID
     """
-    trigger_id = set_bc_id(id, name)
+    trigger_id = common.set_id(configs_api, id, name)
 
     response = utils.checked_api_call(configs_api, 'trigger', id=trigger_id)
     if response:
@@ -87,7 +69,7 @@ def get_build_configuration(id=None, name=None):
     """
     Retrieve a specific BuildConfiguration
     """
-    found_id = set_bc_id(id, name)
+    found_id = common.set_id(configs_api, id, name)
 
     response = utils.checked_api_call(configs_api, 'get_specific', id=found_id)
     if response:
@@ -97,9 +79,9 @@ def get_build_configuration(id=None, name=None):
 @arg("id", help="ID of the BuildConfiguration to update.", type=types.existing_bc_id)
 @arg("-n", "--name", help="Name of the BuildConfiguration to update.", type=types.valid_unique_bc_name)
 @arg("-pid", "--project", help="ID of the Project to associate the BuildConfiguration with.",
-     type=projects.existing_project_id)
+     type=types.existing_project_id)
 @arg("-e", "--environment", help="ID of the Environment for the new BuildConfiguration.",
-     type=environments.existing_environment_id)
+     type=types.existing_environment_id)
 @arg("-d", "--description", help="Description of the new build configuration.")
 @arg("-surl", "--scm-url", help="URL to the sources of the BuildConfiguration.")
 @arg("-srev", "--scm-revision", help="Revision of the sources in scm-url for this BuildConfiguration.")
@@ -118,13 +100,13 @@ def update_build_configuration(id, **kwargs):
 
     project_id = kwargs.get('project')
     if project_id:
-        project_rest = projects.get_project(id=project_id)
+        project_rest = common.get_entity(projects_api, project_id)
         update_project = {'project': project_rest}
         kwargs.update(update_project)
 
     env_id = kwargs.get('environment')
     if env_id:
-        env_rest = environments.get_environment(id=env_id)
+        env_rest = common.get_entity(envs_api, env_id)
         update_env = {'environment': env_rest}
         kwargs.update(update_env)
 
@@ -147,7 +129,7 @@ def delete_build_configuration(id=None, name=None):
     :return:
     """
 
-    to_delete_id = set_bc_id(id, name)
+    to_delete_id = common.set_id(configs_api, id, name)
     # ensure that this build configuration is not a dependency of any other build configuration.
     # list_build_configurations is an insufficient check because eventually there will be too many entities to check them all.
     # a better REST method for dependency checking is needed
@@ -165,9 +147,9 @@ def delete_build_configuration(id=None, name=None):
 
 @arg("name", help="Name for the new BuildConfiguration.", type=types.valid_bc_name)
 # allow specifying project by name?
-@arg("project", help="ID of the Project to associate the BuildConfiguration with.", type=projects.existing_project_id)
+@arg("project", help="ID of the Project to associate the BuildConfiguration with.", type=types.existing_project_id)
 @arg("environment", help="ID of the Environment for the new BuildConfiguration.",
-     type=environments.existing_environment_id)
+     type=types.existing_environment_id)
 @arg("scm_repo_url", help="URL to the sources of the BuildConfiguration.")
 @arg("scm_revision", help="Revision of the sources in scm-url for this BuildConfiguration.")
 @arg("build_script", help="Script to execute for the BuildConfiguration.")
@@ -182,10 +164,10 @@ def create_build_configuration(**kwargs):
     If a ProductVersion ID is provided, the BuildConfiguration will have access to artifacts which were produced for that version, but may not have been released yet.
     """
     project_id = kwargs.get('project')
-    project_rest = projects.get_project(id=project_id)
+    project_rest = common.get_entity(projects_api, project_id)
     kwargs['project'] = project_rest
     env_id = kwargs.get('environment')
-    env_rest = environments.get_environment(id=env_id)
+    env_rest = common.get_entity(envs_api, env_id)
     kwargs['environment'] = env_rest
 
     build_configuration = create_build_conf_object(**kwargs)
@@ -204,7 +186,7 @@ def list_build_configurations_for_product(id=None, name=None, page_size=200, sor
     """
     List all BuildConfigurations associated with the given Product.
     """
-    found_id = products.get_product_id(id, name)
+    found_id = common.set_id(products_api, id, name)
     if not found_id:
         return
 
@@ -223,7 +205,7 @@ def list_build_configurations_for_project(id=None, name=None, page_size=200, sor
     """
     List all BuildConfigurations associated with the given Project.
     """
-    found_id = projects.get_project_id(id, name)
+    found_id = common.set_id(projects_api, id, name)
     if not found_id:
         return
 
@@ -235,9 +217,9 @@ def list_build_configurations_for_project(id=None, name=None, page_size=200, sor
 
 # TODO: allow specifying product name / version 'version'?
 @arg("product_id", help="ID of the Product which contains the desired ProductVersion.",
-     type=products.existing_product_id)
+     type=types.existing_product_id)
 @arg("version_id", help="ID of the ProductVersion to list BuildConfigurations for.",
-     type=productversions.existing_product_version)
+     type=types.existing_product_version)
 @arg("-p", "--page-size", help="Limit the amount of build records returned")
 @arg("-s", "--sort", help="Sorting RSQL")
 @arg("-q", help="RSQL query")
@@ -245,12 +227,12 @@ def list_build_configurations_for_product_version(product_id, version_id, page_s
     """
     List all BuildConfigurations associated with the given ProductVersion
     """
-    found_product_id = products.get_product_id(product_id, None)
+    found_product_id = common.set_id(products_api, product_id, None)
     if not found_product_id:
         return
 
-    if not productversions.version_exists(version_id):
-        #logging.error("No ProductVersion with ID {} exists.".format(version_id))
+    if not common.id_exists(versions_api, version_id):
+        # logging.error("No ProductVersion with ID {} exists.".format(version_id))
         return
 
     response = utils.checked_api_call(configs_api, 'get_all_by_product_version_id', product_id=found_product_id,
@@ -265,7 +247,7 @@ def list_build_configurations_for_product_version(product_id, version_id, page_s
 @arg("-s", "--sort", help="Sorting RSQL")
 @arg("-q", help="RSQL query")
 def list_dependencies(id=None, name=None, page_size=200, sort="", q=""):
-    found_id = set_bc_id(id, name)
+    found_id = common.set_id(configs_api, id, name)
     response = utils.checked_api_call(configs_api, 'get_dependencies', id=found_id, page_size=page_size, sort=sort, q=q)
     if response:
         return response.content
@@ -281,8 +263,8 @@ def add_dependency(id=None, name=None, dependency_id=None, dependency_name=None)
     """
     Add an existing BuildConfiguration as a dependency to another BuildConfiguration.
     """
-    add_to = set_bc_id(id, name)
-    to_add = set_bc_id(dependency_id, dependency_name)
+    add_to = common.set_id(configs_api, id, name)
+    to_add = common.set_id(configs_api, dependency_id, dependency_name)
 
     dependency = configs_api.get_specific(id=to_add).content
     response = utils.checked_api_call(configs_api, 'add_dependency', id=add_to, body=dependency)
@@ -300,8 +282,8 @@ def remove_dependency(id=None, name=None, dependency_id=None, dependency_name=No
     Remove a BuildConfiguration from the dependency list of another BuildConfiguration
     """
 
-    found_id = set_bc_id(id, name)
-    found_dep_id = set_bc_id(dependency_id, dependency_name)
+    found_id = common.set_id(configs_api, id, name)
+    found_dep_id = common.set_id(configs_api, dependency_id, dependency_name)
 
     response = utils.checked_api_call(configs_api, 'remove_dependency', id=found_id, dependency_id=found_dep_id)
     if response:
@@ -317,7 +299,7 @@ def list_product_versions_for_build_configuration(id=None, name=None, page_size=
     """
     List all ProductVersions associated with a BuildConfiguration
     """
-    found_id = set_bc_id(id, name)
+    found_id = common.set_id(configs_api, id, name)
     response = utils.checked_api_call(configs_api, 'get_product_versions', id=found_id, page_size=page_size, sort=sort,
                                       q=q)
     if response:
@@ -326,14 +308,14 @@ def list_product_versions_for_build_configuration(id=None, name=None, page_size=
 
 @arg("-i", "--id", help="ID of the BuildConfiguration to add a ProductVersion to.", type=types.existing_bc_id)
 @arg("-n", "--name", help="Name of the BuildConfiguration to add a ProductVersions to.", type=types.existing_bc_name)
-@arg('product_version_id', help="ID of the ProductVersion to add.", type=productversions.existing_product_version)
+@arg('product_version_id', help="ID of the ProductVersion to add.", type=types.existing_product_version)
 def add_product_version_to_build_configuration(id=None, name=None, product_version_id=None):
     """
     Associate an existing ProductVersion with a BuildConfiguration
     """
-    found_id = set_bc_id(id, name)
+    found_id = common.set_id(configs_api, id, name)
 
-    to_add = productversions.get_product_version(id=product_version_id)
+    to_add = common.get_entity(versions_api, product_version_id)
     response = utils.checked_api_call(configs_api, 'add_product_version', id=found_id, body=to_add)
     if response:
         return response.content
@@ -342,12 +324,12 @@ def add_product_version_to_build_configuration(id=None, name=None, product_versi
 @arg("-i", "--id", help="ID of the BuildConfiguration to remove a ProductVersion from.", type=types.existing_bc_id)
 @arg("-n", "--name", help="Name of the BuildConfiguration to remove a ProductVersions from.",
      type=types.existing_bc_name)
-@arg('product_version_id', help="ID of the ProductVersion to remove.", type=productversions.existing_product_version)
+@arg('product_version_id', help="ID of the ProductVersion to remove.", type=types.existing_product_version)
 def remove_product_version_from_build_configuration(id=None, name=None, product_version_id=None):
     """
     Remove a ProductVersion from association with a BuildConfiguration
     """
-    found_id = set_bc_id(id, name)
+    found_id = common.set_id(configs_api, id, name)
     response = utils.checked_api_call(configs_api, 'remove_product_version', id=found_id,
                                       product_version_id=product_version_id)
     if response:
@@ -363,7 +345,7 @@ def list_revisions_of_build_configuration(id=None, name=None, page_size=200, sor
     """
     List audited revisions of a BuildConfiguration
     """
-    found_id = set_bc_id(id, name)
+    found_id = common.set_id(configs_api, id, name)
     response = utils.checked_api_call(configs_api, 'get_revisions', id=found_id, page_size=page_size, sort=sort)
     if response:
         return response.content
@@ -376,7 +358,7 @@ def get_revision_of_build_configuration(id=None, name=None, revision_id=None):
     """
     Get a specific audited revision of a BuildConfiguration
     """
-    found_id = set_bc_id(id, name)
+    found_id = common.set_id(configs_api, id, name)
     response = utils.checked_api_call(configs_api, 'get_revision', id=found_id, rev=revision_id)
     if response:
         return response.content

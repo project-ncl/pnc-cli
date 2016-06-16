@@ -2,14 +2,21 @@ import argparse
 import re
 
 import pnc_cli.utils as utils
+from pnc_cli.common import id_exists, get_id_by_name
 from pnc_cli.swagger_client import BuildconfigurationsApi
 from pnc_cli.swagger_client import BuildconfigurationsetsApi
+from pnc_cli.swagger_client import EnvironmentsApi
 from pnc_cli.swagger_client import ProductsApi
+from pnc_cli.swagger_client import ProductversionsApi
+from pnc_cli.swagger_client import ProjectsApi
 
 api_client = utils.get_api_client()
 configs_api = BuildconfigurationsApi(api_client)
 products_api = ProductsApi(api_client)
 sets_api = BuildconfigurationsetsApi(api_client)
+envs_api = EnvironmentsApi(api_client)
+projects_api = ProjectsApi(api_client)
+versions_api = ProductversionsApi(api_client)
 
 bc_name_regex = "^[a-zA-Z0-9_.][a-zA-Z0-9_.-]*(?!\.git)+$"
 
@@ -66,13 +73,13 @@ def unique_product_name(name_input):
     return name_input
 
 
-def unique_build_configuration_set_name(name_input):
+def unique_bc_set_name(name_input):
     if get_id_by_name(sets_api, name_input):
         raise argparse.ArgumentTypeError("BuildConfigurationSet name '{}' is already in use".format(name_input))
     return name_input
 
 
-def existing_set_name(name_input):
+def existing_bc_set_name(name_input):
     if not get_id_by_name(sets_api, name_input):
         raise argparse.ArgumentTypeError("no BuildConfigurationSet with the name {} exists".format(name_input))
     return name_input
@@ -85,24 +92,34 @@ def existing_set_id(id_input):
     return id_input
 
 
-# Utility functions. Possibly should go in "common.py"
-def id_exists(api, search_id):
-    """
-    Test if an ID exists within any arbitrary API
-    :param search_id: id to test for
-    :return: True if an entity with ID search_id exists, false otherwise
-    """
-    response = utils.checked_api_call(api, 'get_specific', id=search_id)
-    if not response:
-        return False
-    return True
+def existing_environment_id(id_input):
+    utils.valid_id(id_input)
+    if not id_exists(envs_api, id_input):
+        raise argparse.ArgumentTypeError("no BuildEnvironment exists with id {}".format(id_input))
+    return id_input
 
 
-def get_id_by_name(api, search_name):
-    """
-    calls 'get_all' on the given API with a search name and returns the ID of the entity retrieved, if any, None otherwise
-    """
-    entities = api.get_all(q='name==' + search_name).content
-    if entities:
-        return entities[0].id
-    return
+def existing_environment_name(name_input):
+    if not get_id_by_name(envs_api, name_input):
+        raise argparse.ArgumentTypeError("no BuildEnvironment exists with name {}".format(name_input))
+    return name_input
+
+
+def unique_environment_name(nameInput):
+    if get_id_by_name(envs_api, nameInput):
+        raise argparse.ArgumentTypeError("a BuildEnvironment with name {} already exists".format(nameInput))
+    return nameInput
+
+
+def existing_project_id(id_input):
+    utils.valid_id(id_input)
+    if not id_exists(projects_api, id_input):
+        raise argparse.ArgumentTypeError("no Project with ID {} exists".format(id_input))
+    return id_input
+
+
+def existing_product_version(id_input):
+    utils.valid_id(id_input)
+    if not id_exists(versions_api, id_input):
+        raise argparse.ArgumentTypeError("no ProductVersion with ID {} exists.".format(id_input))
+    return id_input

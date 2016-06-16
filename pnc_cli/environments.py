@@ -1,10 +1,13 @@
+import argparse
+
 from argh import arg
-from argh.exceptions import CommandError
 from six import iteritems
+
+import pnc_cli.common as common
+import pnc_cli.types as types
+import pnc_cli.utils as utils
 from pnc_cli.swagger_client import BuildEnvironmentRest
 from pnc_cli.swagger_client import EnvironmentsApi
-from pnc_cli import utils
-import argparse
 
 envs_api = EnvironmentsApi(utils.get_api_client())
 
@@ -19,51 +22,8 @@ def create_environment_object(**kwargs):
     return created_environment
 
 
-def existing_environment_id(id):
-    id = utils.valid_id(id)
-    response = utils.checked_api_call(envs_api, 'get_all', q='id==' + id)
-    if not response.content:
-        raise argparse.ArgumentTypeError("No environment exists with id {}".format(id))
-    return id
-
-
-def existing_environment_name(name):
-    response = utils.checked_api_call(envs_api, 'get_all', q='name==' + name)
-    if not response.content:
-        raise argparse.ArgumentTypeError("No environment exists with name {}".format(name))
-    return name
-
-
-def get_environment_by_name(name):
-    """
-    Return the BuildEnvironment given the name
-    No checks are made for validity here, use the type= in @arg
-    """
-    response = utils.checked_api_call(envs_api, 'get_all', q='name==' + name)
-    return response.content[0]
-
-
-def get_environment_by_id(id):
-    """
-    Return the BuildEnvironment given the id
-    No checks are made for validity here, use the type= in @arg
-    """
-    response = utils.checked_api_call(envs_api, 'get_all', q='id==' + id)
-    return response.content[0]
-
-
-def get_environment_name_id(id, name):
-    if name is None and id is None:
-        raise CommandError("Id and/or name are required")
-    if name is not None:
-        env = get_environment_by_name(name)
-    if id is not None:
-        env = get_environment_by_id(id)
-    return env
-
-
 def valid_sys_type(sysTypeInput):
-    VALID_TYPES=["DOCKER_IMAGE", "VIRTUAL_MACHINE_RAW", "VIRTUAL_MACHINE_QCOW2", "LOCAL_WORKSPACE"]
+    VALID_TYPES = ["DOCKER_IMAGE", "VIRTUAL_MACHINE_RAW", "VIRTUAL_MACHINE_QCOW2", "LOCAL_WORKSPACE"]
     sysCaps = sysTypeInput.upper()
     if sysCaps not in VALID_TYPES:
         raise argparse.ArgumentTypeError("Invalid system image type")
@@ -73,27 +33,21 @@ def valid_sys_type(sysTypeInput):
 def valid_attribute(attributeInput):
     if attributeInput.count("=") == 0:
         raise argparse.ArgumentTypeError("Invalid attribute syntax. Correct syntax: key=value")
-    attribute_key, attribute_value = attributeInput.split('=',1)
-    return {attribute_key:attribute_value}
+    attribute_key, attribute_value = attributeInput.split('=', 1)
+    return {attribute_key: attribute_value}
 
 
 def unique_iid(iidInput):
-    response = utils.checked_api_call(envs_api, 'get_all', q='systemImageId=='+iidInput)
+    response = utils.checked_api_call(envs_api, 'get_all', q='systemImageId==' + iidInput)
     if response.content:
         raise argparse.ArgumentTypeError("imageId is already in use")
     return iidInput
 
 
-def unique_name(nameInput):
-    response = utils.checked_api_call(envs_api, 'get_all', q='name=='+nameInput)
-    if response.content:
-        raise argparse.ArgumentTypeError("name is already in use")
-    return nameInput
-
-
-@arg("name", help="Unique name of the BuildEnvironment", type=unique_name)
+@arg("name", help="Unique name of the BuildEnvironment", type=types.unique_environment_name)
 @arg("image_id", help="ID of the Docker image for this BuildEnvironment.", type=unique_iid)
-@arg("system_image_type", help="One of DOCKER_IMAGE, VIRTUAL_MACHINE_RAW, VIRTUAL_MACHINE_QCOW2, LOCAL_WORKSPACE", type=valid_sys_type)
+@arg("system_image_type", help="One of DOCKER_IMAGE, VIRTUAL_MACHINE_RAW, VIRTUAL_MACHINE_QCOW2, LOCAL_WORKSPACE",
+     type=valid_sys_type)
 @arg("-d", "--description", help="Description of the BuildEnvironment.")
 @arg("-a", "--attributes", help="Attributes of the BuildEnvironment. Syntax: Key=Value", type=valid_attribute)
 @arg("-iru", "--image-repository-url", help="URL for the Docker repository in which the image resides.")
@@ -107,12 +61,12 @@ def create_environment(**kwargs):
         return response.content
 
 
-@arg("id", help="ID of the environment to update.", type=existing_environment_id)
-@arg("-bt", "--system-image-type", help="Updated system image type for the new BuildEnvironment.", type=valid_attribute)
+@arg("id", help="ID of the environment to update.", type=types.existing_environment_id)
+@arg("-s", "--system-image-type", help="Updated system image type for the new BuildEnvironment.")
 @arg("-d", "--description", help="Updated description of the BuildEnvironment.")
 @arg("-a", "--attributes", help="Attributes of the BuildEnvironment. Syntax: Key=Value", type=valid_attribute)
 @arg("-iru", "--image-repository-url", help="Updated URL for the Docker repository in which the image resides.")
-@arg("-n", "--name", help="Updated unique name of the BuildEnvironment", type=unique_name)
+@arg("-n", "--name", help="Updated unique name of the BuildEnvironment", type=types.unique_environment_name)
 def update_environment(id, **kwargs):
     """
     Update a BuildEnvironment with new information
@@ -129,29 +83,29 @@ def update_environment(id, **kwargs):
         return response.content
 
 
-@arg("-i", "--id", help="ID of the environment to delete.", type=existing_environment_id)
-@arg("-n", "--name", help="Name of the environment to delete.", type=existing_environment_name)
+@arg("-i", "--id", help="ID of the BuildEnvironment to delete.", type=types.existing_environment_id)
+@arg("-n", "--name", help="Name of the BuildEnvironment to delete.", type=types.existing_environment_name)
 def delete_environment(id=None, name=None):
     """
     Delete an environment by name or ID
     """
-    found_id = get_environment_name_id(id, name).id
+    found_id = common.set_id(envs_api, id, name)
     response = utils.checked_api_call(envs_api, 'delete', id=found_id)
     return response
 
 
-@arg("-i", "--id", help="ID of the environment to retrieve.", type=existing_environment_id)
-@arg("-n", "--name", help="Name of the environment to retrieve.", type=existing_environment_name)
+@arg("-i", "--id", help="ID of the BuildEnvironment to retrieve.", type=types.existing_environment_id)
+@arg("-n", "--name", help="Name of the BuildEnvironment to retrieve.", type=types.existing_environment_name)
 def get_environment(id=None, name=None):
     """
     Get a specific Environment by name or ID
     """
-    search_id = get_environment_name_id(id, name).id
-    response = utils.checked_api_call(envs_api, 'get_all', id=search_id)
+    search_id = common.set_id(envs_api, id, name)
+    response = utils.checked_api_call(envs_api, 'get_specific', id=search_id)
     return response.content
 
 
-@arg("-p", "--page-size", help="Limit the amount of product releases returned")
+@arg("-p", "--page-size", help="Limit the amount of BuildEnvironments returned", type=int)
 @arg("-s", "--sort", help="Sorting RSQL")
 @arg("-q", help="RSQL query")
 def list_environments(page_size=200, sort="", q=""):
