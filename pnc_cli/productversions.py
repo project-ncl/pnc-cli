@@ -31,6 +31,12 @@ def version_exists_for_product(id, version):
         return False
 
 
+def _valid_version(version):
+    if not utils.is_valid_version(version, '^\d+\.\d+'):
+        raise argparse.ArgumentTypeError("Version should consist of two numeric parts separated by a dot.")
+    return version
+
+
 @arg("-p", "--page-size", help="Limit the amount of build records returned")
 @arg("-s", "--sort", help="Sorting RSQL")
 @arg("-q", help="RSQL query")
@@ -43,16 +49,15 @@ def list_product_versions(page_size=200, sort="", q=""):
         return response.content
 
 
-# TODO: Version needs to be checked for gity.
-@arg("product_id", help="ID of product to add a version to")
-@arg("version", help="Version to add")
+@arg("product_id", help="ID of product to add a version to", type=types.existing_product_id)
+@arg("version", help="Version to add", type=_valid_version)
 @arg("-cm", "--current-product-milestone-id",
-     help="ID of the milestone this version should be on")
-@arg("-pr", "--product-releases", type=int, nargs="+",
+     help="ID of the milestone this version should be on", type=types.existing_product_milestone)
+@arg("-pr", "--product-releases", type=types.existing_product_release, nargs="+",
      help="List of product release IDs for this Product version")
-@arg("-pm", "--product-milestones", type=int, nargs="+",
+@arg("-pm", "--product-milestones", type=types.existing_product_milestone, nargs="+",
      help="List of milestone IDs to associate with the new version")
-@arg("-bc", "--build-configuration-set-ids", type=int, nargs="+",
+@arg("-bc", "--build-configuration-set-ids", type=types.existing_bc_set_id, nargs="+",
      help="List of build configuration set IDs to associate with the new version")
 def create_product_version(product_id, version, **kwargs):
     """
@@ -86,10 +91,9 @@ def get_product_version(id):
 
 
 # TODO: how should constraints be defined? Can a new productId be specified?
-# TODO: Version needs to be checked for validity.
 @arg("id", help="ID of the ProductVersion to update.", type=types.existing_product_version)
 @arg("-pid", "--product-id", help="ID of product to add a version to", type=types.existing_product_id)
-@arg("-v", "--version", help="Version to add")
+@arg("-v", "--version", help="Version to add", type=_valid_version)
 @arg("-cm", "--current-product-milestone-id", help="ID of the ProductMilestone this version should be on",
      type=types.existing_product_milestone)
 @arg("-pr", "--product-releases", type=types.existing_product_release, nargs="+",
@@ -102,6 +106,16 @@ def update_product_version(id, **kwargs):
     """
     Update the ProductVersion with ID id with new values.
     """
+    product_id = kwargs.get('product_id')
+    if product_id is None:
+        product_id = get_product_version(id).product_id
+
+    version = kwargs.get('version')
+    if version is not None:
+        if version_exists_for_product(product_id, version):
+            raise argparse.ArgumentTypeError("Version {} already exists for product: {}".format(
+                version, products_api.get_specific(id=product_id).content.name))
+
     to_update = versions_api.get_specific(id=id).content
     for key, value in kwargs.items():
         if value is not None:
