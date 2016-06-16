@@ -2,20 +2,19 @@
 # PYTHON_ARGCOMPLETE_OK
 import argh
 
+from pnc_cli import buildconfigsetrecords
+from pnc_cli import buildconfigurations
+from pnc_cli import buildconfigurationsets
+from pnc_cli import buildrecords
+from pnc_cli import environments
+from pnc_cli import licenses
 from pnc_cli import productmilestones
+from pnc_cli import productreleases
 from pnc_cli import products
 from pnc_cli import productversions
 from pnc_cli import projects
-from pnc_cli import buildconfigurations
-from pnc_cli import buildconfigurationsets
-from pnc_cli import buildconfigsetrecords
-from pnc_cli import buildrecords
-from pnc_cli import licenses
-from pnc_cli import environments
 from pnc_cli import runningbuilds
-from pnc_cli import productreleases
 from pnc_cli import users
-from pnc_cli import builds
 
 parser = argh.ArghParser()
 parser.add_commands([products.create_product,

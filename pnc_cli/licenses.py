@@ -1,5 +1,5 @@
-from pprint import pprint
 import logging
+
 from argh import arg
 from six import iteritems
 
