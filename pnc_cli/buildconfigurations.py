@@ -177,7 +177,7 @@ def create_build_configuration(**kwargs):
         return response.content
 
 
-@arg("-i", "--id", help="ID of the Product to list BuildConfigurations for.", type=int)
+@arg("-i", "--id", help="ID of the Product to list BuildConfigurations for.", type=types.existing_product_id)
 @arg("-n", "--name", help="Name of the Product to list BuildConfigurations for.", type=types.existing_bc_name)
 @arg("-p", "--page-size", help="Limit the amount of build records returned", type=int)
 @arg("-s", "--sort", help="Sorting RSQL")
@@ -187,9 +187,6 @@ def list_build_configurations_for_product(id=None, name=None, page_size=200, sor
     List all BuildConfigurations associated with the given Product.
     """
     found_id = common.set_id(products_api, id, name)
-    if not found_id:
-        return
-
     response = utils.checked_api_call(configs_api, 'get_all_by_product_id', product_id=found_id, page_size=page_size,
                                       sort=sort, q=q)
     if response:
