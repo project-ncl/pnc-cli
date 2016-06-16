@@ -56,7 +56,7 @@ def list_records_for_project(id=None, name=None, page_size=200, sort="", q=""):
         return response.content
 
 
-@arg("id", help="BuildRecord ID to retrieve.", type=types.existing_record_id)
+@arg("id", help="BuildRecord ID to retrieve.", type=types.existing_build_record)
 def get_build_record(id):
     """
     Get a specific BuildRecord by ID
@@ -66,7 +66,7 @@ def get_build_record(id):
         return response.content
 
 
-@arg("id", help="BuildRecord ID to retrieve artifacts from.", type=types.existing_record_id)
+@arg("id", help="BuildRecord ID to retrieve artifacts from.", type=types.existing_build_record)
 @arg("-p", "--page-size", help="Limit the amount of Artifacts returned", type=int)
 @arg("-s", "--sort", help="Sorting RSQL")
 @arg("-q", help="RSQL query")
@@ -79,7 +79,7 @@ def list_built_artifacts(id, page_size=200, sort="", q=""):
         return response.content
 
 
-@arg("id", help="BuildRecord ID to retrieve dependency Artifacts from.", type=types.existing_record_id)
+@arg("id", help="BuildRecord ID to retrieve dependency Artifacts from.", type=types.existing_build_record)
 @arg("-p", "--page-size", help="Limit the amount of Artifacts returned", type=int)
 @arg("-s", "--sort", help="Sorting RSQL")
 @arg("-q", help="RSQL query")
@@ -93,7 +93,7 @@ def list_dependency_artifacts(id, page_size=200, sort="", q=""):
         return response.content
 
 
-@arg("id", help="BuildRecord ID to retrieve audited BuildConfiguration from.", type=types.existing_record_id)
+@arg("id", help="BuildRecord ID to retrieve audited BuildConfiguration from.", type=types.existing_build_record)
 def get_audited_configuration_for_record(id):
     """
     Get the BuildConfigurationAudited for a given BuildRecord
@@ -103,7 +103,7 @@ def get_audited_configuration_for_record(id):
         return response.content
 
 
-@arg("id", help="BuildRecord ID to retrieve the log from.", type=types.existing_record_id)
+@arg("id", help="BuildRecord ID to retrieve the log from.", type=types.existing_build_record)
 def get_log_for_record(id):
     """
     Get the log for a given BuildRecord
@@ -113,7 +113,7 @@ def get_log_for_record(id):
         return response
 
 
-@arg("id", help="BuildRecord ID to retrieve Artifacts from.", type=types.existing_record_id)
+@arg("id", help="BuildRecord ID to retrieve Artifacts from.", type=types.existing_build_record)
 @arg("-p", "--page-size", help="Limit the amount of Artifacts returned", type=int)
 @arg("-s", "--sort", help="Sorting RSQL")
 @arg("-q", help="RSQL query")

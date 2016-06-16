@@ -3,8 +3,10 @@ import re
 
 import pnc_cli.utils as utils
 from pnc_cli.common import id_exists, get_id_by_name
+from pnc_cli.swagger_client import BuildrecordsApi
 from pnc_cli.swagger_client import BuildconfigurationsApi
 from pnc_cli.swagger_client import BuildconfigurationsetsApi
+from pnc_cli.swagger_client import BuildconfigsetrecordsApi
 from pnc_cli.swagger_client import EnvironmentsApi
 from pnc_cli.swagger_client import ProductsApi
 from pnc_cli.swagger_client import ProductversionsApi
@@ -17,6 +19,8 @@ sets_api = BuildconfigurationsetsApi(api_client)
 envs_api = EnvironmentsApi(api_client)
 projects_api = ProjectsApi(api_client)
 versions_api = ProductversionsApi(api_client)
+bcsr_api = BuildconfigsetrecordsApi(api_client)
+records_api = BuildrecordsApi(api_client)
 
 bc_name_regex = "^[a-zA-Z0-9_.][a-zA-Z0-9_.-]*(?!\.git)+$"
 
@@ -122,4 +126,18 @@ def existing_product_version(id_input):
     utils.valid_id(id_input)
     if not id_exists(versions_api, id_input):
         raise argparse.ArgumentTypeError("no ProductVersion with ID {} exists.".format(id_input))
+    return id_input
+
+
+def existing_bc_set_record(id_input):
+    utils.valid_id(id_input)
+    if not id_exists(bcsr_api, id_input):
+        raise argparse.ArgumentTypeError("no BuildConfigurationSetRecord with ID {} exists".format(id_input))
+    return id_input
+
+
+def existing_build_record(id_input):
+    utils.valid_id(id_input)
+    if not id_exists(records_api, id_input):
+        raise argparse.ArgumentTypeError("no BuildRecord with ID {} exists".format(id_input))
     return id_input
