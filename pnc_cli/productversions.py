@@ -31,12 +31,6 @@ def version_exists_for_product(id, version):
         return False
 
 
-def _valid_version(version):
-    if not utils.is_valid_version(version, '^\d+\.\d+'):
-        raise argparse.ArgumentTypeError("Version should consist of two numeric parts separated by a dot.")
-    return version
-
-
 @arg("-p", "--page-size", help="Limit the amount of build records returned")
 @arg("-s", "--sort", help="Sorting RSQL")
 @arg("-q", help="RSQL query")
@@ -50,7 +44,7 @@ def list_product_versions(page_size=200, sort="", q=""):
 
 
 @arg("product_id", help="ID of product to add a version to", type=types.existing_product_id)
-@arg("version", help="Version to add", type=_valid_version)
+@arg("version", help="Version to add", type=types.valid_version_two_digits)
 @arg("-cm", "--current-product-milestone-id",
      help="ID of the milestone this version should be on", type=types.existing_product_milestone)
 @arg("-pr", "--product-releases", type=types.existing_product_release, nargs="+",
@@ -93,7 +87,7 @@ def get_product_version(id):
 # TODO: how should constraints be defined? Can a new productId be specified?
 @arg("id", help="ID of the ProductVersion to update.", type=types.existing_product_version)
 @arg("-pid", "--product-id", help="ID of product to add a version to", type=types.existing_product_id)
-@arg("-v", "--version", help="Version to add", type=_valid_version)
+@arg("-v", "--version", help="Version to add", type=types.valid_version_two_digits)
 @arg("-cm", "--current-product-milestone-id", help="ID of the ProductMilestone this version should be on",
      type=types.existing_product_milestone)
 @arg("-pr", "--product-releases", type=types.existing_product_release, nargs="+",

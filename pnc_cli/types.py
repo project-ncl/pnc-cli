@@ -106,6 +106,11 @@ def existing_product_version(id_input):
         raise argparse.ArgumentTypeError("no ProductVersion with ID {} exists".format(id_input))
     return id_input
 
+def valid_version_two_digits(version):
+    if not utils.is_valid_version(version, '^\d+\.\d+'):
+        raise argparse.ArgumentTypeError("Version should consist of two numeric parts separated by a dot.")
+    return version
+
 
 # ProductMilestone types
 def existing_product_milestone(id_input):
