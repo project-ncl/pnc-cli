@@ -15,6 +15,13 @@ products_api = ProductsApi(utils.get_api_client())
 __author__ = 'thauser'
 
 
+def existing_product_version(id_input):
+    utils.valid_id(id_input)
+    if not version_exists(id_input):
+        raise argparse.ArgumentTypeError("no ProductVersion with ID {} exists.".format(id_input))
+    return id_input
+
+
 def create_product_version_object(**kwargs):
     created_version = swagger_client.ProductVersionRest()
     for key, value in iteritems(kwargs):
@@ -24,9 +31,7 @@ def create_product_version_object(**kwargs):
 
 def version_exists(id):
     response = utils.checked_api_call(versions_api, 'get_specific', id=id)
-    if not response:
-        return False
-    return True
+    return response is not None
 
 
 def version_exists_for_product(id, version):

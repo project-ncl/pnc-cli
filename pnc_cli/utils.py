@@ -14,6 +14,8 @@ except ImportError:
 import re
 import errno
 import os
+import datetime
+import validators
 
 try:
     input = raw_input
@@ -106,10 +108,17 @@ def get_api_client():
     return apiclient
 
 
-def is_valid_version(version):
+def is_valid_version(version, regex):
     if version is not None:
-        pattern = re.compile('\d*\.\w*')
+        pattern = re.compile(regex)
         return pattern.match(version)
+
+def valid_date(dateInput):
+    try:
+        datetime.datetime.strptime(dateInput, '%Y-%m-%d')
+    except ValueError:
+        raise argparse.ArgumentTypeError("Date format: yyyy-mm-dd")
+    return dateInput
 
 
 def checked_api_call(api, func, **kwargs):
@@ -140,3 +149,9 @@ def valid_id(id_input):
     if not id_input.isdigit():
         raise argparse.ArgumentTypeError("an ID must be a positive integer")
     return id_input
+
+
+def valid_url(urlInput):
+    if not validators.url(urlInput):
+        raise argparse.ArgumentTypeError("invalid url")
+    return urlInput
