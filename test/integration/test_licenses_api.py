@@ -13,8 +13,8 @@ def get_licenses_api():
 
 @pytest.fixture(scope='module')
 def new_license(request):
-    license = licenses_api.create_new(body=licenses._create_license_object(full_name=testutils.gen_random_name(),
-                                                                           full_content="pnc_cli-cli test license")).content
+    license = licenses_api.create_new(body=licenses.create_license_object(full_name=testutils.gen_random_name(),
+                                                                          full_content="pnc_cli-cli test license")).content
     def teardown():
         licenses.delete_license(license.id)
     request.addfinalizer(teardown)
@@ -61,8 +61,8 @@ def test_update_invalid_param():
 
 
 def test_update(new_license):
-    licenses_api.update(id=new_license.id, body=licenses._create_license_object(full_name='PNC-CLI updated license',
-                                                                                full_content='updated content'))
+    licenses_api.update(id=new_license.id, body=licenses.create_license_object(full_name='PNC-CLI updated license',
+                                                                               full_content='updated content'))
     updated_license = licenses_api.get_specific(new_license.id).content
     assert updated_license.full_name == 'PNC-CLI updated license' and updated_license.full_content == 'updated content'
 

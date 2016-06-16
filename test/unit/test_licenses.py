@@ -8,7 +8,7 @@ def test_create_license_object():
     compare = LicenseRest()
     compare.full_name = 'test-fullname'
     compare.full_content = 'test-fullcontent'
-    result = licenses._create_license_object(full_name='test-fullname', full_content='test-fullcontent')
+    result = licenses.create_license_object(full_name='test-fullname', full_content='test-fullcontent')
     assert result.to_dict() == compare.to_dict()
 
 @patch('pnc_cli.licenses._license_exists', return_value=True)
@@ -44,19 +44,19 @@ def test_get_license_id_none():
 
 @patch('pnc_cli.licenses.licenses_api.get_specific', return_value=MagicMock(content=[MagicMock(id=1)]))
 def test_license_exists(mock):
-    result = licenses._license_exists(1)
+    result = licenses.license_exists(1)
     mock.assert_called_once_with(id=1)
     assert result
 
 @patch('pnc_cli.licenses.licenses_api.get_all', return_value=MagicMock(content=[MagicMock(full_name='testerino', id=1)]))
 def test_get_license_id_by_name(mock):
-    result = licenses._get_license_id_by_name('testerino')
+    result = licenses.get_license_id_by_name('testerino')
     mock.assert_called_once_with(q='fullName==testerino')
     assert result == 1
 
 @patch('pnc_cli.licenses.licenses_api.get_all', return_value=MagicMock(content=[]))
 def test_get_license_id_by_name_notexist(mock):
-    result = licenses._get_license_id_by_name('notexist')
+    result = licenses.get_license_id_by_name('notexist')
     mock.assert_called_once_with(q='fullName==notexist')
     assert not result
 
