@@ -22,14 +22,6 @@ def create_environment_object(**kwargs):
     return created_environment
 
 
-def valid_sys_type(sysTypeInput):
-    VALID_TYPES = ["DOCKER_IMAGE", "VIRTUAL_MACHINE_RAW", "VIRTUAL_MACHINE_QCOW2", "LOCAL_WORKSPACE"]
-    sysCaps = sysTypeInput.upper()
-    if sysCaps not in VALID_TYPES:
-        raise argparse.ArgumentTypeError("Invalid system image type")
-    return sysCaps
-
-
 def valid_attribute(attributeInput):
     if attributeInput.count("=") == 0:
         raise argparse.ArgumentTypeError("Invalid attribute syntax. Correct syntax: key=value")
@@ -47,7 +39,7 @@ def unique_iid(iidInput):
 @arg("name", help="Unique name of the BuildEnvironment", type=types.unique_environment_name)
 @arg("image_id", help="ID of the Docker image for this BuildEnvironment.", type=unique_iid)
 @arg("system_image_type", help="One of DOCKER_IMAGE, VIRTUAL_MACHINE_RAW, VIRTUAL_MACHINE_QCOW2, LOCAL_WORKSPACE",
-     type=valid_sys_type)
+     choices=["DOCKER_IMAGE", "VIRTUAL_MACHINE_RAW", "VIRTUAL_MACHINE_QCOW2", "LOCAL_WORKSPACE"])
 @arg("-d", "--description", help="Description of the BuildEnvironment.")
 @arg("-a", "--attributes", help="Attributes of the BuildEnvironment. Syntax: Key=Value", type=valid_attribute)
 @arg("-iru", "--image-repository-url", help="URL for the Docker repository in which the image resides.")

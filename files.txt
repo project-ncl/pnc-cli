@@ -1,0 +1,2 @@
+/usr/lib/python2.7/site-packages/pnc_cli-0.1.0-py2.7.egg
+/usr/bin/pnc

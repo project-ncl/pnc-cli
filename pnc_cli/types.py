@@ -1,33 +1,54 @@
 import argparse
+import datetime
 import re
 
-import pnc_cli.utils as utils
+import validators
+
 import pnc_cli.common as common
+import pnc_cli.utils as utils
 from pnc_cli.swagger_client import BuildconfigsetrecordsApi
 from pnc_cli.swagger_client import BuildconfigurationsApi
 from pnc_cli.swagger_client import BuildconfigurationsetsApi
 from pnc_cli.swagger_client import BuildrecordsApi
 from pnc_cli.swagger_client import EnvironmentsApi
+from pnc_cli.swagger_client import LicensesApi
+from pnc_cli.swagger_client import ProductmilestonesApi
+from pnc_cli.swagger_client import ProductreleasesApi
 from pnc_cli.swagger_client import ProductsApi
 from pnc_cli.swagger_client import ProductversionsApi
 from pnc_cli.swagger_client import ProjectsApi
 from pnc_cli.swagger_client import LicensesApi
 
 api_client = utils.get_api_client()
+
+# BuildConfigurations
 configs_api = BuildconfigurationsApi(api_client)
-products_api = ProductsApi(api_client)
 sets_api = BuildconfigurationsetsApi(api_client)
+
 envs_api = EnvironmentsApi(api_client)
+
 projects_api = ProjectsApi(api_client)
+
+# Product related APIs
+products_api = ProductsApi(api_client)
 versions_api = ProductversionsApi(api_client)
+milestones_api = ProductmilestonesApi(api_client)
+releases_api = ProductreleasesApi(api_client)
+
+# Build Configuration Set Records
 bcsr_api = BuildconfigsetrecordsApi(api_client)
+
+# Build Records
 records_api = BuildrecordsApi(api_client)
 license_api = LicensesApi(api_client)
+
+# Licenses API
+licenses_api = LicensesApi(api_client)
 
 bc_name_regex = "^[a-zA-Z0-9_.][a-zA-Z0-9_.-]*(?!\.git)+$"
 
 
-# Type declarations.
+# BuildConfiguration Types
 def valid_bc_name(name_input):
     pattern = re.compile(bc_name_regex)
     if not pattern.match(name_input):
@@ -54,14 +75,15 @@ def existing_bc_name(name_input):
 
 
 def existing_bc_id(id_input):
-    utils.valid_id(id_input)
+    valid_id(id_input)
     if not common.id_exists(configs_api, id_input):
         raise argparse.ArgumentTypeError("no BuildConfiguration with ID {} exists".format(id_input))
     return id_input
 
 
+# Product Types
 def existing_product_id(id_input):
-    utils.valid_id(id_input)
+    valid_id(id_input)
     if not common.id_exists(products_api, id_input):
         raise argparse.ArgumentTypeError("no Product with ID {} exists".format(id_input))
     return id_input
@@ -79,6 +101,45 @@ def unique_product_name(name_input):
     return name_input
 
 
+# ProductVersion types
+def existing_product_version(id_input):
+    valid_id(id_input)
+    if not common.id_exists(versions_api, id_input):
+        raise argparse.ArgumentTypeError("no ProductVersion with ID {} exists".format(id_input))
+    return id_input
+
+
+# ProductMilestone types
+def existing_product_milestone(id_input):
+    valid_id(id_input)
+    if not common.id_exists(milestones_api, id_input):
+        raise argparse.ArgumentTypeError("no ProductMilestone with ID {} exist".format(id_input))
+    return id_input
+
+
+def valid_version_create(version):
+    if not utils.is_valid_version(version, '^\d+\.\w+$'):
+        raise argparse.ArgumentTypeError(
+            "Version must start with a number, followed by a dot and then a qualifier (e.g ER1).")
+    return version
+
+
+def valid_version_update(version):
+    if not utils.is_valid_version(version, '^\d+\.\d+\.\d+\.\w+$'):
+        raise argparse.ArgumentTypeError(
+            "The version should consist of three numeric parts and one alphanumeric qualifier each separated by a dot.")
+    return version
+
+
+# ProductRelease types
+def existing_product_release(id_input):
+    valid_id(id_input)
+    if not common.id_exists(releases_api, id_input):
+        raise argparse.ArgumentTypeError("no ProductRelease with ID {} exists.".format(id_input))
+    return id_input
+
+
+# BuildConfigurationSet types
 def unique_bc_set_name(name_input):
     if common.get_id_by_name(sets_api, name_input):
         raise argparse.ArgumentTypeError("BuildConfigurationSet name '{}' is already in use".format(name_input))
@@ -91,15 +152,16 @@ def existing_bc_set_name(name_input):
     return name_input
 
 
-def existing_set_id(id_input):
-    utils.valid_id(id_input)
+def existing_bc_set_id(id_input):
+    valid_id(id_input)
     if not common.id_exists(sets_api, id_input):
         raise argparse.ArgumentTypeError("no BuildConfigurationSet with ID {} exists".format(id_input))
     return id_input
 
 
+# BuildEnvironmentTypes
 def existing_environment_id(id_input):
-    utils.valid_id(id_input)
+    valid_id(id_input)
     if not common.id_exists(envs_api, id_input):
         raise argparse.ArgumentTypeError("no BuildEnvironment exists with id {}".format(id_input))
     return id_input
@@ -117,43 +179,66 @@ def unique_environment_name(nameInput):
     return nameInput
 
 
+# Project Types
 def existing_project_id(id_input):
-    utils.valid_id(id_input)
+    valid_id(id_input)
     if not common.id_exists(projects_api, id_input):
         raise argparse.ArgumentTypeError("no Project with ID {} exists".format(id_input))
     return id_input
 
 
-def existing_product_version(id_input):
-    utils.valid_id(id_input)
-    if not common.id_exists(versions_api, id_input):
-        raise argparse.ArgumentTypeError("no ProductVersion with ID {} exists.".format(id_input))
-    return id_input
+def existing_project_name(name_input):
+    if not common.get_id_by_name(projects_api, name_input):
+        raise argparse.ArgumentTypeError("no Project with name {} exists".format(name_input))
+    return name_input
 
 
+def unique_project_name(name_input):
+    if common.get_id_by_name(projects_api, name_input):
+        raise argparse.ArgumentTypeError("a Project with name {} already exists".format(name_input))
+    return name_input
+
+
+# BuildConfigurationSetRecord types
 def existing_bc_set_record(id_input):
-    utils.valid_id(id_input)
+    valid_id(id_input)
     if not common.id_exists(bcsr_api, id_input):
         raise argparse.ArgumentTypeError("no BuildConfigurationSetRecord with ID {} exists".format(id_input))
     return id_input
 
 
+# BuildRecord types
 def existing_build_record(id_input):
-    utils.valid_id(id_input)
+    valid_id(id_input)
     if not common.id_exists(records_api, id_input):
         raise argparse.ArgumentTypeError("no BuildRecord with ID {} exists".format(id_input))
     return id_input
 
 
-def existing_license_id(license_id):
-    utils.valid_id(license_id)
-    if not common.id_exists(license_api, license_id):
-        raise argparse.ArgumentTypeError("No license with id {} exists".format(license_id))
-    return license_id
+# License types
+def existing_license(id_input):
+    valid_id(id_input)
+    if not common.id_exists(licenses_api, id_input):
+        raise argparse.ArgumentTypeError("no License with ID {} exists".format(id_input))
+    return id_input
 
 
-def existing_license_name(name):
-    utils.valid_id(name)
-    if not common.id_exists(license_api, name):
-        raise argparse.ArgumentTypeError("No license with name {} exists".format(name))
-    return name
+# Misc types
+def valid_date(dateInput):
+    try:
+        datetime.datetime.strptime(dateInput, '%Y-%m-%d')
+    except ValueError:
+        raise argparse.ArgumentTypeError("Date format: yyyy-mm-dd")
+    return dateInput
+
+
+def valid_id(id_input):
+    if not id_input.isdigit():
+        raise argparse.ArgumentTypeError("an ID must be a positive integer")
+    return id_input
+
+
+def valid_url(urlInput):
+    if not validators.url(urlInput):
+        raise argparse.ArgumentTypeError("invalid url")
+    return urlInput
