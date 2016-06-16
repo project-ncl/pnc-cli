@@ -1,6 +1,7 @@
 __author__ = 'Tom'
 from mock import MagicMock, patch
-from pnc_cli import projects
+
+import pnc_cli.projects as projects
 from pnc_cli.swagger_client import ProjectRest
 from test import testutils
 
@@ -87,6 +88,7 @@ def test_update_project_no_id():
     result = projects.update_project(None, name='hi')
     assert not result
 
+
 def test_update_project_no_modifications():
     result = projects.update_project(1)
     assert not result
@@ -97,7 +99,6 @@ def test_update_project_notexist(mock_get_specific):
     result = projects.update_project(1, name='teter')
     mock_get_specific.assert_called_once_with(id=1)
     assert not result
-
 
 
 @patch('pnc_cli.projects.projects_api.get_specific')
