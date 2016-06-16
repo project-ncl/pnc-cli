@@ -1,31 +1,18 @@
 import argparse
-
-from pprint import pprint
+import datetime
 
 from argh import arg
 from six import iteritems
 
-import logging
-import datetime
-from pnc_cli import utils
+import pnc_cli.types as types
+import pnc_cli.utils as utils
 from pnc_cli.swagger_client import ProductMilestoneRest
-from pnc_cli.swagger_client import ProductversionsApi
 from pnc_cli.swagger_client import ProductmilestonesApi
-from pnc_cli import productversions
+from pnc_cli.swagger_client import ProductversionsApi
 
-productversions_api = ProductversionsApi(utils.get_api_client())
-milestones_api = ProductmilestonesApi(utils.get_api_client())
-
-def existing_product_milestone(id_input):
-    utils.valid_id(id_input)
-    if not product_milestone_exists(id_input):
-        raise argparse.ArgumentTypeError("no ProductMilestone with ID {} exists.".format(id_input))
-    return id_input
-
-
-def product_milestone_exists(search_id):
-    response = utils.checked_api_call(milestones_api, 'get_specific', id=search_id)
-    return response is not None
+client = utils.get_api_client()
+productversions_api = ProductversionsApi(client)
+milestones_api = ProductmilestonesApi(client)
 
 
 def create_milestone_object(**kwargs):
@@ -35,7 +22,7 @@ def create_milestone_object(**kwargs):
     return created_milestone
 
 
-@arg("-p", "--page-size", help="Limit the amount of ProductReleases returned")
+@arg("-p", "--page-size", help="Limit the amount of ProductReleases returned", type=int)
 @arg("-s", "--sort", help="Sorting RSQL")
 @arg("-q", help="RSQL query")
 def list_milestones(page_size=200, q="", sort=""):
@@ -45,19 +32,6 @@ def list_milestones(page_size=200, q="", sort=""):
     response = utils.checked_api_call(milestones_api, 'get_all', page_size=page_size, q=q, sort=sort).content
     if response:
         return response
-
-
-def _valid_version_create(version):
-    if not utils.is_valid_version(version, '^\d+\.\w+$'):
-        raise argparse.ArgumentTypeError("Version must start with a number, followed by a dot and then a qualifier (e.g ER1).")
-    return version
-
-
-def _valid_version_update(version):
-    if not utils.is_valid_version(version, '^\d+\.\d+\.\d+\.\w+$'):
-        raise argparse.ArgumentTypeError(
-            "The version should consist of three numeric parts and one alphanumeric qualifier each separated by a dot.")
-    return version
 
 
 def check_date_order(start_arg, end_arg):
@@ -80,12 +54,12 @@ def unique_version_value(parent_product_version_id, version):
 
 
 @arg("product_version_id", help="ID of the ProductVersion to create a ProductMilestone from.",
-     type=productversions.existing_product_version)
+     type=types.existing_product_version)
 @arg("version", help="Version of the ProductMilestone. Will be appended to the version from product_version_id.",
-     type=_valid_version_create)
-@arg("starting_date", help="Planned starting date for the ProductMilestone.", type=utils.valid_date)
-@arg("planned_end_date", help="Planned date for the end of this ProductMilestone.", type=utils.valid_date)
-@arg("issue_tracker_url", help="Issue tracker URL for this ProductMilestone.", type=utils.valid_url)
+     type=types.valid_version_create)
+@arg("starting_date", help="Planned starting date for the ProductMilestone.", type=types.valid_date)
+@arg("planned_end_date", help="Planned date for the end of this ProductMilestone.", type=types.valid_date)
+@arg("issue_tracker_url", help="Issue tracker URL for this ProductMilestone.", type=types.valid_url)
 def create_milestone(**kwargs):
     """
     Create a new ProductMilestone
@@ -107,7 +81,7 @@ def create_milestone(**kwargs):
         return response.content
 
 
-@arg("id", help="ProductVersion ID to retrieve milestones for.", type=productversions.existing_product_version)
+@arg("id", help="ProductVersion ID to retrieve milestones for.", type=types.existing_product_version)
 def list_milestones_for_version(id):
     """
     List ProductMilestones for a specific ProductVersion
@@ -120,18 +94,19 @@ def list_milestones_for_version(id):
         return response
 
 
-@arg("id", help="ProductMilestone ID to retrieve.", type=existing_product_milestone)
+@arg("id", help="ProductMilestone ID to retrieve.", type=types.existing_product_milestone)
 def get_milestone(id):
     response = utils.checked_api_call(milestones_api, 'get_specific', id=id)
     return response.content
 
-#TODO: problem setting end date.
-#TODO: incorrect date parsing.
-#TODO: update_milestone does not work.
-@arg("id", help="ProductMilestone ID to update.", type=existing_product_milestone)
-@arg("version", help="New version for the ProductMilestone.", type=_valid_version_update)
-@arg("starting_date", help="New start date for the ProductMilestone.", type=utils.valid_date)
-@arg("end_date", help="New release date for the ProductMilestone.", type=utils.valid_date)
+
+# TODO: problem setting end date.
+# TODO: incorrect date parsing.
+# TODO: update_milestone does not work.
+@arg("id", help="ProductMilestone ID to update.", type=types.existing_product_milestone)
+@arg("version", help="New version for the ProductMilestone.", type=types.valid_version_update)
+@arg("starting_date", help="New start date for the ProductMilestone.", type=types.valid_date)
+@arg("end_date", help="New release date for the ProductMilestone.", type=types.valid_date)
 def update_milestone(id, **kwargs):
     """
     Update a ProductMilestone

@@ -43,7 +43,7 @@ def create_product(name, **kwargs):
 @arg("-a", "--abbreviation", help="New abbreviation")
 @arg("-p", "--product-code", help="New Product code")
 @arg("-sn", "--pgm-system-name", help="New system name")
-# @arg("--product-version-ids", type=int, nargs='+', help="Space separated list of associated ProductVersion ids.")
+@arg("--product-version-ids", type=types.existing_product_version, nargs='+', help="Space separated list of associated ProductVersion ids.")
 def update_product(product_id, **kwargs):
     """
     Update a Product with new information

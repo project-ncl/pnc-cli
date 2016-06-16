@@ -47,7 +47,7 @@ def create_build_configuration_set(**kwargs):
         return response.content
 
 
-@arg("-id", "--id", help="ID of the BuildConfigurationSet to retrieve", type=types.existing_set_id)
+@arg("-id", "--id", help="ID of the BuildConfigurationSet to retrieve", type=types.existing_bc_set_id)
 @arg("-n", "--name", help="Name of the BuildConfigurationSet to retrieve", type=types.existing_bc_set_name)
 def get_build_configuration_set(id=None, name=None):
     """
@@ -59,7 +59,7 @@ def get_build_configuration_set(id=None, name=None):
         return response.content
 
 
-@arg("id", help="ID of the BuildConfigurationSet to update.", type=types.existing_set_id)
+@arg("id", help="ID of the BuildConfigurationSet to update.", type=types.existing_bc_set_id)
 @arg("-n", "--name", help="Updated name for the BuildConfigurationSet.", type=types.unique_bc_set_name)
 @arg("-pvi", "--product-version-id",
      help="Updated product version ID for the BuildConfigurationSet.", type=types.existing_product_version)
@@ -80,7 +80,7 @@ def update_build_configuration_set(id, **kwargs):
         return response.content
 
 
-@arg("-i", "--id", help="ID of the BuildConfigurationSet to delete.", type=types.existing_set_id)
+@arg("-i", "--id", help="ID of the BuildConfigurationSet to delete.", type=types.existing_bc_set_id)
 @arg("-n", "--name", help="Name of the BuildConfigurationSet to delete.", type=types.existing_bc_set_name)
 # TODO: in order to delete a config set successfully, any buildconfigsetrecords must be deleted first
 # TODO: it may be impossible / undesireable to remove
@@ -92,7 +92,7 @@ def delete_build_configuration_set(id=None, name=None):
         return response.content
 
 
-@arg("-i", "--id", help="ID of the BuildConfigurationSet to build.", type=types.existing_set_id)
+@arg("-i", "--id", help="ID of the BuildConfigurationSet to build.", type=types.existing_bc_set_id)
 @arg("-n", "--name", help="Name of the BuildConfigurationSet to build.", type=types.existing_bc_set_name)
 def build_set(id=None, name=None):
     """
@@ -104,7 +104,7 @@ def build_set(id=None, name=None):
         return response.content
 
 
-@arg("-i", "--id", help="ID of the BuildConfigurationSet to build.", type=types.existing_set_id)
+@arg("-i", "--id", help="ID of the BuildConfigurationSet to build.", type=types.existing_bc_set_id)
 @arg("-n", "--name", help="Name of the BuildConfigurationSet to build.", type=types.existing_bc_set_name)
 @arg("-p", "--page-size", help="Limit the amount of build records returned", type=int)
 @arg("-s", "--sort", help="Sorting RSQL")
@@ -119,7 +119,7 @@ def list_build_configurations_for_set(id=None, name=None, page_size=200, sort=""
         return response.content
 
 
-@arg("-sid", "--set-id", help="ID of the BuildConfigurationSet to add to", type=types.existing_set_id)
+@arg("-sid", "--set-id", help="ID of the BuildConfigurationSet to add to", type=types.existing_bc_set_id)
 @arg("-sn", "--set-name", help="Name of the BuildConfigurationSet to add to", type=types.existing_bc_set_name)
 @arg("-cid", "--config-id",
      help="ID of the build configuration to add to the given set", type=types.existing_bc_id)
@@ -131,8 +131,7 @@ def add_build_configuration_to_set(
     Add a build configuration to an existing BuildConfigurationSet
     """
     config_set_id = common.set_id(sets_api, set_id, set_name)
-    bc = None
-    # bc = types.get_build_configuration(id=config_id, name=config_name)
+    bc = common.get_entity(configs_api, id=config_id, name=config_name)
     response = utils.checked_api_call(
         sets_api,
         'add_configuration',
@@ -142,7 +141,7 @@ def add_build_configuration_to_set(
         return response.content
 
 
-@arg("-sid", "--set-id", help="ID of the BuildConfigurationSet to remove from", type=types.existing_set_id)
+@arg("-sid", "--set-id", help="ID of the BuildConfigurationSet to remove from", type=types.existing_bc_set_id)
 @arg("-sn", "--set-name", help="Name of the BuildConfigurationSet to remove from", type=types.existing_bc_set_name)
 @arg("-cid", "--config-id", help="ID of the BuildConfiguration to remove from the set",
      type=types.existing_bc_id)
@@ -150,8 +149,7 @@ def add_build_configuration_to_set(
      type=types.existing_bc_name)
 def remove_build_configuration_from_set(set_id=None, set_name=None, config_id=None, config_name=None):
     config_set_id = common.set_id(sets_api, set_id, set_name)
-    bc_id = 1
-    # bc_id = types.set_bc_id(config_id, config_name)
+    bc_id = common.set_id(config_id, config_name)
     response = utils.checked_api_call(
         sets_api,
         'remove_configuration',
@@ -161,7 +159,7 @@ def remove_build_configuration_from_set(set_id=None, set_name=None, config_id=No
         return response.content
 
 
-@arg("-i", "--id", help="ID of the BuildConfigurationSet", type=types.existing_set_id)
+@arg("-i", "--id", help="ID of the BuildConfigurationSet", type=types.existing_bc_set_id)
 @arg("-n", "--name", help="Name of the BuildConfigurationSet", type=types.existing_bc_set_name)
 @arg("-p", "--page-size", help="Limit the amount of build records returned", type=int)
 @arg("-s", "--sort", help="Sorting RSQL")

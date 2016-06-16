@@ -3,23 +3,17 @@ import argparse
 from argh import arg
 from six import iteritems
 
-import logging
+import pnc_cli.utils as utils
+import pnc_cli.types as types
 from pnc_cli import swagger_client
-from pnc_cli.swagger_client.apis.productversions_api import ProductversionsApi
 from pnc_cli.swagger_client.apis.products_api import ProductsApi
-from pnc_cli import utils
+from pnc_cli.swagger_client.apis.productversions_api import ProductversionsApi
 
-versions_api = ProductversionsApi(utils.get_api_client())
-products_api = ProductsApi(utils.get_api_client())
+client = utils.get_api_client()
+versions_api = ProductversionsApi(client)
+products_api = ProductsApi(client)
 
 __author__ = 'thauser'
-
-
-def existing_product_version(id_input):
-    utils.valid_id(id_input)
-    if not version_exists(id_input):
-        raise argparse.ArgumentTypeError("no ProductVersion with ID {} exists.".format(id_input))
-    return id_input
 
 
 def create_product_version_object(**kwargs):
@@ -27,11 +21,6 @@ def create_product_version_object(**kwargs):
     for key, value in iteritems(kwargs):
         setattr(created_version, key, value)
     return created_version
-
-
-def version_exists(id):
-    response = utils.checked_api_call(versions_api, 'get_specific', id=id)
-    return response is not None
 
 
 def version_exists_for_product(id, version):
@@ -54,7 +43,7 @@ def list_product_versions(page_size=200, sort="", q=""):
         return response.content
 
 
-# TODO: Version needs to be checked for validity.
+# TODO: Version needs to be checked for gity.
 @arg("product_id", help="ID of product to add a version to")
 @arg("version", help="Version to add")
 @arg("-cm", "--current-product-milestone-id",
@@ -76,9 +65,9 @@ def create_product_version(product_id, version, **kwargs):
     1.0.Beta1, 1.0.GA, 1.0.1, etc.
     """
     if version_exists_for_product(product_id, version):
-        logging.error("Version {} already exists for product: {}".format(
+        raise argparse.ArgumentTypeError("Version {} already exists for product: {}".format(
             version, products_api.get_specific(id=product_id).content.name))
-        return
+
     kwargs['product_id'] = product_id
     kwargs['version'] = version
     product_version = create_product_version_object(**kwargs)
@@ -87,39 +76,32 @@ def create_product_version(product_id, version, **kwargs):
     if response: return response.content
 
 
-@arg("id", help="ID of the ProductVersion to retrieve")
+@arg("id", help="ID of the ProductVersion to retrieve", type=types.existing_product_version)
 def get_product_version(id):
     """
     Retrieve a specific ProductVersion by ProductVersion ID
     """
-    if not version_exists(id):
-        logging.error("No ProductVersion with ID {} exists.".format(id))
-        return
     response = utils.checked_api_call(versions_api, 'get_specific', id=id)
     if response: return response.content
 
 
 # TODO: how should constraints be defined? Can a new productId be specified?
 # TODO: Version needs to be checked for validity.
-@arg("id", help="ID of the ProductVersion to update.")
-@arg("-pid", "--product-id", help="ID of product to add a version to")
+@arg("id", help="ID of the ProductVersion to update.", type=types.existing_product_version)
+@arg("-pid", "--product-id", help="ID of product to add a version to", type=types.existing_product_id)
 @arg("-v", "--version", help="Version to add")
-@arg("-cm", "--current-product-milestone-id", type=int,
-     help="ID of the ProductMilestone this version should be on")
-@arg("-pr", "--product-releases", type=int, nargs="+",
+@arg("-cm", "--current-product-milestone-id", help="ID of the ProductMilestone this version should be on",
+     type=types.existing_product_milestone)
+@arg("-pr", "--product-releases", type=types.existing_product_release, nargs="+",
      help="List of ProductRelease IDs for this Product version")
-@arg("-pm", "--product-milestones", type=int, nargs="+",
+@arg("-pm", "--product-milestones", type=types.existing_product_milestone, nargs="+",
      help="List of ProductMilestone IDs to associate with the new version")
-@arg("-bc", "--build-configuration-set-ids", type=int, nargs="+",
+@arg("-bc", "--build-configuration-set-ids", type=types.existing_bc_set_id, nargs="+",
      help="List of BuildConfigurationSet IDs to associate with the new version")
 def update_product_version(id, **kwargs):
     """
     Update the ProductVersion with ID id with new values.
     """
-    if not version_exists(id):
-        logging.error("A ProductVersion with id {} doesn't exist.".format(id))
-        return
-
     to_update = versions_api.get_specific(id=id).content
     for key, value in kwargs.items():
         if value is not None:

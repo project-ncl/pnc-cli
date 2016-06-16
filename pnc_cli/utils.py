@@ -1,8 +1,7 @@
-import argparse
+import getpass
 import json
 import logging
-import getpass
-import datetime
+
 import requests
 
 requests.packages.urllib3.disable_warnings()
@@ -15,7 +14,6 @@ import re
 import errno
 import os
 import datetime
-import validators
 
 try:
     input = raw_input
@@ -97,6 +95,7 @@ if not found:
 global authtoken
 authtoken = get_auth_token(config)
 
+
 def get_api_client():
     pnc_rest_url = config.get('PNC', 'pncUrl').rstrip('/') + '/pnc-rest/rest'
     if authtoken:
@@ -112,13 +111,6 @@ def is_valid_version(version, regex):
     if version is not None:
         pattern = re.compile(regex)
         return pattern.match(version)
-
-def valid_date(dateInput):
-    try:
-        datetime.datetime.strptime(dateInput, '%Y-%m-%d')
-    except ValueError:
-        raise argparse.ArgumentTypeError("Date format: yyyy-mm-dd")
-    return dateInput
 
 
 def checked_api_call(api, func, **kwargs):
@@ -143,15 +135,3 @@ def contains_only_none_values(dictionary):
         if dictionary[key] is not None:
             return False
     return True
-
-
-def valid_id(id_input):
-    if not id_input.isdigit():
-        raise argparse.ArgumentTypeError("an ID must be a positive integer")
-    return id_input
-
-
-def valid_url(urlInput):
-    if not validators.url(urlInput):
-        raise argparse.ArgumentTypeError("invalid url")
-    return urlInput

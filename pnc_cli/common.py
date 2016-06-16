@@ -2,10 +2,10 @@ import argh.exceptions
 
 import pnc_cli.utils as utils
 
-
 """
 Utility module that contains generalized API calls for use in other modules.
 """
+
 
 def id_exists(api, search_id):
     """
