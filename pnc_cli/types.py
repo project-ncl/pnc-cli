@@ -17,7 +17,6 @@ from pnc_cli.swagger_client import ProductreleasesApi
 from pnc_cli.swagger_client import ProductsApi
 from pnc_cli.swagger_client import ProductversionsApi
 from pnc_cli.swagger_client import ProjectsApi
-from pnc_cli.swagger_client import LicensesApi
 
 api_client = utils.get_api_client()
 

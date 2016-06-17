@@ -1,12 +1,12 @@
-import logging
 
 from argh import arg
 from six import iteritems
-from pnc_cli import products
-from pnc_cli import utils
+
+import pnc_cli.types as types
+import pnc_cli.utils as utils
+
 from pnc_cli.swagger_client import LicenseRest
 from pnc_cli.swagger_client import LicensesApi
-import argparse
 licenses_api = LicensesApi(utils.get_api_client())
 
 
@@ -17,27 +17,13 @@ def create_license_object(**kwargs):
     return created_license
 
 
-def existing_license_id(license_id):
-    existing = utils.checked_api_call(licenses_api, 'get_specific', id=license_id)
-    if not existing:
-        raise argparse.ArgumentTypeError("No license with id {} exists".format(license_id))
-    return license_id
-
-
-def existing_license_name(name):
-    existing = utils.checked_api_call(licenses_api, 'get_specific', fullName=name)
-    if not existing:
-        raise argparse.ArgumentTypeError("No license with name {} exists".format(name))
-    return name
-
-
 @arg("full_name", help="Name for the new License")
 @arg("full_content", help="Full textual content of the new License")
 @arg("-r", "--ref-url", help="URL containing a reference for the License")
 @arg("-sn", "--short-name", help="Abbreviation or \"short name\" for the License")
 @arg("-pids", "--projects-ids", nargs='+',
      help="List of project ids that should be associated with the new License. IDs must denote existing projects",
-     type=products.existing_product_id)
+     type=types.existing_product_id)
 # TODO: read full_content from a file.
 def create_license(**kwargs):
     """
@@ -49,7 +35,7 @@ def create_license(**kwargs):
         return response.content
 
 
-@arg("id", help="ID for the License to retrieve", type= existing_license_id)
+@arg("id", help="ID for the License to retrieve", type=types.existing_license)
 def get_license(id):
     """
     Get a specific License by either ID or fullname
@@ -60,7 +46,7 @@ def get_license(id):
         return response.content
 
 
-@arg("license_id", help="ID of the License to delete", type=existing_license_id)
+@arg("license_id", help="ID of the License to delete", type=types.existing_license)
 # TODO: delete by name? collisions? Name not unique.
 def delete_license(license_id):
     """
@@ -72,27 +58,28 @@ def delete_license(license_id):
         return response.content
 
 
-# TODO: preserve existing License fields that aren't supplied by user, to
-# make it a true update
-
-
-@arg("license_id", help="ID of the License to update", type=existing_license_id)
-@arg("-n, --full-name", help="Name for the new License")
-@arg("-c, --full-content", help="Full textual content of the new License")
+@arg("license_id", help="ID of the License to update", type=types.existing_license)
+@arg("-n", "--full-name", help="Name for the new License")
+@arg("-c", "--full-content", help="Full textual content of the new License")
 @arg("-r", "--ref-url", help="URL containing a reference for the License")
 @arg("-sn", "--short-name", help="Abbreviation or \"short name\" for the License")
 @arg("-pids", "--projects-ids", nargs='+',
      help="List of project ids that should be associated with the new License. IDs must denote existing projects",
-     type=products.existing_product_id)
+     type=types.existing_product_id)
 def update_license(license_id, **kwargs):
     """
     Replace the License with given ID with a new License
     """
-    updated_license = create_license_object(**kwargs)
+    updated_license = licenses_api.get_specific(id=license_id).content
+
+    for key, value in iteritems(kwargs):
+        if value:
+            setattr(updated_license, key, value)
+
     response = utils.checked_api_call(
         licenses_api,
         'update',
-        id=license_id,
+        id=int(license_id),
         body=updated_license)
     if response:
         return response.content
