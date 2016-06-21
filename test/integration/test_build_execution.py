@@ -90,7 +90,9 @@ def test_run_group_build(request, new_set, new_environment, new_project):
         logger.info("Group Build: Build %s is running...", id)
 
     while True:
-        if not running_api.get_all_for_bc_set(id=new_set.id).content:
+        # TODO: this should be changed back from .get_all to .get_all_for_bc_set once NCL-2143 is fixed
+        # if not running_api.get_all_for_bc_set(id=new_set.id).content:
+        if not running_api.get_all().content:
             break
         time.sleep(5)
     for id in triggered_build_ids:
