@@ -74,10 +74,9 @@ def test_run_single_build(new_config):
 
 def test_run_group_build(request, new_set, new_environment, new_project):
     assert (new_set is not None, 'Unable to create Build Configuration Group')
-
-    config_one = new_config(request, new_environment, new_project)
-    config_two = new_config(request, new_environment, new_project)
-    config_three = new_config(request, new_environment, new_project)
+    config_one = new_config(request, new_project, new_environment)
+    config_two = new_config(request, new_project, new_environment)
+    config_three = new_config(request, new_project, new_environment)
     sets_api.add_configuration(id=new_set.id, body=config_one)
     sets_api.add_configuration(id=new_set.id, body=config_two)
     sets_api.add_configuration(id=new_set.id, body=config_three)
@@ -91,11 +90,13 @@ def test_run_group_build(request, new_set, new_environment, new_project):
         logger.info("Group Build: Build %s is running...", id)
 
     while True:
-        if not running_api.get_all_for_bc_set(id=new_set.id).content:
+        # TODO: this should be changed back from .get_all to .get_all_for_bc_set once NCL-2143 is fixed
+        # if not running_api.get_all_for_bc_set(id=new_set.id).content:
+        if not running_api.get_all().content:
             break
         time.sleep(5)
     for id in triggered_build_ids:
-        logger.info("Build group %s is done!", id)
+        logger.info("Build %s is done!", id)
 
     for id in triggered_build_ids:
         build_record = records_api.get_specific(id=id).content
@@ -145,8 +146,11 @@ def checkout_git_sources(repo_url, revision):
     if (os.path.isdir(repo_dir)):
         logger.warn("Found existing git checkout directory: " + str(repo_dir))
         git_repo = Repo(repo_dir)
+        origin = git_repo.remote("origin")
+        origin.fetch()
     else:
-        git_repo = Repo.clone_from(repo_url, repo_dir)
+        kwargs = {"config":"http.sslVerify=false"}
+        git_repo = Repo.clone_from(repo_url, repo_dir, **kwargs)
     git_repo.head.reference = git_repo.commit(revision)
     git_repo.head.reset(index=True, working_tree=True)
     return git_repo
