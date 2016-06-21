@@ -74,10 +74,9 @@ def test_run_single_build(new_config):
 
 def test_run_group_build(request, new_set, new_environment, new_project):
     assert (new_set is not None, 'Unable to create Build Configuration Group')
-
-    config_one = new_config(request, new_environment, new_project)
-    config_two = new_config(request, new_environment, new_project)
-    config_three = new_config(request, new_environment, new_project)
+    config_one = new_config(request, new_project, new_environment)
+    config_two = new_config(request, new_project, new_environment)
+    config_three = new_config(request, new_project, new_environment)
     sets_api.add_configuration(id=new_set.id, body=config_one)
     sets_api.add_configuration(id=new_set.id, body=config_two)
     sets_api.add_configuration(id=new_set.id, body=config_three)
@@ -95,7 +94,7 @@ def test_run_group_build(request, new_set, new_environment, new_project):
             break
         time.sleep(5)
     for id in triggered_build_ids:
-        logger.info("Build group %s is done!", id)
+        logger.info("Build %s is done!", id)
 
     for id in triggered_build_ids:
         build_record = records_api.get_specific(id=id).content
