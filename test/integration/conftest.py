@@ -66,7 +66,7 @@ def new_config(request, new_project, new_environment):
         name=testutils.gen_random_name() + '-config',
         project=new_project.id,
         environment=new_environment.id,
-        build_script='mvn javadoc:jar install',
+        build_script='mvn javadoc:jar deploy',
         product_version_ids=[1],
         scm_repo_url='https://github.com/project-ncl/pnc-simple-test-project.git',
         scm_revision='1.0')
