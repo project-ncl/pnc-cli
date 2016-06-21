@@ -146,7 +146,8 @@ def checkout_git_sources(repo_url, revision):
         logger.warn("Found existing git checkout directory: " + str(repo_dir))
         git_repo = Repo(repo_dir)
     else:
-        git_repo = Repo.clone_from(repo_url, repo_dir)
+        kwargs = {"config":"http.sslVerify=false"}
+        git_repo = Repo.clone_from(repo_url, repo_dir, **kwargs)
     git_repo.head.reference = git_repo.commit(revision)
     git_repo.head.reset(index=True, working_tree=True)
     return git_repo
