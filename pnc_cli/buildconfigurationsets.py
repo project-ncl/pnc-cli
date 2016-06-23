@@ -8,8 +8,9 @@ from pnc_cli import swagger_client
 from pnc_cli.swagger_client.apis.buildconfigurations_api import BuildconfigurationsApi
 from pnc_cli.swagger_client.apis.buildconfigurationsets_api import BuildconfigurationsetsApi
 
-sets_api = BuildconfigurationsetsApi(utils.get_api_client())
-configs_api = BuildconfigurationsApi(utils.get_api_client())
+client = utils.get_api_client()
+sets_api = BuildconfigurationsetsApi(client)
+configs_api = BuildconfigurationsApi(client)
 
 
 def _create_build_config_set_object(**kwargs):
@@ -131,7 +132,8 @@ def add_build_configuration_to_set(
     Add a build configuration to an existing BuildConfigurationSet
     """
     config_set_id = common.set_id(sets_api, set_id, set_name)
-    bc = common.get_entity(configs_api, id=config_id, name=config_name)
+    bc_id = common.set_id(configs_api, config_id, config_name)
+    bc = common.get_entity(configs_api, bc_id)
     response = utils.checked_api_call(
         sets_api,
         'add_configuration',
@@ -149,7 +151,7 @@ def add_build_configuration_to_set(
      type=types.existing_bc_name)
 def remove_build_configuration_from_set(set_id=None, set_name=None, config_id=None, config_name=None):
     config_set_id = common.set_id(sets_api, set_id, set_name)
-    bc_id = common.set_id(config_id, config_name)
+    bc_id = common.set_id(configs_api, config_id, config_name)
     response = utils.checked_api_call(
         sets_api,
         'remove_configuration',
