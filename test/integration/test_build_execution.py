@@ -89,10 +89,15 @@ def test_run_group_build(request, new_set, new_environment, new_project):
     for id in triggered_build_ids:
         logger.info("Group Build: Build %s is running...", id)
 
+    config_set_records = sets_api.get_all_build_config_set_records(id=new_set.id).content
+    assert (config_set_records is not None, 'Unable to get running config set')
+    assert (len(config_set_records) > 0, 'No running config sets found')
+
     while True:
-        # TODO: this should be changed back from .get_all to .get_all_for_bc_set once NCL-2143 is fixed
-        # if not running_api.get_all_for_bc_set(id=new_set.id).content:
-        if not running_api.get_all().content:
+        # TODO: this is not 100% reliable because the array we want might not be the first one (although it's very unlikely)
+        # we have to do this for now because the id of the build config set record is only available in the header
+        # location field of the triggered_build, and the header is not directly available from the swagger api response
+        if not running_api.get_all_for_bc_set(id=config_set_records[0].id).content:
             break
         time.sleep(5)
     for id in triggered_build_ids:
