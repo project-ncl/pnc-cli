@@ -3,10 +3,14 @@ from argh import arg
 import pnc_cli.common as common
 import pnc_cli.types as types
 import pnc_cli.utils as utils
-from pnc_cli.swagger_client.apis.buildrecords_api import BuildrecordsApi
+from pnc_cli.swagger_client import BuildrecordsApi
+from pnc_cli.swagger_client import BuildconfigurationsApi
+from pnc_cli.swagger_client import ProjectsApi
 
-records_api = BuildrecordsApi(utils.get_api_client())
-
+client = utils.get_api_client()
+records_api = BuildrecordsApi(client)
+configs_api = BuildconfigurationsApi(client)
+projects_api = ProjectsApi(client)
 
 @arg("-p", "--page-size", help="Limit the amount of BuildRecords returned", type=int)
 @arg("-s", "--sort", help="Sorting RSQL")
@@ -30,8 +34,6 @@ def list_records_for_build_configuration(id=None, name=None, page_size=200, sort
     List all BuildRecords for a given BuildConfiguration
     """
     config_id = common.set_id(configs_api, id, name)
-    if not config_id:
-        return
     response = utils.checked_api_call(records_api, 'get_all_for_build_configuration', configuration_id=config_id,
                                       page_size=page_size, sort=sort, q=q)
     if response:
@@ -48,8 +50,6 @@ def list_records_for_project(id=None, name=None, page_size=200, sort="", q=""):
     List all BuildRecords for a given Project
     """
     project_id = common.set_id(projects_api, id, name)
-    if not project_id:
-        return
     response = utils.checked_api_call(records_api, 'get_all_for_project', project_id=project_id, page_size=page_size,
                                       sort=sort, q=q)
     if response:
