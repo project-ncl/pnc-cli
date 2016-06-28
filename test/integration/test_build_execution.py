@@ -72,6 +72,7 @@ def test_run_single_build(new_config):
     build_record_checks(build_record)
 
 
+@pytest.mark.skip(reason="Blocked by issue with repour (NCL-2195)")
 def test_run_group_build(request, new_set, new_environment, new_project):
     assert (new_set is not None, 'Unable to create Build Configuration Group')
     config_one = new_config(request, new_project, new_environment)
