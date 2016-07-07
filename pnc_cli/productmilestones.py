@@ -104,18 +104,31 @@ def get_milestone(id):
 # TODO: incorrect date parsing.
 # TODO: update_milestone does not work.
 @arg("id", help="ProductMilestone ID to update.", type=types.existing_product_milestone)
-@arg("version", help="New version for the ProductMilestone.", type=types.valid_version_update)
-@arg("starting_date", help="New start date for the ProductMilestone.", type=types.valid_date)
-@arg("end_date", help="New release date for the ProductMilestone.", type=types.valid_date)
+@arg("-v, --version", help="New version for the ProductMilestone.", type=types.valid_version_update)
+@arg("-sd, --starting-date", help="New start date for the ProductMilestone.", type=types.valid_date)
+@arg("-ped, --planned-end-date", help="New release date for the ProductMilestone.", type=types.valid_date)
 def update_milestone(id, **kwargs):
     """
     Update a ProductMilestone
     """
-    check_date_order(kwargs.get('starting_date'), kwargs.get('end_date'))
-
-    unique_version_value(get_product_version_from_milestone(id), kwargs.get('version'))
-
     existing_milestone = utils.checked_api_call(milestones_api, 'get_specific', id=id).content
+    existing_start_date = existing_milestone.starting_date
+    existing_end_date = existing_milestone.planned_end_date
+    updated_start_date = kwargs.get('starting_date')
+    updated_ending_date = kwargs.get('planned_end_date')
+
+    if updated_start_date and updated_ending_date:
+        check_date_order(updated_start_date, updated_ending_date)
+    elif updated_start_date:
+        check_date_order(updated_start_date, existing_end_date)
+    elif updated_ending_date:
+        check_date_order(existing_start_date, updated_ending_date)
+
+
+    if kwargs.get('version'):
+        unique_version_value(get_product_version_from_milestone(id), kwargs.get('version'))
+
+
     for key, value in iteritems(kwargs):
         setattr(existing_milestone, key, value)
     response = utils.checked_api_call(
