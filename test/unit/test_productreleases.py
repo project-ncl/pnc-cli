@@ -19,29 +19,20 @@ def test_list_product_releases(mock):
     assert result == 'list of all releases'
 
 
-@patch('pnc_cli.productreleases.create_product_release_object')
-@patch('pnc_cli.productreleases.releases_api.create_new')
-@patch('pnc_cli.productreleases.productversions_api.get_specific')
-def test_create_release_badversion(mock_get_specific, mock_create_new, mock_create_object):
-    result = productreleases.create_release(version='x.x')
-    assert not mock_create_object.called
-    assert not mock_create_new.called
-    assert not mock_get_specific.called
-    assert not result
-
-
 @patch('pnc_cli.productreleases.create_product_release_object', return_value='created release')
 @patch('pnc_cli.productreleases.releases_api.create_new', return_value=MagicMock(content='created release'))
 @patch('pnc_cli.productreleases.productversions_api.get_specific',
        return_value=MagicMock(content=MagicMock(version='1.0')))
-def test_create_release(mock_get_specific, mock_create_new, mock_create_object):
+@patch('pnc_cli.productmilestones.get_product_version_from_milestone', return_value=1)
+def test_create_release(mock_get_milestone_version, mock_get_specific, mock_create_new, mock_create_object):
     result = productreleases.create_release(version='0.DR1',
                                             release_date='2016-01-01',
                                             download_url='https://tom.com',
                                             product_version_id=1,
                                             product_milestone_id=1,
                                             support_level='EOL')
-    mock_get_specific.assert_called_once_with(id=1)
+    mock_get_milestone_version.assert_called_once_with(1)
+    mock_get_specific.assert_called_once_with(id='1')
     mock_create_new.assert_called_once_with(body='created release')
     mock_create_object.assert_called_once_with(version='1.0.0.DR1',
                                                release_date='2016-01-01',
@@ -67,33 +58,13 @@ def test_get_release(mock):
     assert result == 'single release'
 
 
-@patch('pnc_cli.productreleases.releases_api.get_specific',
-       return_value=MagicMock(content='release'))
-def test_product_release_exists(mock):
-    result = productreleases._product_release_exists(1)
-    mock.assert_called_once_with(id=1)
-    assert result
-
-
-@patch('pnc_cli.productreleases._product_release_exists', return_value=False)
-@patch('pnc_cli.productreleases.releases_api.get_specific')
-@patch('pnc_cli.productreleases.releases_api.update')
-def test_update_release_notexist(mock_update, mock_get_specific, mock_release_exists):
-    result = productreleases.update_release(1)
-    mock_release_exists.assert_called_once_with(1)
-    assert not mock_get_specific.called
-    assert not mock_update.called
-
-
-@patch('pnc_cli.productreleases._product_release_exists', return_value=True)
 @patch('pnc_cli.productreleases.releases_api.get_specific')
 @patch('pnc_cli.productreleases.releases_api.update', return_value=MagicMock(content='updated release'))
-def test_update_release(mock_update, mock_get_specific, mock_release_exists):
+def test_update_release(mock_update, mock_get_specific):
     mock = MagicMock()
     mockcontent = MagicMock(content=mock)
     mock_get_specific.return_value = mockcontent
     result = productreleases.update_release(id=1, version='2.2.2.GA', support_level='EOL')
-    mock_release_exists.assert_called_once_with(1)
     assert getattr(mock, 'version') == '2.2.2.GA'
     assert getattr(mock, 'support_level') == 'EOL'
     mock_update.assert_called_once_with(id=1, body=mock)

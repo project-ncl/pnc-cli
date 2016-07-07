@@ -65,10 +65,4 @@ def test_update_milestone(mock_get_version, mock_unique, mock_update, mock_get_s
     assert result == 'updated milestone'
 
 
-
-
-
-
-
-
-
+#TODO: test new functions in this module
