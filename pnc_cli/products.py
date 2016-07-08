@@ -12,7 +12,7 @@ products_api = ProductsApi(utils.get_api_client())
 __author__ = 'thauser'
 
 
-def _create_product_object(**kwargs):
+def create_product_object(**kwargs):
     created_product = ProductRest()
     for key, value in iteritems(kwargs):
         setattr(created_product, key, value)
@@ -31,7 +31,7 @@ def create_product(name, **kwargs):
     """
     Create a new Product
     """
-    product = _create_product_object(name=name, **kwargs)
+    product = create_product_object(name=name, **kwargs)
     response = utils.checked_api_call(products_api, 'create_new', body=product)
     if response:
         return response.content

@@ -54,7 +54,7 @@ def test_update(new_product):
     NEW_DESC = 'PNC CLI: test_products_api updated description'
     newname = 'newname' + testutils.gen_random_name()
     product_api.update(id=new_product.id,
-                       body=products._create_product_object(name=newname, description=NEW_DESC))
+                       body=products.create_product_object(name=newname, description=NEW_DESC))
     updated_prod = product_api.get_specific(id=new_product.id).content
     assert updated_prod.name == newname and updated_prod.description == NEW_DESC
 
