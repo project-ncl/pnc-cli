@@ -144,7 +144,7 @@ class ArtifactRest(object):
         :param artifact_quality: The artifact_quality of this ArtifactRest.
         :type: str
         """
-        allowed_values = ["BUILT", "VERIFIED", "TESTED", "DEPRECATED", "BLACKLISTED", "IMPORTED"]
+        allowed_values = ["NEW", "VERIFIED", "TESTED", "DEPRECATED", "BLACKLISTED"]
         if artifact_quality not in allowed_values:
             raise ValueError(
                 "Invalid value for `artifact_quality`, must be one of {0}"
