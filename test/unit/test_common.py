@@ -1,5 +1,5 @@
 import argh
-from mock import MagicMock, patch, create_autospec, Mock, PropertyMock
+from mock import MagicMock, patch, create_autospec
 # used for mock's autospec
 import pytest
 from pnc_cli.swagger_client import BuildconfigurationsApi
