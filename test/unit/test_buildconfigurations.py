@@ -4,6 +4,7 @@ __author__ = 'thauser'
 from mock import MagicMock, patch, call
 from pnc_cli import buildconfigurations
 from pnc_cli.swagger_client import BuildConfigurationRest
+from pnc_cli.swagger_client import ProductsApi
 
 
 def test_create_build_conf_object():
@@ -168,12 +169,12 @@ def test_list_build_configurations_for_product_name(mock_products_api, mock_get_
 @patch('pnc_cli.common.set_id', return_value=1)
 @patch('pnc_cli.buildconfigurations.configs_api.get_all_by_product_version_id',
        return_value=MagicMock(content=[1, 2, 3]))
-@patch('pnc_cli.buildconfigurations.products_api', autospec=True)
+@patch('pnc_cli.buildconfigurations.products_api', autospec=ProductsApi)
 def test_list_build_configurations_for_product_version(mock_products_api, mock_get_all_by_product_version_id,
                                                        mock_set_id):
     result = buildconfigurations.list_build_configurations_for_product_version(product_id=1, version_id=2)
     mock_set_id.assert_called_once_with(mock_products_api, 1, None)
-    mock_get_all_by_product_version_id.assert_called_once_with(product_id=1, version_id=2, page_size=20, sort="", q="")
+    mock_get_all_by_product_version_id.assert_called_once_with(product_id=1, version_id=2, page_size=200, sort="", q="")
     assert result == [1, 2, 3]
 
 

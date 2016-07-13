@@ -203,16 +203,12 @@ def list_build_configurations_for_project(id=None, name=None, page_size=200, sor
     List all BuildConfigurations associated with the given Project.
     """
     found_id = common.set_id(projects_api, id, name)
-    if not found_id:
-        return
-
     response = utils.checked_api_call(configs_api, 'get_all_by_project_id', project_id=found_id, page_size=page_size,
                                       sort=sort, q=q)
     if response:
         return response.content
 
 
-# TODO: allow specifying product name / version 'version'?
 @arg("product_id", help="ID of the Product which contains the desired ProductVersion.",
      type=types.existing_product_id)
 @arg("version_id", help="ID of the ProductVersion to list BuildConfigurations for.",
@@ -220,18 +216,11 @@ def list_build_configurations_for_project(id=None, name=None, page_size=200, sor
 @arg("-p", "--page-size", help="Limit the amount of build records returned")
 @arg("-s", "--sort", help="Sorting RSQL")
 @arg("-q", help="RSQL query")
-def list_build_configurations_for_product_version(product_id, version_id, page_size=20, sort="", q=""):
+def list_build_configurations_for_product_version(product_id, version_id, page_size=200, sort="", q=""):
     """
     List all BuildConfigurations associated with the given ProductVersion
     """
     found_product_id = common.set_id(products_api, product_id, None)
-    if not found_product_id:
-        return
-
-    if not common.id_exists(versions_api, version_id):
-        # logging.error("No ProductVersion with ID {} exists.".format(version_id))
-        return
-
     response = utils.checked_api_call(configs_api, 'get_all_by_product_version_id', product_id=found_product_id,
                                       version_id=version_id, page_size=page_size, sort=sort, q=q)
     if response:
