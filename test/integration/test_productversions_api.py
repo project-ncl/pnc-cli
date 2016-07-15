@@ -60,10 +60,6 @@ def test_update(new_version):
     assert updated.version == new_version.version
 
 
-def test_version_exists(new_version):
-    assert productversions.version_exists(new_version.id)
-
-
 def test_get_build_configuration_sets_no_id():
     testutils.assert_raises_valueerror(versions_api, 'get_build_configuration_sets', id=None)
 
