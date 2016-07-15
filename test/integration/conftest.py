@@ -96,8 +96,8 @@ def get_unique_version(product_id):
 
 @pytest.fixture(scope='module')
 def new_milestone(new_version):
-    starting = utils.unix_time_millis(datetime.datetime(2016, 1, 2, 12, 0, 0))
-    ending = utils.unix_time_millis(datetime.datetime(2017, 1, 2, 12, 0, 0))
+    starting = '2015-01-01'
+    ending = '2016-01-01'
     milestone = productmilestones.create_milestone(
         version='1.build3',
         starting_date=starting,
@@ -109,7 +109,7 @@ def new_milestone(new_version):
 
 @pytest.fixture(scope='module')
 def new_release(new_milestone):
-    release_time = utils.unix_time_millis(datetime.datetime(2016, 1, 2, 12, 0, 0))
+    release_time = '2016-01-01'
     release = productreleases.create_release(
         version="1.DR1",
         release_date=release_time,
