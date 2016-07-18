@@ -1,16 +1,16 @@
 from argh import arg
 from six import iteritems
 
-import logging
+import pnc_cli.common as common
+import pnc_cli.types as types
+import pnc_cli.utils as utils
 from pnc_cli import swagger_client
-from pnc_cli import utils
-from pnc_cli import buildconfigurations
-from pnc_cli import productversions
-from pnc_cli.swagger_client.apis.buildconfigurationsets_api import BuildconfigurationsetsApi
 from pnc_cli.swagger_client.apis.buildconfigurations_api import BuildconfigurationsApi
+from pnc_cli.swagger_client.apis.buildconfigurationsets_api import BuildconfigurationsetsApi
 
-sets_api = BuildconfigurationsetsApi(utils.get_api_client())
-configs_api = BuildconfigurationsApi(utils.get_api_client())
+client = utils.get_api_client()
+sets_api = BuildconfigurationsetsApi(client)
+configs_api = BuildconfigurationsApi(client)
 
 
 def _create_build_config_set_object(**kwargs):
@@ -20,15 +20,7 @@ def _create_build_config_set_object(**kwargs):
     return created_build_config_set
 
 
-def get_build_config_set_id_by_name(search_name):
-    sets = sets_api.get_all(q='name=='+search_name).content
-    if sets:
-        config_set = sets[0]
-        return config_set.id
-    return None
-
-
-@arg("-p", "--page-size", help="Limit the amount of build records returned")
+@arg("-p", "--page-size", help="Limit the amount of build records returned", type=int)
 @arg("-s", "--sort", help="Sorting RSQL")
 @arg("-q", help="RSQL query")
 def list_build_configuration_sets(page_size=200, sort="", q=""):
@@ -40,89 +32,45 @@ def list_build_configuration_sets(page_size=200, sort="", q=""):
         return response.content
 
 
-@arg("name", help="Name for the new BuildConfigurationSet.")
+@arg("name", help="Name for the new BuildConfigurationSet.", type=types.unique_bc_set_name)
 @arg("-pvi", "--product-version-id",
-     help="ID of the product version to associate this BuildConfigurationSet.")
-@arg("-bcs", "--build-configuration-ids", type=int, nargs='+',
+     help="ID of the product version to associate this BuildConfigurationSet.",
+     type=types.existing_product_version)
+@arg("-bcs", "--build-configuration-ids", type=types.existing_bc_id, nargs='+',
      help="Space separated list of build-configurations to include in the set.")
 def create_build_configuration_set(**kwargs):
     """
     Create a new BuildConfigurationSet.
     """
-    name = kwargs.get('name')
-    if get_build_config_set_id_by_name(name):
-        logging.error("A BuildConfigurationSet with name {0} already exists.".format(
-            name))
-        return
-
-    version_id = kwargs.get('product_version_id')
-    if version_id and not productversions.version_exists(version_id):
-        logging.error("No ProductVersion with id {0} exists.".format(version_id))
-        return
-
-    build_configurations = kwargs.get('build_configuration_ids')
-    failed = False
-    if build_configurations:
-        for config in build_configurations:
-            if not buildconfigurations.config_id_exists(config):
-                logging.error(
-                    "No BuildConfiguration with id {0} exists.".format(config))
-                failed = True
-    if failed:
-        return
-
     config_set = _create_build_config_set_object(**kwargs)
     response = utils.checked_api_call(sets_api, 'create_new', body=config_set)
     if response:
         return response.content
 
 
-@arg("-id", "--id", help="ID of the BuildConfigurationSet to retrieve")
-@arg("-n", "--name", help="Name of the BuildConfigurationSet to retrieve")
+@arg("-id", "--id", help="ID of the BuildConfigurationSet to retrieve", type=types.existing_bc_set_id)
+@arg("-n", "--name", help="Name of the BuildConfigurationSet to retrieve", type=types.existing_bc_set_name)
 def get_build_configuration_set(id=None, name=None):
     """
     Get a specific BuildConfigurationSet by name or ID
     """
-    found_id = get_set_id(id, name)
-    if not found_id:
-        return
+    found_id = common.set_id(sets_api, id, name)
     response = utils.checked_api_call(sets_api, 'get_specific', id=found_id)
     if response:
         return response.content
 
 
-@arg("id", help="ID of the BuildConfigurationSet to update.")
-@arg("-n", "--name", help="Updated name for the BuildConfigurationSet.")
+@arg("id", help="ID of the BuildConfigurationSet to update.", type=types.existing_bc_set_id)
+@arg("-n", "--name", help="Updated name for the BuildConfigurationSet.", type=types.unique_bc_set_name)
 @arg("-pvi", "--product-version-id",
-     help="Updated product version ID for the BuildConfigurationSet.")
-@arg("-bcs", "--build-configuration-ids", type=int, nargs='+',
+     help="Updated product version ID for the BuildConfigurationSet.", type=types.existing_product_version)
+@arg("-bcs", "--build-configuration-ids", type=types.existing_bc_id, nargs='+',
      help="Space separated list of build-configurations to include in the set.")
-# TODO: seems like a bug in PNC prevents us from updating the buildconfigurationset
 def update_build_configuration_set(id, **kwargs):
     """
     Update a BuildConfigurationSet
     """
-    invalid_bcs = False
-    if not get_set_id(id, None):
-        return
     set_to_update = utils.checked_api_call(sets_api, 'get_specific', id=id).content
-
-    pvi = kwargs.get('product_version_id')
-    if pvi and not productversions.get_product_version(id=pvi):
-        logging.error("There is no ProductVersion with ID {}".format(pvi))
-        return
-
-    bc_ids = kwargs.get('build_configuration_ids')
-
-    if bc_ids:
-        for id in bc_ids:
-            if not buildconfigurations.get_build_configuration(id=id):
-                logging.error("There is no BuildConfiguration with ID {}".format(id))
-                invalid_bcs = True
-
-    if invalid_bcs:
-        logging.error("Attempted to add non-existing BuildConfigurations to BuildConfigurationSet.")
-        return
 
     for key, value in kwargs.items():
         if value is not None:
@@ -133,93 +81,59 @@ def update_build_configuration_set(id, **kwargs):
         return response.content
 
 
-@arg("-i", "--id", help="ID of the BuildConfigurationSet to delete.")
-@arg("-n", "--name", help="Name of the BuildConfigurationSet to delete.")
+@arg("-i", "--id", help="ID of the BuildConfigurationSet to delete.", type=types.existing_bc_set_id)
+@arg("-n", "--name", help="Name of the BuildConfigurationSet to delete.", type=types.existing_bc_set_name)
 # TODO: in order to delete a config set successfully, any buildconfigsetrecords must be deleted first
 # TODO: it may be impossible / undesireable to remove
 # buildconfigsetrecords. so perhaps just check and abort
 def delete_build_configuration_set(id=None, name=None):
-    set_id = get_set_id(id, name)
-    if not set_id:
-        return
+    set_id = common.set_id(sets_api, id, name)
     response = utils.checked_api_call(sets_api, 'delete_specific', id=set_id)
     if response:
         return response.content
 
 
-def _set_exists(set_id):
-    existing = utils.checked_api_call(sets_api, 'get_specific', id=set_id)
-    if not existing:
-        return False
-    return True
-
-
-def get_set_id(set_id, name):
-    if set_id:
-        if not _set_exists(set_id):
-            logging.error("There is no BuildConfigurationSet with ID {}.".format(set_id))
-            return
-    elif name:
-        set_id = get_build_config_set_id_by_name(name)
-        if not set_id:
-            logging.error("There is no BuildConfigurationSet with name {}.".format(name))
-            return
-    else:
-        logging.error("Either a BuildConfigurationSet ID or name is required.")
-        return
-    return set_id
-
-
-@arg("-i", "--id", help="ID of the BuildConfigurationSet to build.")
-@arg("-n", "--name", help="Name of the BuildConfigurationSet to build.")
+@arg("-i", "--id", help="ID of the BuildConfigurationSet to build.", type=types.existing_bc_set_id)
+@arg("-n", "--name", help="Name of the BuildConfigurationSet to build.", type=types.existing_bc_set_name)
 def build_set(id=None, name=None):
     """
     Start a build of the given BuildConfigurationSet
     """
-    found_id = get_set_id(id, name)
-    if not found_id:
-        return
+    found_id = common.set_id(sets_api, id, name)
     response = utils.checked_api_call(sets_api, 'build', id=found_id)
     if response:
         return response.content
 
 
-@arg("-i", "--id", help="ID of the BuildConfigurationSet to build.")
-@arg("-n", "--name", help="Name of the BuildConfigurationSet to build.")
-@arg("-p", "--page-size", help="Limit the amount of build records returned")
+@arg("-i", "--id", help="ID of the BuildConfigurationSet to build.", type=types.existing_bc_set_id)
+@arg("-n", "--name", help="Name of the BuildConfigurationSet to build.", type=types.existing_bc_set_name)
+@arg("-p", "--page-size", help="Limit the amount of build records returned", type=int)
 @arg("-s", "--sort", help="Sorting RSQL")
 @arg("-q", help="RSQL query")
 def list_build_configurations_for_set(id=None, name=None, page_size=200, sort="", q=""):
     """
     List all build configurations in a given BuildConfigurationSet.
     """
-    found_id = get_set_id(id, name)
-    if not found_id:
-        return
-    response = utils.checked_api_call(sets_api, 'get_configurations', id=id, page_size=page_size, sort=sort, q=q)
+    found_id = common.set_id(sets_api, id, name)
+    response = utils.checked_api_call(sets_api, 'get_configurations', id=found_id, page_size=page_size, sort=sort, q=q)
     if response:
         return response.content
 
 
-@arg("-sid", "--set-id", help="ID of the BuildConfigurationSet to add to")
-@arg("-sn", "--set-name", help="Name of the BuildConfigurationSet to add to")
+@arg("-sid", "--set-id", help="ID of the BuildConfigurationSet to add to", type=types.existing_bc_set_id)
+@arg("-sn", "--set-name", help="Name of the BuildConfigurationSet to add to", type=types.existing_bc_set_name)
 @arg("-cid", "--config-id",
-     help="ID of the build configuration to add to the given set")
+     help="ID of the build configuration to add to the given set", type=types.existing_bc_id)
 @arg("-cn", "--config-name",
-     help="Name of the build configuration to add to the given set")
+     help="Name of the build configuration to add to the given set", type=types.existing_bc_name)
 def add_build_configuration_to_set(
         set_id=None, set_name=None, config_id=None, config_name=None):
     """
     Add a build configuration to an existing BuildConfigurationSet
     """
-    config_set_id = get_set_id(set_id, set_name)
-    if not config_set_id:
-        return
-
-    bc = buildconfigurations.get_build_configuration(id=config_id, name=config_name)
-    if not bc:
-        return
-
+    config_set_id = common.set_id(sets_api, set_id, set_name)
+    bc_id = common.set_id(configs_api, config_id, config_name)
+    bc = common.get_entity(configs_api, bc_id)
     response = utils.checked_api_call(
         sets_api,
         'add_configuration',
@@ -228,17 +142,16 @@ def add_build_configuration_to_set(
     if response:
         return response.content
 
-@arg("-sid", "--set-id", help="ID of the BuildConfigurationSet to remove from")
-@arg("-sn", "--set-name", help="Name of the BuildConfigurationSet to remove from")
-@arg("-cid", "--config-id", help="ID of the BuildConfiguration to remove from the set")
-@arg("-cn", "--config-name", help="Name of the BuildConfiguration to remove from the set")
+
+@arg("-sid", "--set-id", help="ID of the BuildConfigurationSet to remove from", type=types.existing_bc_set_id)
+@arg("-sn", "--set-name", help="Name of the BuildConfigurationSet to remove from", type=types.existing_bc_set_name)
+@arg("-cid", "--config-id", help="ID of the BuildConfiguration to remove from the set",
+     type=types.existing_bc_id)
+@arg("-cn", "--config-name", help="Name of the BuildConfiguration to remove from the set",
+     type=types.existing_bc_name)
 def remove_build_configuration_from_set(set_id=None, set_name=None, config_id=None, config_name=None):
-    config_set_id = get_set_id(set_id,set_name)
-    if not config_set_id:
-        return
-    bc_id = buildconfigurations.get_config_id(config_id,config_name)
-    if not bc_id:
-        return
+    config_set_id = common.set_id(sets_api, set_id, set_name)
+    bc_id = common.set_id(configs_api, config_id, config_name)
     response = utils.checked_api_call(
         sets_api,
         'remove_configuration',
@@ -248,18 +161,16 @@ def remove_build_configuration_from_set(set_id=None, set_name=None, config_id=No
         return response.content
 
 
-@arg("-i", "--id", help="ID of the BuildConfigurationSet")
-@arg("-n", "--name", help="Name of the BuildConfigurationSet")
-@arg("-p", "--page-size", help="Limit the amount of build records returned")
+@arg("-i", "--id", help="ID of the BuildConfigurationSet", type=types.existing_bc_set_id)
+@arg("-n", "--name", help="Name of the BuildConfigurationSet", type=types.existing_bc_set_name)
+@arg("-p", "--page-size", help="Limit the amount of build records returned", type=int)
 @arg("-s", "--sort", help="Sorting RSQL")
 @arg("-q", help="RSQL query")
 def list_build_records_for_set(id=None, name=None, page_size=200, sort="", q=""):
     """
     List all build records for a BuildConfigurationSet
     """
-    found_id = get_set_id(id, name)
-    if not found_id:
-        return
+    found_id = common.set_id(sets_api, id, name)
     response = utils.checked_api_call(sets_api, 'get_build_records', id=found_id, page_size=page_size, sort=sort, q=q)
     if response:
         return response.content

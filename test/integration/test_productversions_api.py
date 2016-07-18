@@ -1,8 +1,7 @@
 import pytest
-import conftest
 
+import test.integration.conftest as conftest
 from pnc_cli import utils
-from pnc_cli import productversions
 from pnc_cli.swagger_client.apis import ProductversionsApi
 from test import testutils
 
@@ -58,10 +57,6 @@ def test_update(new_version):
     versions_api.update(id=new_version.id, body=new_version)
     updated = versions_api.get_specific(id=new_version.id).content
     assert updated.version == new_version.version
-
-
-def test_version_exists(new_version):
-    assert productversions.version_exists(new_version.id)
 
 
 def test_get_build_configuration_sets_no_id():

@@ -7,7 +7,7 @@ __author__ = 'thauser'
 @patch('pnc_cli.runningbuilds.running_api.get_all', return_value=MagicMock(content=[1, 2, 3]))
 def test_list_running_builds(mock):
     result = runningbuilds.list_running_builds()
-    mock.assert_called_once_with(page_size=200, q="", sort="")
+    mock.assert_called_once_with(page_size=200, sort="")
     assert result == [1, 2, 3]
 
 

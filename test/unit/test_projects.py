@@ -1,8 +1,11 @@
 __author__ = 'Tom'
 from mock import MagicMock, patch
-from pnc_cli import projects
+import argh
+import pytest
+
+import pnc_cli.projects as projects
 from pnc_cli.swagger_client import ProjectRest
-from test import testutils
+from pnc_cli.swagger_client import ProjectsApi
 
 
 def test_create_project_object():
@@ -11,67 +14,6 @@ def test_create_project_object():
     compare.description = 'description'
     result = projects._create_project_object(name='test', description='description')
     assert result.to_dict() == compare.to_dict()
-
-
-@patch('pnc_cli.projects._project_exists', return_value=True)
-def test_get_project_id_id(mock):
-    result = projects.get_project_id(1, None)
-    mock.assert_called_once_with(1)
-    assert result == 1
-
-
-@patch('pnc_cli.projects._project_exists', return_value=False)
-def test_get_project_id_notexist(mock):
-    result = projects.get_project_id(1, None)
-    mock.assert_called_once_with(1)
-    assert not result
-
-
-@patch('pnc_cli.projects._get_project_id_by_name', return_value=1)
-def test_get_project_id_name(mock):
-    result = projects.get_project_id(None, 'testerino')
-    mock.assert_called_once_with('testerino')
-    assert result == 1
-
-
-@patch('pnc_cli.projects._get_project_id_by_name', return_value=None)
-def test_get_project_id_name_notexist(mock):
-    result = projects.get_project_id(None, 'testerino')
-    mock.assert_called_once_with('testerino')
-    assert not result
-
-
-def test_get_project_id_none():
-    result = projects.get_project_id(None, None)
-    assert not result
-
-
-@patch('pnc_cli.projects.projects_api.get_all', return_value=testutils.create_mock_list_with_name_attribute())
-def test_get_project_id_by_name(mock):
-    result = projects._get_project_id_by_name('testerino')
-    mock.assert_called_once_with(q='name==testerino')
-    assert result == 1
-
-
-@patch('pnc_cli.projects.projects_api.get_all', return_value=MagicMock(content=[]))
-def test_get_project_id_by_name_notexist(mock):
-    result = projects._get_project_id_by_name('doesntexist')
-    mock.assert_called_once_with(q='name==doesntexist')
-    assert not result
-
-
-@patch('pnc_cli.projects.projects_api.get_specific', return_value=MagicMock(content=[MagicMock(id=1), MagicMock(id=2)]))
-def test_project_exists(mock_get_specific):
-    result = projects._project_exists(1)
-    mock_get_specific.assert_called_once_with(id='1')
-    assert result
-
-
-@patch('pnc_cli.projects.projects_api.get_specific', return_value=None)
-def test_project_exists_notexist(mock_get_specific):
-    result = projects._project_exists(10)
-    mock_get_specific.assert_called_once_with(id='10')
-    assert not result
 
 
 @patch('pnc_cli.projects._create_project_object', return_value='created-project')
@@ -83,21 +25,9 @@ def test_create_project(mock_create_new, mock_create_project_object):
     assert result == 'SUCCESS'
 
 
-def test_update_project_no_id():
-    result = projects.update_project(None, name='hi')
-    assert not result
-
 def test_update_project_no_modifications():
-    result = projects.update_project(1)
-    assert not result
-
-
-@patch('pnc_cli.projects.projects_api.get_specific', return_value=None)
-def test_update_project_notexist(mock_get_specific):
-    result = projects.update_project(1, name='teter')
-    mock_get_specific.assert_called_once_with(id=1)
-    assert not result
-
+    with pytest.raises(argh.exceptions.CommandError):
+        result = projects.update_project(1)
 
 
 @patch('pnc_cli.projects.projects_api.get_specific')
@@ -113,58 +43,44 @@ def test_update_project(mock_update, mock_get_specific):
     assert result == 'SUCCESS'
 
 
-@patch('pnc_cli.projects.get_project_id', return_value=1)
+@patch('pnc_cli.common.set_id', return_value=1)
 @patch('pnc_cli.projects.projects_api.get_specific', return_value=MagicMock(content='SUCCESS'))
-def test_get_project_id(mock_get_specific, mock_get_project_id):
+@patch('pnc_cli.projects.projects_api', autospec=ProjectsApi)
+def test_get_project_id(mock_projects_api, mock_get_specific, mock_set_id):
     result = projects.get_project(id=1)
-    mock_get_project_id.assert_called_once_with(1, None)
+    mock_set_id.assert_called_once_with(mock_projects_api, 1, None)
     mock_get_specific.assert_called_once_with(id=1)
     assert result == 'SUCCESS'
 
 
-@patch('pnc_cli.projects.get_project_id', return_value=1)
+@patch('pnc_cli.common.set_id', return_value=1)
 @patch('pnc_cli.projects.projects_api.get_specific', return_value=MagicMock(content='SUCCESS'))
-def test_get_project_name(mock_get_specific, mock_get_project_id):
+@patch('pnc_cli.projects.projects_api', autospec=ProjectsApi)
+def test_get_project_name(mock_projects_api, mock_get_specific, mock_set_id):
     result = projects.get_project(name='testerino')
-    mock_get_project_id.assert_called_once_with(None, 'testerino')
+    mock_set_id.assert_called_once_with(mock_projects_api, None, 'testerino')
     mock_get_specific.assert_called_once_with(id=1)
     assert result == 'SUCCESS'
 
 
-@patch('pnc_cli.projects.get_project_id', return_value=None)
-@patch('pnc_cli.projects.projects_api.get_specific')
-def test_get_project_notexist(mock_get_specific, mock_get_project_id):
-    result = projects.get_project(name='testerino')
-    mock_get_project_id.assert_called_once_with(None, 'testerino')
-    assert not mock_get_specific.called
-    assert not result
-
-
-@patch('pnc_cli.projects.get_project_id', return_value=1)
+@patch('pnc_cli.common.set_id', return_value=1)
 @patch('pnc_cli.projects.projects_api.delete_specific', return_value=MagicMock(content='SUCCESS'))
-def test_delete_project_id(mock_delete, mock_get_project_id):
+@patch('pnc_cli.projects.projects_api', autospec=ProjectsApi)
+def test_delete_project_id(mock_projects_api, mock_delete, mock_set_id):
     result = projects.delete_project(id=1)
-    mock_get_project_id.assert_called_once_with(1, None)
+    mock_set_id.assert_called_once_with(mock_projects_api, 1, None)
     mock_delete.assert_called_once_with(id=1)
     assert result == 'SUCCESS'
 
 
-@patch('pnc_cli.projects.get_project_id', return_value=1)
+@patch('pnc_cli.common.set_id', return_value=1)
 @patch('pnc_cli.projects.projects_api.delete_specific', return_value=MagicMock(content='SUCCESS'))
-def test_delete_project_name(mock_delete, mock_get_project_id):
+@patch('pnc_cli.projects.projects_api', autospec=ProjectsApi)
+def test_delete_project_name(mock_projects_api, mock_delete, mock_set_id):
     result = projects.delete_project(name='testerino')
-    mock_get_project_id.assert_called_once_with(None, 'testerino')
+    mock_set_id.assert_called_once_with(mock_projects_api, None, 'testerino')
     mock_delete.assert_called_once_with(id=1)
     assert result == 'SUCCESS'
-
-
-@patch('pnc_cli.projects.get_project_id', return_value=None)
-@patch('pnc_cli.projects.projects_api.delete_specific')
-def test_delete_project_notexist(mock_delete, mock_get_project_id):
-    result = projects.delete_project(name='testerino')
-    mock_get_project_id.assert_called_once_with(None, 'testerino')
-    assert not mock_delete.called
-    assert not result
 
 
 @patch('pnc_cli.projects.projects_api.get_all', return_value=MagicMock(content='SUCCESS'))

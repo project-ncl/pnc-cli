@@ -1,7 +1,7 @@
+import getpass
 import json
 import logging
-import getpass
-import datetime
+
 import requests
 
 requests.packages.urllib3.disable_warnings()
@@ -13,6 +13,7 @@ except ImportError:
 import re
 import errno
 import os
+import datetime
 
 try:
     input = raw_input
@@ -94,6 +95,7 @@ if not found:
 global authtoken
 authtoken = get_auth_token(config)
 
+
 def get_api_client():
     pnc_rest_url = config.get('PNC', 'pncUrl').rstrip('/') + '/pnc-rest/rest'
     if authtoken:
@@ -105,9 +107,9 @@ def get_api_client():
     return apiclient
 
 
-def is_valid_version(version):
+def is_valid_version(version, regex):
     if version is not None:
-        pattern = re.compile('\d*\.\w*')
+        pattern = re.compile(regex)
         return pattern.match(version)
 
 
@@ -126,7 +128,7 @@ epoch = datetime.datetime.utcfromtimestamp(0)
 def unix_time_millis(dt):
     millis = int((dt - epoch).total_seconds() * 1000.0)
     return millis
-    
+
 
 def contains_only_none_values(dictionary):
     for key in dictionary.keys():
