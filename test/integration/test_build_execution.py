@@ -71,13 +71,12 @@ def test_run_single_build(new_config):
     build_record_checks(build_record)
 
 
-@pytest.mark.skip(reason="PNC doesn't complete builds in a reasonable time")
 def test_run_group_build(request, new_set, new_environment, new_project):
     assert (new_set is not None, 'Unable to create Build Configuration Group')
-
-    config_one = new_config(request, new_environment, new_project)
-    config_two = new_config(request, new_environment, new_project)
-    config_three = new_config(request, new_environment, new_project)
+    assert (new_environment is not None, 'Unable to create Build Environment')
+    config_one = new_config(request, new_project, new_environment)
+    config_two = new_config(request, new_project, new_environment)
+    config_three = new_config(request, new_project, new_environment)
     sets_api.add_configuration(id=new_set.id, body=config_one)
     sets_api.add_configuration(id=new_set.id, body=config_two)
     sets_api.add_configuration(id=new_set.id, body=config_three)
