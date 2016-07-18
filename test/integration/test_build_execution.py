@@ -52,7 +52,6 @@ def get_records_api():
     records_api = BuildrecordsApi(utils.get_api_client())
 
 
-@pytest.mark.skip(reason="PNC doesn't complete builds in reasonable time")
 def test_run_single_build(new_config):
     """ Run a single build configuration defined by the 'new_config' method
     and verify the build output """
