@@ -5,23 +5,17 @@ import re
 import shutil
 import tempfile
 import time
-
-import pytest
-
-from git import Repo
 from urlparse import urlparse
 
-from pnc_cli import buildconfigurationsets
-from pnc_cli import buildconfigurations
-from pnc_cli import buildrecords
-from pnc_cli import projects
-from pnc_cli import environments
+import pytest
+from git import Repo
+
 from pnc_cli import utils
-from test import testutils
 from pnc_cli.swagger_client.apis.buildconfigurations_api import BuildconfigurationsApi
 from pnc_cli.swagger_client.apis.runningbuildrecords_api import RunningbuildrecordsApi
 from pnc_cli.swagger_client.apis.buildconfigurationsets_api import BuildconfigurationsetsApi
 from pnc_cli.swagger_client.apis.buildrecords_api import BuildrecordsApi
+from test.integration.conftest import new_config
 
 # setup logging to print timestamps
 logging.basicConfig(format='[%(asctime)s %(levelname)s] %(message)s')

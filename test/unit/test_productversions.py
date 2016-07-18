@@ -1,9 +1,8 @@
-import test.testutils
-
 __author__ = 'thauser'
+from mock import MagicMock, patch
+
 from pnc_cli import productversions
 from pnc_cli.swagger_client import ProductVersionRest
-from mock import MagicMock, patch
 
 
 def test_create_product_version_object():

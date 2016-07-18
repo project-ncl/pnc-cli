@@ -1,10 +1,8 @@
-import datetime
-
 __author__ = 'thauser'
 
 import pytest
+
 from test import testutils
-from pnc_cli import utils
 from pnc_cli import buildconfigurations
 from pnc_cli import buildconfigurationsets
 from pnc_cli import environments

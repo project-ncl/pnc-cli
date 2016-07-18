@@ -1,8 +1,7 @@
 import pytest
-import conftest
 
+import test.integration.conftest as conftest
 from pnc_cli import utils
-from pnc_cli import productversions
 from pnc_cli.swagger_client.apis import ProductversionsApi
 from test import testutils
 
