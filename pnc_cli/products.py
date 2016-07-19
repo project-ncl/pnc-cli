@@ -83,8 +83,6 @@ def list_versions_for_product(id=None, name=None, page_size=200, sort='', q=''):
     List all ProductVersions for a given Product
     """
     prod_id = common.set_id(products_api, id, name)
-    if not prod_id:
-        return
     response = utils.checked_api_call(
         products_api, 'get_product_versions', id=prod_id, page_size=page_size, sort=sort, q=q)
     if response:

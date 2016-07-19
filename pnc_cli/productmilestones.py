@@ -22,18 +22,6 @@ def create_milestone_object(**kwargs):
     return created_milestone
 
 
-@arg("-p", "--page-size", help="Limit the amount of ProductReleases returned", type=int)
-@arg("-s", "--sort", help="Sorting RSQL")
-@arg("-q", help="RSQL query")
-def list_milestones(page_size=200, q="", sort=""):
-    """
-    List all ProductMilestones
-    """
-    response = utils.checked_api_call(milestones_api, 'get_all', page_size=page_size, q=q, sort=sort).content
-    if response:
-        return response
-
-
 def check_date_order(start_arg, end_arg):
     start_date = datetime.datetime.strptime(start_arg, '%Y-%m-%d')
     end_date = datetime.datetime.strptime(end_arg, '%Y-%m-%d')
@@ -51,6 +39,18 @@ def unique_version_value(parent_product_version_id, version):
     for milestone in parent_product_version.product_milestones:
         if milestone.version == version:
             raise argparse.ArgumentTypeError("Error: version already being used for another milestone")
+
+
+@arg("-p", "--page-size", help="Limit the amount of ProductReleases returned", type=int)
+@arg("-s", "--sort", help="Sorting RSQL")
+@arg("-q", help="RSQL query")
+def list_milestones(page_size=200, q="", sort=""):
+    """
+    List all ProductMilestones
+    """
+    response = utils.checked_api_call(milestones_api, 'get_all', page_size=page_size, q=q, sort=sort).content
+    if response:
+        return response
 
 
 @arg("product_version_id", help="ID of the ProductVersion to create a ProductMilestone from.",
@@ -100,9 +100,6 @@ def get_milestone(id):
     return response.content
 
 
-# TODO: problem setting end date.
-# TODO: incorrect date parsing.
-# TODO: update_milestone does not work.
 @arg("id", help="ProductMilestone ID to update.", type=types.existing_product_milestone)
 @arg("-v, --version", help="New version for the ProductMilestone.", type=types.valid_version_update)
 @arg("-sd, --starting-date", help="New start date for the ProductMilestone.", type=types.valid_date)
@@ -124,10 +121,8 @@ def update_milestone(id, **kwargs):
     elif updated_ending_date:
         check_date_order(existing_start_date, updated_ending_date)
 
-
     if kwargs.get('version'):
         unique_version_value(get_product_version_from_milestone(id), kwargs.get('version'))
-
 
     for key, value in iteritems(kwargs):
         setattr(existing_milestone, key, value)

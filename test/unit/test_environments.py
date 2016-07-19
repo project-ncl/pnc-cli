@@ -1,3 +1,7 @@
+import argparse
+
+import pytest
+
 __author__ = 'thauser'
 from mock import MagicMock, patch
 
@@ -12,6 +16,30 @@ def test_create_environment_object():
     compare.name = 'test-environment'
     result = environments.create_environment_object(name='test-environment', build_type='java')
     assert result.to_dict() == compare.to_dict()
+
+
+def test_valid_attribute():
+    result = environments.valid_attribute('valid=attribute')
+    assert result == {'valid': 'attribute'}
+
+
+def test_valid_attribute_invalid():
+    with pytest.raises(argparse.ArgumentTypeError):
+        environments.valid_attribute('invalid')
+
+
+@patch('pnc_cli.environments.envs_api.get_all', return_value=MagicMock(content=None))
+def test_unique_iid(mock_get_all):
+    result = environments.unique_iid('unique-image-id')
+    mock_get_all.assert_called_once_with(q='systemImageId==unique-image-id')
+    assert result == 'unique-image-id'
+
+
+@patch('pnc_cli.environments.envs_api.get_all', return_value=MagicMock(content='not-unique'))
+def test_unique_iid_existing(mock_get_all):
+    with pytest.raises(argparse.ArgumentTypeError):
+        environments.unique_iid('not-unique')
+    mock_get_all.assert_called_once_with(q='systemImageId==not-unique')
 
 
 @patch('pnc_cli.environments.create_environment_object', return_value='test-environment-object')

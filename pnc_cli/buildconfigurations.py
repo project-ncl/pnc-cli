@@ -133,10 +133,9 @@ def delete_build_configuration(id=None, name=None):
     # ensure that this build configuration is not a dependency of any other build configuration.
     # list_build_configurations is an insufficient check because eventually there will be too many entities to check them all.
     # a better REST method for dependency checking is needed
-    isDep = False
     for config in list_build_configurations(page_size=1000000000):
         dep_ids = [str(val) for val in config.dependency_ids]
-        if dep_ids is not None and to_delete_id in dep_ids:
+        if dep_ids is not None and str(to_delete_id) in dep_ids:
             raise CommandError(
                 "BuildConfiguration ID {} is a dependency of BuildConfiguration {}.".format(to_delete_id, config.name))
 

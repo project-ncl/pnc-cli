@@ -4,6 +4,8 @@ from argh import arg
 from pnc_cli import utils
 from pnc_cli.swagger_client import RunningbuildrecordsApi
 
+import types
+
 running_api = RunningbuildrecordsApi(utils.get_api_client())
 
 
@@ -18,7 +20,7 @@ def list_running_builds(page_size=200, sort=""):
         return response.content
 
 
-@arg("id", help="ID of the RunningBuild to retrieve.")
+@arg("id", help="ID of the RunningBuild to retrieve.", type=types.existing_running_build)
 def get_running_build(id):
     """
     Get info about a specific RunningBuild
@@ -26,6 +28,3 @@ def get_running_build(id):
     response = utils.checked_api_call(running_api, 'get_specific', id=id)
     if response:
         return response.content
-    else:
-        logging.error("No RunningBuild with ID {} exists.".format(id))
-        return

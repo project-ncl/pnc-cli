@@ -1,3 +1,7 @@
+import argparse
+
+import pytest
+
 __author__ = 'thauser'
 from mock import MagicMock, patch
 
@@ -49,6 +53,13 @@ def test_create_product_version(mock_create_new_product_version, mock_create_pro
     assert result == 'SUCCESS'
 
 
+@patch('pnc_cli.productversions.version_exists_for_product', return_value=True)
+def test_create_product_version_exception(mock):
+    with pytest.raises(argparse.ArgumentTypeError):
+        productversions.create_product_version(1, '1.0')
+    mock.assert_called_once_with(1, '1.0')
+
+
 @patch('pnc_cli.productversions.versions_api.get_specific', return_value=MagicMock(content='mock-product-version'))
 def test_get_product_version(mock_get_specific):
     result = productversions.get_product_version(1)
@@ -59,8 +70,7 @@ def test_get_product_version(mock_get_specific):
 @patch('pnc_cli.productversions.version_exists_for_product', return_value=False)
 @patch('pnc_cli.productversions.versions_api.get_specific')
 @patch('pnc_cli.productversions.versions_api.update', return_value=MagicMock(content='SUCCESS'))
-@patch('pnc_cli.productversions.versions_api', autospec=True)
-def test_update_product_version(mock_versions_api, mock_update, mock_get_specific, mock_version_exists_for_product):
+def test_update_product_version(mock_update, mock_get_specific, mock_version_exists_for_product):
     # cannot set return value in patch decorator because the comparison to particular
     # mock object must be made
     mock = MagicMock()
@@ -73,3 +83,40 @@ def test_update_product_version(mock_versions_api, mock_update, mock_get_specifi
     # object returned by get_specific is appropriately modified
     assert getattr(mock, 'version') == '2.0'
     assert result == 'SUCCESS'
+
+
+@patch('pnc_cli.productversions.get_product_version', return_value=MagicMock(product_id=1))
+@patch('pnc_cli.productversions.version_exists_for_product', return_value=False)
+@patch('pnc_cli.productversions.versions_api.get_specific')
+@patch('pnc_cli.productversions.versions_api.update', return_value=MagicMock(content='SUCCESS'))
+def test_update_product_version_no_product_id(mock_update, mock_get_specific, mock_version_exists_for_product, mock_get_product_version):
+    # cannot set return value in patch decorator because the comparison to particular
+    # mock object must be made
+    mock = MagicMock()
+    mockcontent = MagicMock(content=mock)
+    mock_get_specific.return_value = mockcontent
+    result = productversions.update_product_version(1, version='2.0')
+    mock_get_product_version.assert_called_once_with(1)
+    mock_version_exists_for_product.assert_called_once_with('1', '2.0')
+    mock_get_specific.assert_called_once_with(id=1)
+    mock_update.assert_called_once_with(id=1, body=mock)
+    # object returned by get_specific is appropriately modified
+    assert getattr(mock, 'version') == '2.0'
+    assert result == 'SUCCESS'
+
+
+@patch('pnc_cli.productversions.version_exists_for_product', return_value=True)
+@patch('pnc_cli.productversions.versions_api.get_specific')
+@patch('pnc_cli.productversions.versions_api.update', return_value=MagicMock(content='SUCCESS'))
+def test_update_product_version_exception(mock_update, mock_get_specific, mock_version_exists_for_product):
+    # cannot set return value in patch decorator because the comparison to particular
+    # mock object must be made
+    mock = MagicMock()
+    mockcontent = MagicMock(content=mock)
+    mock_get_specific.return_value = mockcontent
+    with pytest.raises(argparse.ArgumentTypeError):
+        productversions.update_product_version(1, product_id='1', version='2.0')
+    mock_version_exists_for_product.assert_called_once_with('1', '2.0')
+    mock_get_specific.assert_not_called()
+    mock_update.assert_not_called()
+

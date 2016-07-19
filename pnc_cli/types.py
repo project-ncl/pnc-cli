@@ -17,6 +17,7 @@ from pnc_cli.swagger_client import ProductreleasesApi
 from pnc_cli.swagger_client import ProductsApi
 from pnc_cli.swagger_client import ProductversionsApi
 from pnc_cli.swagger_client import ProjectsApi
+from pnc_cli.swagger_client import RunningbuildrecordsApi
 
 api_client = utils.get_api_client()
 
@@ -43,6 +44,9 @@ license_api = LicensesApi(api_client)
 
 # Licenses API
 licenses_api = LicensesApi(api_client)
+
+# Running build records Api
+running_api = RunningbuildrecordsApi(api_client)
 
 bc_name_regex = "^[a-zA-Z0-9_.][a-zA-Z0-9_.-]*(?!\.git)+$"
 
@@ -106,6 +110,7 @@ def existing_product_version(id_input):
     if not common.id_exists(versions_api, id_input):
         raise argparse.ArgumentTypeError("no ProductVersion with ID {} exists".format(id_input))
     return id_input
+
 
 def valid_version_two_digits(version):
     if not utils.is_valid_version(version, '^\d+\.\d+'):
@@ -224,6 +229,14 @@ def existing_license(id_input):
     valid_id(id_input)
     if not common.id_exists(licenses_api, id_input):
         raise argparse.ArgumentTypeError("no License with ID {} exists".format(id_input))
+    return id_input
+
+
+# Running build records types
+def existing_running_build(id_input):
+    valid_id(id_input)
+    if not common.id_exists(running_api, id_input):
+        raise argparse.ArgumentTypeError("no RunningBuild with ID {} exists".format(id_input))
     return id_input
 
 

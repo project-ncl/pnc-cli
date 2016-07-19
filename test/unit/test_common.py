@@ -7,6 +7,7 @@ from pnc_cli.swagger_client import BuildconfigurationsApi
 import pnc_cli.common as common
 import test.testutils as utils
 
+
 @patch('pnc_cli.utils.checked_api_call', return_value=1)
 def test_id_exists(mock):
     api = 'test-api'
@@ -16,7 +17,7 @@ def test_id_exists(mock):
 
 
 @patch('pnc_cli.utils.checked_api_call', return_value=None)
-def test_id_notexist(mock):
+def test_id_exists_notexist(mock):
     api = 'test-api'
     search_id = 'search-id'
     assert not common.id_exists(api, search_id)
@@ -25,9 +26,16 @@ def test_id_notexist(mock):
 
 def test_get_id_by_name():
     mock_api = create_autospec(BuildconfigurationsApi)
-    mock_api.get_all.return_value=utils.create_mock_list_with_name_attribute()
+    mock_api.get_all.return_value = utils.create_mock_list_with_name_attribute()
     result = common.get_id_by_name(mock_api, 'testerino')
     assert result == 1
+
+
+def test_get_id_by_name_notfound():
+    mock_api = create_autospec(BuildconfigurationsApi)
+    mock_api.get_all.return_value = MagicMock(content=[])
+    result = common.get_id_by_name(mock_api, 'testerino')
+    assert not result
 
 
 def test_set_id():
@@ -50,6 +58,13 @@ def test_set_id_exception():
 
 def test_get_entity():
     mock_api = create_autospec(BuildconfigurationsApi)
-    mock_api.get_specific.return_value=MagicMock(content='specific')
+    mock_api.get_specific.return_value = MagicMock(content='specific')
     result = common.get_entity(mock_api, 1)
     assert result == 'specific'
+
+
+def test_get_entity():
+    mock_api = create_autospec(BuildconfigurationsApi)
+    mock_api.get_specific.return_value = None
+    result = common.get_entity(mock_api, 1)
+    assert not result

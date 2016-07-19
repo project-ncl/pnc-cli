@@ -1,3 +1,6 @@
+import pytest
+from argh import CommandError
+
 import test.testutils
 
 __author__ = 'thauser'
@@ -88,11 +91,15 @@ def test_get_build_configuration_id(mock_configs_api, mock_get_specific, mock_se
 
 @patch('pnc_cli.buildconfigurations.configs_api.get_specific')
 @patch('pnc_cli.buildconfigurations.configs_api.update', return_value=MagicMock(content='SUCCESS'))
-def test_update_build_configuration(mock_update, mock_get_specific):
+@patch('pnc_cli.common.get_entity', return_value='mock-entity')
+@patch('pnc_cli.buildconfigurations.projects_api', autospec=True)
+@patch('pnc_cli.buildconfigurations.envs_api', autospec=True)
+def test_update_build_configuration(mock_envs_api, mock_projects_api, mock_entity, mock_update, mock_get_specific):
     mock = MagicMock()
     mockcontent = MagicMock(content=mock)
     mock_get_specific.return_value = mockcontent
-    result = buildconfigurations.update_build_configuration(id=1, build_script='mvn install')
+    result = buildconfigurations.update_build_configuration(id=1, build_script='mvn install', project=1, environment=1)
+    mock_entity.assert_has_calls([call(mock_projects_api, 1), call(mock_envs_api, 1)])
     mock_get_specific.assert_called_once_with(id=1)
     # object returned by get_specific is appropriately modified
     assert getattr(mock, 'build_script') == 'mvn install'
@@ -117,23 +124,40 @@ def test_create_build_configuration(mock_projects_api, mock_envs_api, mock_entit
 
 
 @patch('pnc_cli.common.set_id', return_value=1)
+@patch('pnc_cli.buildconfigurations.list_build_configurations', return_value=[])
 @patch('pnc_cli.buildconfigurations.configs_api.delete_specific', return_value=MagicMock(content=True))
 @patch('pnc_cli.buildconfigurations.configs_api', autospec=True)
-def test_delete_build_configuration_id(mock_configs_api, mock_delete_specific, mock_set_id):
+def test_delete_build_configuration_id(mock_configs_api, mock_delete_specific, mock_list_configs, mock_set_id):
     result = buildconfigurations.delete_build_configuration(id=1)
     mock_set_id.assert_called_once_with(mock_configs_api, 1, None)
+    mock_list_configs.assert_called_once_with(page_size=1000000000)
     mock_delete_specific.assert_called_once_with(id=1)
     assert result
 
 
 @patch('pnc_cli.common.set_id', return_value=1)
+@patch('pnc_cli.buildconfigurations.list_build_configurations', return_value=[])
 @patch('pnc_cli.buildconfigurations.configs_api.delete_specific', return_value=MagicMock(content=True))
 @patch('pnc_cli.buildconfigurations.configs_api', autospec=True)
-def test_delete_build_configuration_name(mock_configs_api, mock_delete_specific, mock_set_id):
+def test_delete_build_configuration_name(mock_configs_api, mock_delete_specific, mock_list_configs, mock_set_id):
     result = buildconfigurations.delete_build_configuration(name='testerino')
     mock_set_id.assert_called_once_with(mock_configs_api, None, 'testerino')
+    mock_list_configs.assert_called_once_with(page_size=1000000000)
     mock_delete_specific.assert_called_once_with(id=1)
     assert result
+
+
+@patch('pnc_cli.common.set_id', return_value=1)
+@patch('pnc_cli.buildconfigurations.list_build_configurations', return_value=[MagicMock(dependency_ids=[1])])
+@patch('pnc_cli.buildconfigurations.configs_api.delete_specific', return_value=MagicMock(content=True))
+@patch('pnc_cli.buildconfigurations.configs_api', autospec=True)
+def test_delete_build_configuration_hasdep(mock_configs_api, mock_delete_specific, mock_list_configs, mock_set_id):
+    with pytest.raises(CommandError):
+        result = buildconfigurations.delete_build_configuration(id='1')
+    mock_set_id.assert_called_once_with(mock_configs_api, '1', None)
+    mock_list_configs.assert_called_once_with(page_size=1000000000)
+    mock_delete_specific.assert_not_called
+
 
 
 @patch('pnc_cli.common.set_id', return_value=1)
