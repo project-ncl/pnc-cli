@@ -19,8 +19,6 @@ def _create_project_object(**kwargs):
 
 
 @arg("name", help="Name for the Project", type=types.unique_project_name)
-@arg("-c", "--configuration-ids", type=types.existing_bc_id, nargs='+',
-     help="Space separated list of BuildConfigurationIDs this Project should be associated with.")
 @arg("-d", "--description", help="Detailed description of the new Project")
 @arg("-p", "--project-url", help="SCM Url for the Project", type=types.valid_url)
 @arg("-i", "--issue-tracker-url", help="Issue tracker URL for the new Project", type=types.valid_url)
@@ -37,8 +35,6 @@ def create_project(**kwargs):
 
 @arg("id", help="ID for the Project that will be updated.", type=types.existing_project_id)
 @arg("-n", "--name", help="New name for the Project that will be updated.", type=types.unique_project_name)
-@arg("-c", "--configuration-ids", type=types.existing_bc_id, nargs='+',
-     help="Space separated list of BuildConfiguration IDs this Project should be associated with.")
 @arg("-d", "--description", help="Detailed description of the new Project.")
 @arg("-p", "--project-url", help="SCM Url for the Project.", type=types.valid_url)
 @arg("-i", "--issue-url", help="Issue tracker URL for the new Project", type=types.valid_url)
