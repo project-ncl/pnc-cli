@@ -3,7 +3,7 @@ import argparse
 import pytest
 from mock import patch
 
-import pnc_cli.types as types
+import pnc_cli.cli_types as types
 # create_autospec dud import
 from pnc_cli.swagger_client import EnvironmentsApi
 from pnc_cli.swagger_client import ProductmilestonesApi

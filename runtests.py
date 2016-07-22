@@ -3091,7 +3091,7 @@ class DictImporter(object):
 
     def load_module(self, fullname):
         # print "load_module:",  fullname
-        from types import ModuleType
+        from cli_types import ModuleType
         try:
             s = self.sources[fullname]
             is_pkg = False

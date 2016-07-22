@@ -1,7 +1,7 @@
 __author__ = 'thauser'
 from argh import arg
 
-import pnc_cli.types as types
+import pnc_cli.cli_types as types
 from pnc_cli import utils
 from pnc_cli.swagger_client.apis import BuildconfigurationsetsApi
 from pnc_cli.swagger_client.apis import BuildconfigsetrecordsApi

@@ -4,7 +4,7 @@ from argh import arg
 from six import iteritems
 
 import pnc_cli.utils as utils
-import pnc_cli.types as types
+import pnc_cli.cli_types as types
 from pnc_cli import swagger_client
 from pnc_cli.swagger_client.apis.products_api import ProductsApi
 from pnc_cli.swagger_client.apis.productversions_api import ProductversionsApi

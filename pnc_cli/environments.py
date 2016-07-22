@@ -4,7 +4,7 @@ from argh import arg
 from six import iteritems
 
 import pnc_cli.common as common
-import pnc_cli.types as types
+import pnc_cli.cli_types as types
 import pnc_cli.utils as utils
 from pnc_cli.swagger_client import BuildEnvironmentRest
 from pnc_cli.swagger_client import EnvironmentsApi

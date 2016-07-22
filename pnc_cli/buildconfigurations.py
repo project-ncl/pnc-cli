@@ -2,7 +2,7 @@ from argh import arg
 from argh.exceptions import CommandError
 
 import pnc_cli.common as common
-import pnc_cli.types as types
+import pnc_cli.cli_types as types
 from pnc_cli import swagger_client
 from pnc_cli import utils
 from pnc_cli.swagger_client import BuildconfigurationsApi
