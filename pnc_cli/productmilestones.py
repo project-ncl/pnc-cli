@@ -22,9 +22,7 @@ def create_milestone_object(**kwargs):
     return created_milestone
 
 
-def check_date_order(start_arg, end_arg):
-    start_date = datetime.datetime.strptime(start_arg, '%Y-%m-%d')
-    end_date = datetime.datetime.strptime(end_arg, '%Y-%m-%d')
+def check_date_order(start_date, end_date):
     if not start_date <= end_date:
         raise argparse.ArgumentTypeError("Error: start date must be before end date")
 

@@ -243,11 +243,9 @@ def existing_running_build(id_input):
 # Misc types
 def valid_date(dateInput):
     try:
-        datetime.datetime.strptime(dateInput, '%Y-%m-%d')
+        return datetime.datetime.strptime(dateInput, '%Y-%m-%d')
     except ValueError:
         raise argparse.ArgumentTypeError("Date format: yyyy-mm-dd")
-    return dateInput
-
 
 def valid_id(id_input):
     if not id_input.isdigit():
