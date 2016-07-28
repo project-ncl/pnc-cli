@@ -41,7 +41,7 @@ def get_auth_token(config):
         logging.error(
             'No keycloak authentication realm defined. Define "keycloakRealm" in pnc-cli.conf to enable authentication.')
         return
-    server = server + "/auth/realms/" + realm + "/tokens/grants/access"
+    server = server + "/auth/realms/" + realm + "/protocol/openid-connect/token"
     try:
         username = config.get('PNC', 'username')
         password = config.get('PNC', 'password')
