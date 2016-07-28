@@ -1,9 +1,8 @@
 import argparse
 import datetime
 import re
-
 import validators
-
+from tzlocal import get_localzone
 import pnc_cli.common as common
 import pnc_cli.utils as utils
 from pnc_cli.swagger_client import BuildconfigsetrecordsApi
@@ -243,9 +242,10 @@ def existing_running_build(id_input):
 # Misc types
 def valid_date(dateInput):
     try:
-        return datetime.datetime.strptime(dateInput, '%Y-%m-%d')
+        dateInput = get_localzone().localize(datetime.datetime.strptime(dateInput, '%Y-%m-%d'))
     except ValueError:
         raise argparse.ArgumentTypeError("Date format: yyyy-mm-dd")
+    return dateInput
 
 def valid_id(id_input):
     if not id_input.isdigit():

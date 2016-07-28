@@ -19,7 +19,8 @@ setup(
         "certifi >= 2015.04.28",
 	"urllib3 >= 1.12",
 	"six >= 1.9.0",
-    "validators >=0.10"
+    "validators >=0.10",
+    "tzlocal >="1.0"
     ],
     classifiers=[
 	'Development Status :: 3 - Alpha',
