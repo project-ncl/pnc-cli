@@ -20,7 +20,7 @@ setup(
 	"urllib3 >= 1.12",
 	"six >= 1.9.0",
     "validators >=0.10",
-    "tzlocal >="1.0"
+    "tzlocal >= 1.0"
     ],
     classifiers=[
 	'Development Status :: 3 - Alpha',
