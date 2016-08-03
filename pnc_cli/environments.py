@@ -32,12 +32,12 @@ def valid_attribute(attributeInput):
 def unique_iid(iidInput):
     response = utils.checked_api_call(envs_api, 'get_all', q='systemImageId==' + iidInput)
     if response.content:
-        raise argparse.ArgumentTypeError("imageId is already in use")
+        raise argparse.ArgumentTypeError("systemImageId is already in use")
     return iidInput
 
 
 @arg("name", help="Unique name of the BuildEnvironment", type=types.unique_environment_name)
-@arg("image_id", help="ID of the Docker image for this BuildEnvironment.", type=unique_iid)
+@arg("system_image_id", help="ID of the Docker image for this BuildEnvironment.", type=unique_iid)
 @arg("system_image_type", help="One of DOCKER_IMAGE, VIRTUAL_MACHINE_RAW, VIRTUAL_MACHINE_QCOW2, LOCAL_WORKSPACE",
      choices=["DOCKER_IMAGE", "VIRTUAL_MACHINE_RAW", "VIRTUAL_MACHINE_QCOW2", "LOCAL_WORKSPACE"])
 @arg("-d", "--description", help="Description of the BuildEnvironment.")
