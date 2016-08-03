@@ -49,7 +49,6 @@ class BuildConfigurationRest(object):
             'creation_time': 'datetime',
             'last_modification_time': 'datetime',
             'archived': 'bool',
-            'build_status': 'str',
             'repositories': 'str',
             'project': 'ProjectRest',
             'environment': 'BuildEnvironmentRest',
@@ -71,7 +70,6 @@ class BuildConfigurationRest(object):
             'creation_time': 'creationTime',
             'last_modification_time': 'lastModificationTime',
             'archived': 'archived',
-            'build_status': 'buildStatus',
             'repositories': 'repositories',
             'project': 'project',
             'environment': 'environment',
@@ -92,7 +90,6 @@ class BuildConfigurationRest(object):
         self._creation_time = None
         self._last_modification_time = None
         self._archived = None
-        self._build_status = None
         self._repositories = None
         self._project = None
         self._environment = None
@@ -344,34 +341,6 @@ class BuildConfigurationRest(object):
         self._archived = archived
 
     @property
-    def build_status(self):
-        """
-        Gets the build_status of this BuildConfigurationRest.
-
-
-        :return: The build_status of this BuildConfigurationRest.
-        :rtype: str
-        """
-        return self._build_status
-
-    @build_status.setter
-    def build_status(self, build_status):
-        """
-        Sets the build_status of this BuildConfigurationRest.
-
-
-        :param build_status: The build_status of this BuildConfigurationRest.
-        :type: str
-        """
-        allowed_values = ["SUCCESS", "FAILED", "UNSTABLE", "BUILDING", "REJECTED", "CANCELLED", "SYSTEM_ERROR", "UNKNOWN", "NONE"]
-        if build_status not in allowed_values:
-            raise ValueError(
-                "Invalid value for `build_status`, must be one of {0}"
-                .format(allowed_values)
-            )
-        self._build_status = build_status
-
-    @property
     def repositories(self):
         """
         Gets the repositories of this BuildConfigurationRest.
@@ -540,8 +509,8 @@ class BuildConfigurationRest(object):
                 ))
             elif hasattr(value, "to_dict"):
                 result[attr] = value.to_dict()
-            elif isinstance(value, datetime):
-                result[attr] = str(value.date())
+	    elif isinstance(value, datetime):
+		result[attr] = str(value.date())
             else:
                 result[attr] = value
 

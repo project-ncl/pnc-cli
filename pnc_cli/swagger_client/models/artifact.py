@@ -50,7 +50,10 @@ class Artifact(object):
             'origin_url': 'str',
             'import_date': 'datetime',
             'distributed_in_product_milestones': 'list[ProductMilestone]',
-            'field_handler': 'FieldHandler'
+            'field_handler': 'FieldHandler',
+            'built': 'bool',
+            'imported': 'bool',
+            'trusted': 'bool'
         }
 
         self.attribute_map = {
@@ -66,7 +69,10 @@ class Artifact(object):
             'origin_url': 'originUrl',
             'import_date': 'importDate',
             'distributed_in_product_milestones': 'distributedInProductMilestones',
-            'field_handler': 'fieldHandler'
+            'field_handler': 'fieldHandler',
+            'built': 'built',
+            'imported': 'imported',
+            'trusted': 'trusted'
         }
 
         self._id = None
@@ -82,6 +88,9 @@ class Artifact(object):
         self._import_date = None
         self._distributed_in_product_milestones = None
         self._field_handler = None
+        self._built = None
+        self._imported = None
+        self._trusted = None
 
     @property
     def id(self):
@@ -197,7 +206,7 @@ class Artifact(object):
         :param repo_type: The repo_type of this Artifact.
         :type: str
         """
-        allowed_values = ["MAVEN", "DOCKER_REGISTRY", "NPM", "COCOA_POD"]
+        allowed_values = ["MAVEN", "NPM", "COCOA_POD"]
         if repo_type not in allowed_values:
             raise ValueError(
                 "Invalid value for `repo_type`, must be one of {0}"
@@ -381,6 +390,72 @@ class Artifact(object):
         """
         self._field_handler = field_handler
 
+    @property
+    def built(self):
+        """
+        Gets the built of this Artifact.
+
+
+        :return: The built of this Artifact.
+        :rtype: bool
+        """
+        return self._built
+
+    @built.setter
+    def built(self, built):
+        """
+        Sets the built of this Artifact.
+
+
+        :param built: The built of this Artifact.
+        :type: bool
+        """
+        self._built = built
+
+    @property
+    def imported(self):
+        """
+        Gets the imported of this Artifact.
+
+
+        :return: The imported of this Artifact.
+        :rtype: bool
+        """
+        return self._imported
+
+    @imported.setter
+    def imported(self, imported):
+        """
+        Sets the imported of this Artifact.
+
+
+        :param imported: The imported of this Artifact.
+        :type: bool
+        """
+        self._imported = imported
+
+    @property
+    def trusted(self):
+        """
+        Gets the trusted of this Artifact.
+
+
+        :return: The trusted of this Artifact.
+        :rtype: bool
+        """
+        return self._trusted
+
+    @trusted.setter
+    def trusted(self, trusted):
+        """
+        Sets the trusted of this Artifact.
+
+
+        :param trusted: The trusted of this Artifact.
+        :type: bool
+        """
+        self._trusted = trusted
+
     def to_dict(self):
         """
         Returns the model properties as a dict
@@ -396,8 +471,8 @@ class Artifact(object):
                 ))
             elif hasattr(value, "to_dict"):
                 result[attr] = value.to_dict()
-            elif isinstance(value, datetime):
-                result[attr] = str(value.date())
+	    elif isinstance(value, datetime):
+		result[attr] = str(value.date())
             else:
                 result[attr] = value
 

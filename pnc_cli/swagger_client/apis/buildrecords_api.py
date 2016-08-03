@@ -48,7 +48,7 @@ class BuildrecordsApi(object):
     def get_all(self, **kwargs):
         """
         Gets all Build Records
-
+        
 
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please define a `callback` function
@@ -132,7 +132,7 @@ class BuildrecordsApi(object):
     def get_all_for_build_configuration(self, configuration_id, **kwargs):
         """
         Gets the Build Records linked to a specific Build Configuration
-
+        
 
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please define a `callback` function
@@ -222,7 +222,7 @@ class BuildrecordsApi(object):
     def get_all_for_project(self, project_id, **kwargs):
         """
         Gets the Build Records linked to a specific Project
-
+        
 
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please define a `callback` function
@@ -312,7 +312,7 @@ class BuildrecordsApi(object):
     def get_specific(self, id, **kwargs):
         """
         Gets specific Build Record
-
+        
 
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please define a `callback` function
@@ -390,7 +390,7 @@ class BuildrecordsApi(object):
     def get_artifacts(self, id, **kwargs):
         """
         Gets artifacts for specific Build Record
-
+        
 
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please define a `callback` function
@@ -480,7 +480,7 @@ class BuildrecordsApi(object):
     def get_build_configuration_audited(self, id, **kwargs):
         """
         Gets the audited build configuration for specific build record
-
+        
 
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please define a `callback` function
@@ -558,7 +558,7 @@ class BuildrecordsApi(object):
     def get_built_artifacts(self, id, **kwargs):
         """
         Gets artifacts built for specific Build Record
-
+        
 
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please define a `callback` function
@@ -648,7 +648,7 @@ class BuildrecordsApi(object):
     def get_completed_or_runnning(self, id, **kwargs):
         """
         Gets a BuildRecord which is completed or in running state
-
+        
 
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please define a `callback` function
@@ -726,7 +726,7 @@ class BuildrecordsApi(object):
     def get_dependency_artifacts(self, id, **kwargs):
         """
         Gets dependency artifacts for specific Build Record
-
+        
 
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please define a `callback` function
@@ -816,7 +816,7 @@ class BuildrecordsApi(object):
     def get_logs(self, id, **kwargs):
         """
         Gets logs for specific Build Record
-
+        
 
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please define a `callback` function

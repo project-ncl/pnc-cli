@@ -43,6 +43,7 @@ class BuildConfigurationSet(object):
             'product_version': 'ProductVersion',
             'build_configurations': 'list[BuildConfiguration]',
             'build_config_set_records': 'list[BuildConfigSetRecord]',
+            'current_product_milestone': 'ProductMilestone',
             'field_handler': 'FieldHandler'
         }
 
@@ -52,6 +53,7 @@ class BuildConfigurationSet(object):
             'product_version': 'productVersion',
             'build_configurations': 'buildConfigurations',
             'build_config_set_records': 'buildConfigSetRecords',
+            'current_product_milestone': 'currentProductMilestone',
             'field_handler': 'fieldHandler'
         }
 
@@ -60,6 +62,7 @@ class BuildConfigurationSet(object):
         self._product_version = None
         self._build_configurations = None
         self._build_config_set_records = None
+        self._current_product_milestone = None
         self._field_handler = None
 
     @property
@@ -173,6 +176,28 @@ class BuildConfigurationSet(object):
         self._build_config_set_records = build_config_set_records
 
     @property
+    def current_product_milestone(self):
+        """
+        Gets the current_product_milestone of this BuildConfigurationSet.
+
+
+        :return: The current_product_milestone of this BuildConfigurationSet.
+        :rtype: ProductMilestone
+        """
+        return self._current_product_milestone
+
+    @current_product_milestone.setter
+    def current_product_milestone(self, current_product_milestone):
+        """
+        Sets the current_product_milestone of this BuildConfigurationSet.
+
+
+        :param current_product_milestone: The current_product_milestone of this BuildConfigurationSet.
+        :type: ProductMilestone
+        """
+        self._current_product_milestone = current_product_milestone
+
+    @property
     def field_handler(self):
         """
         Gets the field_handler of this BuildConfigurationSet.
@@ -209,8 +234,8 @@ class BuildConfigurationSet(object):
                 ))
             elif hasattr(value, "to_dict"):
                 result[attr] = value.to_dict()
-            elif isinstance(value, datetime):
-                result[attr] = str(value.date())
+	    elif isinstance(value, datetime):
+		result[attr] = str(value.date())
             else:
                 result[attr] = value
 

@@ -48,7 +48,7 @@ class RunningbuildrecordsApi(object):
     def get_all(self, **kwargs):
         """
         Gets all running Build Records
-
+        
 
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please define a `callback` function
@@ -129,10 +129,10 @@ class RunningbuildrecordsApi(object):
                                             callback=params.get('callback'))
         return response
 
-    def get_all_for_bc_set(self, id, **kwargs):
+    def get_all_for_bc_set_record(self, id, **kwargs):
         """
         Gets running Build Records for a specific Build Configuration Set Record.
-
+        
 
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please define a `callback` function
@@ -140,7 +140,7 @@ class RunningbuildrecordsApi(object):
         >>> def callback_function(response):
         >>>     pprint(response)
         >>>
-        >>> thread = api.get_all_for_bc_set(id, callback=callback_function)
+        >>> thread = api.get_all_for_bc_set_record(id, callback=callback_function)
 
         :param callback function: The callback function
             for asynchronous request. (optional)
@@ -154,7 +154,7 @@ class RunningbuildrecordsApi(object):
         """
         # verify the required parameter 'id' is set
         if id is None:
-            raise ValueError("Missing the required parameter `id` when calling `get_all_for_bc_set`")
+            raise ValueError("Missing the required parameter `id` when calling `get_all_for_bc_set_record`")
 
         all_params = ['id', 'page_index', 'page_size', 'search']
         all_params.append('callback')
@@ -164,7 +164,7 @@ class RunningbuildrecordsApi(object):
             if key not in all_params:
                 raise TypeError(
                     "Got an unexpected keyword argument '%s'"
-                    " to method get_all_for_bc_set" % key
+                    " to method get_all_for_bc_set_record" % key
                 )
             params[key] = val
         del params['kwargs']
@@ -219,7 +219,7 @@ class RunningbuildrecordsApi(object):
     def get_all_for_bc(self, id, **kwargs):
         """
         Gets running Build Records for a specific Build Configuration.
-
+        
 
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please define a `callback` function
@@ -306,7 +306,7 @@ class RunningbuildrecordsApi(object):
     def get_specific(self, id, **kwargs):
         """
         Gets specific running Build Record
-
+        
 
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please define a `callback` function

@@ -42,10 +42,10 @@ class BuildEnvironmentRest(object):
             'name': 'str',
             'description': 'str',
             'system_image_repository_url': 'str',
+            'system_image_id': 'str',
             'attributes': 'dict(str, str)',
             'system_image_type': 'str',
-            'image_repository_url': 'str',
-            'image_id': 'str'
+            'image_repository_url': 'str'
         }
 
         self.attribute_map = {
@@ -53,20 +53,20 @@ class BuildEnvironmentRest(object):
             'name': 'name',
             'description': 'description',
             'system_image_repository_url': 'systemImageRepositoryUrl',
+            'system_image_id': 'systemImageId',
             'attributes': 'attributes',
             'system_image_type': 'systemImageType',
-            'image_repository_url': 'imageRepositoryUrl',
-            'image_id': 'imageId'
+            'image_repository_url': 'imageRepositoryUrl'
         }
 
         self._id = None
         self._name = None
         self._description = None
         self._system_image_repository_url = None
+        self._system_image_id = None
         self._attributes = None
         self._system_image_type = None
         self._image_repository_url = None
-        self._image_id = None
 
     @property
     def id(self):
@@ -157,6 +157,28 @@ class BuildEnvironmentRest(object):
         self._system_image_repository_url = system_image_repository_url
 
     @property
+    def system_image_id(self):
+        """
+        Gets the system_image_id of this BuildEnvironmentRest.
+
+
+        :return: The system_image_id of this BuildEnvironmentRest.
+        :rtype: str
+        """
+        return self._system_image_id
+
+    @system_image_id.setter
+    def system_image_id(self, system_image_id):
+        """
+        Sets the system_image_id of this BuildEnvironmentRest.
+
+
+        :param system_image_id: The system_image_id of this BuildEnvironmentRest.
+        :type: str
+        """
+        self._system_image_id = system_image_id
+
+    @property
     def attributes(self):
         """
         Gets the attributes of this BuildEnvironmentRest.
@@ -228,28 +250,6 @@ class BuildEnvironmentRest(object):
         """
         self._image_repository_url = image_repository_url
 
-    @property
-    def image_id(self):
-        """
-        Gets the image_id of this BuildEnvironmentRest.
-
-
-        :return: The image_id of this BuildEnvironmentRest.
-        :rtype: str
-        """
-        return self._image_id
-
-    @image_id.setter
-    def image_id(self, image_id):
-        """
-        Sets the image_id of this BuildEnvironmentRest.
-
-
-        :param image_id: The image_id of this BuildEnvironmentRest.
-        :type: str
-        """
-        self._image_id = image_id
-
     def to_dict(self):
         """
         Returns the model properties as a dict
@@ -265,8 +265,8 @@ class BuildEnvironmentRest(object):
                 ))
             elif hasattr(value, "to_dict"):
                 result[attr] = value.to_dict()
-            elif isinstance(value, datetime):
-                result[attr] = str(value.date())
+	    elif isinstance(value, datetime):
+		result[attr] = str(value.date())
             else:
                 result[attr] = value
 

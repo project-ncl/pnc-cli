@@ -42,8 +42,7 @@ class LicenseRest(object):
             'full_name': 'str',
             'full_content': 'str',
             'ref_url': 'str',
-            'short_name': 'str',
-            'projects_ids': 'list[int]'
+            'short_name': 'str'
         }
 
         self.attribute_map = {
@@ -51,8 +50,7 @@ class LicenseRest(object):
             'full_name': 'fullName',
             'full_content': 'fullContent',
             'ref_url': 'refUrl',
-            'short_name': 'shortName',
-            'projects_ids': 'projectsIds'
+            'short_name': 'shortName'
         }
 
         self._id = None
@@ -60,7 +58,6 @@ class LicenseRest(object):
         self._full_content = None
         self._ref_url = None
         self._short_name = None
-        self._projects_ids = None
 
     @property
     def id(self):
@@ -172,28 +169,6 @@ class LicenseRest(object):
         """
         self._short_name = short_name
 
-    @property
-    def projects_ids(self):
-        """
-        Gets the projects_ids of this LicenseRest.
-
-
-        :return: The projects_ids of this LicenseRest.
-        :rtype: list[int]
-        """
-        return self._projects_ids
-
-    @projects_ids.setter
-    def projects_ids(self, projects_ids):
-        """
-        Sets the projects_ids of this LicenseRest.
-
-
-        :param projects_ids: The projects_ids of this LicenseRest.
-        :type: list[int]
-        """
-        self._projects_ids = projects_ids
-
     def to_dict(self):
         """
         Returns the model properties as a dict
@@ -209,8 +184,8 @@ class LicenseRest(object):
                 ))
             elif hasattr(value, "to_dict"):
                 result[attr] = value.to_dict()
-            elif isinstance(value, datetime):
-                result[attr] = str(value.date())
+	    elif isinstance(value, datetime):
+		result[attr] = str(value.date())
             else:
                 result[attr] = value
 

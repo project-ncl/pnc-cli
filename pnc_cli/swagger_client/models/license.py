@@ -43,7 +43,6 @@ class License(object):
             'full_content': 'str',
             'ref_url': 'str',
             'short_name': 'str',
-            'projects': 'list[Project]',
             'field_handler': 'FieldHandler'
         }
 
@@ -53,7 +52,6 @@ class License(object):
             'full_content': 'fullContent',
             'ref_url': 'refUrl',
             'short_name': 'shortName',
-            'projects': 'projects',
             'field_handler': 'fieldHandler'
         }
 
@@ -62,7 +60,6 @@ class License(object):
         self._full_content = None
         self._ref_url = None
         self._short_name = None
-        self._projects = None
         self._field_handler = None
 
     @property
@@ -176,28 +173,6 @@ class License(object):
         self._short_name = short_name
 
     @property
-    def projects(self):
-        """
-        Gets the projects of this License.
-
-
-        :return: The projects of this License.
-        :rtype: list[Project]
-        """
-        return self._projects
-
-    @projects.setter
-    def projects(self, projects):
-        """
-        Sets the projects of this License.
-
-
-        :param projects: The projects of this License.
-        :type: list[Project]
-        """
-        self._projects = projects
-
-    @property
     def field_handler(self):
         """
         Gets the field_handler of this License.
@@ -234,8 +209,8 @@ class License(object):
                 ))
             elif hasattr(value, "to_dict"):
                 result[attr] = value.to_dict()
-            elif isinstance(value, datetime):
-                result[attr] = str(value.date())
+	    elif isinstance(value, datetime):
+		result[attr] = str(value.date())
             else:
                 result[attr] = value
 

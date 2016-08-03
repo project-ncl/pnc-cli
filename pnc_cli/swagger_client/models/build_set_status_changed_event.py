@@ -38,57 +38,63 @@ class BuildSetStatusChangedEvent(object):
                                   and the value is json key in definition.
         """
         self.swagger_types = {
-            'user_id': 'int',
-            'old_status': 'str',
-            'build_set_configuration_id': 'int',
             'new_status': 'str',
+            'old_status': 'str',
+            'build_set_start_time': 'datetime',
+            'build_set_end_time': 'datetime',
+            'build_set_configuration_id': 'int',
             'build_set_task_id': 'int',
             'build_set_configuration_name': 'str',
-            'build_set_start_time': 'datetime',
-            'build_set_end_time': 'datetime'
+            'user_id': 'int'
         }
 
         self.attribute_map = {
-            'user_id': 'userId',
-            'old_status': 'oldStatus',
-            'build_set_configuration_id': 'buildSetConfigurationId',
             'new_status': 'newStatus',
+            'old_status': 'oldStatus',
+            'build_set_start_time': 'buildSetStartTime',
+            'build_set_end_time': 'buildSetEndTime',
+            'build_set_configuration_id': 'buildSetConfigurationId',
             'build_set_task_id': 'buildSetTaskId',
             'build_set_configuration_name': 'buildSetConfigurationName',
-            'build_set_start_time': 'buildSetStartTime',
-            'build_set_end_time': 'buildSetEndTime'
+            'user_id': 'userId'
         }
 
-        self._user_id = None
-        self._old_status = None
-        self._build_set_configuration_id = None
         self._new_status = None
-        self._build_set_task_id = None
-        self._build_set_configuration_name = None
+        self._old_status = None
         self._build_set_start_time = None
         self._build_set_end_time = None
+        self._build_set_configuration_id = None
+        self._build_set_task_id = None
+        self._build_set_configuration_name = None
+        self._user_id = None
 
     @property
-    def user_id(self):
+    def new_status(self):
         """
-        Gets the user_id of this BuildSetStatusChangedEvent.
+        Gets the new_status of this BuildSetStatusChangedEvent.
 
 
-        :return: The user_id of this BuildSetStatusChangedEvent.
-        :rtype: int
+        :return: The new_status of this BuildSetStatusChangedEvent.
+        :rtype: str
         """
-        return self._user_id
+        return self._new_status
 
-    @user_id.setter
-    def user_id(self, user_id):
+    @new_status.setter
+    def new_status(self, new_status):
         """
-        Sets the user_id of this BuildSetStatusChangedEvent.
+        Sets the new_status of this BuildSetStatusChangedEvent.
 
 
-        :param user_id: The user_id of this BuildSetStatusChangedEvent.
-        :type: int
+        :param new_status: The new_status of this BuildSetStatusChangedEvent.
+        :type: str
         """
-        self._user_id = user_id
+        allowed_values = ["NEW", "DONE", "REJECTED"]
+        if new_status not in allowed_values:
+            raise ValueError(
+                "Invalid value for `new_status`, must be one of {0}"
+                .format(allowed_values)
+            )
+        self._new_status = new_status
 
     @property
     def old_status(self):
@@ -119,6 +125,50 @@ class BuildSetStatusChangedEvent(object):
         self._old_status = old_status
 
     @property
+    def build_set_start_time(self):
+        """
+        Gets the build_set_start_time of this BuildSetStatusChangedEvent.
+
+
+        :return: The build_set_start_time of this BuildSetStatusChangedEvent.
+        :rtype: datetime
+        """
+        return self._build_set_start_time
+
+    @build_set_start_time.setter
+    def build_set_start_time(self, build_set_start_time):
+        """
+        Sets the build_set_start_time of this BuildSetStatusChangedEvent.
+
+
+        :param build_set_start_time: The build_set_start_time of this BuildSetStatusChangedEvent.
+        :type: datetime
+        """
+        self._build_set_start_time = build_set_start_time
+
+    @property
+    def build_set_end_time(self):
+        """
+        Gets the build_set_end_time of this BuildSetStatusChangedEvent.
+
+
+        :return: The build_set_end_time of this BuildSetStatusChangedEvent.
+        :rtype: datetime
+        """
+        return self._build_set_end_time
+
+    @build_set_end_time.setter
+    def build_set_end_time(self, build_set_end_time):
+        """
+        Sets the build_set_end_time of this BuildSetStatusChangedEvent.
+
+
+        :param build_set_end_time: The build_set_end_time of this BuildSetStatusChangedEvent.
+        :type: datetime
+        """
+        self._build_set_end_time = build_set_end_time
+
+    @property
     def build_set_configuration_id(self):
         """
         Gets the build_set_configuration_id of this BuildSetStatusChangedEvent.
@@ -139,34 +189,6 @@ class BuildSetStatusChangedEvent(object):
         :type: int
         """
         self._build_set_configuration_id = build_set_configuration_id
-
-    @property
-    def new_status(self):
-        """
-        Gets the new_status of this BuildSetStatusChangedEvent.
-
-
-        :return: The new_status of this BuildSetStatusChangedEvent.
-        :rtype: str
-        """
-        return self._new_status
-
-    @new_status.setter
-    def new_status(self, new_status):
-        """
-        Sets the new_status of this BuildSetStatusChangedEvent.
-
-
-        :param new_status: The new_status of this BuildSetStatusChangedEvent.
-        :type: str
-        """
-        allowed_values = ["NEW", "DONE", "REJECTED"]
-        if new_status not in allowed_values:
-            raise ValueError(
-                "Invalid value for `new_status`, must be one of {0}"
-                .format(allowed_values)
-            )
-        self._new_status = new_status
 
     @property
     def build_set_task_id(self):
@@ -213,48 +235,26 @@ class BuildSetStatusChangedEvent(object):
         self._build_set_configuration_name = build_set_configuration_name
 
     @property
-    def build_set_start_time(self):
+    def user_id(self):
         """
-        Gets the build_set_start_time of this BuildSetStatusChangedEvent.
+        Gets the user_id of this BuildSetStatusChangedEvent.
 
 
-        :return: The build_set_start_time of this BuildSetStatusChangedEvent.
-        :rtype: datetime
+        :return: The user_id of this BuildSetStatusChangedEvent.
+        :rtype: int
         """
-        return self._build_set_start_time
+        return self._user_id
 
-    @build_set_start_time.setter
-    def build_set_start_time(self, build_set_start_time):
+    @user_id.setter
+    def user_id(self, user_id):
         """
-        Sets the build_set_start_time of this BuildSetStatusChangedEvent.
+        Sets the user_id of this BuildSetStatusChangedEvent.
 
 
-        :param build_set_start_time: The build_set_start_time of this BuildSetStatusChangedEvent.
-        :type: datetime
+        :param user_id: The user_id of this BuildSetStatusChangedEvent.
+        :type: int
         """
-        self._build_set_start_time = build_set_start_time
-
-    @property
-    def build_set_end_time(self):
-        """
-        Gets the build_set_end_time of this BuildSetStatusChangedEvent.
-
-
-        :return: The build_set_end_time of this BuildSetStatusChangedEvent.
-        :rtype: datetime
-        """
-        return self._build_set_end_time
-
-    @build_set_end_time.setter
-    def build_set_end_time(self, build_set_end_time):
-        """
-        Sets the build_set_end_time of this BuildSetStatusChangedEvent.
-
-
-        :param build_set_end_time: The build_set_end_time of this BuildSetStatusChangedEvent.
-        :type: datetime
-        """
-        self._build_set_end_time = build_set_end_time
+        self._user_id = user_id
 
     def to_dict(self):
         """
@@ -271,8 +271,8 @@ class BuildSetStatusChangedEvent(object):
                 ))
             elif hasattr(value, "to_dict"):
                 result[attr] = value.to_dict()
-            elif isinstance(value, datetime):
-                result[attr] = str(value.date())
+	    elif isinstance(value, datetime):
+		result[attr] = str(value.date())
             else:
                 result[attr] = value
 

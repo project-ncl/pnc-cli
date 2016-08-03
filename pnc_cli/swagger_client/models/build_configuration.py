@@ -54,12 +54,12 @@ class BuildConfiguration(object):
             'creation_time': 'datetime',
             'last_modification_time': 'datetime',
             'archived': 'bool',
-            'build_status': 'str',
             'dependencies': 'list[BuildConfiguration]',
             'dependants': 'list[BuildConfiguration]',
             'repositories': 'str',
             'all_dependencies': 'list[BuildConfiguration]',
             'indirect_dependencies': 'list[BuildConfiguration]',
+            'current_product_milestone': 'ProductMilestone',
             'field_handler': 'FieldHandler'
         }
 
@@ -80,12 +80,12 @@ class BuildConfiguration(object):
             'creation_time': 'creationTime',
             'last_modification_time': 'lastModificationTime',
             'archived': 'archived',
-            'build_status': 'buildStatus',
             'dependencies': 'dependencies',
             'dependants': 'dependants',
             'repositories': 'repositories',
             'all_dependencies': 'allDependencies',
             'indirect_dependencies': 'indirectDependencies',
+            'current_product_milestone': 'currentProductMilestone',
             'field_handler': 'fieldHandler'
         }
 
@@ -105,12 +105,12 @@ class BuildConfiguration(object):
         self._creation_time = None
         self._last_modification_time = None
         self._archived = None
-        self._build_status = None
         self._dependencies = None
         self._dependants = None
         self._repositories = None
         self._all_dependencies = None
         self._indirect_dependencies = None
+        self._current_product_milestone = None
         self._field_handler = None
 
     @property
@@ -466,34 +466,6 @@ class BuildConfiguration(object):
         self._archived = archived
 
     @property
-    def build_status(self):
-        """
-        Gets the build_status of this BuildConfiguration.
-
-
-        :return: The build_status of this BuildConfiguration.
-        :rtype: str
-        """
-        return self._build_status
-
-    @build_status.setter
-    def build_status(self, build_status):
-        """
-        Sets the build_status of this BuildConfiguration.
-
-
-        :param build_status: The build_status of this BuildConfiguration.
-        :type: str
-        """
-        allowed_values = ["SUCCESS", "FAILED", "UNSTABLE", "BUILDING", "REJECTED", "CANCELLED", "SYSTEM_ERROR", "UNKNOWN", "NONE"]
-        if build_status not in allowed_values:
-            raise ValueError(
-                "Invalid value for `build_status`, must be one of {0}"
-                .format(allowed_values)
-            )
-        self._build_status = build_status
-
-    @property
     def dependencies(self):
         """
         Gets the dependencies of this BuildConfiguration.
@@ -604,6 +576,28 @@ class BuildConfiguration(object):
         self._indirect_dependencies = indirect_dependencies
 
     @property
+    def current_product_milestone(self):
+        """
+        Gets the current_product_milestone of this BuildConfiguration.
+
+
+        :return: The current_product_milestone of this BuildConfiguration.
+        :rtype: ProductMilestone
+        """
+        return self._current_product_milestone
+
+    @current_product_milestone.setter
+    def current_product_milestone(self, current_product_milestone):
+        """
+        Sets the current_product_milestone of this BuildConfiguration.
+
+
+        :param current_product_milestone: The current_product_milestone of this BuildConfiguration.
+        :type: ProductMilestone
+        """
+        self._current_product_milestone = current_product_milestone
+
+    @property
     def field_handler(self):
         """
         Gets the field_handler of this BuildConfiguration.
@@ -640,8 +634,8 @@ class BuildConfiguration(object):
                 ))
             elif hasattr(value, "to_dict"):
                 result[attr] = value.to_dict()
-            elif isinstance(value, datetime):
-                result[attr] = str(value.date())
+	    elif isinstance(value, datetime):
+		result[attr] = str(value.date())
             else:
                 result[attr] = value
 

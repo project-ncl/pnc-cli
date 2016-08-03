@@ -48,8 +48,7 @@ class ArtifactRest(object):
             'build_record_ids': 'list[int]',
             'dependant_build_record_ids': 'list[int]',
             'import_date': 'datetime',
-            'origin_url': 'str',
-            'status': 'str'
+            'origin_url': 'str'
         }
 
         self.attribute_map = {
@@ -63,8 +62,7 @@ class ArtifactRest(object):
             'build_record_ids': 'buildRecordIds',
             'dependant_build_record_ids': 'dependantBuildRecordIds',
             'import_date': 'importDate',
-            'origin_url': 'originUrl',
-            'status': 'status'
+            'origin_url': 'originUrl'
         }
 
         self._id = None
@@ -78,7 +76,6 @@ class ArtifactRest(object):
         self._dependant_build_record_ids = None
         self._import_date = None
         self._origin_url = None
-        self._status = None
 
     @property
     def id(self):
@@ -172,7 +169,7 @@ class ArtifactRest(object):
         :param repo_type: The repo_type of this ArtifactRest.
         :type: str
         """
-        allowed_values = ["MAVEN", "DOCKER_REGISTRY", "NPM", "COCOA_POD"]
+        allowed_values = ["MAVEN", "NPM", "COCOA_POD"]
         if repo_type not in allowed_values:
             raise ValueError(
                 "Invalid value for `repo_type`, must be one of {0}"
@@ -334,28 +331,6 @@ class ArtifactRest(object):
         """
         self._origin_url = origin_url
 
-    @property
-    def status(self):
-        """
-        Gets the status of this ArtifactRest.
-
-
-        :return: The status of this ArtifactRest.
-        :rtype: str
-        """
-        return self._status
-
-    @status.setter
-    def status(self, status):
-        """
-        Sets the status of this ArtifactRest.
-
-
-        :param status: The status of this ArtifactRest.
-        :type: str
-        """
-        self._status = status
-
     def to_dict(self):
         """
         Returns the model properties as a dict
@@ -371,8 +346,8 @@ class ArtifactRest(object):
                 ))
             elif hasattr(value, "to_dict"):
                 result[attr] = value.to_dict()
-            elif isinstance(value, datetime):
-                result[attr] = str(value.date())
+	    elif isinstance(value, datetime):
+		result[attr] = str(value.date())
             else:
                 result[attr] = value
 
