@@ -77,7 +77,6 @@ from .apis.users_api import UsersApi
 from .apis.productversions_api import ProductversionsApi
 from .apis.environments_api import EnvironmentsApi
 from .apis.buildconfigurations_api import BuildconfigurationsApi
-from .apis.test_api import TestApi
 from .apis.productmilestones_api import ProductmilestonesApi
 from .apis.buildconfigsetrecords_api import BuildconfigsetrecordsApi
 from .apis.buildrecords_api import BuildrecordsApi

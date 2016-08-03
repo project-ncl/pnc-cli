@@ -12,7 +12,6 @@ from .users_api import UsersApi
 from .productversions_api import ProductversionsApi
 from .environments_api import EnvironmentsApi
 from .buildconfigurations_api import BuildconfigurationsApi
-from .test_api import TestApi
 from .productmilestones_api import ProductmilestonesApi
 from .buildconfigsetrecords_api import BuildconfigsetrecordsApi
 from .buildrecords_api import BuildrecordsApi

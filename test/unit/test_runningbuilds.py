@@ -16,7 +16,3 @@ def test_get_running_build(mock):
     result = runningbuilds.get_running_build(1)
     mock.assert_called_once_with(id=1)
     assert result == 'running-build'
-
-
-def test_get_running_build_notexit():
-

@@ -97,7 +97,7 @@ def test_update_product_version_no_product_id(mock_update, mock_get_specific, mo
     mock_get_specific.return_value = mockcontent
     result = productversions.update_product_version(1, version='2.0')
     mock_get_product_version.assert_called_once_with(1)
-    mock_version_exists_for_product.assert_called_once_with('1', '2.0')
+    mock_version_exists_for_product.assert_called_once_with(1, '2.0')
     mock_get_specific.assert_called_once_with(id=1)
     mock_update.assert_called_once_with(id=1, body=mock)
     # object returned by get_specific is appropriately modified
