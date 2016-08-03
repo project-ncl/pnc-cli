@@ -54,20 +54,6 @@ def test_get_specific(new_config):
     assert running_build is not None
 
 
-def test_get_all_for_bc_set_no_id():
-    testutils.assert_raises_valueerror(running_api, 'get_all_for_bc_set', id=None)
-
-
-def test_get_all_for_bc_set_invalid_param():
-    testutils.assert_raises_typeerror(running_api, 'get_all_for_bc_set', id=1)
-
-
-def test_get_all_for_bc_set(new_set):
-    sets_api.build(id=new_set.id)
-    response = running_api.get_all_for_bc_set(id=new_set.id)
-    assert response is not None
-
-
 def test_get_all_for_bc_no_id():
     testutils.assert_raises_valueerror(running_api, 'get_all_for_bc', id=None)
 

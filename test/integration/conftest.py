@@ -36,7 +36,7 @@ def new_project(request):
 def new_environment(request):
     randname = testutils.gen_random_name()
     env = environments.create_environment(name=randname,
-                                          image_id=randname,
+                                          system_image_id=randname,
                                           system_image_type="DOCKER_IMAGE")
 
     def teardown():
