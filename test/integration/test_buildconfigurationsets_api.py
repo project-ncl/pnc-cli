@@ -34,7 +34,7 @@ def new_project(request):
 @pytest.fixture(scope='function')
 def new_environment(request):
     randname = testutils.gen_random_name()
-    env = environments.create_environment(name=randname + '_environment', build_type='JAVA', image_id=randname)
+    env = environments.create_environment(name=randname + '_environment', system_image_type='DOCKER_IMAGE', image_id=randname)
     return env
 
 

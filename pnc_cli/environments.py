@@ -36,8 +36,7 @@ def _environment_exists(search_id):
     """
     Returns true if search_id is a valid BuildEnvironment id.
     """
-    existing_ids = [str(x.id) for x in envs_api.get_all().content]
-    return str(search_id) in existing_ids
+    return envs_api.get_specific(id=search_id) is not None
 
 
 def get_environment_id(search_id, name):

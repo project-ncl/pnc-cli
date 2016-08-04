@@ -14,7 +14,7 @@ def get_envs_api():
 def new_env(request):
     randname = testutils.gen_random_name()
     env = envs_api.create_new(
-        body=environments._create_environment_object(name=randname, build_type='JAVA', image_id=randname)).content
+        body=environments._create_environment_object(name=randname, system_image_type='DOCKER_IMAGE', image_id=randname)).content
     return env
 
 
@@ -58,13 +58,14 @@ def test_update_invalid_param():
 
 def test_update(new_env):
     randname = testutils.gen_random_name()
-    updated_env = environments._create_environment_object(description="DOCKER", build_type='NATIVE', name=randname, image_id=randname)
+    updated_env = environments._create_environment_object(description="DOCKER", system_image_type='VIRTUAL_MACHINE_RAW', name=randname, image_id=randname)
     envs_api.update(id=new_env.id, body=updated_env)
     retrieved_env = envs_api.get_specific(new_env.id).content
     assert (retrieved_env.description == 'DOCKER')
-    assert (retrieved_env.build_type == 'NATIVE')
+    assert (retrieved_env.system_image_type == 'DOCKER_IMAGE')
     assert (retrieved_env.name == randname)
-    assert (retrieved_env.image_id == randname)
+    #image_id is immutable
+    assert (retrieved_env.image_id == new_env.image_id)
 
 
 def test_delete_no_id():

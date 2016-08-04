@@ -110,7 +110,7 @@ def test_get_all_support_level_invalid_param():
 
 
 def test_get_all_support_level():
-    assert releases_api.get_all_support_level().content is not None
+    assert releases_api.get_all_support_level() is not None
 
 
 def test_get_specific_no_id():
