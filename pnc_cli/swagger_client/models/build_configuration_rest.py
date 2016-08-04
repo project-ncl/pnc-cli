@@ -54,7 +54,7 @@ class BuildConfigurationRest(object):
             'project': 'ProjectRest',
             'environment': 'BuildEnvironmentRest',
             'dependency_ids': 'list[int]',
-            'product_version_ids': 'list[int]',
+            'product_version_id': 'int',
             'internal_scm': 'str',
             'internal_scm_revison': 'str'
         }
@@ -76,7 +76,7 @@ class BuildConfigurationRest(object):
             'project': 'project',
             'environment': 'environment',
             'dependency_ids': 'dependencyIds',
-            'product_version_ids': 'productVersionIds',
+            'product_version_id': 'productVersionId',
             'internal_scm': 'internalScm',
             'internal_scm_revison': 'internalScmRevison'
         }
@@ -97,7 +97,7 @@ class BuildConfigurationRest(object):
         self._project = None
         self._environment = None
         self._dependency_ids = None
-        self._product_version_ids = None
+        self._product_version_id = None
         self._internal_scm = None
         self._internal_scm_revison = None
 
@@ -363,7 +363,7 @@ class BuildConfigurationRest(object):
         :param build_status: The build_status of this BuildConfigurationRest.
         :type: str
         """
-        allowed_values = ["SUCCESS", "FAILED", "UNSTABLE", "BUILDING", "REJECTED", "CANCELLED", "SYSTEM_ERROR", "UNKNOWN"]
+        allowed_values = ["SUCCESS", "FAILED", "UNSTABLE", "BUILDING", "REJECTED", "CANCELLED", "SYSTEM_ERROR", "UNKNOWN", "NONE"]
         if build_status not in allowed_values:
             raise ValueError(
                 "Invalid value for `build_status`, must be one of {0}"
@@ -460,26 +460,26 @@ class BuildConfigurationRest(object):
         self._dependency_ids = dependency_ids
 
     @property
-    def product_version_ids(self):
+    def product_version_id(self):
         """
-        Gets the product_version_ids of this BuildConfigurationRest.
+        Gets the product_version_id of this BuildConfigurationRest.
 
 
-        :return: The product_version_ids of this BuildConfigurationRest.
-        :rtype: list[int]
+        :return: The product_version_id of this BuildConfigurationRest.
+        :rtype: int
         """
-        return self._product_version_ids
+        return self._product_version_id
 
-    @product_version_ids.setter
-    def product_version_ids(self, product_version_ids):
+    @product_version_id.setter
+    def product_version_id(self, product_version_id):
         """
-        Sets the product_version_ids of this BuildConfigurationRest.
+        Sets the product_version_id of this BuildConfigurationRest.
 
 
-        :param product_version_ids: The product_version_ids of this BuildConfigurationRest.
-        :type: list[int]
+        :param product_version_id: The product_version_id of this BuildConfigurationRest.
+        :type: int
         """
-        self._product_version_ids = product_version_ids
+        self._product_version_id = product_version_id
 
     @property
     def internal_scm(self):

@@ -41,9 +41,10 @@ class BuildEnvironment(object):
             'id': 'int',
             'name': 'str',
             'description': 'str',
-            'image_repository_url': 'str',
+            'system_image_repository_url': 'str',
             'system_image_id': 'str',
-            'build_type': 'str',
+            'system_image_type': 'str',
+            'attributes': 'dict(str, str)',
             'field_handler': 'FieldHandler'
         }
 
@@ -51,18 +52,20 @@ class BuildEnvironment(object):
             'id': 'id',
             'name': 'name',
             'description': 'description',
-            'image_repository_url': 'imageRepositoryUrl',
+            'system_image_repository_url': 'systemImageRepositoryUrl',
             'system_image_id': 'systemImageId',
-            'build_type': 'buildType',
+            'system_image_type': 'systemImageType',
+            'attributes': 'attributes',
             'field_handler': 'fieldHandler'
         }
 
         self._id = None
         self._name = None
         self._description = None
-        self._image_repository_url = None
+        self._system_image_repository_url = None
         self._system_image_id = None
-        self._build_type = None
+        self._system_image_type = None
+        self._attributes = None
         self._field_handler = None
 
     @property
@@ -132,26 +135,26 @@ class BuildEnvironment(object):
         self._description = description
 
     @property
-    def image_repository_url(self):
+    def system_image_repository_url(self):
         """
-        Gets the image_repository_url of this BuildEnvironment.
+        Gets the system_image_repository_url of this BuildEnvironment.
 
 
-        :return: The image_repository_url of this BuildEnvironment.
+        :return: The system_image_repository_url of this BuildEnvironment.
         :rtype: str
         """
-        return self._image_repository_url
+        return self._system_image_repository_url
 
-    @image_repository_url.setter
-    def image_repository_url(self, image_repository_url):
+    @system_image_repository_url.setter
+    def system_image_repository_url(self, system_image_repository_url):
         """
-        Sets the image_repository_url of this BuildEnvironment.
+        Sets the system_image_repository_url of this BuildEnvironment.
 
 
-        :param image_repository_url: The image_repository_url of this BuildEnvironment.
+        :param system_image_repository_url: The system_image_repository_url of this BuildEnvironment.
         :type: str
         """
-        self._image_repository_url = image_repository_url
+        self._system_image_repository_url = system_image_repository_url
 
     @property
     def system_image_id(self):
@@ -176,32 +179,54 @@ class BuildEnvironment(object):
         self._system_image_id = system_image_id
 
     @property
-    def build_type(self):
+    def system_image_type(self):
         """
-        Gets the build_type of this BuildEnvironment.
+        Gets the system_image_type of this BuildEnvironment.
 
 
-        :return: The build_type of this BuildEnvironment.
+        :return: The system_image_type of this BuildEnvironment.
         :rtype: str
         """
-        return self._build_type
+        return self._system_image_type
 
-    @build_type.setter
-    def build_type(self, build_type):
+    @system_image_type.setter
+    def system_image_type(self, system_image_type):
         """
-        Sets the build_type of this BuildEnvironment.
+        Sets the system_image_type of this BuildEnvironment.
 
 
-        :param build_type: The build_type of this BuildEnvironment.
+        :param system_image_type: The system_image_type of this BuildEnvironment.
         :type: str
         """
-        allowed_values = ["JAVA", "DOCKER", "NATIVE"]
-        if build_type not in allowed_values:
+        allowed_values = ["DOCKER_IMAGE", "VIRTUAL_MACHINE_RAW", "VIRTUAL_MACHINE_QCOW2", "LOCAL_WORKSPACE"]
+        if system_image_type not in allowed_values:
             raise ValueError(
-                "Invalid value for `build_type`, must be one of {0}"
+                "Invalid value for `system_image_type`, must be one of {0}"
                 .format(allowed_values)
             )
-        self._build_type = build_type
+        self._system_image_type = system_image_type
+
+    @property
+    def attributes(self):
+        """
+        Gets the attributes of this BuildEnvironment.
+
+
+        :return: The attributes of this BuildEnvironment.
+        :rtype: dict(str, str)
+        """
+        return self._attributes
+
+    @attributes.setter
+    def attributes(self, attributes):
+        """
+        Sets the attributes of this BuildEnvironment.
+
+
+        :param attributes: The attributes of this BuildEnvironment.
+        :type: dict(str, str)
+        """
+        self._attributes = attributes
 
     @property
     def field_handler(self):

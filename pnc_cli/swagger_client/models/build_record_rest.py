@@ -50,15 +50,14 @@ class BuildRecordRest(object):
             'username': 'str',
             'scm_repo_url': 'str',
             'scm_revision': 'str',
-            'build_driver_id': 'str',
-            'system_image_id': 'int',
+            'build_environment_id': 'int',
             'external_archive_id': 'int',
             'live_logs_uri': 'str',
             'build_config_set_record_id': 'int',
             'build_content_id': 'str',
-            'build_record_set_ids': 'list[int]',
-            'performed_milestone_build_record_set_ids': 'list[int]',
-            'distributed_milestone_build_record_set_ids': 'list[int]'
+            'product_milestone_id': 'int',
+            'user': 'UserRest',
+            'build_configuration_audited': 'BuildConfigurationAuditedRest'
         }
 
         self.attribute_map = {
@@ -74,15 +73,14 @@ class BuildRecordRest(object):
             'username': 'username',
             'scm_repo_url': 'scmRepoURL',
             'scm_revision': 'scmRevision',
-            'build_driver_id': 'buildDriverId',
-            'system_image_id': 'systemImageId',
+            'build_environment_id': 'buildEnvironmentId',
             'external_archive_id': 'externalArchiveId',
             'live_logs_uri': 'liveLogsUri',
             'build_config_set_record_id': 'buildConfigSetRecordId',
             'build_content_id': 'buildContentId',
-            'build_record_set_ids': 'buildRecordSetIds',
-            'performed_milestone_build_record_set_ids': 'performedMilestoneBuildRecordSetIds',
-            'distributed_milestone_build_record_set_ids': 'distributedMilestoneBuildRecordSetIds'
+            'product_milestone_id': 'productMilestoneId',
+            'user': 'user',
+            'build_configuration_audited': 'buildConfigurationAudited'
         }
 
         self._id = None
@@ -97,15 +95,14 @@ class BuildRecordRest(object):
         self._username = None
         self._scm_repo_url = None
         self._scm_revision = None
-        self._build_driver_id = None
-        self._system_image_id = None
+        self._build_environment_id = None
         self._external_archive_id = None
         self._live_logs_uri = None
         self._build_config_set_record_id = None
         self._build_content_id = None
-        self._build_record_set_ids = None
-        self._performed_milestone_build_record_set_ids = None
-        self._distributed_milestone_build_record_set_ids = None
+        self._product_milestone_id = None
+        self._user = None
+        self._build_configuration_audited = None
 
     @property
     def id(self):
@@ -378,48 +375,26 @@ class BuildRecordRest(object):
         self._scm_revision = scm_revision
 
     @property
-    def build_driver_id(self):
+    def build_environment_id(self):
         """
-        Gets the build_driver_id of this BuildRecordRest.
+        Gets the build_environment_id of this BuildRecordRest.
 
 
-        :return: The build_driver_id of this BuildRecordRest.
-        :rtype: str
-        """
-        return self._build_driver_id
-
-    @build_driver_id.setter
-    def build_driver_id(self, build_driver_id):
-        """
-        Sets the build_driver_id of this BuildRecordRest.
-
-
-        :param build_driver_id: The build_driver_id of this BuildRecordRest.
-        :type: str
-        """
-        self._build_driver_id = build_driver_id
-
-    @property
-    def system_image_id(self):
-        """
-        Gets the system_image_id of this BuildRecordRest.
-
-
-        :return: The system_image_id of this BuildRecordRest.
+        :return: The build_environment_id of this BuildRecordRest.
         :rtype: int
         """
-        return self._system_image_id
+        return self._build_environment_id
 
-    @system_image_id.setter
-    def system_image_id(self, system_image_id):
+    @build_environment_id.setter
+    def build_environment_id(self, build_environment_id):
         """
-        Sets the system_image_id of this BuildRecordRest.
+        Sets the build_environment_id of this BuildRecordRest.
 
 
-        :param system_image_id: The system_image_id of this BuildRecordRest.
+        :param build_environment_id: The build_environment_id of this BuildRecordRest.
         :type: int
         """
-        self._system_image_id = system_image_id
+        self._build_environment_id = build_environment_id
 
     @property
     def external_archive_id(self):
@@ -510,70 +485,70 @@ class BuildRecordRest(object):
         self._build_content_id = build_content_id
 
     @property
-    def build_record_set_ids(self):
+    def product_milestone_id(self):
         """
-        Gets the build_record_set_ids of this BuildRecordRest.
+        Gets the product_milestone_id of this BuildRecordRest.
 
 
-        :return: The build_record_set_ids of this BuildRecordRest.
-        :rtype: list[int]
+        :return: The product_milestone_id of this BuildRecordRest.
+        :rtype: int
         """
-        return self._build_record_set_ids
+        return self._product_milestone_id
 
-    @build_record_set_ids.setter
-    def build_record_set_ids(self, build_record_set_ids):
+    @product_milestone_id.setter
+    def product_milestone_id(self, product_milestone_id):
         """
-        Sets the build_record_set_ids of this BuildRecordRest.
+        Sets the product_milestone_id of this BuildRecordRest.
 
 
-        :param build_record_set_ids: The build_record_set_ids of this BuildRecordRest.
-        :type: list[int]
+        :param product_milestone_id: The product_milestone_id of this BuildRecordRest.
+        :type: int
         """
-        self._build_record_set_ids = build_record_set_ids
+        self._product_milestone_id = product_milestone_id
 
     @property
-    def performed_milestone_build_record_set_ids(self):
+    def user(self):
         """
-        Gets the performed_milestone_build_record_set_ids of this BuildRecordRest.
+        Gets the user of this BuildRecordRest.
 
 
-        :return: The performed_milestone_build_record_set_ids of this BuildRecordRest.
-        :rtype: list[int]
+        :return: The user of this BuildRecordRest.
+        :rtype: UserRest
         """
-        return self._performed_milestone_build_record_set_ids
+        return self._user
 
-    @performed_milestone_build_record_set_ids.setter
-    def performed_milestone_build_record_set_ids(self, performed_milestone_build_record_set_ids):
+    @user.setter
+    def user(self, user):
         """
-        Sets the performed_milestone_build_record_set_ids of this BuildRecordRest.
+        Sets the user of this BuildRecordRest.
 
 
-        :param performed_milestone_build_record_set_ids: The performed_milestone_build_record_set_ids of this BuildRecordRest.
-        :type: list[int]
+        :param user: The user of this BuildRecordRest.
+        :type: UserRest
         """
-        self._performed_milestone_build_record_set_ids = performed_milestone_build_record_set_ids
+        self._user = user
 
     @property
-    def distributed_milestone_build_record_set_ids(self):
+    def build_configuration_audited(self):
         """
-        Gets the distributed_milestone_build_record_set_ids of this BuildRecordRest.
+        Gets the build_configuration_audited of this BuildRecordRest.
 
 
-        :return: The distributed_milestone_build_record_set_ids of this BuildRecordRest.
-        :rtype: list[int]
+        :return: The build_configuration_audited of this BuildRecordRest.
+        :rtype: BuildConfigurationAuditedRest
         """
-        return self._distributed_milestone_build_record_set_ids
+        return self._build_configuration_audited
 
-    @distributed_milestone_build_record_set_ids.setter
-    def distributed_milestone_build_record_set_ids(self, distributed_milestone_build_record_set_ids):
+    @build_configuration_audited.setter
+    def build_configuration_audited(self, build_configuration_audited):
         """
-        Sets the distributed_milestone_build_record_set_ids of this BuildRecordRest.
+        Sets the build_configuration_audited of this BuildRecordRest.
 
 
-        :param distributed_milestone_build_record_set_ids: The distributed_milestone_build_record_set_ids of this BuildRecordRest.
-        :type: list[int]
+        :param build_configuration_audited: The build_configuration_audited of this BuildRecordRest.
+        :type: BuildConfigurationAuditedRest
         """
-        self._distributed_milestone_build_record_set_ids = distributed_milestone_build_record_set_ids
+        self._build_configuration_audited = build_configuration_audited
 
     def to_dict(self):
         """

@@ -41,26 +41,32 @@ class BuildEnvironmentRest(object):
             'id': 'int',
             'name': 'str',
             'description': 'str',
-            'image_repository_url': 'str',
-            'build_type': 'str',
-            'image_id': 'str'
+            'system_image_repository_url': 'str',
+            'attributes': 'dict(str, str)',
+            'system_image_type': 'str',
+            'image_id': 'str',
+            'image_repository_url': 'str'
         }
 
         self.attribute_map = {
             'id': 'id',
             'name': 'name',
             'description': 'description',
-            'image_repository_url': 'imageRepositoryUrl',
-            'build_type': 'buildType',
-            'image_id': 'imageId'
+            'system_image_repository_url': 'systemImageRepositoryUrl',
+            'attributes': 'attributes',
+            'system_image_type': 'systemImageType',
+            'image_id': 'imageId',
+            'image_repository_url': 'imageRepositoryUrl'
         }
 
         self._id = None
         self._name = None
         self._description = None
-        self._image_repository_url = None
-        self._build_type = None
+        self._system_image_repository_url = None
+        self._attributes = None
+        self._system_image_type = None
         self._image_id = None
+        self._image_repository_url = None
 
     @property
     def id(self):
@@ -129,54 +135,76 @@ class BuildEnvironmentRest(object):
         self._description = description
 
     @property
-    def image_repository_url(self):
+    def system_image_repository_url(self):
         """
-        Gets the image_repository_url of this BuildEnvironmentRest.
+        Gets the system_image_repository_url of this BuildEnvironmentRest.
 
 
-        :return: The image_repository_url of this BuildEnvironmentRest.
+        :return: The system_image_repository_url of this BuildEnvironmentRest.
         :rtype: str
         """
-        return self._image_repository_url
+        return self._system_image_repository_url
 
-    @image_repository_url.setter
-    def image_repository_url(self, image_repository_url):
+    @system_image_repository_url.setter
+    def system_image_repository_url(self, system_image_repository_url):
         """
-        Sets the image_repository_url of this BuildEnvironmentRest.
+        Sets the system_image_repository_url of this BuildEnvironmentRest.
 
 
-        :param image_repository_url: The image_repository_url of this BuildEnvironmentRest.
+        :param system_image_repository_url: The system_image_repository_url of this BuildEnvironmentRest.
         :type: str
         """
-        self._image_repository_url = image_repository_url
+        self._system_image_repository_url = system_image_repository_url
 
     @property
-    def build_type(self):
+    def attributes(self):
         """
-        Gets the build_type of this BuildEnvironmentRest.
+        Gets the attributes of this BuildEnvironmentRest.
 
 
-        :return: The build_type of this BuildEnvironmentRest.
+        :return: The attributes of this BuildEnvironmentRest.
+        :rtype: dict(str, str)
+        """
+        return self._attributes
+
+    @attributes.setter
+    def attributes(self, attributes):
+        """
+        Sets the attributes of this BuildEnvironmentRest.
+
+
+        :param attributes: The attributes of this BuildEnvironmentRest.
+        :type: dict(str, str)
+        """
+        self._attributes = attributes
+
+    @property
+    def system_image_type(self):
+        """
+        Gets the system_image_type of this BuildEnvironmentRest.
+
+
+        :return: The system_image_type of this BuildEnvironmentRest.
         :rtype: str
         """
-        return self._build_type
+        return self._system_image_type
 
-    @build_type.setter
-    def build_type(self, build_type):
+    @system_image_type.setter
+    def system_image_type(self, system_image_type):
         """
-        Sets the build_type of this BuildEnvironmentRest.
+        Sets the system_image_type of this BuildEnvironmentRest.
 
 
-        :param build_type: The build_type of this BuildEnvironmentRest.
+        :param system_image_type: The system_image_type of this BuildEnvironmentRest.
         :type: str
         """
-        allowed_values = ["JAVA", "DOCKER", "NATIVE"]
-        if build_type not in allowed_values:
+        allowed_values = ["DOCKER_IMAGE", "VIRTUAL_MACHINE_RAW", "VIRTUAL_MACHINE_QCOW2", "LOCAL_WORKSPACE"]
+        if system_image_type not in allowed_values:
             raise ValueError(
-                "Invalid value for `build_type`, must be one of {0}"
+                "Invalid value for `system_image_type`, must be one of {0}"
                 .format(allowed_values)
             )
-        self._build_type = build_type
+        self._system_image_type = system_image_type
 
     @property
     def image_id(self):
@@ -199,6 +227,28 @@ class BuildEnvironmentRest(object):
         :type: str
         """
         self._image_id = image_id
+
+    @property
+    def image_repository_url(self):
+        """
+        Gets the image_repository_url of this BuildEnvironmentRest.
+
+
+        :return: The image_repository_url of this BuildEnvironmentRest.
+        :rtype: str
+        """
+        return self._image_repository_url
+
+    @image_repository_url.setter
+    def image_repository_url(self, image_repository_url):
+        """
+        Sets the image_repository_url of this BuildEnvironmentRest.
+
+
+        :param image_repository_url: The image_repository_url of this BuildEnvironmentRest.
+        :type: str
+        """
+        self._image_repository_url = image_repository_url
 
     def to_dict(self):
         """

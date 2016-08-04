@@ -47,8 +47,8 @@ class ProductMilestone(object):
             'issue_tracker_url': 'str',
             'product_version': 'ProductVersion',
             'product_release': 'ProductRelease',
-            'performed_build_record_set': 'BuildRecordSet',
-            'distributed_build_record_set': 'BuildRecordSet',
+            'performed_builds': 'list[BuildRecord]',
+            'distributed_artifacts': 'list[Artifact]',
             'field_handler': 'FieldHandler'
         }
 
@@ -62,8 +62,8 @@ class ProductMilestone(object):
             'issue_tracker_url': 'issueTrackerUrl',
             'product_version': 'productVersion',
             'product_release': 'productRelease',
-            'performed_build_record_set': 'performedBuildRecordSet',
-            'distributed_build_record_set': 'distributedBuildRecordSet',
+            'performed_builds': 'performedBuilds',
+            'distributed_artifacts': 'distributedArtifacts',
             'field_handler': 'fieldHandler'
         }
 
@@ -76,8 +76,8 @@ class ProductMilestone(object):
         self._issue_tracker_url = None
         self._product_version = None
         self._product_release = None
-        self._performed_build_record_set = None
-        self._distributed_build_record_set = None
+        self._performed_builds = None
+        self._distributed_artifacts = None
         self._field_handler = None
 
     @property
@@ -279,48 +279,48 @@ class ProductMilestone(object):
         self._product_release = product_release
 
     @property
-    def performed_build_record_set(self):
+    def performed_builds(self):
         """
-        Gets the performed_build_record_set of this ProductMilestone.
+        Gets the performed_builds of this ProductMilestone.
 
 
-        :return: The performed_build_record_set of this ProductMilestone.
-        :rtype: BuildRecordSet
+        :return: The performed_builds of this ProductMilestone.
+        :rtype: list[BuildRecord]
         """
-        return self._performed_build_record_set
+        return self._performed_builds
 
-    @performed_build_record_set.setter
-    def performed_build_record_set(self, performed_build_record_set):
+    @performed_builds.setter
+    def performed_builds(self, performed_builds):
         """
-        Sets the performed_build_record_set of this ProductMilestone.
+        Sets the performed_builds of this ProductMilestone.
 
 
-        :param performed_build_record_set: The performed_build_record_set of this ProductMilestone.
-        :type: BuildRecordSet
+        :param performed_builds: The performed_builds of this ProductMilestone.
+        :type: list[BuildRecord]
         """
-        self._performed_build_record_set = performed_build_record_set
+        self._performed_builds = performed_builds
 
     @property
-    def distributed_build_record_set(self):
+    def distributed_artifacts(self):
         """
-        Gets the distributed_build_record_set of this ProductMilestone.
+        Gets the distributed_artifacts of this ProductMilestone.
 
 
-        :return: The distributed_build_record_set of this ProductMilestone.
-        :rtype: BuildRecordSet
+        :return: The distributed_artifacts of this ProductMilestone.
+        :rtype: list[Artifact]
         """
-        return self._distributed_build_record_set
+        return self._distributed_artifacts
 
-    @distributed_build_record_set.setter
-    def distributed_build_record_set(self, distributed_build_record_set):
+    @distributed_artifacts.setter
+    def distributed_artifacts(self, distributed_artifacts):
         """
-        Sets the distributed_build_record_set of this ProductMilestone.
+        Sets the distributed_artifacts of this ProductMilestone.
 
 
-        :param distributed_build_record_set: The distributed_build_record_set of this ProductMilestone.
-        :type: BuildRecordSet
+        :param distributed_artifacts: The distributed_artifacts of this ProductMilestone.
+        :type: list[Artifact]
         """
-        self._distributed_build_record_set = distributed_build_record_set
+        self._distributed_artifacts = distributed_artifacts
 
     @property
     def field_handler(self):

@@ -45,8 +45,8 @@ class ProductVersion(object):
             'product_milestones': 'list[ProductMilestone]',
             'current_product_milestone': 'ProductMilestone',
             'build_configurations': 'list[BuildConfiguration]',
-            'field_handler': 'FieldHandler',
-            'product_releases': 'list[ProductRelease]'
+            'product_releases': 'list[ProductRelease]',
+            'field_handler': 'FieldHandler'
         }
 
         self.attribute_map = {
@@ -57,8 +57,8 @@ class ProductVersion(object):
             'product_milestones': 'productMilestones',
             'current_product_milestone': 'currentProductMilestone',
             'build_configurations': 'buildConfigurations',
-            'field_handler': 'fieldHandler',
-            'product_releases': 'productReleases'
+            'product_releases': 'productReleases',
+            'field_handler': 'fieldHandler'
         }
 
         self._id = None
@@ -68,8 +68,8 @@ class ProductVersion(object):
         self._product_milestones = None
         self._current_product_milestone = None
         self._build_configurations = None
-        self._field_handler = None
         self._product_releases = None
+        self._field_handler = None
 
     @property
     def id(self):
@@ -226,28 +226,6 @@ class ProductVersion(object):
         self._build_configurations = build_configurations
 
     @property
-    def field_handler(self):
-        """
-        Gets the field_handler of this ProductVersion.
-
-
-        :return: The field_handler of this ProductVersion.
-        :rtype: FieldHandler
-        """
-        return self._field_handler
-
-    @field_handler.setter
-    def field_handler(self, field_handler):
-        """
-        Sets the field_handler of this ProductVersion.
-
-
-        :param field_handler: The field_handler of this ProductVersion.
-        :type: FieldHandler
-        """
-        self._field_handler = field_handler
-
-    @property
     def product_releases(self):
         """
         Gets the product_releases of this ProductVersion.
@@ -268,6 +246,28 @@ class ProductVersion(object):
         :type: list[ProductRelease]
         """
         self._product_releases = product_releases
+
+    @property
+    def field_handler(self):
+        """
+        Gets the field_handler of this ProductVersion.
+
+
+        :return: The field_handler of this ProductVersion.
+        :rtype: FieldHandler
+        """
+        return self._field_handler
+
+    @field_handler.setter
+    def field_handler(self, field_handler):
+        """
+        Sets the field_handler of this ProductVersion.
+
+
+        :param field_handler: The field_handler of this ProductVersion.
+        :type: FieldHandler
+        """
+        self._field_handler = field_handler
 
     def to_dict(self):
         """
