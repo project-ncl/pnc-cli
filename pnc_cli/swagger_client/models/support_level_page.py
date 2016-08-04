@@ -142,12 +142,12 @@ class SupportLevelPage(object):
         :param content: The content of this SupportLevelPage.
         :type: list[str]
         """
-        allowed_values = []
-        if content not in allowed_values:
-            raise ValueError(
-                "Invalid value for `content`, must be one of {0}"
-                .format(allowed_values)
-            )
+#        allowed_values = []
+#        if content not in allowed_values:
+#            raise ValueError(
+#                "Invalid value for `content`, must be one of {0}"
+#                .format(allowed_values)
+#            )
         self._content = content
 
     def to_dict(self):
