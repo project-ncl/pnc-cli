@@ -15,6 +15,7 @@ from pnc_cli.swagger_client import BuildconfigurationsApi
 from pnc_cli.swagger_client import BuildrecordsApi
 from pnc_cli.swagger_client import LicensesApi
 from pnc_cli.swagger_client import BuildconfigsetrecordsApi
+from pnc_cli.swagger_client import RunningbuildrecordsApi
 
 __author__ = 'thauser'
 
@@ -130,6 +131,59 @@ def test_existing_bc_id_exception(mock_configs_api, mock_id_exists, mock_valid_i
         cli_types.existing_bc_id('1')
     mock_valid_id.assert_called_once_with('1')
     mock_id_exists.assert_called_once_with(mock_configs_api, '1')
+
+
+# Buildconfiguration set tests
+@patch('pnc_cli.common.get_id_by_name', return_value=None)
+@patch('pnc_cli.cli_types.sets_api', autospec=BuildconfigurationsApi)
+def test_unique_bc_set_name(mock_sets_api, mock_get_id_by_name):
+    result = cli_types.unique_bc_set_name('test')
+    mock_get_id_by_name.assert_called_once_with(mock_sets_api, 'test')
+    assert result == 'test'
+
+
+@patch('pnc_cli.common.get_id_by_name', return_value=1)
+@patch('pnc_cli.cli_types.sets_api', autospec=BuildconfigurationsApi)
+def test_unique_bc_set_name_exception(mock_sets_api, mock_get_id_by_name):
+    with pytest.raises(argparse.ArgumentTypeError):
+        cli_types.unique_bc_set_name('test')
+    assert mock_get_id_by_name.assert_called_once_with(mock_sets_api, 'test')
+
+
+@patch('pnc_cli.common.get_id_by_name', return_value=1)
+@patch('pnc_cli.cli_types.sets_api', autospec=BuildconfigurationsApi)
+def test_existing_bc_set_name(mock_sets_api, mock_get_id_by_name):
+    result = cli_types.existing_bc_set_name('test')
+    mock_get_id_by_name.assert_called_once_with(mock_sets_api, 'test')
+    assert result == 'test'
+
+
+@patch('pnc_cli.common.get_id_by_name', return_value=None)
+@patch('pnc_cli.cli_types.sets_api', autospec=BuildconfigurationsApi)
+def test_existing_bc_set_name_exception(mock_sets_api, mock_get_id_by_name):
+    with pytest.raises(argparse.ArgumentTypeError):
+        cli_types.existing_bc_set_name('test')
+    mock_get_id_by_name.assert_called_once_with(mock_sets_api, 'test')
+
+
+@patch('pnc_cli.common.id_exists', return_value=True)
+@patch('pnc_cli.cli_types.valid_id', return_value=1)
+@patch('pnc_cli.cli_types.sets_api', autospec=BuildconfigurationsApi)
+def test_existing_bc_set_id(mock_sets_api, mock_valid_id, mock_id_exists):
+    result = cli_types.existing_bc_set_id(1)
+    mock_valid_id.assert_called_once_with(1)
+    mock_id_exists.assert_called_once_with(mock_sets_api, 1)
+    assert result == 1
+
+
+@patch('pnc_cli.common.id_exists', return_value=False)
+@patch('pnc_cli.cli_types.valid_id', return_value=1)
+@patch('pnc_cli.cli_types.sets_api', autospec=BuildconfigurationsApi)
+def test_existing_bc_set_id_exception(mock_sets_api, mock_valid_id, mock_id_exists):
+    with pytest.raises(argparse.ArgumentTypeError):
+        cli_types.existing_bc_set_id(1)
+    mock_valid_id.assert_called_once_with(1)
+    mock_id_exists.assert_called_once_with(mock_sets_api, 1)
 
 
 # Product type tests
@@ -456,3 +510,23 @@ def test_existing_license_exception(mock_licenses_api, mock_id_exists, mock_vali
         cli_types.existing_license('1')
     mock_valid_id.assert_called_once_with('1')
     mock_id_exists.assert_called_once_with(mock_licenses_api, '1')
+
+
+@patch('pnc_cli.cli_types.valid_id')
+@patch('pnc_cli.common.id_exists', return_value=True)
+@patch('pnc_cli.cli_types.running_api', autospec=RunningbuildrecordsApi)
+def test_existing_running_build(mock_running_api, mock_id_exists, mock_valid_id):
+    result = cli_types.existing_running_build(1)
+    mock_valid_id.assert_called_once_with(1)
+    mock_id_exists.assert_called_once_with(mock_running_api, 1)
+    assert result == 1
+
+
+@patch('pnc_cli.cli_types.valid_id')
+@patch('pnc_cli.common.id_exists', return_value=False)
+@patch('pnc_cli.cli_types.running_api', autospec=RunningbuildrecordsApi)
+def test_existing_running_build_exception(mock_running_api, mock_id_exists, mock_valid_id):
+    with pytest.raises(argparse.ArgumentTypeError):
+        cli_types.existing_running_build(1)
+    mock_valid_id.assert_called_once_with(1)
+    mock_id_exists.assert_called_once_with(mock_running_api, 1)
