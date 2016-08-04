@@ -147,7 +147,7 @@ def test_unique_bc_set_name(mock_sets_api, mock_get_id_by_name):
 def test_unique_bc_set_name_exception(mock_sets_api, mock_get_id_by_name):
     with pytest.raises(argparse.ArgumentTypeError):
         cli_types.unique_bc_set_name('test')
-    assert mock_get_id_by_name.assert_called_once_with(mock_sets_api, 'test')
+    mock_get_id_by_name.assert_called_once_with(mock_sets_api, 'test')
 
 
 @patch('pnc_cli.common.get_id_by_name', return_value=1)
