@@ -51,7 +51,7 @@ class BuildRecordRest(object):
             'scm_repo_url': 'str',
             'scm_revision': 'str',
             'build_environment_id': 'int',
-            'external_archive_id': 'int',
+            'attributes': 'dict(str, str)',
             'live_logs_uri': 'str',
             'build_config_set_record_id': 'int',
             'build_content_id': 'str',
@@ -74,7 +74,7 @@ class BuildRecordRest(object):
             'scm_repo_url': 'scmRepoURL',
             'scm_revision': 'scmRevision',
             'build_environment_id': 'buildEnvironmentId',
-            'external_archive_id': 'externalArchiveId',
+            'attributes': 'attributes',
             'live_logs_uri': 'liveLogsUri',
             'build_config_set_record_id': 'buildConfigSetRecordId',
             'build_content_id': 'buildContentId',
@@ -96,7 +96,7 @@ class BuildRecordRest(object):
         self._scm_repo_url = None
         self._scm_revision = None
         self._build_environment_id = None
-        self._external_archive_id = None
+        self._attributes = None
         self._live_logs_uri = None
         self._build_config_set_record_id = None
         self._build_content_id = None
@@ -397,26 +397,26 @@ class BuildRecordRest(object):
         self._build_environment_id = build_environment_id
 
     @property
-    def external_archive_id(self):
+    def attributes(self):
         """
-        Gets the external_archive_id of this BuildRecordRest.
+        Gets the attributes of this BuildRecordRest.
 
 
-        :return: The external_archive_id of this BuildRecordRest.
-        :rtype: int
+        :return: The attributes of this BuildRecordRest.
+        :rtype: dict(str, str)
         """
-        return self._external_archive_id
+        return self._attributes
 
-    @external_archive_id.setter
-    def external_archive_id(self, external_archive_id):
+    @attributes.setter
+    def attributes(self, attributes):
         """
-        Sets the external_archive_id of this BuildRecordRest.
+        Sets the attributes of this BuildRecordRest.
 
 
-        :param external_archive_id: The external_archive_id of this BuildRecordRest.
-        :type: int
+        :param attributes: The attributes of this BuildRecordRest.
+        :type: dict(str, str)
         """
-        self._external_archive_id = external_archive_id
+        self._attributes = attributes
 
     @property
     def live_logs_uri(self):

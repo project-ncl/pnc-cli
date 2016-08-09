@@ -129,9 +129,9 @@ class RunningbuildrecordsApi(object):
                                             callback=params.get('callback'))
         return response
 
-    def get_all_for_bc_set_record(self, id, **kwargs):
+    def get_all_for_bc(self, id, **kwargs):
         """
-        Gets running Build Records for a specific Build Configuration Set Record.
+        Gets running Build Records for a specific Build Configuration.
         
 
         This method makes a synchronous HTTP request by default. To make an
@@ -140,11 +140,11 @@ class RunningbuildrecordsApi(object):
         >>> def callback_function(response):
         >>>     pprint(response)
         >>>
-        >>> thread = api.get_all_for_bc_set_record(id, callback=callback_function)
+        >>> thread = api.get_all_for_bc(id, callback=callback_function)
 
         :param callback function: The callback function
             for asynchronous request. (optional)
-        :param int id: Build Configuration Set id (required)
+        :param int id: Build Configuration id (required)
         :param int page_index: Page Index
         :param int page_size: Pagination size
         :param str search: Since this endpoint does not support queries, fulltext search is hard-coded for some predefined fields (record id, configuration name) and performed using this argument. Empty string leaves all data unfiltered.
@@ -154,7 +154,7 @@ class RunningbuildrecordsApi(object):
         """
         # verify the required parameter 'id' is set
         if id is None:
-            raise ValueError("Missing the required parameter `id` when calling `get_all_for_bc_set_record`")
+            raise ValueError("Missing the required parameter `id` when calling `get_all_for_bc`")
 
         all_params = ['id', 'page_index', 'page_size', 'search']
         all_params.append('callback')
@@ -164,12 +164,12 @@ class RunningbuildrecordsApi(object):
             if key not in all_params:
                 raise TypeError(
                     "Got an unexpected keyword argument '%s'"
-                    " to method get_all_for_bc_set_record" % key
+                    " to method get_all_for_bc" % key
                 )
             params[key] = val
         del params['kwargs']
 
-        resource_path = '/running-build-records/build-config-set-records/{id}'.replace('{format}', 'json')
+        resource_path = '/running-build-records/build-configurations/{id}'.replace('{format}', 'json')
         method = 'GET'
 
         path_params = {}
@@ -216,9 +216,9 @@ class RunningbuildrecordsApi(object):
                                             callback=params.get('callback'))
         return response
 
-    def get_all_for_bc(self, id, **kwargs):
+    def get_all_for_bc_set_record(self, id, **kwargs):
         """
-        Gets running Build Records for a specific Build Configuration.
+        Gets running Build Records for a specific Build Configuration Set Record.
         
 
         This method makes a synchronous HTTP request by default. To make an
@@ -227,11 +227,11 @@ class RunningbuildrecordsApi(object):
         >>> def callback_function(response):
         >>>     pprint(response)
         >>>
-        >>> thread = api.get_all_for_bc(id, callback=callback_function)
+        >>> thread = api.get_all_for_bc_set_record(id, callback=callback_function)
 
         :param callback function: The callback function
             for asynchronous request. (optional)
-        :param int id: Build Configuration id (required)
+        :param int id: Build Configuration Set id (required)
         :param int page_index: Page Index
         :param int page_size: Pagination size
         :param str search: Since this endpoint does not support queries, fulltext search is hard-coded for some predefined fields (record id, configuration name) and performed using this argument. Empty string leaves all data unfiltered.
@@ -241,7 +241,7 @@ class RunningbuildrecordsApi(object):
         """
         # verify the required parameter 'id' is set
         if id is None:
-            raise ValueError("Missing the required parameter `id` when calling `get_all_for_bc`")
+            raise ValueError("Missing the required parameter `id` when calling `get_all_for_bc_set_record`")
 
         all_params = ['id', 'page_index', 'page_size', 'search']
         all_params.append('callback')
@@ -251,12 +251,12 @@ class RunningbuildrecordsApi(object):
             if key not in all_params:
                 raise TypeError(
                     "Got an unexpected keyword argument '%s'"
-                    " to method get_all_for_bc" % key
+                    " to method get_all_for_bc_set_record" % key
                 )
             params[key] = val
         del params['kwargs']
 
-        resource_path = '/running-build-records/build-configurations/{id}'.replace('{format}', 'json')
+        resource_path = '/running-build-records/build-config-set-records/{id}'.replace('{format}', 'json')
         method = 'GET'
 
         path_params = {}

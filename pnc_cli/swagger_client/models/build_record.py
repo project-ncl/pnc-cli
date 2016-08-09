@@ -55,7 +55,7 @@ class BuildRecord(object):
             'build_environment': 'BuildEnvironment',
             'product_milestone': 'ProductMilestone',
             'build_config_set_record': 'BuildConfigSetRecord',
-            'external_archive_id': 'int',
+            'attributes': 'dict(str, str)',
             'field_handler': 'FieldHandler'
         }
 
@@ -77,7 +77,7 @@ class BuildRecord(object):
             'build_environment': 'buildEnvironment',
             'product_milestone': 'productMilestone',
             'build_config_set_record': 'buildConfigSetRecord',
-            'external_archive_id': 'externalArchiveId',
+            'attributes': 'attributes',
             'field_handler': 'fieldHandler'
         }
 
@@ -98,7 +98,7 @@ class BuildRecord(object):
         self._build_environment = None
         self._product_milestone = None
         self._build_config_set_record = None
-        self._external_archive_id = None
+        self._attributes = None
         self._field_handler = None
 
     @property
@@ -482,26 +482,26 @@ class BuildRecord(object):
         self._build_config_set_record = build_config_set_record
 
     @property
-    def external_archive_id(self):
+    def attributes(self):
         """
-        Gets the external_archive_id of this BuildRecord.
+        Gets the attributes of this BuildRecord.
 
 
-        :return: The external_archive_id of this BuildRecord.
-        :rtype: int
+        :return: The attributes of this BuildRecord.
+        :rtype: dict(str, str)
         """
-        return self._external_archive_id
+        return self._attributes
 
-    @external_archive_id.setter
-    def external_archive_id(self, external_archive_id):
+    @attributes.setter
+    def attributes(self, attributes):
         """
-        Sets the external_archive_id of this BuildRecord.
+        Sets the attributes of this BuildRecord.
 
 
-        :param external_archive_id: The external_archive_id of this BuildRecord.
-        :type: int
+        :param attributes: The attributes of this BuildRecord.
+        :type: dict(str, str)
         """
-        self._external_archive_id = external_archive_id
+        self._attributes = attributes
 
     @property
     def field_handler(self):
