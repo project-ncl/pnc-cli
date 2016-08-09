@@ -2,7 +2,6 @@ import pytest
 
 from test.integration.conftest import new_config
 
-
 __author__ = 'thauser'
 
 from pnc_cli import buildconfigurationsets
@@ -17,14 +16,21 @@ def get_sets_api():
     sets_api = BuildconfigurationsetsApi(utils.get_api_client())
 
 
+def test_get_all_invalid_param():
+    testutils.assert_raises_typeerror(sets_api, 'get_all')
+
+
 def test_get_all():
     sets = sets_api.get_all().content
     assert sets is not None
 
 
-def test_create(new_set):
-    set_names = [set.name for set in sets_api.get_all(page_size=1000000).content]
-    assert new_set.name in set_names
+def test_create_new_invalid_param():
+    testutils.assert_raises_typeerror(sets_api, 'create_new')
+
+
+def test_create_new(new_set):
+    assert sets_api.get_specific(id=new_set.id).content is not None
 
 
 def test_get_specific_no_id():
@@ -38,6 +44,14 @@ def test_get_specific_invalid_param():
 def test_get_specific(new_set):
     set = sets_api.get_specific(id=new_set.id)
     assert set is not None
+
+
+def test_update_no_id():
+    testutils.assert_raises_valueerror(sets_api, 'update', id=None)
+
+
+def test_update_invalid_param():
+    testutils.assert_raises_typeerror(sets_api, 'update', id=1)
 
 
 def test_update(new_set):
@@ -74,6 +88,18 @@ def test_get_configurations(new_config, new_set):
     sets_api.add_configuration(id=new_set.id, body=new_config)
     set_configs = sets_api.get_configurations(id=new_set.id)
     assert set_configs is not None
+
+
+def test_add_configuration_no_set_id(new_config, new_set):
+    testutils.assert_raises_valueerror(sets_api, 'remove_configuration', id=None, config_id=1)
+
+
+def test_add_configuration_no_config_id(new_config, new_set):
+    testutils.assert_raises_valueerror(sets_api, 'remove_configuration', id=1, config_id=None)
+
+
+def test_add_configuration_invalid_param():
+    testutils.assert_raises_typeerror(sets_api, 'remove_configuration', id=1, config_id=1)
 
 
 def test_add_configuration(new_config, new_set):
@@ -148,7 +174,3 @@ def test_get_all_build_config_set_records_invalid_param():
 def test_get_all_build_config_set_records(new_set):
     response = sets_api.get_all_build_config_set_records(id=new_set.id)
     assert response is not None
-
-
-
-

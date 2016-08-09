@@ -1,7 +1,9 @@
 import argparse
 
+import datetime
 import pytest
 from mock import patch
+from tzlocal import get_localzone
 
 import pnc_cli.cli_types as cli_types
 # create_autospec dud import
@@ -32,8 +34,9 @@ def test_valid_id_exception():
 
 
 def test_valid_date():
+    dateInput = get_localzone().localize(datetime.datetime.strptime('2015-06-01', '%Y-%m-%d'))
     result = cli_types.valid_date('2015-06-01')
-    assert result == '2015-06-01'
+    assert result == dateInput
 
 
 def test_valid_date_exception():

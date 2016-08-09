@@ -34,8 +34,7 @@ def test_create_build_configuration_invalid_params():
 
 
 def test_create_build_configuration(new_config):
-    bc_names = [bc.name for bc in configs_api.get_all(page_size=1000000).content]
-    assert new_config.name in bc_names
+    assert configs_api.get_specific(id=new_config.id).content is not None
 
 
 def test_get_specific_no_id():
@@ -292,14 +291,14 @@ def test_product_version_operations(new_product, new_config):
     # create a test ProductVersion
     version_rest = productversions.create_product_version(product_id=new_product.id, version=randversion)
 
-    #add_product_version
+    # add_product_version
     configs_api.add_product_version(id=new_config.id, body=version_rest)
 
-    #get_product_versions
+    # get_product_versions
     config_versions = configs_api.get_product_versions(id=new_config.id)
     assert version_rest.id in [x.id for x in config_versions.content]
 
-    #remove_product_version
+    # remove_product_version
     configs_api.remove_product_version(id=new_config.id, product_version_id=version_rest.id)
     config_versions = configs_api.get_product_versions(id=new_config.id)
     if config_versions.content is not None:
@@ -336,11 +335,11 @@ def test_revision_operations(new_config):
 
 
 def test_get_build_configuration_sets_no_id():
-    testutils.assert_raises_typeerror(configs_api, 'get_build_configuration_sets')
+    testutils.assert_raises_valueerror(configs_api, 'get_build_configuration_sets', id=None)
 
 
 def test_get_build_configuration_sets_invalid_param():
-    testutils.assert_raises_valueerror(configs_api, 'get_build_configuration_sets', id=None)
+    testutils.assert_raises_typeerror(configs_api, 'get_build_configuration_sets', id=1)
 
 
 def test_get_build_configuration_sets():
@@ -349,16 +348,13 @@ def test_get_build_configuration_sets():
 
 
 def test_get_builds_no_id():
-    testutils.assert_raises_typeerror(configs_api, 'get_builds')
+    testutils.assert_raises_valueerror(configs_api, 'get_builds', id=None)
 
 
 def test_get_builds_invalid_param():
-    testutils.assert_raises_valueerror(configs_api, 'get_builds', id=None)
+    testutils.assert_raises_typeerror(configs_api, 'get_builds', id=1)
 
 
 def test_get_builds():
     builds = configs_api.get_builds(id=1)
     assert builds is not None
-
-
-
