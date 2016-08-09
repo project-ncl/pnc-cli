@@ -12,6 +12,7 @@ records_api = BuildrecordsApi(client)
 configs_api = BuildconfigurationsApi(client)
 projects_api = ProjectsApi(client)
 
+
 @arg("-p", "--page-size", help="Limit the amount of BuildRecords returned", type=int)
 @arg("-s", "--sort", help="Sorting RSQL")
 @arg("-q", help="RSQL query")
@@ -119,5 +120,33 @@ def get_log_for_record(id):
 @arg("-q", help="RSQL query")
 def get_artifacts(id, page_size=200, sort="", q=""):
     response = utils.checked_api_call(records_api, 'get_artifacts', id=id, page_size=page_size, sort=sort, q=q)
+    if response:
+        return response.content
+
+
+@arg("id", help="BuildRecord ID to add an Attribute to.", type=types.existing_build_record)
+@arg("key", help="Key for the Attribute.")
+@arg("value", help="Value for the Attribute.")
+def put_attribute(id, key, value):
+    utils.checked_api_call(records_api, 'put_attribute', id=id, key=key, value=value)
+
+
+@arg("id", help="BuildRecord ID to remove an Attribute from.", type=types.existing_build_record)
+@arg("key", help="Key of the Attribute to remove.")
+def remove_attribute(id, key):
+    utils.checked_api_call(records_api, 'remove_attribute', id=id, key=key)
+
+
+@arg("key", help="Key of the Attribute to query BuildRecords for.")
+@arg("value", help="Value of the Attribute to query BuildRecords for.")
+def query_by_attribute(key, value):
+    response = utils.checked_api_call(records_api, "query_by_attribute", key=key, value=value)
+    if response:
+        return response
+
+
+@arg("id", help="BuildRecord ID to list Attributes of.", type=types.existing_build_record)
+def list_attributes(id):
+    response = utils.checked_api_call(records_api, 'get_attributes', id=id)
     if response:
         return response.content
