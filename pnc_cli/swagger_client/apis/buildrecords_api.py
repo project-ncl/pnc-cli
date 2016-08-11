@@ -913,7 +913,7 @@ class BuildrecordsApi(object):
         :param callback function: The callback function
             for asynchronous request. (optional)
         :param int id: BuildRecord id (required)
-        :return: None
+        :return: AttributeSingleton
                  If the method is called asynchronously,
                  returns the request thread.
         """
@@ -970,7 +970,7 @@ class BuildrecordsApi(object):
                                             body=body_params,
                                             post_params=form_params,
                                             files=files,
-                                            response_type=None,
+                                            response_type='AttributeSingleton',
                                             auth_settings=auth_settings,
                                             callback=params.get('callback'))
         return response

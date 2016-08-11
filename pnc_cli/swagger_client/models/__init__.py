@@ -10,8 +10,8 @@ from .project_rest import ProjectRest
 from .build_record import BuildRecord
 from .support_level_page import SupportLevelPage
 from .build_environment_rest import BuildEnvironmentRest
-from .artifact_page import ArtifactPage
 from .product_singleton import ProductSingleton
+from .artifact_page import ArtifactPage
 from .build_configuration_page import BuildConfigurationPage
 from .build_configuration_singleton import BuildConfigurationSingleton
 from .build_configuration_audited_rest import BuildConfigurationAuditedRest
@@ -29,16 +29,16 @@ from .build_configuration_audited import BuildConfigurationAudited
 from .project import Project
 from .bpm_task_page import BpmTaskPage
 from .error_response_rest import ErrorResponseRest
-from .build_environment import BuildEnvironment
 from .build_configuration_set_page import BuildConfigurationSetPage
+from .build_environment import BuildEnvironment
 from .singleton import Singleton
 from .build_record_ids import BuildRecordIds
 from .build_environment_singleton import BuildEnvironmentSingleton
 from .build_configuration_set_record_page import BuildConfigurationSetRecordPage
 from .license_singleton import LicenseSingleton
 from .product_milestone_page import ProductMilestonePage
-from .user import User
 from .product_rest import ProductRest
+from .user import User
 from .project_page import ProjectPage
 from .product_version import ProductVersion
 from .product_version_rest import ProductVersionRest
@@ -61,6 +61,7 @@ from .project_singleton import ProjectSingleton
 from .build_configuration_set_rest import BuildConfigurationSetRest
 from .product_release_rest import ProductReleaseRest
 from .product_release import ProductRelease
+from .attribute_singleton import AttributeSingleton
 from .bpm_task_rest import BpmTaskRest
 from .user_singleton import UserSingleton
 from .product_release_singleton import ProductReleaseSingleton
