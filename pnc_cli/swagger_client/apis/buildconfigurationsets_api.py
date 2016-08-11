@@ -45,9 +45,9 @@ class BuildconfigurationsetsApi(object):
                 config.api_client = ApiClient()
             self.api_client = config.api_client
 
-    def add_configuration(self, id, **kwargs):
+    def get_all(self, **kwargs):
         """
-        Adds a configuration to the Specified Set
+        Gets all Build Configuration Sets
         
 
         This method makes a synchronous HTTP request by default. To make an
@@ -56,19 +56,256 @@ class BuildconfigurationsetsApi(object):
         >>> def callback_function(response):
         >>>     pprint(response)
         >>>
-        >>> thread = api.add_configuration(id, callback=callback_function)
+        >>> thread = api.get_all(callback=callback_function)
+
+        :param callback function: The callback function
+            for asynchronous request. (optional)
+        :param int page_index: Page Index
+        :param int page_size: Pagination size
+        :param str sort: Sorting RSQL
+        :param str q: RSQL Query
+        :return: BuildConfigurationSetPage
+                 If the method is called asynchronously,
+                 returns the request thread.
+        """
+
+        all_params = ['page_index', 'page_size', 'sort', 'q']
+        all_params.append('callback')
+
+        params = locals()
+        for key, val in iteritems(params['kwargs']):
+            if key not in all_params:
+                raise TypeError(
+                    "Got an unexpected keyword argument '%s'"
+                    " to method get_all" % key
+                )
+            params[key] = val
+        del params['kwargs']
+
+        resource_path = '/build-configuration-sets'.replace('{format}', 'json')
+        method = 'GET'
+
+        path_params = {}
+
+        query_params = {}
+        if 'page_index' in params:
+            query_params['pageIndex'] = params['page_index']
+        if 'page_size' in params:
+            query_params['pageSize'] = params['page_size']
+        if 'sort' in params:
+            query_params['sort'] = params['sort']
+        if 'q' in params:
+            query_params['q'] = params['q']
+
+        header_params = {}
+
+        form_params = {}
+        files = {}
+
+        body_params = None
+
+        # HTTP header `Accept`
+        header_params['Accept'] = self.api_client.\
+            select_header_accept(['application/json'])
+        if not header_params['Accept']:
+            del header_params['Accept']
+
+        # HTTP header `Content-Type`
+        header_params['Content-Type'] = self.api_client.\
+            select_header_content_type(['application/json'])
+
+        # Authentication setting
+        auth_settings = []
+
+        response = self.api_client.call_api(resource_path, method,
+                                            path_params,
+                                            query_params,
+                                            header_params,
+                                            body=body_params,
+                                            post_params=form_params,
+                                            files=files,
+                                            response_type='BuildConfigurationSetPage',
+                                            auth_settings=auth_settings,
+                                            callback=params.get('callback'))
+        return response
+
+    def create_new(self, **kwargs):
+        """
+        Creates a new Build Configuration Set
+        
+
+        This method makes a synchronous HTTP request by default. To make an
+        asynchronous HTTP request, please define a `callback` function
+        to be invoked when receiving the response.
+        >>> def callback_function(response):
+        >>>     pprint(response)
+        >>>
+        >>> thread = api.create_new(callback=callback_function)
+
+        :param callback function: The callback function
+            for asynchronous request. (optional)
+        :param BuildConfigurationSetRest body: 
+        :return: BuildConfigurationSetSingleton
+                 If the method is called asynchronously,
+                 returns the request thread.
+        """
+
+        all_params = ['body']
+        all_params.append('callback')
+
+        params = locals()
+        for key, val in iteritems(params['kwargs']):
+            if key not in all_params:
+                raise TypeError(
+                    "Got an unexpected keyword argument '%s'"
+                    " to method create_new" % key
+                )
+            params[key] = val
+        del params['kwargs']
+
+        resource_path = '/build-configuration-sets'.replace('{format}', 'json')
+        method = 'POST'
+
+        path_params = {}
+
+        query_params = {}
+
+        header_params = {}
+
+        form_params = {}
+        files = {}
+
+        body_params = None
+        if 'body' in params:
+            body_params = params['body']
+
+        # HTTP header `Accept`
+        header_params['Accept'] = self.api_client.\
+            select_header_accept(['application/json'])
+        if not header_params['Accept']:
+            del header_params['Accept']
+
+        # HTTP header `Content-Type`
+        header_params['Content-Type'] = self.api_client.\
+            select_header_content_type(['application/json'])
+
+        # Authentication setting
+        auth_settings = []
+
+        response = self.api_client.call_api(resource_path, method,
+                                            path_params,
+                                            query_params,
+                                            header_params,
+                                            body=body_params,
+                                            post_params=form_params,
+                                            files=files,
+                                            response_type='BuildConfigurationSetSingleton',
+                                            auth_settings=auth_settings,
+                                            callback=params.get('callback'))
+        return response
+
+    def get_specific(self, id, **kwargs):
+        """
+        Gets a specific Build Configuration Set
+        
+
+        This method makes a synchronous HTTP request by default. To make an
+        asynchronous HTTP request, please define a `callback` function
+        to be invoked when receiving the response.
+        >>> def callback_function(response):
+        >>>     pprint(response)
+        >>>
+        >>> thread = api.get_specific(id, callback=callback_function)
 
         :param callback function: The callback function
             for asynchronous request. (optional)
         :param int id: Build Configuration Set id (required)
-        :param BuildConfigurationRest body: 
+        :return: BuildConfigurationSetSingleton
+                 If the method is called asynchronously,
+                 returns the request thread.
+        """
+        # verify the required parameter 'id' is set
+        if id is None:
+            raise ValueError("Missing the required parameter `id` when calling `get_specific`")
+
+        all_params = ['id']
+        all_params.append('callback')
+
+        params = locals()
+        for key, val in iteritems(params['kwargs']):
+            if key not in all_params:
+                raise TypeError(
+                    "Got an unexpected keyword argument '%s'"
+                    " to method get_specific" % key
+                )
+            params[key] = val
+        del params['kwargs']
+
+        resource_path = '/build-configuration-sets/{id}'.replace('{format}', 'json')
+        method = 'GET'
+
+        path_params = {}
+        if 'id' in params:
+            path_params['id'] = params['id']
+
+        query_params = {}
+
+        header_params = {}
+
+        form_params = {}
+        files = {}
+
+        body_params = None
+
+        # HTTP header `Accept`
+        header_params['Accept'] = self.api_client.\
+            select_header_accept(['application/json'])
+        if not header_params['Accept']:
+            del header_params['Accept']
+
+        # HTTP header `Content-Type`
+        header_params['Content-Type'] = self.api_client.\
+            select_header_content_type(['application/json'])
+
+        # Authentication setting
+        auth_settings = []
+
+        response = self.api_client.call_api(resource_path, method,
+                                            path_params,
+                                            query_params,
+                                            header_params,
+                                            body=body_params,
+                                            post_params=form_params,
+                                            files=files,
+                                            response_type='BuildConfigurationSetSingleton',
+                                            auth_settings=auth_settings,
+                                            callback=params.get('callback'))
+        return response
+
+    def update(self, id, **kwargs):
+        """
+        Updates an existing Build Configuration Set
+        
+
+        This method makes a synchronous HTTP request by default. To make an
+        asynchronous HTTP request, please define a `callback` function
+        to be invoked when receiving the response.
+        >>> def callback_function(response):
+        >>>     pprint(response)
+        >>>
+        >>> thread = api.update(id, callback=callback_function)
+
+        :param callback function: The callback function
+            for asynchronous request. (optional)
+        :param int id: Build Configuration Set id (required)
+        :param BuildConfigurationSetRest body: 
         :return: None
                  If the method is called asynchronously,
                  returns the request thread.
         """
         # verify the required parameter 'id' is set
         if id is None:
-            raise ValueError("Missing the required parameter `id` when calling `add_configuration`")
+            raise ValueError("Missing the required parameter `id` when calling `update`")
 
         all_params = ['id', 'body']
         all_params.append('callback')
@@ -78,13 +315,13 @@ class BuildconfigurationsetsApi(object):
             if key not in all_params:
                 raise TypeError(
                     "Got an unexpected keyword argument '%s'"
-                    " to method add_configuration" % key
+                    " to method update" % key
                 )
             params[key] = val
         del params['kwargs']
 
-        resource_path = '/build-configuration-sets/{id}/build-configurations'.replace('{format}', 'json')
-        method = 'POST'
+        resource_path = '/build-configuration-sets/{id}'.replace('{format}', 'json')
+        method = 'PUT'
 
         path_params = {}
         if 'id' in params:
@@ -100,6 +337,84 @@ class BuildconfigurationsetsApi(object):
         body_params = None
         if 'body' in params:
             body_params = params['body']
+
+        # HTTP header `Accept`
+        header_params['Accept'] = self.api_client.\
+            select_header_accept(['application/json'])
+        if not header_params['Accept']:
+            del header_params['Accept']
+
+        # HTTP header `Content-Type`
+        header_params['Content-Type'] = self.api_client.\
+            select_header_content_type(['application/json'])
+
+        # Authentication setting
+        auth_settings = []
+
+        response = self.api_client.call_api(resource_path, method,
+                                            path_params,
+                                            query_params,
+                                            header_params,
+                                            body=body_params,
+                                            post_params=form_params,
+                                            files=files,
+                                            response_type=None,
+                                            auth_settings=auth_settings,
+                                            callback=params.get('callback'))
+        return response
+
+    def delete_specific(self, id, **kwargs):
+        """
+        Removes a specific Build Configuration Set
+        
+
+        This method makes a synchronous HTTP request by default. To make an
+        asynchronous HTTP request, please define a `callback` function
+        to be invoked when receiving the response.
+        >>> def callback_function(response):
+        >>>     pprint(response)
+        >>>
+        >>> thread = api.delete_specific(id, callback=callback_function)
+
+        :param callback function: The callback function
+            for asynchronous request. (optional)
+        :param int id: Build Configuration Set id (required)
+        :return: None
+                 If the method is called asynchronously,
+                 returns the request thread.
+        """
+        # verify the required parameter 'id' is set
+        if id is None:
+            raise ValueError("Missing the required parameter `id` when calling `delete_specific`")
+
+        all_params = ['id']
+        all_params.append('callback')
+
+        params = locals()
+        for key, val in iteritems(params['kwargs']):
+            if key not in all_params:
+                raise TypeError(
+                    "Got an unexpected keyword argument '%s'"
+                    " to method delete_specific" % key
+                )
+            params[key] = val
+        del params['kwargs']
+
+        resource_path = '/build-configuration-sets/{id}'.replace('{format}', 'json')
+        method = 'DELETE'
+
+        path_params = {}
+        if 'id' in params:
+            path_params['id'] = params['id']
+
+        query_params = {}
+
+        header_params = {}
+
+        form_params = {}
+        files = {}
+
+        body_params = None
 
         # HTTP header `Accept`
         header_params['Accept'] = self.api_client.\
@@ -210,243 +525,6 @@ class BuildconfigurationsetsApi(object):
                                             callback=params.get('callback'))
         return response
 
-    def create_new(self, **kwargs):
-        """
-        Creates a new Build Configuration Set
-        
-
-        This method makes a synchronous HTTP request by default. To make an
-        asynchronous HTTP request, please define a `callback` function
-        to be invoked when receiving the response.
-        >>> def callback_function(response):
-        >>>     pprint(response)
-        >>>
-        >>> thread = api.create_new(callback=callback_function)
-
-        :param callback function: The callback function
-            for asynchronous request. (optional)
-        :param BuildConfigurationSetRest body: 
-        :return: BuildConfigurationSetSingleton
-                 If the method is called asynchronously,
-                 returns the request thread.
-        """
-
-        all_params = ['body']
-        all_params.append('callback')
-
-        params = locals()
-        for key, val in iteritems(params['kwargs']):
-            if key not in all_params:
-                raise TypeError(
-                    "Got an unexpected keyword argument '%s'"
-                    " to method create_new" % key
-                )
-            params[key] = val
-        del params['kwargs']
-
-        resource_path = '/build-configuration-sets'.replace('{format}', 'json')
-        method = 'POST'
-
-        path_params = {}
-
-        query_params = {}
-
-        header_params = {}
-
-        form_params = {}
-        files = {}
-
-        body_params = None
-        if 'body' in params:
-            body_params = params['body']
-
-        # HTTP header `Accept`
-        header_params['Accept'] = self.api_client.\
-            select_header_accept(['application/json'])
-        if not header_params['Accept']:
-            del header_params['Accept']
-
-        # HTTP header `Content-Type`
-        header_params['Content-Type'] = self.api_client.\
-            select_header_content_type(['application/json'])
-
-        # Authentication setting
-        auth_settings = []
-
-        response = self.api_client.call_api(resource_path, method,
-                                            path_params,
-                                            query_params,
-                                            header_params,
-                                            body=body_params,
-                                            post_params=form_params,
-                                            files=files,
-                                            response_type='BuildConfigurationSetSingleton',
-                                            auth_settings=auth_settings,
-                                            callback=params.get('callback'))
-        return response
-
-    def delete_specific(self, id, **kwargs):
-        """
-        Removes a specific Build Configuration Set
-        
-
-        This method makes a synchronous HTTP request by default. To make an
-        asynchronous HTTP request, please define a `callback` function
-        to be invoked when receiving the response.
-        >>> def callback_function(response):
-        >>>     pprint(response)
-        >>>
-        >>> thread = api.delete_specific(id, callback=callback_function)
-
-        :param callback function: The callback function
-            for asynchronous request. (optional)
-        :param int id: Build Configuration Set id (required)
-        :return: None
-                 If the method is called asynchronously,
-                 returns the request thread.
-        """
-        # verify the required parameter 'id' is set
-        if id is None:
-            raise ValueError("Missing the required parameter `id` when calling `delete_specific`")
-
-        all_params = ['id']
-        all_params.append('callback')
-
-        params = locals()
-        for key, val in iteritems(params['kwargs']):
-            if key not in all_params:
-                raise TypeError(
-                    "Got an unexpected keyword argument '%s'"
-                    " to method delete_specific" % key
-                )
-            params[key] = val
-        del params['kwargs']
-
-        resource_path = '/build-configuration-sets/{id}'.replace('{format}', 'json')
-        method = 'DELETE'
-
-        path_params = {}
-        if 'id' in params:
-            path_params['id'] = params['id']
-
-        query_params = {}
-
-        header_params = {}
-
-        form_params = {}
-        files = {}
-
-        body_params = None
-
-        # HTTP header `Accept`
-        header_params['Accept'] = self.api_client.\
-            select_header_accept(['application/json'])
-        if not header_params['Accept']:
-            del header_params['Accept']
-
-        # HTTP header `Content-Type`
-        header_params['Content-Type'] = self.api_client.\
-            select_header_content_type(['application/json'])
-
-        # Authentication setting
-        auth_settings = []
-
-        response = self.api_client.call_api(resource_path, method,
-                                            path_params,
-                                            query_params,
-                                            header_params,
-                                            body=body_params,
-                                            post_params=form_params,
-                                            files=files,
-                                            response_type=None,
-                                            auth_settings=auth_settings,
-                                            callback=params.get('callback'))
-        return response
-
-    def get_all(self, **kwargs):
-        """
-        Gets all Build Configuration Sets
-        
-
-        This method makes a synchronous HTTP request by default. To make an
-        asynchronous HTTP request, please define a `callback` function
-        to be invoked when receiving the response.
-        >>> def callback_function(response):
-        >>>     pprint(response)
-        >>>
-        >>> thread = api.get_all(callback=callback_function)
-
-        :param callback function: The callback function
-            for asynchronous request. (optional)
-        :param int page_index: Page Index
-        :param int page_size: Pagination size
-        :param str sort: Sorting RSQL
-        :param str q: RSQL Query
-        :return: BuildConfigurationSetPage
-                 If the method is called asynchronously,
-                 returns the request thread.
-        """
-
-        all_params = ['page_index', 'page_size', 'sort', 'q']
-        all_params.append('callback')
-
-        params = locals()
-        for key, val in iteritems(params['kwargs']):
-            if key not in all_params:
-                raise TypeError(
-                    "Got an unexpected keyword argument '%s'"
-                    " to method get_all" % key
-                )
-            params[key] = val
-        del params['kwargs']
-
-        resource_path = '/build-configuration-sets'.replace('{format}', 'json')
-        method = 'GET'
-
-        path_params = {}
-
-        query_params = {}
-        if 'page_index' in params:
-            query_params['pageIndex'] = params['page_index']
-        if 'page_size' in params:
-            query_params['pageSize'] = params['page_size']
-        if 'sort' in params:
-            query_params['sort'] = params['sort']
-        if 'q' in params:
-            query_params['q'] = params['q']
-
-        header_params = {}
-
-        form_params = {}
-        files = {}
-
-        body_params = None
-
-        # HTTP header `Accept`
-        header_params['Accept'] = self.api_client.\
-            select_header_accept(['application/json'])
-        if not header_params['Accept']:
-            del header_params['Accept']
-
-        # HTTP header `Content-Type`
-        header_params['Content-Type'] = self.api_client.\
-            select_header_content_type(['application/json'])
-
-        # Authentication setting
-        auth_settings = []
-
-        response = self.api_client.call_api(resource_path, method,
-                                            path_params,
-                                            query_params,
-                                            header_params,
-                                            body=body_params,
-                                            post_params=form_params,
-                                            files=files,
-                                            response_type='BuildConfigurationSetPage',
-                                            auth_settings=auth_settings,
-                                            callback=params.get('callback'))
-        return response
-
     def get_all_build_config_set_records(self, id, **kwargs):
         """
         Get all build config set execution records associated with this build config set, returns empty list if none are found
@@ -533,96 +611,6 @@ class BuildconfigurationsetsApi(object):
                                             post_params=form_params,
                                             files=files,
                                             response_type='BuildConfigurationSetRecordPage',
-                                            auth_settings=auth_settings,
-                                            callback=params.get('callback'))
-        return response
-
-    def get_build_records(self, id, **kwargs):
-        """
-        Gets all build records associated with the contained build configurations
-        
-
-        This method makes a synchronous HTTP request by default. To make an
-        asynchronous HTTP request, please define a `callback` function
-        to be invoked when receiving the response.
-        >>> def callback_function(response):
-        >>>     pprint(response)
-        >>>
-        >>> thread = api.get_build_records(id, callback=callback_function)
-
-        :param callback function: The callback function
-            for asynchronous request. (optional)
-        :param int id: Build configuration set id (required)
-        :param int page_index: Page Index
-        :param int page_size: Pagination size
-        :param str sort: Sorting RSQL
-        :param str q: RSQL Query
-        :return: BuildRecordPage
-                 If the method is called asynchronously,
-                 returns the request thread.
-        """
-        # verify the required parameter 'id' is set
-        if id is None:
-            raise ValueError("Missing the required parameter `id` when calling `get_build_records`")
-
-        all_params = ['id', 'page_index', 'page_size', 'sort', 'q']
-        all_params.append('callback')
-
-        params = locals()
-        for key, val in iteritems(params['kwargs']):
-            if key not in all_params:
-                raise TypeError(
-                    "Got an unexpected keyword argument '%s'"
-                    " to method get_build_records" % key
-                )
-            params[key] = val
-        del params['kwargs']
-
-        resource_path = '/build-configuration-sets/{id}/build-records'.replace('{format}', 'json')
-        method = 'GET'
-
-        path_params = {}
-        if 'id' in params:
-            path_params['id'] = params['id']
-
-        query_params = {}
-        if 'page_index' in params:
-            query_params['pageIndex'] = params['page_index']
-        if 'page_size' in params:
-            query_params['pageSize'] = params['page_size']
-        if 'sort' in params:
-            query_params['sort'] = params['sort']
-        if 'q' in params:
-            query_params['q'] = params['q']
-
-        header_params = {}
-
-        form_params = {}
-        files = {}
-
-        body_params = None
-
-        # HTTP header `Accept`
-        header_params['Accept'] = self.api_client.\
-            select_header_accept(['application/json'])
-        if not header_params['Accept']:
-            del header_params['Accept']
-
-        # HTTP header `Content-Type`
-        header_params['Content-Type'] = self.api_client.\
-            select_header_content_type(['application/json'])
-
-        # Authentication setting
-        auth_settings = []
-
-        response = self.api_client.call_api(resource_path, method,
-                                            path_params,
-                                            query_params,
-                                            header_params,
-                                            body=body_params,
-                                            post_params=form_params,
-                                            files=files,
-                                            response_type='BuildRecordPage',
                                             auth_settings=auth_settings,
                                             callback=params.get('callback'))
         return response
@@ -717,9 +705,9 @@ class BuildconfigurationsetsApi(object):
                                             callback=params.get('callback'))
         return response
 
-    def get_specific(self, id, **kwargs):
+    def add_configuration(self, id, **kwargs):
         """
-        Gets a specific Build Configuration Set
+        Adds a configuration to the Specified Set
         
 
         This method makes a synchronous HTTP request by default. To make an
@@ -728,20 +716,21 @@ class BuildconfigurationsetsApi(object):
         >>> def callback_function(response):
         >>>     pprint(response)
         >>>
-        >>> thread = api.get_specific(id, callback=callback_function)
+        >>> thread = api.add_configuration(id, callback=callback_function)
 
         :param callback function: The callback function
             for asynchronous request. (optional)
         :param int id: Build Configuration Set id (required)
-        :return: BuildConfigurationSetSingleton
+        :param BuildConfigurationRest body: 
+        :return: None
                  If the method is called asynchronously,
                  returns the request thread.
         """
         # verify the required parameter 'id' is set
         if id is None:
-            raise ValueError("Missing the required parameter `id` when calling `get_specific`")
+            raise ValueError("Missing the required parameter `id` when calling `add_configuration`")
 
-        all_params = ['id']
+        all_params = ['id', 'body']
         all_params.append('callback')
 
         params = locals()
@@ -749,13 +738,13 @@ class BuildconfigurationsetsApi(object):
             if key not in all_params:
                 raise TypeError(
                     "Got an unexpected keyword argument '%s'"
-                    " to method get_specific" % key
+                    " to method add_configuration" % key
                 )
             params[key] = val
         del params['kwargs']
 
-        resource_path = '/build-configuration-sets/{id}'.replace('{format}', 'json')
-        method = 'GET'
+        resource_path = '/build-configuration-sets/{id}/build-configurations'.replace('{format}', 'json')
+        method = 'POST'
 
         path_params = {}
         if 'id' in params:
@@ -769,6 +758,8 @@ class BuildconfigurationsetsApi(object):
         files = {}
 
         body_params = None
+        if 'body' in params:
+            body_params = params['body']
 
         # HTTP header `Accept`
         header_params['Accept'] = self.api_client.\
@@ -790,7 +781,7 @@ class BuildconfigurationsetsApi(object):
                                             body=body_params,
                                             post_params=form_params,
                                             files=files,
-                                            response_type='BuildConfigurationSetSingleton',
+                                            response_type=None,
                                             auth_settings=auth_settings,
                                             callback=params.get('callback'))
         return response
@@ -879,9 +870,9 @@ class BuildconfigurationsetsApi(object):
                                             callback=params.get('callback'))
         return response
 
-    def update(self, id, **kwargs):
+    def get_build_records(self, id, **kwargs):
         """
-        Updates an existing Build Configuration Set
+        Gets all build records associated with the contained build configurations
         
 
         This method makes a synchronous HTTP request by default. To make an
@@ -890,21 +881,24 @@ class BuildconfigurationsetsApi(object):
         >>> def callback_function(response):
         >>>     pprint(response)
         >>>
-        >>> thread = api.update(id, callback=callback_function)
+        >>> thread = api.get_build_records(id, callback=callback_function)
 
         :param callback function: The callback function
             for asynchronous request. (optional)
-        :param int id: Build Configuration Set id (required)
-        :param BuildConfigurationSetRest body: 
-        :return: None
+        :param int id: Build configuration set id (required)
+        :param int page_index: Page Index
+        :param int page_size: Pagination size
+        :param str sort: Sorting RSQL
+        :param str q: RSQL Query
+        :return: BuildRecordPage
                  If the method is called asynchronously,
                  returns the request thread.
         """
         # verify the required parameter 'id' is set
         if id is None:
-            raise ValueError("Missing the required parameter `id` when calling `update`")
+            raise ValueError("Missing the required parameter `id` when calling `get_build_records`")
 
-        all_params = ['id', 'body']
+        all_params = ['id', 'page_index', 'page_size', 'sort', 'q']
         all_params.append('callback')
 
         params = locals()
@@ -912,19 +906,27 @@ class BuildconfigurationsetsApi(object):
             if key not in all_params:
                 raise TypeError(
                     "Got an unexpected keyword argument '%s'"
-                    " to method update" % key
+                    " to method get_build_records" % key
                 )
             params[key] = val
         del params['kwargs']
 
-        resource_path = '/build-configuration-sets/{id}'.replace('{format}', 'json')
-        method = 'PUT'
+        resource_path = '/build-configuration-sets/{id}/build-records'.replace('{format}', 'json')
+        method = 'GET'
 
         path_params = {}
         if 'id' in params:
             path_params['id'] = params['id']
 
         query_params = {}
+        if 'page_index' in params:
+            query_params['pageIndex'] = params['page_index']
+        if 'page_size' in params:
+            query_params['pageSize'] = params['page_size']
+        if 'sort' in params:
+            query_params['sort'] = params['sort']
+        if 'q' in params:
+            query_params['q'] = params['q']
 
         header_params = {}
 
@@ -932,8 +934,6 @@ class BuildconfigurationsetsApi(object):
         files = {}
 
         body_params = None
-        if 'body' in params:
-            body_params = params['body']
 
         # HTTP header `Accept`
         header_params['Accept'] = self.api_client.\
@@ -955,7 +955,7 @@ class BuildconfigurationsetsApi(object):
                                             body=body_params,
                                             post_params=form_params,
                                             files=files,
-                                            response_type=None,
+                                            response_type='BuildRecordPage',
                                             auth_settings=auth_settings,
                                             callback=params.get('callback'))
         return response

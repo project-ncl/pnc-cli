@@ -219,6 +219,90 @@ class BuildrecordsApi(object):
                                             callback=params.get('callback'))
         return response
 
+    def query_by_attribute(self, key, value, **kwargs):
+        """
+        Get Build Records by attribute.
+        
+
+        This method makes a synchronous HTTP request by default. To make an
+        asynchronous HTTP request, please define a `callback` function
+        to be invoked when receiving the response.
+        >>> def callback_function(response):
+        >>>     pprint(response)
+        >>>
+        >>> thread = api.query_by_attribute(key, value, callback=callback_function)
+
+        :param callback function: The callback function
+            for asynchronous request. (optional)
+        :param str key: Attribute key (required)
+        :param str value: Attribute value (required)
+        :return: BuildRecordRest
+                 If the method is called asynchronously,
+                 returns the request thread.
+        """
+        # verify the required parameter 'key' is set
+        if key is None:
+            raise ValueError("Missing the required parameter `key` when calling `query_by_attribute`")
+        # verify the required parameter 'value' is set
+        if value is None:
+            raise ValueError("Missing the required parameter `value` when calling `query_by_attribute`")
+
+        all_params = ['key', 'value']
+        all_params.append('callback')
+
+        params = locals()
+        for key, val in iteritems(params['kwargs']):
+            if key not in all_params:
+                raise TypeError(
+                    "Got an unexpected keyword argument '%s'"
+                    " to method query_by_attribute" % key
+                )
+            params[key] = val
+        del params['kwargs']
+
+        resource_path = '/build-records/get-by-attribute'.replace('{format}', 'json')
+        method = 'GET'
+
+        path_params = {}
+
+        query_params = {}
+        if 'key' in params:
+            query_params['key'] = params['key']
+        if 'value' in params:
+            query_params['value'] = params['value']
+
+        header_params = {}
+
+        form_params = {}
+        files = {}
+
+        body_params = None
+
+        # HTTP header `Accept`
+        header_params['Accept'] = self.api_client.\
+            select_header_accept(['application/json'])
+        if not header_params['Accept']:
+            del header_params['Accept']
+
+        # HTTP header `Content-Type`
+        header_params['Content-Type'] = self.api_client.\
+            select_header_content_type(['application/json'])
+
+        # Authentication setting
+        auth_settings = []
+
+        response = self.api_client.call_api(resource_path, method,
+                                            path_params,
+                                            query_params,
+                                            header_params,
+                                            body=body_params,
+                                            post_params=form_params,
+                                            files=files,
+                                            response_type='BuildRecordRest',
+                                            auth_settings=auth_settings,
+                                            callback=params.get('callback'))
+        return response
+
     def get_all_for_project(self, project_id, **kwargs):
         """
         Gets the Build Records linked to a specific Project
@@ -309,6 +393,84 @@ class BuildrecordsApi(object):
                                             callback=params.get('callback'))
         return response
 
+    def get_specific(self, id, **kwargs):
+        """
+        Gets specific Build Record
+        
+
+        This method makes a synchronous HTTP request by default. To make an
+        asynchronous HTTP request, please define a `callback` function
+        to be invoked when receiving the response.
+        >>> def callback_function(response):
+        >>>     pprint(response)
+        >>>
+        >>> thread = api.get_specific(id, callback=callback_function)
+
+        :param callback function: The callback function
+            for asynchronous request. (optional)
+        :param int id: BuildRecord id (required)
+        :return: BuildRecordSingleton
+                 If the method is called asynchronously,
+                 returns the request thread.
+        """
+        # verify the required parameter 'id' is set
+        if id is None:
+            raise ValueError("Missing the required parameter `id` when calling `get_specific`")
+
+        all_params = ['id']
+        all_params.append('callback')
+
+        params = locals()
+        for key, val in iteritems(params['kwargs']):
+            if key not in all_params:
+                raise TypeError(
+                    "Got an unexpected keyword argument '%s'"
+                    " to method get_specific" % key
+                )
+            params[key] = val
+        del params['kwargs']
+
+        resource_path = '/build-records/{id}'.replace('{format}', 'json')
+        method = 'GET'
+
+        path_params = {}
+        if 'id' in params:
+            path_params['id'] = params['id']
+
+        query_params = {}
+
+        header_params = {}
+
+        form_params = {}
+        files = {}
+
+        body_params = None
+
+        # HTTP header `Accept`
+        header_params['Accept'] = self.api_client.\
+            select_header_accept(['application/json'])
+        if not header_params['Accept']:
+            del header_params['Accept']
+
+        # HTTP header `Content-Type`
+        header_params['Content-Type'] = self.api_client.\
+            select_header_content_type(['application/json'])
+
+        # Authentication setting
+        auth_settings = []
+
+        response = self.api_client.call_api(resource_path, method,
+                                            path_params,
+                                            query_params,
+                                            header_params,
+                                            body=body_params,
+                                            post_params=form_params,
+                                            files=files,
+                                            response_type='BuildRecordSingleton',
+                                            auth_settings=auth_settings,
+                                            callback=params.get('callback'))
+        return response
+
     def get_artifacts(self, id, **kwargs):
         """
         Gets artifacts for specific Build Record
@@ -395,84 +557,6 @@ class BuildrecordsApi(object):
                                             post_params=form_params,
                                             files=files,
                                             response_type='ArtifactPage',
-                                            auth_settings=auth_settings,
-                                            callback=params.get('callback'))
-        return response
-
-    def get_attributes(self, id, **kwargs):
-        """
-        Get Build Record attributes.
-        
-
-        This method makes a synchronous HTTP request by default. To make an
-        asynchronous HTTP request, please define a `callback` function
-        to be invoked when receiving the response.
-        >>> def callback_function(response):
-        >>>     pprint(response)
-        >>>
-        >>> thread = api.get_attributes(id, callback=callback_function)
-
-        :param callback function: The callback function
-            for asynchronous request. (optional)
-        :param int id: BuildRecord id (required)
-        :return: None
-                 If the method is called asynchronously,
-                 returns the request thread.
-        """
-        # verify the required parameter 'id' is set
-        if id is None:
-            raise ValueError("Missing the required parameter `id` when calling `get_attributes`")
-
-        all_params = ['id']
-        all_params.append('callback')
-
-        params = locals()
-        for key, val in iteritems(params['kwargs']):
-            if key not in all_params:
-                raise TypeError(
-                    "Got an unexpected keyword argument '%s'"
-                    " to method get_attributes" % key
-                )
-            params[key] = val
-        del params['kwargs']
-
-        resource_path = '/build-records/{id}/get-attributes'.replace('{format}', 'json')
-        method = 'GET'
-
-        path_params = {}
-        if 'id' in params:
-            path_params['id'] = params['id']
-
-        query_params = {}
-
-        header_params = {}
-
-        form_params = {}
-        files = {}
-
-        body_params = None
-
-        # HTTP header `Accept`
-        header_params['Accept'] = self.api_client.\
-            select_header_accept(['application/json'])
-        if not header_params['Accept']:
-            del header_params['Accept']
-
-        # HTTP header `Content-Type`
-        header_params['Content-Type'] = self.api_client.\
-            select_header_content_type(['application/json'])
-
-        # Authentication setting
-        auth_settings = []
-
-        response = self.api_client.call_api(resource_path, method,
-                                            path_params,
-                                            query_params,
-                                            header_params,
-                                            body=body_params,
-                                            post_params=form_params,
-                                            files=files,
-                                            response_type=None,
                                             auth_settings=auth_settings,
                                             callback=params.get('callback'))
         return response
@@ -813,6 +897,84 @@ class BuildrecordsApi(object):
                                             callback=params.get('callback'))
         return response
 
+    def get_attributes(self, id, **kwargs):
+        """
+        Get Build Record attributes.
+        
+
+        This method makes a synchronous HTTP request by default. To make an
+        asynchronous HTTP request, please define a `callback` function
+        to be invoked when receiving the response.
+        >>> def callback_function(response):
+        >>>     pprint(response)
+        >>>
+        >>> thread = api.get_attributes(id, callback=callback_function)
+
+        :param callback function: The callback function
+            for asynchronous request. (optional)
+        :param int id: BuildRecord id (required)
+        :return: None
+                 If the method is called asynchronously,
+                 returns the request thread.
+        """
+        # verify the required parameter 'id' is set
+        if id is None:
+            raise ValueError("Missing the required parameter `id` when calling `get_attributes`")
+
+        all_params = ['id']
+        all_params.append('callback')
+
+        params = locals()
+        for key, val in iteritems(params['kwargs']):
+            if key not in all_params:
+                raise TypeError(
+                    "Got an unexpected keyword argument '%s'"
+                    " to method get_attributes" % key
+                )
+            params[key] = val
+        del params['kwargs']
+
+        resource_path = '/build-records/{id}/get-attributes'.replace('{format}', 'json')
+        method = 'GET'
+
+        path_params = {}
+        if 'id' in params:
+            path_params['id'] = params['id']
+
+        query_params = {}
+
+        header_params = {}
+
+        form_params = {}
+        files = {}
+
+        body_params = None
+
+        # HTTP header `Accept`
+        header_params['Accept'] = self.api_client.\
+            select_header_accept(['application/json'])
+        if not header_params['Accept']:
+            del header_params['Accept']
+
+        # HTTP header `Content-Type`
+        header_params['Content-Type'] = self.api_client.\
+            select_header_content_type(['application/json'])
+
+        # Authentication setting
+        auth_settings = []
+
+        response = self.api_client.call_api(resource_path, method,
+                                            path_params,
+                                            query_params,
+                                            header_params,
+                                            body=body_params,
+                                            post_params=form_params,
+                                            files=files,
+                                            response_type=None,
+                                            auth_settings=auth_settings,
+                                            callback=params.get('callback'))
+        return response
+
     def get_logs(self, id, **kwargs):
         """
         Gets logs for specific Build Record
@@ -887,84 +1049,6 @@ class BuildrecordsApi(object):
                                             post_params=form_params,
                                             files=files,
                                             response_type='str',
-                                            auth_settings=auth_settings,
-                                            callback=params.get('callback'))
-        return response
-
-    def get_specific(self, id, **kwargs):
-        """
-        Gets specific Build Record
-        
-
-        This method makes a synchronous HTTP request by default. To make an
-        asynchronous HTTP request, please define a `callback` function
-        to be invoked when receiving the response.
-        >>> def callback_function(response):
-        >>>     pprint(response)
-        >>>
-        >>> thread = api.get_specific(id, callback=callback_function)
-
-        :param callback function: The callback function
-            for asynchronous request. (optional)
-        :param int id: BuildRecord id (required)
-        :return: BuildRecordSingleton
-                 If the method is called asynchronously,
-                 returns the request thread.
-        """
-        # verify the required parameter 'id' is set
-        if id is None:
-            raise ValueError("Missing the required parameter `id` when calling `get_specific`")
-
-        all_params = ['id']
-        all_params.append('callback')
-
-        params = locals()
-        for key, val in iteritems(params['kwargs']):
-            if key not in all_params:
-                raise TypeError(
-                    "Got an unexpected keyword argument '%s'"
-                    " to method get_specific" % key
-                )
-            params[key] = val
-        del params['kwargs']
-
-        resource_path = '/build-records/{id}'.replace('{format}', 'json')
-        method = 'GET'
-
-        path_params = {}
-        if 'id' in params:
-            path_params['id'] = params['id']
-
-        query_params = {}
-
-        header_params = {}
-
-        form_params = {}
-        files = {}
-
-        body_params = None
-
-        # HTTP header `Accept`
-        header_params['Accept'] = self.api_client.\
-            select_header_accept(['application/json'])
-        if not header_params['Accept']:
-            del header_params['Accept']
-
-        # HTTP header `Content-Type`
-        header_params['Content-Type'] = self.api_client.\
-            select_header_content_type(['application/json'])
-
-        # Authentication setting
-        auth_settings = []
-
-        response = self.api_client.call_api(resource_path, method,
-                                            path_params,
-                                            query_params,
-                                            header_params,
-                                            body=body_params,
-                                            post_params=form_params,
-                                            files=files,
-                                            response_type='BuildRecordSingleton',
                                             auth_settings=auth_settings,
                                             callback=params.get('callback'))
         return response
@@ -1055,90 +1139,6 @@ class BuildrecordsApi(object):
                                             post_params=form_params,
                                             files=files,
                                             response_type=None,
-                                            auth_settings=auth_settings,
-                                            callback=params.get('callback'))
-        return response
-
-    def query_by_attribute(self, key, value, **kwargs):
-        """
-        Get Build Records by attribute.
-        
-
-        This method makes a synchronous HTTP request by default. To make an
-        asynchronous HTTP request, please define a `callback` function
-        to be invoked when receiving the response.
-        >>> def callback_function(response):
-        >>>     pprint(response)
-        >>>
-        >>> thread = api.query_by_attribute(key, value, callback=callback_function)
-
-        :param callback function: The callback function
-            for asynchronous request. (optional)
-        :param str key: Attribute key (required)
-        :param str value: Attribute value (required)
-        :return: BuildRecordRest
-                 If the method is called asynchronously,
-                 returns the request thread.
-        """
-        # verify the required parameter 'key' is set
-        if key is None:
-            raise ValueError("Missing the required parameter `key` when calling `query_by_attribute`")
-        # verify the required parameter 'value' is set
-        if value is None:
-            raise ValueError("Missing the required parameter `value` when calling `query_by_attribute`")
-
-        all_params = ['key', 'value']
-        all_params.append('callback')
-
-        params = locals()
-        for key, val in iteritems(params['kwargs']):
-            if key not in all_params:
-                raise TypeError(
-                    "Got an unexpected keyword argument '%s'"
-                    " to method query_by_attribute" % key
-                )
-            params[key] = val
-        del params['kwargs']
-
-        resource_path = '/build-records/get-by-attribute'.replace('{format}', 'json')
-        method = 'GET'
-
-        path_params = {}
-
-        query_params = {}
-        if 'key' in params:
-            query_params['key'] = params['key']
-        if 'value' in params:
-            query_params['value'] = params['value']
-
-        header_params = {}
-
-        form_params = {}
-        files = {}
-
-        body_params = None
-
-        # HTTP header `Accept`
-        header_params['Accept'] = self.api_client.\
-            select_header_accept(['application/json'])
-        if not header_params['Accept']:
-            del header_params['Accept']
-
-        # HTTP header `Content-Type`
-        header_params['Content-Type'] = self.api_client.\
-            select_header_content_type(['application/json'])
-
-        # Authentication setting
-        auth_settings = []
-
-        response = self.api_client.call_api(resource_path, method,
-                                            path_params,
-                                            query_params,
-                                            header_params,
-                                            body=body_params,
-                                            post_params=form_params,
-                                            files=files,
-                                            response_type='BuildRecordRest',
                                             auth_settings=auth_settings,
                                             callback=params.get('callback'))
         return response

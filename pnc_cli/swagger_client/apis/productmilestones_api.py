@@ -45,162 +45,6 @@ class ProductmilestonesApi(object):
                 config.api_client = ApiClient()
             self.api_client = config.api_client
 
-    def add_distributed_artifact(self, id, **kwargs):
-        """
-        Adds an artifact to the list of distributed artifacts for this product milestone
-        
-
-        This method makes a synchronous HTTP request by default. To make an
-        asynchronous HTTP request, please define a `callback` function
-        to be invoked when receiving the response.
-        >>> def callback_function(response):
-        >>>     pprint(response)
-        >>>
-        >>> thread = api.add_distributed_artifact(id, callback=callback_function)
-
-        :param callback function: The callback function
-            for asynchronous request. (optional)
-        :param int id: Product milestone id (required)
-        :param ArtifactRest body: 
-        :return: None
-                 If the method is called asynchronously,
-                 returns the request thread.
-        """
-        # verify the required parameter 'id' is set
-        if id is None:
-            raise ValueError("Missing the required parameter `id` when calling `add_distributed_artifact`")
-
-        all_params = ['id', 'body']
-        all_params.append('callback')
-
-        params = locals()
-        for key, val in iteritems(params['kwargs']):
-            if key not in all_params:
-                raise TypeError(
-                    "Got an unexpected keyword argument '%s'"
-                    " to method add_distributed_artifact" % key
-                )
-            params[key] = val
-        del params['kwargs']
-
-        resource_path = '/product-milestones/{id}/distributed-artifacts'.replace('{format}', 'json')
-        method = 'POST'
-
-        path_params = {}
-        if 'id' in params:
-            path_params['id'] = params['id']
-
-        query_params = {}
-
-        header_params = {}
-
-        form_params = {}
-        files = {}
-
-        body_params = None
-        if 'body' in params:
-            body_params = params['body']
-
-        # HTTP header `Accept`
-        header_params['Accept'] = self.api_client.\
-            select_header_accept(['application/json'])
-        if not header_params['Accept']:
-            del header_params['Accept']
-
-        # HTTP header `Content-Type`
-        header_params['Content-Type'] = self.api_client.\
-            select_header_content_type(['application/json'])
-
-        # Authentication setting
-        auth_settings = []
-
-        response = self.api_client.call_api(resource_path, method,
-                                            path_params,
-                                            query_params,
-                                            header_params,
-                                            body=body_params,
-                                            post_params=form_params,
-                                            files=files,
-                                            response_type=None,
-                                            auth_settings=auth_settings,
-                                            callback=params.get('callback'))
-        return response
-
-    def create_new(self, **kwargs):
-        """
-        Creates a new Product Milestone for the Specified Product Version
-        
-
-        This method makes a synchronous HTTP request by default. To make an
-        asynchronous HTTP request, please define a `callback` function
-        to be invoked when receiving the response.
-        >>> def callback_function(response):
-        >>>     pprint(response)
-        >>>
-        >>> thread = api.create_new(callback=callback_function)
-
-        :param callback function: The callback function
-            for asynchronous request. (optional)
-        :param ProductMilestoneRest body: 
-        :return: ProductMilestoneSingleton
-                 If the method is called asynchronously,
-                 returns the request thread.
-        """
-
-        all_params = ['body']
-        all_params.append('callback')
-
-        params = locals()
-        for key, val in iteritems(params['kwargs']):
-            if key not in all_params:
-                raise TypeError(
-                    "Got an unexpected keyword argument '%s'"
-                    " to method create_new" % key
-                )
-            params[key] = val
-        del params['kwargs']
-
-        resource_path = '/product-milestones'.replace('{format}', 'json')
-        method = 'POST'
-
-        path_params = {}
-
-        query_params = {}
-
-        header_params = {}
-
-        form_params = {}
-        files = {}
-
-        body_params = None
-        if 'body' in params:
-            body_params = params['body']
-
-        # HTTP header `Accept`
-        header_params['Accept'] = self.api_client.\
-            select_header_accept(['application/json'])
-        if not header_params['Accept']:
-            del header_params['Accept']
-
-        # HTTP header `Content-Type`
-        header_params['Content-Type'] = self.api_client.\
-            select_header_content_type(['application/json'])
-
-        # Authentication setting
-        auth_settings = []
-
-        response = self.api_client.call_api(resource_path, method,
-                                            path_params,
-                                            query_params,
-                                            header_params,
-                                            body=body_params,
-                                            post_params=form_params,
-                                            files=files,
-                                            response_type='ProductMilestoneSingleton',
-                                            auth_settings=auth_settings,
-                                            callback=params.get('callback'))
-        return response
-
     def get_all(self, **kwargs):
         """
         Gets all Product Milestones
@@ -281,6 +125,81 @@ class ProductmilestonesApi(object):
                                             post_params=form_params,
                                             files=files,
                                             response_type='ProductMilestonePage',
+                                            auth_settings=auth_settings,
+                                            callback=params.get('callback'))
+        return response
+
+    def create_new(self, **kwargs):
+        """
+        Creates a new Product Milestone for the Specified Product Version
+        
+
+        This method makes a synchronous HTTP request by default. To make an
+        asynchronous HTTP request, please define a `callback` function
+        to be invoked when receiving the response.
+        >>> def callback_function(response):
+        >>>     pprint(response)
+        >>>
+        >>> thread = api.create_new(callback=callback_function)
+
+        :param callback function: The callback function
+            for asynchronous request. (optional)
+        :param ProductMilestoneRest body: 
+        :return: ProductMilestoneSingleton
+                 If the method is called asynchronously,
+                 returns the request thread.
+        """
+
+        all_params = ['body']
+        all_params.append('callback')
+
+        params = locals()
+        for key, val in iteritems(params['kwargs']):
+            if key not in all_params:
+                raise TypeError(
+                    "Got an unexpected keyword argument '%s'"
+                    " to method create_new" % key
+                )
+            params[key] = val
+        del params['kwargs']
+
+        resource_path = '/product-milestones'.replace('{format}', 'json')
+        method = 'POST'
+
+        path_params = {}
+
+        query_params = {}
+
+        header_params = {}
+
+        form_params = {}
+        files = {}
+
+        body_params = None
+        if 'body' in params:
+            body_params = params['body']
+
+        # HTTP header `Accept`
+        header_params['Accept'] = self.api_client.\
+            select_header_accept(['application/json'])
+        if not header_params['Accept']:
+            del header_params['Accept']
+
+        # HTTP header `Content-Type`
+        header_params['Content-Type'] = self.api_client.\
+            select_header_content_type(['application/json'])
+
+        # Authentication setting
+        auth_settings = []
+
+        response = self.api_client.call_api(resource_path, method,
+                                            path_params,
+                                            query_params,
+                                            header_params,
+                                            body=body_params,
+                                            post_params=form_params,
+                                            files=files,
+                                            response_type='ProductMilestoneSingleton',
                                             auth_settings=auth_settings,
                                             callback=params.get('callback'))
         return response
@@ -375,6 +294,165 @@ class ProductmilestonesApi(object):
                                             callback=params.get('callback'))
         return response
 
+    def get_specific(self, id, **kwargs):
+        """
+        Gets specific Product Milestone
+        
+
+        This method makes a synchronous HTTP request by default. To make an
+        asynchronous HTTP request, please define a `callback` function
+        to be invoked when receiving the response.
+        >>> def callback_function(response):
+        >>>     pprint(response)
+        >>>
+        >>> thread = api.get_specific(id, callback=callback_function)
+
+        :param callback function: The callback function
+            for asynchronous request. (optional)
+        :param int id: Product Milestone id (required)
+        :return: ProductMilestoneSingleton
+                 If the method is called asynchronously,
+                 returns the request thread.
+        """
+        # verify the required parameter 'id' is set
+        if id is None:
+            raise ValueError("Missing the required parameter `id` when calling `get_specific`")
+
+        all_params = ['id']
+        all_params.append('callback')
+
+        params = locals()
+        for key, val in iteritems(params['kwargs']):
+            if key not in all_params:
+                raise TypeError(
+                    "Got an unexpected keyword argument '%s'"
+                    " to method get_specific" % key
+                )
+            params[key] = val
+        del params['kwargs']
+
+        resource_path = '/product-milestones/{id}'.replace('{format}', 'json')
+        method = 'GET'
+
+        path_params = {}
+        if 'id' in params:
+            path_params['id'] = params['id']
+
+        query_params = {}
+
+        header_params = {}
+
+        form_params = {}
+        files = {}
+
+        body_params = None
+
+        # HTTP header `Accept`
+        header_params['Accept'] = self.api_client.\
+            select_header_accept(['application/json'])
+        if not header_params['Accept']:
+            del header_params['Accept']
+
+        # HTTP header `Content-Type`
+        header_params['Content-Type'] = self.api_client.\
+            select_header_content_type(['application/json'])
+
+        # Authentication setting
+        auth_settings = []
+
+        response = self.api_client.call_api(resource_path, method,
+                                            path_params,
+                                            query_params,
+                                            header_params,
+                                            body=body_params,
+                                            post_params=form_params,
+                                            files=files,
+                                            response_type='ProductMilestoneSingleton',
+                                            auth_settings=auth_settings,
+                                            callback=params.get('callback'))
+        return response
+
+    def update(self, id, **kwargs):
+        """
+        Updates an existing Product Milestone
+        
+
+        This method makes a synchronous HTTP request by default. To make an
+        asynchronous HTTP request, please define a `callback` function
+        to be invoked when receiving the response.
+        >>> def callback_function(response):
+        >>>     pprint(response)
+        >>>
+        >>> thread = api.update(id, callback=callback_function)
+
+        :param callback function: The callback function
+            for asynchronous request. (optional)
+        :param int id: Product Milestone id (required)
+        :param ProductMilestoneRest body: 
+        :return: None
+                 If the method is called asynchronously,
+                 returns the request thread.
+        """
+        # verify the required parameter 'id' is set
+        if id is None:
+            raise ValueError("Missing the required parameter `id` when calling `update`")
+
+        all_params = ['id', 'body']
+        all_params.append('callback')
+
+        params = locals()
+        for key, val in iteritems(params['kwargs']):
+            if key not in all_params:
+                raise TypeError(
+                    "Got an unexpected keyword argument '%s'"
+                    " to method update" % key
+                )
+            params[key] = val
+        del params['kwargs']
+
+        resource_path = '/product-milestones/{id}'.replace('{format}', 'json')
+        method = 'PUT'
+
+        path_params = {}
+        if 'id' in params:
+            path_params['id'] = params['id']
+
+        query_params = {}
+
+        header_params = {}
+
+        form_params = {}
+        files = {}
+
+        body_params = None
+        if 'body' in params:
+            body_params = params['body']
+
+        # HTTP header `Accept`
+        header_params['Accept'] = self.api_client.\
+            select_header_accept(['application/json'])
+        if not header_params['Accept']:
+            del header_params['Accept']
+
+        # HTTP header `Content-Type`
+        header_params['Content-Type'] = self.api_client.\
+            select_header_content_type(['application/json'])
+
+        # Authentication setting
+        auth_settings = []
+
+        response = self.api_client.call_api(resource_path, method,
+                                            path_params,
+                                            query_params,
+                                            header_params,
+                                            body=body_params,
+                                            post_params=form_params,
+                                            files=files,
+                                            response_type=None,
+                                            auth_settings=auth_settings,
+                                            callback=params.get('callback'))
+        return response
+
     def get_distributed_artifacts(self, id, **kwargs):
         """
         Get the artifacts distributed in this milestone
@@ -465,9 +543,9 @@ class ProductmilestonesApi(object):
                                             callback=params.get('callback'))
         return response
 
-    def get_distributed_builds(self, id, **kwargs):
+    def add_distributed_artifact(self, id, **kwargs):
         """
-        Gets the set of builds which produced artifacts distributed/shipped in a Product Milestone
+        Adds an artifact to the list of distributed artifacts for this product milestone
         
 
         This method makes a synchronous HTTP request by default. To make an
@@ -476,24 +554,21 @@ class ProductmilestonesApi(object):
         >>> def callback_function(response):
         >>>     pprint(response)
         >>>
-        >>> thread = api.get_distributed_builds(id, callback=callback_function)
+        >>> thread = api.add_distributed_artifact(id, callback=callback_function)
 
         :param callback function: The callback function
             for asynchronous request. (optional)
-        :param int id: Product Milestone id (required)
-        :param int page_index: Page Index
-        :param int page_size: Pagination size
-        :param str sort: Sorting RSQL
-        :param str q: RSQL Query
-        :return: ProductMilestoneSingleton
+        :param int id: Product milestone id (required)
+        :param ArtifactRest body: 
+        :return: None
                  If the method is called asynchronously,
                  returns the request thread.
         """
         # verify the required parameter 'id' is set
         if id is None:
-            raise ValueError("Missing the required parameter `id` when calling `get_distributed_builds`")
+            raise ValueError("Missing the required parameter `id` when calling `add_distributed_artifact`")
 
-        all_params = ['id', 'page_index', 'page_size', 'sort', 'q']
+        all_params = ['id', 'body']
         all_params.append('callback')
 
         params = locals()
@@ -501,27 +576,19 @@ class ProductmilestonesApi(object):
             if key not in all_params:
                 raise TypeError(
                     "Got an unexpected keyword argument '%s'"
-                    " to method get_distributed_builds" % key
+                    " to method add_distributed_artifact" % key
                 )
             params[key] = val
         del params['kwargs']
 
-        resource_path = '/product-milestones/{id}/distributed-builds'.replace('{format}', 'json')
-        method = 'GET'
+        resource_path = '/product-milestones/{id}/distributed-artifacts'.replace('{format}', 'json')
+        method = 'POST'
 
         path_params = {}
         if 'id' in params:
             path_params['id'] = params['id']
 
         query_params = {}
-        if 'page_index' in params:
-            query_params['pageIndex'] = params['page_index']
-        if 'page_size' in params:
-            query_params['pageSize'] = params['page_size']
-        if 'sort' in params:
-            query_params['sort'] = params['sort']
-        if 'q' in params:
-            query_params['q'] = params['q']
 
         header_params = {}
 
@@ -529,6 +596,8 @@ class ProductmilestonesApi(object):
         files = {}
 
         body_params = None
+        if 'body' in params:
+            body_params = params['body']
 
         # HTTP header `Accept`
         header_params['Accept'] = self.api_client.\
@@ -550,85 +619,7 @@ class ProductmilestonesApi(object):
                                             body=body_params,
                                             post_params=form_params,
                                             files=files,
-                                            response_type='ProductMilestoneSingleton',
-                                            auth_settings=auth_settings,
-                                            callback=params.get('callback'))
-        return response
-
-    def get_specific(self, id, **kwargs):
-        """
-        Gets specific Product Milestone
-        
-
-        This method makes a synchronous HTTP request by default. To make an
-        asynchronous HTTP request, please define a `callback` function
-        to be invoked when receiving the response.
-        >>> def callback_function(response):
-        >>>     pprint(response)
-        >>>
-        >>> thread = api.get_specific(id, callback=callback_function)
-
-        :param callback function: The callback function
-            for asynchronous request. (optional)
-        :param int id: Product Milestone id (required)
-        :return: ProductMilestoneSingleton
-                 If the method is called asynchronously,
-                 returns the request thread.
-        """
-        # verify the required parameter 'id' is set
-        if id is None:
-            raise ValueError("Missing the required parameter `id` when calling `get_specific`")
-
-        all_params = ['id']
-        all_params.append('callback')
-
-        params = locals()
-        for key, val in iteritems(params['kwargs']):
-            if key not in all_params:
-                raise TypeError(
-                    "Got an unexpected keyword argument '%s'"
-                    " to method get_specific" % key
-                )
-            params[key] = val
-        del params['kwargs']
-
-        resource_path = '/product-milestones/{id}'.replace('{format}', 'json')
-        method = 'GET'
-
-        path_params = {}
-        if 'id' in params:
-            path_params['id'] = params['id']
-
-        query_params = {}
-
-        header_params = {}
-
-        form_params = {}
-        files = {}
-
-        body_params = None
-
-        # HTTP header `Accept`
-        header_params['Accept'] = self.api_client.\
-            select_header_accept(['application/json'])
-        if not header_params['Accept']:
-            del header_params['Accept']
-
-        # HTTP header `Content-Type`
-        header_params['Content-Type'] = self.api_client.\
-            select_header_content_type(['application/json'])
-
-        # Authentication setting
-        auth_settings = []
-
-        response = self.api_client.call_api(resource_path, method,
-                                            path_params,
-                                            query_params,
-                                            header_params,
-                                            body=body_params,
-                                            post_params=form_params,
-                                            files=files,
-                                            response_type='ProductMilestoneSingleton',
+                                            response_type=None,
                                             auth_settings=auth_settings,
                                             callback=params.get('callback'))
         return response
@@ -717,9 +708,9 @@ class ProductmilestonesApi(object):
                                             callback=params.get('callback'))
         return response
 
-    def update(self, id, **kwargs):
+    def get_distributed_builds(self, id, **kwargs):
         """
-        Updates an existing Product Milestone
+        Gets the set of builds which produced artifacts distributed/shipped in a Product Milestone
         
 
         This method makes a synchronous HTTP request by default. To make an
@@ -728,21 +719,24 @@ class ProductmilestonesApi(object):
         >>> def callback_function(response):
         >>>     pprint(response)
         >>>
-        >>> thread = api.update(id, callback=callback_function)
+        >>> thread = api.get_distributed_builds(id, callback=callback_function)
 
         :param callback function: The callback function
             for asynchronous request. (optional)
         :param int id: Product Milestone id (required)
-        :param ProductMilestoneRest body: 
-        :return: None
+        :param int page_index: Page Index
+        :param int page_size: Pagination size
+        :param str sort: Sorting RSQL
+        :param str q: RSQL Query
+        :return: ProductMilestoneSingleton
                  If the method is called asynchronously,
                  returns the request thread.
         """
         # verify the required parameter 'id' is set
         if id is None:
-            raise ValueError("Missing the required parameter `id` when calling `update`")
+            raise ValueError("Missing the required parameter `id` when calling `get_distributed_builds`")
 
-        all_params = ['id', 'body']
+        all_params = ['id', 'page_index', 'page_size', 'sort', 'q']
         all_params.append('callback')
 
         params = locals()
@@ -750,19 +744,27 @@ class ProductmilestonesApi(object):
             if key not in all_params:
                 raise TypeError(
                     "Got an unexpected keyword argument '%s'"
-                    " to method update" % key
+                    " to method get_distributed_builds" % key
                 )
             params[key] = val
         del params['kwargs']
 
-        resource_path = '/product-milestones/{id}'.replace('{format}', 'json')
-        method = 'PUT'
+        resource_path = '/product-milestones/{id}/distributed-builds'.replace('{format}', 'json')
+        method = 'GET'
 
         path_params = {}
         if 'id' in params:
             path_params['id'] = params['id']
 
         query_params = {}
+        if 'page_index' in params:
+            query_params['pageIndex'] = params['page_index']
+        if 'page_size' in params:
+            query_params['pageSize'] = params['page_size']
+        if 'sort' in params:
+            query_params['sort'] = params['sort']
+        if 'q' in params:
+            query_params['q'] = params['q']
 
         header_params = {}
 
@@ -770,8 +772,6 @@ class ProductmilestonesApi(object):
         files = {}
 
         body_params = None
-        if 'body' in params:
-            body_params = params['body']
 
         # HTTP header `Accept`
         header_params['Accept'] = self.api_client.\
@@ -793,7 +793,7 @@ class ProductmilestonesApi(object):
                                             body=body_params,
                                             post_params=form_params,
                                             files=files,
-                                            response_type=None,
+                                            response_type='ProductMilestoneSingleton',
                                             auth_settings=auth_settings,
                                             callback=params.get('callback'))
         return response
