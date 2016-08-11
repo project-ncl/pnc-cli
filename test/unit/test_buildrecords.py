@@ -98,4 +98,29 @@ def test_get_artifacts(mock):
     mock.assert_called_once_with(id=100, page_size=200, sort="", q="")
     assert result == "list of artifacts"
 
+@patch('pnc_cli.buildrecords.records_api.put_attribute')
+def test_put_attribute(mock):
+    result = buildrecords.put_attribute(1,'key','value')
+    assert not result
+    mock.assert_called_once_with(id=1, key='key', value='value')
 
+
+@patch('pnc_cli.buildrecords.records_api.remove_attribute')
+def test_remove_attribute(mock):
+    result = buildrecords.remove_attribute(1, 'key')
+    assert not result
+    mock.assert_called_once_with(id=1, key='key')
+
+
+@patch('pnc_cli.buildrecords.records_api.query_by_attribute', return_value=MagicMock(content=MagicMock(attributes={"key":"value"})))
+def test_query_by_attribute(mock):
+    result = buildrecords.query_by_attribute('key', 'value')
+    assert 'key' in result.attributes
+    mock.assert_called_once_with(key='key', value='value')
+
+
+@patch('pnc_cli.buildrecords.records_api.get_attributes', return_value=MagicMock(content=MagicMock(attributes={'key1':'value1','key2':'value2'})))
+def test_list_attributes(mock):
+    result = buildrecords.list_attributes(1)
+    assert result.attributes == {'key1':'value1','key2':'value2'}
+    mock.assert_called_once_with(id=1)

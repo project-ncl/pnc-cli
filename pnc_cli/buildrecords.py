@@ -142,7 +142,7 @@ def remove_attribute(id, key):
 def query_by_attribute(key, value):
     response = utils.checked_api_call(records_api, "query_by_attribute", key=key, value=value)
     if response:
-        return response
+        return response.content
 
 
 @arg("id", help="BuildRecord ID to list Attributes of.", type=types.existing_build_record)
