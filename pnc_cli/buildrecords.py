@@ -124,9 +124,6 @@ def list_artifacts(id, page_size=200, sort="", q=""):
         return response.content
 
 
-
-
-
 @arg("id", help="BuildRecord ID to add an Attribute to.", type=types.existing_build_record)
 @arg("key", help="Key for the Attribute.")
 @arg("value", help="Value for the Attribute.")
