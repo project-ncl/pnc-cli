@@ -118,10 +118,13 @@ def get_log_for_record(id):
 @arg("-p", "--page-size", help="Limit the amount of Artifacts returned", type=int)
 @arg("-s", "--sort", help="Sorting RSQL")
 @arg("-q", help="RSQL query")
-def get_artifacts(id, page_size=200, sort="", q=""):
+def list_artifacts(id, page_size=200, sort="", q=""):
     response = utils.checked_api_call(records_api, 'get_artifacts', id=id, page_size=page_size, sort=sort, q=q)
     if response:
         return response.content
+
+
+
 
 
 @arg("id", help="BuildRecord ID to add an Attribute to.", type=types.existing_build_record)

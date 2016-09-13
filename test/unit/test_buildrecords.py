@@ -94,7 +94,7 @@ def test_get_log_for_record(mock):
 
 @patch('pnc_cli.buildrecords.records_api.get_artifacts', return_value=MagicMock(content="list of artifacts"))
 def test_get_artifacts(mock):
-    result = buildrecords.get_artifacts(id=100)
+    result = buildrecords.list_artifacts(id=100)
     mock.assert_called_once_with(id=100, page_size=200, sort="", q="")
     assert result == "list of artifacts"
 

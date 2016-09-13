@@ -142,13 +142,13 @@ def list_distributed_artifacts(id, page_size=200, sort="", q=""):
 @arg('id', help="ID of the ProductMilestone to add a distributed artifact to.", type=types.existing_product_milestone)
 #TODO: come up with a way to check that a given artifact ID exists. Currently the REST API doesn't have a method available like
 # get_specific for the artifacts
-@arg('artifact_id', help='ID of the Artifact to add.')
+@arg('artifact_id', help='ID of the Artifact to add.', type=types.existing_built_artifact)
 def add_distributed_artifact():
     pass
 
 
 @arg('id', help="ID of the ProductMilestone to remove the distributed artifact from.", type=types.existing_product_milestone)
-@arg('artifact_id', help='ID of the distributed artifact to remove.')
+@arg('artifact_id', help='ID of the distributed artifact to remove.', type=types.existing_built_artifact)
 def remove_distributed_artifact():
     pass
 

@@ -223,6 +223,9 @@ def existing_build_record(id_input):
     return id_input
 
 
+def existing_built_artifact(id_input):
+    pass
+
 # License types
 def existing_license(id_input):
     valid_id(id_input)
