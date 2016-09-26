@@ -15,6 +15,7 @@ from pnc_cli import productversions
 from pnc_cli import projects
 from pnc_cli import runningbuilds
 from pnc_cli import users
+from pnc_cli import makemead
 
 parser = argh.ArghParser()
 parser.add_commands([products.create_product,
@@ -98,7 +99,8 @@ parser.add_commands([products.create_product,
                      users.create_user,
                      users.get_user,
                      users.list_users,
-                     users.update_user])
+                     users.update_user,
+                     makemead.make_mead])
 parser.autocomplete()
 
 
