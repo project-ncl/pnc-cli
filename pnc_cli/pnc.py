@@ -101,7 +101,7 @@ parser.add_commands([products.create_product,
                      users.list_users,
                      users.update_user,
                      makemead.make_mead,
-                     makemead.sso])
+                     makemead.product])
 parser.autocomplete()
 
 
