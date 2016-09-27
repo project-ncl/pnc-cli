@@ -102,7 +102,7 @@ def product():
                                                                   name=jdg_name,
                                                                   project=project.id,
                                                                   environment=1, 
-                                                                  scm_repo_url="http://git.app.eng.bos.redhat.com/infinispan/infinispan.git",
+                                                                  scm_repo_url="http://git.app.eng.bos.redhat.com/git/infinispan/infinispan.git",
                                                                   scm_revision="JDG_7.0.0.ER4_pnc_wa",
                                                                   build_script="mvn clean deploy -DskipTests -Pdistribution")
                                                                  
@@ -120,7 +120,7 @@ def product():
                                                                   name=jdg_name,
                                                                   project=project.id,
                                                                   environment=1, 
-                                                                  scm_repo_url="http://git.app.eng.bos.redhat.com/infinispan/infinispan.git",
+                                                                  scm_repo_url="http://git.app.eng.bos.redhat.com/git/infinispan/infinispan.git",
                                                                   scm_revision="JDG_7.0.0.GA-pnc",
                                                                   build_script="mvn clean deploy -DskipTests -Pdistribution")
                                                                  
