@@ -57,7 +57,9 @@ class BuildRecordRest(object):
             'build_content_id': 'str',
             'product_milestone_id': 'int',
             'user': 'UserRest',
-            'build_configuration_audited': 'BuildConfigurationAuditedRest'
+            'build_configuration_audited': 'BuildConfigurationAuditedRest',
+            'execution_root_name': 'str',
+            'execution_root_version': 'str'
         }
 
         self.attribute_map = {
@@ -80,7 +82,9 @@ class BuildRecordRest(object):
             'build_content_id': 'buildContentId',
             'product_milestone_id': 'productMilestoneId',
             'user': 'user',
-            'build_configuration_audited': 'buildConfigurationAudited'
+            'build_configuration_audited': 'buildConfigurationAudited',
+            'execution_root_name': 'executionRootName',
+            'execution_root_version': 'executionRootVersion'
         }
 
         self._id = None
@@ -103,6 +107,8 @@ class BuildRecordRest(object):
         self._product_milestone_id = None
         self._user = None
         self._build_configuration_audited = None
+        self._execution_root_name = None
+        self._execution_root_version = None
 
     @property
     def id(self):
@@ -549,6 +555,50 @@ class BuildRecordRest(object):
         :type: BuildConfigurationAuditedRest
         """
         self._build_configuration_audited = build_configuration_audited
+
+    @property
+    def execution_root_name(self):
+        """
+        Gets the execution_root_name of this BuildRecordRest.
+
+
+        :return: The execution_root_name of this BuildRecordRest.
+        :rtype: str
+        """
+        return self._execution_root_name
+
+    @execution_root_name.setter
+    def execution_root_name(self, execution_root_name):
+        """
+        Sets the execution_root_name of this BuildRecordRest.
+
+
+        :param execution_root_name: The execution_root_name of this BuildRecordRest.
+        :type: str
+        """
+        self._execution_root_name = execution_root_name
+
+    @property
+    def execution_root_version(self):
+        """
+        Gets the execution_root_version of this BuildRecordRest.
+
+
+        :return: The execution_root_version of this BuildRecordRest.
+        :rtype: str
+        """
+        return self._execution_root_version
+
+    @execution_root_version.setter
+    def execution_root_version(self, execution_root_version):
+        """
+        Sets the execution_root_version of this BuildRecordRest.
+
+
+        :param execution_root_version: The execution_root_version of this BuildRecordRest.
+        :type: str
+        """
+        self._execution_root_version = execution_root_version
 
     def to_dict(self):
         """

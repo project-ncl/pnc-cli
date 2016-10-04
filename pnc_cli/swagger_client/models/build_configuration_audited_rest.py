@@ -46,6 +46,8 @@ class BuildConfigurationAuditedRest(object):
             'build_script': 'str',
             'scm_repo_url': 'str',
             'scm_revision': 'str',
+            'scm_external_repo_url': 'str',
+            'scm_external_revision': 'str',
             'scm_mirror_repo_url': 'str',
             'scm_mirror_revision': 'str',
             'creation_time': 'datetime',
@@ -66,6 +68,8 @@ class BuildConfigurationAuditedRest(object):
             'build_script': 'buildScript',
             'scm_repo_url': 'scmRepoURL',
             'scm_revision': 'scmRevision',
+            'scm_external_repo_url': 'scmExternalRepoURL',
+            'scm_external_revision': 'scmExternalRevision',
             'scm_mirror_repo_url': 'scmMirrorRepoURL',
             'scm_mirror_revision': 'scmMirrorRevision',
             'creation_time': 'creationTime',
@@ -85,6 +89,8 @@ class BuildConfigurationAuditedRest(object):
         self._build_script = None
         self._scm_repo_url = None
         self._scm_revision = None
+        self._scm_external_repo_url = None
+        self._scm_external_revision = None
         self._scm_mirror_repo_url = None
         self._scm_mirror_revision = None
         self._creation_time = None
@@ -270,6 +276,50 @@ class BuildConfigurationAuditedRest(object):
         :type: str
         """
         self._scm_revision = scm_revision
+
+    @property
+    def scm_external_repo_url(self):
+        """
+        Gets the scm_external_repo_url of this BuildConfigurationAuditedRest.
+
+
+        :return: The scm_external_repo_url of this BuildConfigurationAuditedRest.
+        :rtype: str
+        """
+        return self._scm_external_repo_url
+
+    @scm_external_repo_url.setter
+    def scm_external_repo_url(self, scm_external_repo_url):
+        """
+        Sets the scm_external_repo_url of this BuildConfigurationAuditedRest.
+
+
+        :param scm_external_repo_url: The scm_external_repo_url of this BuildConfigurationAuditedRest.
+        :type: str
+        """
+        self._scm_external_repo_url = scm_external_repo_url
+
+    @property
+    def scm_external_revision(self):
+        """
+        Gets the scm_external_revision of this BuildConfigurationAuditedRest.
+
+
+        :return: The scm_external_revision of this BuildConfigurationAuditedRest.
+        :rtype: str
+        """
+        return self._scm_external_revision
+
+    @scm_external_revision.setter
+    def scm_external_revision(self, scm_external_revision):
+        """
+        Sets the scm_external_revision of this BuildConfigurationAuditedRest.
+
+
+        :param scm_external_revision: The scm_external_revision of this BuildConfigurationAuditedRest.
+        :type: str
+        """
+        self._scm_external_revision = scm_external_revision
 
     @property
     def scm_mirror_repo_url(self):
