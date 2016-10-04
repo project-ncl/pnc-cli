@@ -50,6 +50,10 @@ class BuildRecord(object):
             'scm_revision': 'str',
             'build_log': 'str',
             'status': 'str',
+            'ssh_command': 'str',
+            'ssh_password': 'str',
+            'execution_root_name': 'str',
+            'execution_root_version': 'str',
             'built_artifacts': 'list[Artifact]',
             'dependencies': 'list[Artifact]',
             'build_environment': 'BuildEnvironment',
@@ -72,6 +76,10 @@ class BuildRecord(object):
             'scm_revision': 'scmRevision',
             'build_log': 'buildLog',
             'status': 'status',
+            'ssh_command': 'sshCommand',
+            'ssh_password': 'sshPassword',
+            'execution_root_name': 'executionRootName',
+            'execution_root_version': 'executionRootVersion',
             'built_artifacts': 'builtArtifacts',
             'dependencies': 'dependencies',
             'build_environment': 'buildEnvironment',
@@ -93,6 +101,10 @@ class BuildRecord(object):
         self._scm_revision = None
         self._build_log = None
         self._status = None
+        self._ssh_command = None
+        self._ssh_password = None
+        self._execution_root_name = None
+        self._execution_root_version = None
         self._built_artifacts = None
         self._dependencies = None
         self._build_environment = None
@@ -370,6 +382,94 @@ class BuildRecord(object):
                 .format(allowed_values)
             )
         self._status = status
+
+    @property
+    def ssh_command(self):
+        """
+        Gets the ssh_command of this BuildRecord.
+
+
+        :return: The ssh_command of this BuildRecord.
+        :rtype: str
+        """
+        return self._ssh_command
+
+    @ssh_command.setter
+    def ssh_command(self, ssh_command):
+        """
+        Sets the ssh_command of this BuildRecord.
+
+
+        :param ssh_command: The ssh_command of this BuildRecord.
+        :type: str
+        """
+        self._ssh_command = ssh_command
+
+    @property
+    def ssh_password(self):
+        """
+        Gets the ssh_password of this BuildRecord.
+
+
+        :return: The ssh_password of this BuildRecord.
+        :rtype: str
+        """
+        return self._ssh_password
+
+    @ssh_password.setter
+    def ssh_password(self, ssh_password):
+        """
+        Sets the ssh_password of this BuildRecord.
+
+
+        :param ssh_password: The ssh_password of this BuildRecord.
+        :type: str
+        """
+        self._ssh_password = ssh_password
+
+    @property
+    def execution_root_name(self):
+        """
+        Gets the execution_root_name of this BuildRecord.
+
+
+        :return: The execution_root_name of this BuildRecord.
+        :rtype: str
+        """
+        return self._execution_root_name
+
+    @execution_root_name.setter
+    def execution_root_name(self, execution_root_name):
+        """
+        Sets the execution_root_name of this BuildRecord.
+
+
+        :param execution_root_name: The execution_root_name of this BuildRecord.
+        :type: str
+        """
+        self._execution_root_name = execution_root_name
+
+    @property
+    def execution_root_version(self):
+        """
+        Gets the execution_root_version of this BuildRecord.
+
+
+        :return: The execution_root_version of this BuildRecord.
+        :rtype: str
+        """
+        return self._execution_root_version
+
+    @execution_root_version.setter
+    def execution_root_version(self, execution_root_version):
+        """
+        Sets the execution_root_version of this BuildRecord.
+
+
+        :param execution_root_version: The execution_root_version of this BuildRecord.
+        :type: str
+        """
+        self._execution_root_version = execution_root_version
 
     @property
     def built_artifacts(self):

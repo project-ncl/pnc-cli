@@ -44,6 +44,8 @@ class BuildConfigurationRest(object):
             'build_script': 'str',
             'scm_repo_url': 'str',
             'scm_revision': 'str',
+            'scm_external_repo_url': 'str',
+            'scm_external_revision': 'str',
             'scm_mirror_repo_url': 'str',
             'scm_mirror_revision': 'str',
             'creation_time': 'datetime',
@@ -53,9 +55,7 @@ class BuildConfigurationRest(object):
             'project': 'ProjectRest',
             'environment': 'BuildEnvironmentRest',
             'dependency_ids': 'list[int]',
-            'product_version_id': 'int',
-            'internal_scm': 'str',
-            'internal_scm_revison': 'str'
+            'product_version_id': 'int'
         }
 
         self.attribute_map = {
@@ -65,6 +65,8 @@ class BuildConfigurationRest(object):
             'build_script': 'buildScript',
             'scm_repo_url': 'scmRepoURL',
             'scm_revision': 'scmRevision',
+            'scm_external_repo_url': 'scmExternalRepoURL',
+            'scm_external_revision': 'scmExternalRevision',
             'scm_mirror_repo_url': 'scmMirrorRepoURL',
             'scm_mirror_revision': 'scmMirrorRevision',
             'creation_time': 'creationTime',
@@ -74,9 +76,7 @@ class BuildConfigurationRest(object):
             'project': 'project',
             'environment': 'environment',
             'dependency_ids': 'dependencyIds',
-            'product_version_id': 'productVersionId',
-            'internal_scm': 'internalScm',
-            'internal_scm_revison': 'internalScmRevison'
+            'product_version_id': 'productVersionId'
         }
 
         self._id = None
@@ -85,6 +85,8 @@ class BuildConfigurationRest(object):
         self._build_script = None
         self._scm_repo_url = None
         self._scm_revision = None
+        self._scm_external_repo_url = None
+        self._scm_external_revision = None
         self._scm_mirror_repo_url = None
         self._scm_mirror_revision = None
         self._creation_time = None
@@ -95,8 +97,6 @@ class BuildConfigurationRest(object):
         self._environment = None
         self._dependency_ids = None
         self._product_version_id = None
-        self._internal_scm = None
-        self._internal_scm_revison = None
 
     @property
     def id(self):
@@ -229,6 +229,50 @@ class BuildConfigurationRest(object):
         :type: str
         """
         self._scm_revision = scm_revision
+
+    @property
+    def scm_external_repo_url(self):
+        """
+        Gets the scm_external_repo_url of this BuildConfigurationRest.
+
+
+        :return: The scm_external_repo_url of this BuildConfigurationRest.
+        :rtype: str
+        """
+        return self._scm_external_repo_url
+
+    @scm_external_repo_url.setter
+    def scm_external_repo_url(self, scm_external_repo_url):
+        """
+        Sets the scm_external_repo_url of this BuildConfigurationRest.
+
+
+        :param scm_external_repo_url: The scm_external_repo_url of this BuildConfigurationRest.
+        :type: str
+        """
+        self._scm_external_repo_url = scm_external_repo_url
+
+    @property
+    def scm_external_revision(self):
+        """
+        Gets the scm_external_revision of this BuildConfigurationRest.
+
+
+        :return: The scm_external_revision of this BuildConfigurationRest.
+        :rtype: str
+        """
+        return self._scm_external_revision
+
+    @scm_external_revision.setter
+    def scm_external_revision(self, scm_external_revision):
+        """
+        Sets the scm_external_revision of this BuildConfigurationRest.
+
+
+        :param scm_external_revision: The scm_external_revision of this BuildConfigurationRest.
+        :type: str
+        """
+        self._scm_external_revision = scm_external_revision
 
     @property
     def scm_mirror_repo_url(self):
@@ -449,50 +493,6 @@ class BuildConfigurationRest(object):
         :type: int
         """
         self._product_version_id = product_version_id
-
-    @property
-    def internal_scm(self):
-        """
-        Gets the internal_scm of this BuildConfigurationRest.
-
-
-        :return: The internal_scm of this BuildConfigurationRest.
-        :rtype: str
-        """
-        return self._internal_scm
-
-    @internal_scm.setter
-    def internal_scm(self, internal_scm):
-        """
-        Sets the internal_scm of this BuildConfigurationRest.
-
-
-        :param internal_scm: The internal_scm of this BuildConfigurationRest.
-        :type: str
-        """
-        self._internal_scm = internal_scm
-
-    @property
-    def internal_scm_revison(self):
-        """
-        Gets the internal_scm_revison of this BuildConfigurationRest.
-
-
-        :return: The internal_scm_revison of this BuildConfigurationRest.
-        :rtype: str
-        """
-        return self._internal_scm_revison
-
-    @internal_scm_revison.setter
-    def internal_scm_revison(self, internal_scm_revison):
-        """
-        Sets the internal_scm_revison of this BuildConfigurationRest.
-
-
-        :param internal_scm_revison: The internal_scm_revison of this BuildConfigurationRest.
-        :type: str
-        """
-        self._internal_scm_revison = internal_scm_revison
 
     def to_dict(self):
         """

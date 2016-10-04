@@ -45,6 +45,399 @@ class BuildconfigurationsApi(object):
                 config.api_client = ApiClient()
             self.api_client = config.api_client
 
+    def add_dependency(self, id, **kwargs):
+        """
+        Adds a dependency to the specified config
+        
+
+        This method makes a synchronous HTTP request by default. To make an
+        asynchronous HTTP request, please define a `callback` function
+        to be invoked when receiving the response.
+        >>> def callback_function(response):
+        >>>     pprint(response)
+        >>>
+        >>> thread = api.add_dependency(id, callback=callback_function)
+
+        :param callback function: The callback function
+            for asynchronous request. (optional)
+        :param int id: Build Configuration id (required)
+        :param BuildConfigurationRest body: 
+        :return: None
+                 If the method is called asynchronously,
+                 returns the request thread.
+        """
+        # verify the required parameter 'id' is set
+        if id is None:
+            raise ValueError("Missing the required parameter `id` when calling `add_dependency`")
+
+        all_params = ['id', 'body']
+        all_params.append('callback')
+
+        params = locals()
+        for key, val in iteritems(params['kwargs']):
+            if key not in all_params:
+                raise TypeError(
+                    "Got an unexpected keyword argument '%s'"
+                    " to method add_dependency" % key
+                )
+            params[key] = val
+        del params['kwargs']
+
+        resource_path = '/build-configurations/{id}/dependencies'.replace('{format}', 'json')
+        method = 'POST'
+
+        path_params = {}
+        if 'id' in params:
+            path_params['id'] = params['id']
+
+        query_params = {}
+
+        header_params = {}
+
+        form_params = {}
+        files = {}
+
+        body_params = None
+        if 'body' in params:
+            body_params = params['body']
+
+        # HTTP header `Accept`
+        header_params['Accept'] = self.api_client.\
+            select_header_accept(['application/json'])
+        if not header_params['Accept']:
+            del header_params['Accept']
+
+        # HTTP header `Content-Type`
+        header_params['Content-Type'] = self.api_client.\
+            select_header_content_type(['application/json'])
+
+        # Authentication setting
+        auth_settings = []
+
+        response = self.api_client.call_api(resource_path, method,
+                                            path_params,
+                                            query_params,
+                                            header_params,
+                                            body=body_params,
+                                            post_params=form_params,
+                                            files=files,
+                                            response_type=None,
+                                            auth_settings=auth_settings,
+                                            callback=params.get('callback'))
+        return response
+
+    def add_product_version(self, id, **kwargs):
+        """
+        Associates a product version to the specified config
+        
+
+        This method makes a synchronous HTTP request by default. To make an
+        asynchronous HTTP request, please define a `callback` function
+        to be invoked when receiving the response.
+        >>> def callback_function(response):
+        >>>     pprint(response)
+        >>>
+        >>> thread = api.add_product_version(id, callback=callback_function)
+
+        :param callback function: The callback function
+            for asynchronous request. (optional)
+        :param int id: Build Configuration id (required)
+        :param ProductVersionRest body: 
+        :return: None
+                 If the method is called asynchronously,
+                 returns the request thread.
+        """
+        # verify the required parameter 'id' is set
+        if id is None:
+            raise ValueError("Missing the required parameter `id` when calling `add_product_version`")
+
+        all_params = ['id', 'body']
+        all_params.append('callback')
+
+        params = locals()
+        for key, val in iteritems(params['kwargs']):
+            if key not in all_params:
+                raise TypeError(
+                    "Got an unexpected keyword argument '%s'"
+                    " to method add_product_version" % key
+                )
+            params[key] = val
+        del params['kwargs']
+
+        resource_path = '/build-configurations/{id}/product-versions'.replace('{format}', 'json')
+        method = 'POST'
+
+        path_params = {}
+        if 'id' in params:
+            path_params['id'] = params['id']
+
+        query_params = {}
+
+        header_params = {}
+
+        form_params = {}
+        files = {}
+
+        body_params = None
+        if 'body' in params:
+            body_params = params['body']
+
+        # HTTP header `Accept`
+        header_params['Accept'] = self.api_client.\
+            select_header_accept(['application/json'])
+        if not header_params['Accept']:
+            del header_params['Accept']
+
+        # HTTP header `Content-Type`
+        header_params['Content-Type'] = self.api_client.\
+            select_header_content_type(['application/json'])
+
+        # Authentication setting
+        auth_settings = []
+
+        response = self.api_client.call_api(resource_path, method,
+                                            path_params,
+                                            query_params,
+                                            header_params,
+                                            body=body_params,
+                                            post_params=form_params,
+                                            files=files,
+                                            response_type=None,
+                                            auth_settings=auth_settings,
+                                            callback=params.get('callback'))
+        return response
+
+    def clone(self, id, **kwargs):
+        """
+        Clones an existing Build Configuration
+        
+
+        This method makes a synchronous HTTP request by default. To make an
+        asynchronous HTTP request, please define a `callback` function
+        to be invoked when receiving the response.
+        >>> def callback_function(response):
+        >>>     pprint(response)
+        >>>
+        >>> thread = api.clone(id, callback=callback_function)
+
+        :param callback function: The callback function
+            for asynchronous request. (optional)
+        :param int id: Build Configuration id (required)
+        :return: BuildConfigurationSingleton
+                 If the method is called asynchronously,
+                 returns the request thread.
+        """
+        # verify the required parameter 'id' is set
+        if id is None:
+            raise ValueError("Missing the required parameter `id` when calling `clone`")
+
+        all_params = ['id']
+        all_params.append('callback')
+
+        params = locals()
+        for key, val in iteritems(params['kwargs']):
+            if key not in all_params:
+                raise TypeError(
+                    "Got an unexpected keyword argument '%s'"
+                    " to method clone" % key
+                )
+            params[key] = val
+        del params['kwargs']
+
+        resource_path = '/build-configurations/{id}/clone'.replace('{format}', 'json')
+        method = 'POST'
+
+        path_params = {}
+        if 'id' in params:
+            path_params['id'] = params['id']
+
+        query_params = {}
+
+        header_params = {}
+
+        form_params = {}
+        files = {}
+
+        body_params = None
+
+        # HTTP header `Accept`
+        header_params['Accept'] = self.api_client.\
+            select_header_accept(['application/json'])
+        if not header_params['Accept']:
+            del header_params['Accept']
+
+        # HTTP header `Content-Type`
+        header_params['Content-Type'] = self.api_client.\
+            select_header_content_type(['application/json'])
+
+        # Authentication setting
+        auth_settings = []
+
+        response = self.api_client.call_api(resource_path, method,
+                                            path_params,
+                                            query_params,
+                                            header_params,
+                                            body=body_params,
+                                            post_params=form_params,
+                                            files=files,
+                                            response_type='BuildConfigurationSingleton',
+                                            auth_settings=auth_settings,
+                                            callback=params.get('callback'))
+        return response
+
+    def create_new(self, **kwargs):
+        """
+        Creates a new Build Configuration. scmMirror* fields are deprecated and values are no longer used.
+        
+
+        This method makes a synchronous HTTP request by default. To make an
+        asynchronous HTTP request, please define a `callback` function
+        to be invoked when receiving the response.
+        >>> def callback_function(response):
+        >>>     pprint(response)
+        >>>
+        >>> thread = api.create_new(callback=callback_function)
+
+        :param callback function: The callback function
+            for asynchronous request. (optional)
+        :param BuildConfigurationRest body: 
+        :return: BuildConfigurationSingleton
+                 If the method is called asynchronously,
+                 returns the request thread.
+        """
+
+        all_params = ['body']
+        all_params.append('callback')
+
+        params = locals()
+        for key, val in iteritems(params['kwargs']):
+            if key not in all_params:
+                raise TypeError(
+                    "Got an unexpected keyword argument '%s'"
+                    " to method create_new" % key
+                )
+            params[key] = val
+        del params['kwargs']
+
+        resource_path = '/build-configurations'.replace('{format}', 'json')
+        method = 'POST'
+
+        path_params = {}
+
+        query_params = {}
+
+        header_params = {}
+
+        form_params = {}
+        files = {}
+
+        body_params = None
+        if 'body' in params:
+            body_params = params['body']
+
+        # HTTP header `Accept`
+        header_params['Accept'] = self.api_client.\
+            select_header_accept(['application/json'])
+        if not header_params['Accept']:
+            del header_params['Accept']
+
+        # HTTP header `Content-Type`
+        header_params['Content-Type'] = self.api_client.\
+            select_header_content_type(['application/json'])
+
+        # Authentication setting
+        auth_settings = []
+
+        response = self.api_client.call_api(resource_path, method,
+                                            path_params,
+                                            query_params,
+                                            header_params,
+                                            body=body_params,
+                                            post_params=form_params,
+                                            files=files,
+                                            response_type='BuildConfigurationSingleton',
+                                            auth_settings=auth_settings,
+                                            callback=params.get('callback'))
+        return response
+
+    def delete_specific(self, id, **kwargs):
+        """
+        Removes a specific Build Configuration
+        
+
+        This method makes a synchronous HTTP request by default. To make an
+        asynchronous HTTP request, please define a `callback` function
+        to be invoked when receiving the response.
+        >>> def callback_function(response):
+        >>>     pprint(response)
+        >>>
+        >>> thread = api.delete_specific(id, callback=callback_function)
+
+        :param callback function: The callback function
+            for asynchronous request. (optional)
+        :param int id: Build Configuration id (required)
+        :return: None
+                 If the method is called asynchronously,
+                 returns the request thread.
+        """
+        # verify the required parameter 'id' is set
+        if id is None:
+            raise ValueError("Missing the required parameter `id` when calling `delete_specific`")
+
+        all_params = ['id']
+        all_params.append('callback')
+
+        params = locals()
+        for key, val in iteritems(params['kwargs']):
+            if key not in all_params:
+                raise TypeError(
+                    "Got an unexpected keyword argument '%s'"
+                    " to method delete_specific" % key
+                )
+            params[key] = val
+        del params['kwargs']
+
+        resource_path = '/build-configurations/{id}'.replace('{format}', 'json')
+        method = 'DELETE'
+
+        path_params = {}
+        if 'id' in params:
+            path_params['id'] = params['id']
+
+        query_params = {}
+
+        header_params = {}
+
+        form_params = {}
+        files = {}
+
+        body_params = None
+
+        # HTTP header `Accept`
+        header_params['Accept'] = self.api_client.\
+            select_header_accept(['application/json'])
+        if not header_params['Accept']:
+            del header_params['Accept']
+
+        # HTTP header `Content-Type`
+        header_params['Content-Type'] = self.api_client.\
+            select_header_content_type(['application/json'])
+
+        # Authentication setting
+        auth_settings = []
+
+        response = self.api_client.call_api(resource_path, method,
+                                            path_params,
+                                            query_params,
+                                            header_params,
+                                            body=body_params,
+                                            post_params=form_params,
+                                            files=files,
+                                            response_type=None,
+                                            auth_settings=auth_settings,
+                                            callback=params.get('callback'))
+        return response
+
     def get_all(self, **kwargs):
         """
         Gets all Build Configurations
@@ -125,81 +518,6 @@ class BuildconfigurationsApi(object):
                                             post_params=form_params,
                                             files=files,
                                             response_type='BuildConfigurationPage',
-                                            auth_settings=auth_settings,
-                                            callback=params.get('callback'))
-        return response
-
-    def create_new(self, **kwargs):
-        """
-        Creates a new Build Configuration
-        
-
-        This method makes a synchronous HTTP request by default. To make an
-        asynchronous HTTP request, please define a `callback` function
-        to be invoked when receiving the response.
-        >>> def callback_function(response):
-        >>>     pprint(response)
-        >>>
-        >>> thread = api.create_new(callback=callback_function)
-
-        :param callback function: The callback function
-            for asynchronous request. (optional)
-        :param BuildConfigurationRest body: 
-        :return: BuildConfigurationSingleton
-                 If the method is called asynchronously,
-                 returns the request thread.
-        """
-
-        all_params = ['body']
-        all_params.append('callback')
-
-        params = locals()
-        for key, val in iteritems(params['kwargs']):
-            if key not in all_params:
-                raise TypeError(
-                    "Got an unexpected keyword argument '%s'"
-                    " to method create_new" % key
-                )
-            params[key] = val
-        del params['kwargs']
-
-        resource_path = '/build-configurations'.replace('{format}', 'json')
-        method = 'POST'
-
-        path_params = {}
-
-        query_params = {}
-
-        header_params = {}
-
-        form_params = {}
-        files = {}
-
-        body_params = None
-        if 'body' in params:
-            body_params = params['body']
-
-        # HTTP header `Accept`
-        header_params['Accept'] = self.api_client.\
-            select_header_accept(['application/json'])
-        if not header_params['Accept']:
-            del header_params['Accept']
-
-        # HTTP header `Content-Type`
-        header_params['Content-Type'] = self.api_client.\
-            select_header_content_type(['application/json'])
-
-        # Authentication setting
-        auth_settings = []
-
-        response = self.api_client.call_api(resource_path, method,
-                                            path_params,
-                                            query_params,
-                                            header_params,
-                                            body=body_params,
-                                            post_params=form_params,
-                                            files=files,
-                                            response_type='BuildConfigurationSingleton',
                                             auth_settings=auth_settings,
                                             callback=params.get('callback'))
         return response
@@ -480,330 +798,6 @@ class BuildconfigurationsApi(object):
                                             callback=params.get('callback'))
         return response
 
-    def get_specific(self, id, **kwargs):
-        """
-        Gets a specific Build Configuration
-        
-
-        This method makes a synchronous HTTP request by default. To make an
-        asynchronous HTTP request, please define a `callback` function
-        to be invoked when receiving the response.
-        >>> def callback_function(response):
-        >>>     pprint(response)
-        >>>
-        >>> thread = api.get_specific(id, callback=callback_function)
-
-        :param callback function: The callback function
-            for asynchronous request. (optional)
-        :param int id: Build Configuration id (required)
-        :return: BuildConfigurationSingleton
-                 If the method is called asynchronously,
-                 returns the request thread.
-        """
-        # verify the required parameter 'id' is set
-        if id is None:
-            raise ValueError("Missing the required parameter `id` when calling `get_specific`")
-
-        all_params = ['id']
-        all_params.append('callback')
-
-        params = locals()
-        for key, val in iteritems(params['kwargs']):
-            if key not in all_params:
-                raise TypeError(
-                    "Got an unexpected keyword argument '%s'"
-                    " to method get_specific" % key
-                )
-            params[key] = val
-        del params['kwargs']
-
-        resource_path = '/build-configurations/{id}'.replace('{format}', 'json')
-        method = 'GET'
-
-        path_params = {}
-        if 'id' in params:
-            path_params['id'] = params['id']
-
-        query_params = {}
-
-        header_params = {}
-
-        form_params = {}
-        files = {}
-
-        body_params = None
-
-        # HTTP header `Accept`
-        header_params['Accept'] = self.api_client.\
-            select_header_accept(['application/json'])
-        if not header_params['Accept']:
-            del header_params['Accept']
-
-        # HTTP header `Content-Type`
-        header_params['Content-Type'] = self.api_client.\
-            select_header_content_type(['application/json'])
-
-        # Authentication setting
-        auth_settings = []
-
-        response = self.api_client.call_api(resource_path, method,
-                                            path_params,
-                                            query_params,
-                                            header_params,
-                                            body=body_params,
-                                            post_params=form_params,
-                                            files=files,
-                                            response_type='BuildConfigurationSingleton',
-                                            auth_settings=auth_settings,
-                                            callback=params.get('callback'))
-        return response
-
-    def update(self, id, **kwargs):
-        """
-        Updates an existing Build Configuration
-        
-
-        This method makes a synchronous HTTP request by default. To make an
-        asynchronous HTTP request, please define a `callback` function
-        to be invoked when receiving the response.
-        >>> def callback_function(response):
-        >>>     pprint(response)
-        >>>
-        >>> thread = api.update(id, callback=callback_function)
-
-        :param callback function: The callback function
-            for asynchronous request. (optional)
-        :param int id: Build Configuration id (required)
-        :param BuildConfigurationRest body: 
-        :return: None
-                 If the method is called asynchronously,
-                 returns the request thread.
-        """
-        # verify the required parameter 'id' is set
-        if id is None:
-            raise ValueError("Missing the required parameter `id` when calling `update`")
-
-        all_params = ['id', 'body']
-        all_params.append('callback')
-
-        params = locals()
-        for key, val in iteritems(params['kwargs']):
-            if key not in all_params:
-                raise TypeError(
-                    "Got an unexpected keyword argument '%s'"
-                    " to method update" % key
-                )
-            params[key] = val
-        del params['kwargs']
-
-        resource_path = '/build-configurations/{id}'.replace('{format}', 'json')
-        method = 'PUT'
-
-        path_params = {}
-        if 'id' in params:
-            path_params['id'] = params['id']
-
-        query_params = {}
-
-        header_params = {}
-
-        form_params = {}
-        files = {}
-
-        body_params = None
-        if 'body' in params:
-            body_params = params['body']
-
-        # HTTP header `Accept`
-        header_params['Accept'] = self.api_client.\
-            select_header_accept(['application/json'])
-        if not header_params['Accept']:
-            del header_params['Accept']
-
-        # HTTP header `Content-Type`
-        header_params['Content-Type'] = self.api_client.\
-            select_header_content_type(['application/json'])
-
-        # Authentication setting
-        auth_settings = []
-
-        response = self.api_client.call_api(resource_path, method,
-                                            path_params,
-                                            query_params,
-                                            header_params,
-                                            body=body_params,
-                                            post_params=form_params,
-                                            files=files,
-                                            response_type=None,
-                                            auth_settings=auth_settings,
-                                            callback=params.get('callback'))
-        return response
-
-    def delete_specific(self, id, **kwargs):
-        """
-        Removes a specific Build Configuration
-        
-
-        This method makes a synchronous HTTP request by default. To make an
-        asynchronous HTTP request, please define a `callback` function
-        to be invoked when receiving the response.
-        >>> def callback_function(response):
-        >>>     pprint(response)
-        >>>
-        >>> thread = api.delete_specific(id, callback=callback_function)
-
-        :param callback function: The callback function
-            for asynchronous request. (optional)
-        :param int id: Build Configuration id (required)
-        :return: None
-                 If the method is called asynchronously,
-                 returns the request thread.
-        """
-        # verify the required parameter 'id' is set
-        if id is None:
-            raise ValueError("Missing the required parameter `id` when calling `delete_specific`")
-
-        all_params = ['id']
-        all_params.append('callback')
-
-        params = locals()
-        for key, val in iteritems(params['kwargs']):
-            if key not in all_params:
-                raise TypeError(
-                    "Got an unexpected keyword argument '%s'"
-                    " to method delete_specific" % key
-                )
-            params[key] = val
-        del params['kwargs']
-
-        resource_path = '/build-configurations/{id}'.replace('{format}', 'json')
-        method = 'DELETE'
-
-        path_params = {}
-        if 'id' in params:
-            path_params['id'] = params['id']
-
-        query_params = {}
-
-        header_params = {}
-
-        form_params = {}
-        files = {}
-
-        body_params = None
-
-        # HTTP header `Accept`
-        header_params['Accept'] = self.api_client.\
-            select_header_accept(['application/json'])
-        if not header_params['Accept']:
-            del header_params['Accept']
-
-        # HTTP header `Content-Type`
-        header_params['Content-Type'] = self.api_client.\
-            select_header_content_type(['application/json'])
-
-        # Authentication setting
-        auth_settings = []
-
-        response = self.api_client.call_api(resource_path, method,
-                                            path_params,
-                                            query_params,
-                                            header_params,
-                                            body=body_params,
-                                            post_params=form_params,
-                                            files=files,
-                                            response_type=None,
-                                            auth_settings=auth_settings,
-                                            callback=params.get('callback'))
-        return response
-
-    def trigger(self, id, **kwargs):
-        """
-        Triggers the build of a specific Build Configuration
-        
-
-        This method makes a synchronous HTTP request by default. To make an
-        asynchronous HTTP request, please define a `callback` function
-        to be invoked when receiving the response.
-        >>> def callback_function(response):
-        >>>     pprint(response)
-        >>>
-        >>> thread = api.trigger(id, callback=callback_function)
-
-        :param callback function: The callback function
-            for asynchronous request. (optional)
-        :param int id: Build Configuration id (required)
-        :param str callback_url: Optional Callback URL
-        :param bool rebuild_all: Rebuild all dependencies
-        :param bool keep_pod_alive_on_failure: Keep pod alive when the build fails
-        :return: BuildRecordSingleton
-                 If the method is called asynchronously,
-                 returns the request thread.
-        """
-        # verify the required parameter 'id' is set
-        if id is None:
-            raise ValueError("Missing the required parameter `id` when calling `trigger`")
-
-        all_params = ['id', 'callback_url', 'rebuild_all', 'keep_pod_alive_on_failure']
-        all_params.append('callback')
-
-        params = locals()
-        for key, val in iteritems(params['kwargs']):
-            if key not in all_params:
-                raise TypeError(
-                    "Got an unexpected keyword argument '%s'"
-                    " to method trigger" % key
-                )
-            params[key] = val
-        del params['kwargs']
-
-        resource_path = '/build-configurations/{id}/build'.replace('{format}', 'json')
-        method = 'POST'
-
-        path_params = {}
-        if 'id' in params:
-            path_params['id'] = params['id']
-
-        query_params = {}
-        if 'callback_url' in params:
-            query_params['callbackUrl'] = params['callback_url']
-        if 'rebuild_all' in params:
-            query_params['rebuildAll'] = params['rebuild_all']
-        if 'keep_pod_alive_on_failure' in params:
-            query_params['keepPodAliveOnFailure'] = params['keep_pod_alive_on_failure']
-
-        header_params = {}
-
-        form_params = {}
-        files = {}
-
-        body_params = None
-
-        # HTTP header `Accept`
-        header_params['Accept'] = self.api_client.\
-            select_header_accept(['application/json'])
-        if not header_params['Accept']:
-            del header_params['Accept']
-
-        # HTTP header `Content-Type`
-        header_params['Content-Type'] = self.api_client.\
-            select_header_content_type(['application/json'])
-
-        # Authentication setting
-        auth_settings = []
-
-        response = self.api_client.call_api(resource_path, method,
-                                            path_params,
-                                            query_params,
-                                            header_params,
-                                            body=body_params,
-                                            post_params=form_params,
-                                            files=files,
-                                            response_type='BuildRecordSingleton',
-                                            auth_settings=auth_settings,
-                                            callback=params.get('callback'))
-        return response
-
     def get_build_configuration_sets(self, id, **kwargs):
         """
         Gets BuildConfiguration Sets associated with the specified BuildConfiguration
@@ -984,84 +978,6 @@ class BuildconfigurationsApi(object):
                                             callback=params.get('callback'))
         return response
 
-    def get_latest_build_record(self, id, **kwargs):
-        """
-        Get latest build record associated with this build configuration, returns no content if no build records are found
-        
-
-        This method makes a synchronous HTTP request by default. To make an
-        asynchronous HTTP request, please define a `callback` function
-        to be invoked when receiving the response.
-        >>> def callback_function(response):
-        >>>     pprint(response)
-        >>>
-        >>> thread = api.get_latest_build_record(id, callback=callback_function)
-
-        :param callback function: The callback function
-            for asynchronous request. (optional)
-        :param int id: Build configuration id (required)
-        :return: BuildRecordPage
-                 If the method is called asynchronously,
-                 returns the request thread.
-        """
-        # verify the required parameter 'id' is set
-        if id is None:
-            raise ValueError("Missing the required parameter `id` when calling `get_latest_build_record`")
-
-        all_params = ['id']
-        all_params.append('callback')
-
-        params = locals()
-        for key, val in iteritems(params['kwargs']):
-            if key not in all_params:
-                raise TypeError(
-                    "Got an unexpected keyword argument '%s'"
-                    " to method get_latest_build_record" % key
-                )
-            params[key] = val
-        del params['kwargs']
-
-        resource_path = '/build-configurations/{id}/build-records/latest'.replace('{format}', 'json')
-        method = 'GET'
-
-        path_params = {}
-        if 'id' in params:
-            path_params['id'] = params['id']
-
-        query_params = {}
-
-        header_params = {}
-
-        form_params = {}
-        files = {}
-
-        body_params = None
-
-        # HTTP header `Accept`
-        header_params['Accept'] = self.api_client.\
-            select_header_accept(['application/json'])
-        if not header_params['Accept']:
-            del header_params['Accept']
-
-        # HTTP header `Content-Type`
-        header_params['Content-Type'] = self.api_client.\
-            select_header_content_type(['application/json'])
-
-        # Authentication setting
-        auth_settings = []
-
-        response = self.api_client.call_api(resource_path, method,
-                                            path_params,
-                                            query_params,
-                                            header_params,
-                                            body=body_params,
-                                            post_params=form_params,
-                                            files=files,
-                                            response_type='BuildRecordPage',
-                                            auth_settings=auth_settings,
-                                            callback=params.get('callback'))
-        return response
-
     def get_builds(self, id, **kwargs):
         """
         Get all BuildRecords (running and archived) associated with this Build Configuration, returns empty list if no build records are found
@@ -1148,84 +1064,6 @@ class BuildconfigurationsApi(object):
                                             post_params=form_params,
                                             files=files,
                                             response_type='BuildRecordPage',
-                                            auth_settings=auth_settings,
-                                            callback=params.get('callback'))
-        return response
-
-    def clone(self, id, **kwargs):
-        """
-        Clones an existing Build Configuration
-        
-
-        This method makes a synchronous HTTP request by default. To make an
-        asynchronous HTTP request, please define a `callback` function
-        to be invoked when receiving the response.
-        >>> def callback_function(response):
-        >>>     pprint(response)
-        >>>
-        >>> thread = api.clone(id, callback=callback_function)
-
-        :param callback function: The callback function
-            for asynchronous request. (optional)
-        :param int id: Build Configuration id (required)
-        :return: BuildConfigurationSingleton
-                 If the method is called asynchronously,
-                 returns the request thread.
-        """
-        # verify the required parameter 'id' is set
-        if id is None:
-            raise ValueError("Missing the required parameter `id` when calling `clone`")
-
-        all_params = ['id']
-        all_params.append('callback')
-
-        params = locals()
-        for key, val in iteritems(params['kwargs']):
-            if key not in all_params:
-                raise TypeError(
-                    "Got an unexpected keyword argument '%s'"
-                    " to method clone" % key
-                )
-            params[key] = val
-        del params['kwargs']
-
-        resource_path = '/build-configurations/{id}/clone'.replace('{format}', 'json')
-        method = 'POST'
-
-        path_params = {}
-        if 'id' in params:
-            path_params['id'] = params['id']
-
-        query_params = {}
-
-        header_params = {}
-
-        form_params = {}
-        files = {}
-
-        body_params = None
-
-        # HTTP header `Accept`
-        header_params['Accept'] = self.api_client.\
-            select_header_accept(['application/json'])
-        if not header_params['Accept']:
-            del header_params['Accept']
-
-        # HTTP header `Content-Type`
-        header_params['Content-Type'] = self.api_client.\
-            select_header_content_type(['application/json'])
-
-        # Authentication setting
-        auth_settings = []
-
-        response = self.api_client.call_api(resource_path, method,
-                                            path_params,
-                                            query_params,
-                                            header_params,
-                                            body=body_params,
-                                            post_params=form_params,
-                                            files=files,
-                                            response_type='BuildConfigurationSingleton',
                                             auth_settings=auth_settings,
                                             callback=params.get('callback'))
         return response
@@ -1320,9 +1158,9 @@ class BuildconfigurationsApi(object):
                                             callback=params.get('callback'))
         return response
 
-    def add_dependency(self, id, **kwargs):
+    def get_latest_build_record(self, id, **kwargs):
         """
-        Adds a dependency to the specified config
+        Get latest build record associated with this build configuration, returns no content if no build records are found
         
 
         This method makes a synchronous HTTP request by default. To make an
@@ -1331,21 +1169,20 @@ class BuildconfigurationsApi(object):
         >>> def callback_function(response):
         >>>     pprint(response)
         >>>
-        >>> thread = api.add_dependency(id, callback=callback_function)
+        >>> thread = api.get_latest_build_record(id, callback=callback_function)
 
         :param callback function: The callback function
             for asynchronous request. (optional)
-        :param int id: Build Configuration id (required)
-        :param BuildConfigurationRest body: 
-        :return: None
+        :param int id: Build configuration id (required)
+        :return: BuildRecordPage
                  If the method is called asynchronously,
                  returns the request thread.
         """
         # verify the required parameter 'id' is set
         if id is None:
-            raise ValueError("Missing the required parameter `id` when calling `add_dependency`")
+            raise ValueError("Missing the required parameter `id` when calling `get_latest_build_record`")
 
-        all_params = ['id', 'body']
+        all_params = ['id']
         all_params.append('callback')
 
         params = locals()
@@ -1353,103 +1190,17 @@ class BuildconfigurationsApi(object):
             if key not in all_params:
                 raise TypeError(
                     "Got an unexpected keyword argument '%s'"
-                    " to method add_dependency" % key
+                    " to method get_latest_build_record" % key
                 )
             params[key] = val
         del params['kwargs']
 
-        resource_path = '/build-configurations/{id}/dependencies'.replace('{format}', 'json')
-        method = 'POST'
+        resource_path = '/build-configurations/{id}/build-records/latest'.replace('{format}', 'json')
+        method = 'GET'
 
         path_params = {}
         if 'id' in params:
             path_params['id'] = params['id']
-
-        query_params = {}
-
-        header_params = {}
-
-        form_params = {}
-        files = {}
-
-        body_params = None
-        if 'body' in params:
-            body_params = params['body']
-
-        # HTTP header `Accept`
-        header_params['Accept'] = self.api_client.\
-            select_header_accept(['application/json'])
-        if not header_params['Accept']:
-            del header_params['Accept']
-
-        # HTTP header `Content-Type`
-        header_params['Content-Type'] = self.api_client.\
-            select_header_content_type(['application/json'])
-
-        # Authentication setting
-        auth_settings = []
-
-        response = self.api_client.call_api(resource_path, method,
-                                            path_params,
-                                            query_params,
-                                            header_params,
-                                            body=body_params,
-                                            post_params=form_params,
-                                            files=files,
-                                            response_type=None,
-                                            auth_settings=auth_settings,
-                                            callback=params.get('callback'))
-        return response
-
-    def remove_dependency(self, id, dependency_id, **kwargs):
-        """
-        Removes a configuration from the specified config set
-        
-
-        This method makes a synchronous HTTP request by default. To make an
-        asynchronous HTTP request, please define a `callback` function
-        to be invoked when receiving the response.
-        >>> def callback_function(response):
-        >>>     pprint(response)
-        >>>
-        >>> thread = api.remove_dependency(id, dependency_id, callback=callback_function)
-
-        :param callback function: The callback function
-            for asynchronous request. (optional)
-        :param int id: Build configuration set id (required)
-        :param int dependency_id: Build configuration id (required)
-        :return: None
-                 If the method is called asynchronously,
-                 returns the request thread.
-        """
-        # verify the required parameter 'id' is set
-        if id is None:
-            raise ValueError("Missing the required parameter `id` when calling `remove_dependency`")
-        # verify the required parameter 'dependency_id' is set
-        if dependency_id is None:
-            raise ValueError("Missing the required parameter `dependency_id` when calling `remove_dependency`")
-
-        all_params = ['id', 'dependency_id']
-        all_params.append('callback')
-
-        params = locals()
-        for key, val in iteritems(params['kwargs']):
-            if key not in all_params:
-                raise TypeError(
-                    "Got an unexpected keyword argument '%s'"
-                    " to method remove_dependency" % key
-                )
-            params[key] = val
-        del params['kwargs']
-
-        resource_path = '/build-configurations/{id}/dependencies/{dependencyId}'.replace('{format}', 'json')
-        method = 'DELETE'
-
-        path_params = {}
-        if 'id' in params:
-            path_params['id'] = params['id']
-        if 'dependency_id' in params:
-            path_params['dependencyId'] = params['dependency_id']
 
         query_params = {}
 
@@ -1480,7 +1231,7 @@ class BuildconfigurationsApi(object):
                                             body=body_params,
                                             post_params=form_params,
                                             files=files,
-                                            response_type=None,
+                                            response_type='BuildRecordPage',
                                             auth_settings=auth_settings,
                                             callback=params.get('callback'))
         return response
@@ -1575,9 +1326,9 @@ class BuildconfigurationsApi(object):
                                             callback=params.get('callback'))
         return response
 
-    def add_product_version(self, id, **kwargs):
+    def get_revision(self, id, rev, **kwargs):
         """
-        Associates a product version to the specified config
+        Get specific audited revision of this build configuration
         
 
         This method makes a synchronous HTTP request by default. To make an
@@ -1586,21 +1337,24 @@ class BuildconfigurationsApi(object):
         >>> def callback_function(response):
         >>>     pprint(response)
         >>>
-        >>> thread = api.add_product_version(id, callback=callback_function)
+        >>> thread = api.get_revision(id, rev, callback=callback_function)
 
         :param callback function: The callback function
             for asynchronous request. (optional)
-        :param int id: Build Configuration id (required)
-        :param ProductVersionRest body: 
-        :return: None
+        :param int id: Build configuration id (required)
+        :param int rev: Build configuration rev (required)
+        :return: BuildConfigurationAuditedSingleton
                  If the method is called asynchronously,
                  returns the request thread.
         """
         # verify the required parameter 'id' is set
         if id is None:
-            raise ValueError("Missing the required parameter `id` when calling `add_product_version`")
+            raise ValueError("Missing the required parameter `id` when calling `get_revision`")
+        # verify the required parameter 'rev' is set
+        if rev is None:
+            raise ValueError("Missing the required parameter `rev` when calling `get_revision`")
 
-        all_params = ['id', 'body']
+        all_params = ['id', 'rev']
         all_params.append('callback')
 
         params = locals()
@@ -1608,13 +1362,180 @@ class BuildconfigurationsApi(object):
             if key not in all_params:
                 raise TypeError(
                     "Got an unexpected keyword argument '%s'"
-                    " to method add_product_version" % key
+                    " to method get_revision" % key
                 )
             params[key] = val
         del params['kwargs']
 
-        resource_path = '/build-configurations/{id}/product-versions'.replace('{format}', 'json')
-        method = 'POST'
+        resource_path = '/build-configurations/{id}/revisions/{rev}'.replace('{format}', 'json')
+        method = 'GET'
+
+        path_params = {}
+        if 'id' in params:
+            path_params['id'] = params['id']
+        if 'rev' in params:
+            path_params['rev'] = params['rev']
+
+        query_params = {}
+
+        header_params = {}
+
+        form_params = {}
+        files = {}
+
+        body_params = None
+
+        # HTTP header `Accept`
+        header_params['Accept'] = self.api_client.\
+            select_header_accept(['application/json'])
+        if not header_params['Accept']:
+            del header_params['Accept']
+
+        # HTTP header `Content-Type`
+        header_params['Content-Type'] = self.api_client.\
+            select_header_content_type(['application/json'])
+
+        # Authentication setting
+        auth_settings = []
+
+        response = self.api_client.call_api(resource_path, method,
+                                            path_params,
+                                            query_params,
+                                            header_params,
+                                            body=body_params,
+                                            post_params=form_params,
+                                            files=files,
+                                            response_type='BuildConfigurationAuditedSingleton',
+                                            auth_settings=auth_settings,
+                                            callback=params.get('callback'))
+        return response
+
+    def get_revisions(self, id, **kwargs):
+        """
+        Gets audited revisions of this build configuration
+        
+
+        This method makes a synchronous HTTP request by default. To make an
+        asynchronous HTTP request, please define a `callback` function
+        to be invoked when receiving the response.
+        >>> def callback_function(response):
+        >>>     pprint(response)
+        >>>
+        >>> thread = api.get_revisions(id, callback=callback_function)
+
+        :param callback function: The callback function
+            for asynchronous request. (optional)
+        :param int id: Build configuration id (required)
+        :param int page_index: Page Index
+        :param int page_size: Pagination size
+        :param str sort: Sorting RSQL
+        :return: BuildConfigurationAuditedPage
+                 If the method is called asynchronously,
+                 returns the request thread.
+        """
+        # verify the required parameter 'id' is set
+        if id is None:
+            raise ValueError("Missing the required parameter `id` when calling `get_revisions`")
+
+        all_params = ['id', 'page_index', 'page_size', 'sort']
+        all_params.append('callback')
+
+        params = locals()
+        for key, val in iteritems(params['kwargs']):
+            if key not in all_params:
+                raise TypeError(
+                    "Got an unexpected keyword argument '%s'"
+                    " to method get_revisions" % key
+                )
+            params[key] = val
+        del params['kwargs']
+
+        resource_path = '/build-configurations/{id}/revisions'.replace('{format}', 'json')
+        method = 'GET'
+
+        path_params = {}
+        if 'id' in params:
+            path_params['id'] = params['id']
+
+        query_params = {}
+        if 'page_index' in params:
+            query_params['pageIndex'] = params['page_index']
+        if 'page_size' in params:
+            query_params['pageSize'] = params['page_size']
+        if 'sort' in params:
+            query_params['sort'] = params['sort']
+
+        header_params = {}
+
+        form_params = {}
+        files = {}
+
+        body_params = None
+
+        # HTTP header `Accept`
+        header_params['Accept'] = self.api_client.\
+            select_header_accept(['application/json'])
+        if not header_params['Accept']:
+            del header_params['Accept']
+
+        # HTTP header `Content-Type`
+        header_params['Content-Type'] = self.api_client.\
+            select_header_content_type(['application/json'])
+
+        # Authentication setting
+        auth_settings = []
+
+        response = self.api_client.call_api(resource_path, method,
+                                            path_params,
+                                            query_params,
+                                            header_params,
+                                            body=body_params,
+                                            post_params=form_params,
+                                            files=files,
+                                            response_type='BuildConfigurationAuditedPage',
+                                            auth_settings=auth_settings,
+                                            callback=params.get('callback'))
+        return response
+
+    def get_specific(self, id, **kwargs):
+        """
+        Gets a specific Build Configuration
+        
+
+        This method makes a synchronous HTTP request by default. To make an
+        asynchronous HTTP request, please define a `callback` function
+        to be invoked when receiving the response.
+        >>> def callback_function(response):
+        >>>     pprint(response)
+        >>>
+        >>> thread = api.get_specific(id, callback=callback_function)
+
+        :param callback function: The callback function
+            for asynchronous request. (optional)
+        :param int id: Build Configuration id (required)
+        :return: BuildConfigurationSingleton
+                 If the method is called asynchronously,
+                 returns the request thread.
+        """
+        # verify the required parameter 'id' is set
+        if id is None:
+            raise ValueError("Missing the required parameter `id` when calling `get_specific`")
+
+        all_params = ['id']
+        all_params.append('callback')
+
+        params = locals()
+        for key, val in iteritems(params['kwargs']):
+            if key not in all_params:
+                raise TypeError(
+                    "Got an unexpected keyword argument '%s'"
+                    " to method get_specific" % key
+                )
+            params[key] = val
+        del params['kwargs']
+
+        resource_path = '/build-configurations/{id}'.replace('{format}', 'json')
+        method = 'GET'
 
         path_params = {}
         if 'id' in params:
@@ -1628,8 +1549,90 @@ class BuildconfigurationsApi(object):
         files = {}
 
         body_params = None
-        if 'body' in params:
-            body_params = params['body']
+
+        # HTTP header `Accept`
+        header_params['Accept'] = self.api_client.\
+            select_header_accept(['application/json'])
+        if not header_params['Accept']:
+            del header_params['Accept']
+
+        # HTTP header `Content-Type`
+        header_params['Content-Type'] = self.api_client.\
+            select_header_content_type(['application/json'])
+
+        # Authentication setting
+        auth_settings = []
+
+        response = self.api_client.call_api(resource_path, method,
+                                            path_params,
+                                            query_params,
+                                            header_params,
+                                            body=body_params,
+                                            post_params=form_params,
+                                            files=files,
+                                            response_type='BuildConfigurationSingleton',
+                                            auth_settings=auth_settings,
+                                            callback=params.get('callback'))
+        return response
+
+    def remove_dependency(self, id, dependency_id, **kwargs):
+        """
+        Removes a configuration from the specified config set
+        
+
+        This method makes a synchronous HTTP request by default. To make an
+        asynchronous HTTP request, please define a `callback` function
+        to be invoked when receiving the response.
+        >>> def callback_function(response):
+        >>>     pprint(response)
+        >>>
+        >>> thread = api.remove_dependency(id, dependency_id, callback=callback_function)
+
+        :param callback function: The callback function
+            for asynchronous request. (optional)
+        :param int id: Build configuration set id (required)
+        :param int dependency_id: Build configuration id (required)
+        :return: None
+                 If the method is called asynchronously,
+                 returns the request thread.
+        """
+        # verify the required parameter 'id' is set
+        if id is None:
+            raise ValueError("Missing the required parameter `id` when calling `remove_dependency`")
+        # verify the required parameter 'dependency_id' is set
+        if dependency_id is None:
+            raise ValueError("Missing the required parameter `dependency_id` when calling `remove_dependency`")
+
+        all_params = ['id', 'dependency_id']
+        all_params.append('callback')
+
+        params = locals()
+        for key, val in iteritems(params['kwargs']):
+            if key not in all_params:
+                raise TypeError(
+                    "Got an unexpected keyword argument '%s'"
+                    " to method remove_dependency" % key
+                )
+            params[key] = val
+        del params['kwargs']
+
+        resource_path = '/build-configurations/{id}/dependencies/{dependencyId}'.replace('{format}', 'json')
+        method = 'DELETE'
+
+        path_params = {}
+        if 'id' in params:
+            path_params['id'] = params['id']
+        if 'dependency_id' in params:
+            path_params['dependencyId'] = params['dependency_id']
+
+        query_params = {}
+
+        header_params = {}
+
+        form_params = {}
+        files = {}
+
+        body_params = None
 
         # HTTP header `Accept`
         header_params['Accept'] = self.api_client.\
@@ -1740,9 +1743,9 @@ class BuildconfigurationsApi(object):
                                             callback=params.get('callback'))
         return response
 
-    def get_revisions(self, id, **kwargs):
+    def trigger(self, id, **kwargs):
         """
-        Gets audited revisions of this build configuration
+        Triggers the build of a specific Build Configuration
         
 
         This method makes a synchronous HTTP request by default. To make an
@@ -1751,23 +1754,23 @@ class BuildconfigurationsApi(object):
         >>> def callback_function(response):
         >>>     pprint(response)
         >>>
-        >>> thread = api.get_revisions(id, callback=callback_function)
+        >>> thread = api.trigger(id, callback=callback_function)
 
         :param callback function: The callback function
             for asynchronous request. (optional)
-        :param int id: Build configuration id (required)
-        :param int page_index: Page Index
-        :param int page_size: Pagination size
-        :param str sort: Sorting RSQL
-        :return: BuildConfigurationAuditedPage
+        :param int id: Build Configuration id (required)
+        :param str callback_url: Optional Callback URL
+        :param bool rebuild_all: Rebuild all dependencies
+        :param bool keep_pod_alive_on_failure: Keep pod alive when the build fails
+        :return: BuildRecordSingleton
                  If the method is called asynchronously,
                  returns the request thread.
         """
         # verify the required parameter 'id' is set
         if id is None:
-            raise ValueError("Missing the required parameter `id` when calling `get_revisions`")
+            raise ValueError("Missing the required parameter `id` when calling `trigger`")
 
-        all_params = ['id', 'page_index', 'page_size', 'sort']
+        all_params = ['id', 'callback_url', 'rebuild_all', 'keep_pod_alive_on_failure']
         all_params.append('callback')
 
         params = locals()
@@ -1775,25 +1778,25 @@ class BuildconfigurationsApi(object):
             if key not in all_params:
                 raise TypeError(
                     "Got an unexpected keyword argument '%s'"
-                    " to method get_revisions" % key
+                    " to method trigger" % key
                 )
             params[key] = val
         del params['kwargs']
 
-        resource_path = '/build-configurations/{id}/revisions'.replace('{format}', 'json')
-        method = 'GET'
+        resource_path = '/build-configurations/{id}/build'.replace('{format}', 'json')
+        method = 'POST'
 
         path_params = {}
         if 'id' in params:
             path_params['id'] = params['id']
 
         query_params = {}
-        if 'page_index' in params:
-            query_params['pageIndex'] = params['page_index']
-        if 'page_size' in params:
-            query_params['pageSize'] = params['page_size']
-        if 'sort' in params:
-            query_params['sort'] = params['sort']
+        if 'callback_url' in params:
+            query_params['callbackUrl'] = params['callback_url']
+        if 'rebuild_all' in params:
+            query_params['rebuildAll'] = params['rebuild_all']
+        if 'keep_pod_alive_on_failure' in params:
+            query_params['keepPodAliveOnFailure'] = params['keep_pod_alive_on_failure']
 
         header_params = {}
 
@@ -1822,14 +1825,14 @@ class BuildconfigurationsApi(object):
                                             body=body_params,
                                             post_params=form_params,
                                             files=files,
-                                            response_type='BuildConfigurationAuditedPage',
+                                            response_type='BuildRecordSingleton',
                                             auth_settings=auth_settings,
                                             callback=params.get('callback'))
         return response
 
-    def get_revision(self, id, rev, **kwargs):
+    def update(self, id, **kwargs):
         """
-        Get specific audited revision of this build configuration
+        Updates an existing Build Configuration
         
 
         This method makes a synchronous HTTP request by default. To make an
@@ -1838,24 +1841,21 @@ class BuildconfigurationsApi(object):
         >>> def callback_function(response):
         >>>     pprint(response)
         >>>
-        >>> thread = api.get_revision(id, rev, callback=callback_function)
+        >>> thread = api.update(id, callback=callback_function)
 
         :param callback function: The callback function
             for asynchronous request. (optional)
-        :param int id: Build configuration id (required)
-        :param int rev: Build configuration rev (required)
-        :return: BuildConfigurationAuditedSingleton
+        :param int id: Build Configuration id (required)
+        :param BuildConfigurationRest body: 
+        :return: None
                  If the method is called asynchronously,
                  returns the request thread.
         """
         # verify the required parameter 'id' is set
         if id is None:
-            raise ValueError("Missing the required parameter `id` when calling `get_revision`")
-        # verify the required parameter 'rev' is set
-        if rev is None:
-            raise ValueError("Missing the required parameter `rev` when calling `get_revision`")
+            raise ValueError("Missing the required parameter `id` when calling `update`")
 
-        all_params = ['id', 'rev']
+        all_params = ['id', 'body']
         all_params.append('callback')
 
         params = locals()
@@ -1863,19 +1863,17 @@ class BuildconfigurationsApi(object):
             if key not in all_params:
                 raise TypeError(
                     "Got an unexpected keyword argument '%s'"
-                    " to method get_revision" % key
+                    " to method update" % key
                 )
             params[key] = val
         del params['kwargs']
 
-        resource_path = '/build-configurations/{id}/revisions/{rev}'.replace('{format}', 'json')
-        method = 'GET'
+        resource_path = '/build-configurations/{id}'.replace('{format}', 'json')
+        method = 'PUT'
 
         path_params = {}
         if 'id' in params:
             path_params['id'] = params['id']
-        if 'rev' in params:
-            path_params['rev'] = params['rev']
 
         query_params = {}
 
@@ -1885,6 +1883,8 @@ class BuildconfigurationsApi(object):
         files = {}
 
         body_params = None
+        if 'body' in params:
+            body_params = params['body']
 
         # HTTP header `Accept`
         header_params['Accept'] = self.api_client.\
@@ -1906,7 +1906,7 @@ class BuildconfigurationsApi(object):
                                             body=body_params,
                                             post_params=form_params,
                                             files=files,
-                                            response_type='BuildConfigurationAuditedSingleton',
+                                            response_type=None,
                                             auth_settings=auth_settings,
                                             callback=params.get('callback'))
         return response

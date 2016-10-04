@@ -43,8 +43,8 @@ class BuildConfiguration(object):
             'build_script': 'str',
             'scm_repo_url': 'str',
             'scm_revision': 'str',
-            'scm_mirror_repo_url': 'str',
-            'scm_mirror_revision': 'str',
+            'scm_external_repo_url': 'str',
+            'scm_external_revision': 'str',
             'description': 'str',
             'product_version': 'ProductVersion',
             'project': 'Project',
@@ -60,6 +60,7 @@ class BuildConfiguration(object):
             'all_dependencies': 'list[BuildConfiguration]',
             'indirect_dependencies': 'list[BuildConfiguration]',
             'current_product_milestone': 'ProductMilestone',
+            'latest_succesful_build_record': 'BuildRecord',
             'field_handler': 'FieldHandler'
         }
 
@@ -69,8 +70,8 @@ class BuildConfiguration(object):
             'build_script': 'buildScript',
             'scm_repo_url': 'scmRepoURL',
             'scm_revision': 'scmRevision',
-            'scm_mirror_repo_url': 'scmMirrorRepoURL',
-            'scm_mirror_revision': 'scmMirrorRevision',
+            'scm_external_repo_url': 'scmExternalRepoURL',
+            'scm_external_revision': 'scmExternalRevision',
             'description': 'description',
             'product_version': 'productVersion',
             'project': 'project',
@@ -86,6 +87,7 @@ class BuildConfiguration(object):
             'all_dependencies': 'allDependencies',
             'indirect_dependencies': 'indirectDependencies',
             'current_product_milestone': 'currentProductMilestone',
+            'latest_succesful_build_record': 'latestSuccesfulBuildRecord',
             'field_handler': 'fieldHandler'
         }
 
@@ -94,8 +96,8 @@ class BuildConfiguration(object):
         self._build_script = None
         self._scm_repo_url = None
         self._scm_revision = None
-        self._scm_mirror_repo_url = None
-        self._scm_mirror_revision = None
+        self._scm_external_repo_url = None
+        self._scm_external_revision = None
         self._description = None
         self._product_version = None
         self._project = None
@@ -111,6 +113,7 @@ class BuildConfiguration(object):
         self._all_dependencies = None
         self._indirect_dependencies = None
         self._current_product_milestone = None
+        self._latest_succesful_build_record = None
         self._field_handler = None
 
     @property
@@ -224,48 +227,48 @@ class BuildConfiguration(object):
         self._scm_revision = scm_revision
 
     @property
-    def scm_mirror_repo_url(self):
+    def scm_external_repo_url(self):
         """
-        Gets the scm_mirror_repo_url of this BuildConfiguration.
+        Gets the scm_external_repo_url of this BuildConfiguration.
 
 
-        :return: The scm_mirror_repo_url of this BuildConfiguration.
+        :return: The scm_external_repo_url of this BuildConfiguration.
         :rtype: str
         """
-        return self._scm_mirror_repo_url
+        return self._scm_external_repo_url
 
-    @scm_mirror_repo_url.setter
-    def scm_mirror_repo_url(self, scm_mirror_repo_url):
+    @scm_external_repo_url.setter
+    def scm_external_repo_url(self, scm_external_repo_url):
         """
-        Sets the scm_mirror_repo_url of this BuildConfiguration.
+        Sets the scm_external_repo_url of this BuildConfiguration.
 
 
-        :param scm_mirror_repo_url: The scm_mirror_repo_url of this BuildConfiguration.
+        :param scm_external_repo_url: The scm_external_repo_url of this BuildConfiguration.
         :type: str
         """
-        self._scm_mirror_repo_url = scm_mirror_repo_url
+        self._scm_external_repo_url = scm_external_repo_url
 
     @property
-    def scm_mirror_revision(self):
+    def scm_external_revision(self):
         """
-        Gets the scm_mirror_revision of this BuildConfiguration.
+        Gets the scm_external_revision of this BuildConfiguration.
 
 
-        :return: The scm_mirror_revision of this BuildConfiguration.
+        :return: The scm_external_revision of this BuildConfiguration.
         :rtype: str
         """
-        return self._scm_mirror_revision
+        return self._scm_external_revision
 
-    @scm_mirror_revision.setter
-    def scm_mirror_revision(self, scm_mirror_revision):
+    @scm_external_revision.setter
+    def scm_external_revision(self, scm_external_revision):
         """
-        Sets the scm_mirror_revision of this BuildConfiguration.
+        Sets the scm_external_revision of this BuildConfiguration.
 
 
-        :param scm_mirror_revision: The scm_mirror_revision of this BuildConfiguration.
+        :param scm_external_revision: The scm_external_revision of this BuildConfiguration.
         :type: str
         """
-        self._scm_mirror_revision = scm_mirror_revision
+        self._scm_external_revision = scm_external_revision
 
     @property
     def description(self):
@@ -596,6 +599,28 @@ class BuildConfiguration(object):
         :type: ProductMilestone
         """
         self._current_product_milestone = current_product_milestone
+
+    @property
+    def latest_succesful_build_record(self):
+        """
+        Gets the latest_succesful_build_record of this BuildConfiguration.
+
+
+        :return: The latest_succesful_build_record of this BuildConfiguration.
+        :rtype: BuildRecord
+        """
+        return self._latest_succesful_build_record
+
+    @latest_succesful_build_record.setter
+    def latest_succesful_build_record(self, latest_succesful_build_record):
+        """
+        Sets the latest_succesful_build_record of this BuildConfiguration.
+
+
+        :param latest_succesful_build_record: The latest_succesful_build_record of this BuildConfiguration.
+        :type: BuildRecord
+        """
+        self._latest_succesful_build_record = latest_succesful_build_record
 
     @property
     def field_handler(self):
