@@ -142,7 +142,7 @@ class SupportLevelPage(object):
         :param content: The content of this SupportLevelPage.
         :type: list[str]
         """
-        allowed_values = ["UNRELEASED", "EARLYACCESS", "SUPPORTED", "EXTENDED_SUPPORT", "EOL"]
+        allowed_values = [["UNRELEASED", "EARLYACCESS", "SUPPORTED", "EXTENDED_SUPPORT", "EOL"]]
         if content not in allowed_values:
             raise ValueError(
                 "Invalid value for `content`, must be one of {0}"
