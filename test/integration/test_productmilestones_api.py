@@ -81,7 +81,7 @@ def test_add_distributed_artifact_invalid_param():
 
 
 def test_add_distributed_artifact():
-    milestone_api.remove_configuration(id=1, artifact_id=1)
+    milestone_api.remove_distributed_artifact(id=1, artifact_id=1)
     artifact_to_add = ArtifactRest()
     artifact_to_add.id = 1
     milestone_api.add_distributed_artifact(id=1, body=artifact_to_add)
@@ -116,16 +116,16 @@ def test_get_distributed_builds():
 
 
 def test_remove_configuration_no_milestone_id():
-    testutils.assert_raises_valueerror(milestone_api, 'remove_configuration', id=None, artifact_id=1)
+    testutils.assert_raises_valueerror(milestone_api, 'remove_distributed_artifact', id=None, artifact_id=1)
 
 
 def test_remove_configuration_no_artifact_id():
-    testutils.assert_raises_valueerror(milestone_api, 'remove_configuration', id=1, artifact_id=None)
+    testutils.assert_raises_valueerror(milestone_api, 'remove_distributed_artifact', id=1, artifact_id=None)
 
 
 def test_remove_configuration_invalid_param():
-    testutils.assert_raises_typeerror(milestone_api, 'remove_configuration', id=1, artifact_id=1)
+    testutils.assert_raises_typeerror(milestone_api, 'remove_distributed_artifact', id=1, artifact_id=1)
 
 
 def test_remove_configuration():
-    milestone_api.remove_configuration(id=1, artifact_id=1)
+    milestone_api.remove_distributed_artifact(id=1, artifact_id=1)
