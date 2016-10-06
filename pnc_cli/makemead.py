@@ -12,7 +12,8 @@ import string
 from tools.config_utils import ConfigReader
 
 @arg('-c', '--config', help='Configuration file to use to drive the build')
-def make_mead(config="builder.cfg"):
+@arg('-a', '--artifact', help='Artifact to build')
+def make_mead(config="builder.cfg", artifact=None):
     """
     Create Make Mead configuration
     :param config: Make Mead config name
@@ -36,10 +37,16 @@ def make_mead(config="builder.cfg"):
     #pprint (vars(config_reader))
     set = None
     sufix = get_sufix()
-    (subarts, deps_dict) = config_reader.get_dependency_structure()
+    if artifact:
+        (subarts, deps_dict) = config_reader.get_dependency_structure(artifact=artifact)
+    else:
+        (subarts, deps_dict) = config_reader.get_dependency_structure()
     for subartifact in subarts:
         art_params = config_reader.get_config(subartifact)
+        pprint (art_params)
         artifact = art_params['artifact']
+        package = art_params['package']
+        substvers = art_params['substvers']
         version = art_params['version']
         scm_url = art_params['scmURL']
         (scm_repo_url, scm_revision) = scm_url.split("#", 2)
@@ -49,7 +56,7 @@ def make_mead(config="builder.cfg"):
         except ValueError:
             logging.error('No project ' + artifact)
             return 1
-        artifact_name = artifact + "-" + version + sufix
+        artifact_name = package + "-" + substvers + sufix
         build_config = buildconfigurations.create_build_configuration(
                                                                       name=artifact_name,
                                                                       project=project.id,
