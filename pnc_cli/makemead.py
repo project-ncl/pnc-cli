@@ -56,7 +56,7 @@ def make_mead(config="builder.cfg", artifact=None):
         except ValueError:
             logging.error('No project ' + artifact)
             return 1
-        artifact_name = package + "-" + substvers + sufix
+        artifact_name = package + "-" + version + sufix
         build_config = buildconfigurations.create_build_configuration(
                                                                       name=artifact_name,
                                                                       project=project.id,
@@ -77,3 +77,35 @@ def make_mead(config="builder.cfg", artifact=None):
 def get_sufix():
     return "-" + ''.join(random.choice(string.ascii_uppercase + string.digits)
                          for _ in range(10))
+
+def get_brew_options(params):
+    result = ""
+
+    if 'goals' in params['options'].keys():
+        for goal in params['options']['goals']:
+            result += ' -G%s' % goal
+    if 'jvm_options' in params['options'].keys():
+        for jvm_option in params['options']['jvm_options']:
+            result += ' -J%s' % jvm_option
+    if 'maven_options' in params['options'].keys():
+        for maven_option in params['options']['maven_options']:
+            result += ' -M%s' % maven_option
+    if 'profiles' in params['options'].keys():
+        for profile in params['options']['profiles']:
+            if profile.strip() != "":
+                result += ' -P%s' % profile
+    if 'properties' in params['options'].keys():
+        for prop in sorted(list(params['options']['properties'].keys())):
+            value = params['options']['properties'][prop]
+            result += ' -D%s=%s' % (prop, value)
+    if 'patches' in params['options'].keys():
+        result += ' --patches %s' % params['options']['patches']
+    if 'scratch' in params['options'].keys():
+        result += ' --scratch'
+    if 'errors' in params['options'].keys():
+        result += ' --errors'
+    if 'packages' in params['options'].keys():
+        for extraPackage in params['options']['packages']:
+            result += ' --package %s' % extraPackage
+    result += " %s" % params['scmURL']
+    return result
