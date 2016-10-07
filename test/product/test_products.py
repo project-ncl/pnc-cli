@@ -46,13 +46,13 @@ def test_jdg_console830er4():
     # JDG Management console 8.3.0.ER4 
     sufix = get_sufix()
     project = projects.get_project(name="jdg-management-console")
-    jdg_name = "jdg-management-console-8.3.0.ER4-redhat-1" + sufix
+    jdg_name = "org.infinispan-infinispan-management-console-8.3.0.ER4-redhat-1" + sufix
     build_config = buildconfigurations.create_build_configuration(
                                                                   name=jdg_name,
                                                                   project=project.id,
                                                                   environment=1, 
-                                                                  scm_repo_url="http://git.app.eng.bos.redhat.com/git/infinispan/jdg-management-console.git",
-                                                                  scm_revision="JDG_7.0.0.ER4_pnc_wa__4",
+                                                                  scm_repo_url="git+ssh://user-pnc-gerrit@pnc-gerrit.pnc.dev.eng.bos.redhat.com:29418/pnc/org.infinispan-infinispan-management-console-8.3.0.ER4-redhat-1.git",
+                                                                  scm_revision="branch-JDG_7.0.0.ER4_pnc_wa__4",
                                                                   build_script="export NVM_NODEJS_ORG_MIRROR=http://rcm-guest.app.eng.bos.redhat.com/rcm-guest/staging/jboss-dg/node\n\n"
                                                                   + "mvn clean deploy "
                                                                   + "-DnpmDownloadRoot=http://rcm-guest.app.eng.bos.redhat.com/rcm-guest/staging/jboss-dg/node/npm/ "
@@ -92,13 +92,13 @@ def test_jdg_infinispan830er4():
     # JDG Infinispan 8.3.0.ER4 
     sufix = get_sufix()
     project = projects.get_project(name="jdg-infinispan")
-    jdg_name = "jdg-infinispan-8.3.0.ER4-redhat-1" + sufix
+    jdg_name = "org.infinispan-infinispan-8.3.0.ER4-redhat-1" + sufix
     build_config = buildconfigurations.create_build_configuration(
                                                                   name=jdg_name,
                                                                   project=project.id,
                                                                   environment=1, 
-                                                                  scm_repo_url="http://git.app.eng.bos.redhat.com/infinispan/infinispan.git",
-                                                                  scm_revision="JDG_7.0.0.ER4_pnc_wa",
+                                                                  scm_repo_url="git+ssh://user-pnc-gerrit@pnc-gerrit.pnc.dev.eng.bos.redhat.com:29418/pnc/org.infinispan-infinispan-8.3.0.ER4-redhat-1.git",
+                                                                  scm_revision="branch-JDG_7.0.0.ER4_pnc_wa",
                                                                   build_script="mvn clean deploy -DskipTests -Pdistribution")
                                                                  
     set = buildconfigurationsets.create_build_configuration_set(name=jdg_name)
