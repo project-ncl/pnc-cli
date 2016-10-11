@@ -70,17 +70,17 @@ def test_sso190():
 def test_sso221():
     # RH-SSO 2.2.0 
     sufix = get_sufix()
+    set_name = "org.keycloak-keycloak-parent-2.2.1.Final" + sufix
+    set = buildconfigurationsets.create_build_configuration_set(name=set_name)
     project = projects.get_project(name="keycloak")
     keycloak_name = "org.keycloak-keycloak-parent-2.2.1.Final-redhat-1" + sufix
     build_config = buildconfigurations.create_build_configuration(
                                                                   name=keycloak_name,
                                                                   project=project.id,
                                                                   environment=1, 
-                                                                  scm_repo_url="git+ssh://user-pnc-gerrit@pnc-gerrit.pnc.dev.eng.bos.redhat.com:29418/pnc/org.keycloak-keycloak-parent-2.2.1.Final-redhat-1.git",
-                                                                  scm_revision="branch-2.2.1.Final-redhat-1-pnc",
+                                                                  scm_repo_url="git+ssh://user-pnc-gerrit@pnc-gerrit.pnc.dev.eng.bos.redhat.com:29418/pnc/org.keycloak-keycloak-parent-2.2.1.Final-redhat-1-da.git",
+                                                                  scm_revision="branch-2.2.1.Final-redhat-1-pnc-da",
                                                                   build_script="mvn clean deploy -Pdistribution -pl '!adapters/oidc/jetty/jetty9.1' -pl '!adapters/oidc/jetty/jetty9.3' -pl '!adapters/oidc/spring-boot' -pl '!adapters/oidc/spring-security' -pl '!adapters/oidc/tomcat/tomcat6' -pl '!adapters/oidc/tomcat/tomcat7' -pl '!adapters/oidc/tomcat/tomcat8' -pl '!adapters/oidc/wildfly/wf8-subsystem' -pl '!adapters/saml/jetty/jetty-core' -pl '!adapters/saml/jetty/jetty8.1' -pl '!adapters/saml/jetty/jetty9.1' -pl '!adapters/saml/jetty/jetty9.2' -pl '!adapters/saml/jetty/jetty9.3' -pl '!adapters/saml/tomcat/tomcat6' -pl '!adapters/saml/tomcat/tomcat7' -pl '!adapters/saml/tomcat/tomcat8' -pl '!distribution/adapters/as7-eap6-adapter/as7-adapter-zip' -pl '!distribution/adapters/tomcat6-adapter-zip' -pl '!distribution/adapters/tomcat7-adapter-zip' -pl '!distribution/adapters/tomcat8-adapter-zip' -pl '!distribution/adapters/jetty81-adapter-zip' -pl '!distribution/adapters/jetty91-adapter-zip' -pl '!distribution/adapters/jetty92-adapter-zip' -pl '!distribution/adapters/jetty93-adapter-zip' -pl '!distribution/adapters/wf8-adapter/wf8-adapter-zip' -pl '!distribution/adapters/wf8-adapter/wf8-modules' -pl '!distribution/api-docs-dist' -pl '!distribution/feature-packs/adapter-feature-pack' -pl '!distribution/demo-dist' -pl '!distribution/examples-dist' -pl '!distribution/proxy-dist' -pl '!distribution/saml-adapters/as7-eap6-adapter/as7-adapter-zip' -pl '!distribution/saml-adapters/tomcat6-adapter-zip' -pl '!distribution/saml-adapters/tomcat7-adapter-zip' -pl '!distribution/saml-adapters/tomcat8-adapter-zip' -pl '!distribution/saml-adapters/jetty81-adapter-zip' -pl '!distribution/saml-adapters/jetty92-adapter-zip' -pl '!distribution/saml-adapters/jetty93-adapter-zip' -pl '!distribution/src-dist' -pl '!model/mongo' -pl '!proxy/proxy-server' -pl '!proxy/launcher/' -pl '!testsuite/proxy' -pl '!testsuite/tomcat6' -pl '!testsuite/tomcat7' -pl '!testsuite/tomcat8' -pl '!testsuite/jetty/jetty81' -pl '!testsuite/jetty/jetty91' -pl '!testsuite/jetty/jetty92' -pl '!testsuite/jetty/jetty93'")
-                                                                 
-    set = buildconfigurationsets.create_build_configuration_set(name=keycloak_name)
     buildconfigurationsets.add_build_configuration_to_set(set_id=set.id, config_id=build_config.id)
     build_record = buildconfigurationsets.build_set(id=set.id)   
     assert build_record is not None
