@@ -59,8 +59,8 @@ def test_sso190():
                                                                      name=keycloak_name,
                                                                      project=project.id,
                                                                      environment=1,
-                                                                     scm_repo_url="git+ssh://user-pnc-gerrit@pnc-gerrit.pnc.dev.eng.bos.redhat.com:29418/pnc/org.keycloak-keycloak-parent-1.9.0.Final-redhat-1.git",
-                                                                     scm_revision="branch-1.9.0.Final-redhat-1-pnc",
+                                                                     scm_repo_url="git+ssh://user-pnc-gerrit@pnc-gerrit.pnc.dev.eng.bos.redhat.com:29418/pnc/org.keycloak-keycloak-parent-1.9.0.Final-redhat-1-da.git",
+                                                                     scm_revision="branch-1.9.0.Final-redhat-1-pnc-da",
                                                                      build_script="mvn clean deploy -Pdistribution")
     buildconfigurationsets.add_build_configuration_to_set(set_id=set.id, config_id=keycloak_config.id)
     build_record = buildconfigurationsets.build_set(id=set.id)
@@ -68,10 +68,54 @@ def test_sso190():
     print set.id
 
 def test_sso221():
-    # RH-SSO 2.2.0 
     sufix = get_sufix()
     set_name = "org.keycloak-keycloak-parent-2.2.1.Final" + sufix
     set = buildconfigurationsets.create_build_configuration_set(name=set_name)
+    # freemarker
+    project = projects.get_project(name="freemarker")
+    freemarker_name = "freemarker-2.3.23.redhat" + sufix
+    freemarker_config = buildconfigurations.create_build_configuration(
+                                                                       name=freemarker_name,
+                                                                       project=project.id,
+                                                                       environment=1,
+                                                                       scm_repo_url="git+ssh://user-pnc-gerrit@pnc-gerrit.pnc.dev.eng.bos.redhat.com:29418/pnc/freemarker-2.3.23.redhat.git",
+                                                                       scm_revision="branch-v2.3.23",
+                                                                       build_script="mvn clean deploy -DskipTests")
+    buildconfigurationsets.add_build_configuration_to_set(set_id=set.id, config_id=freemarker_config.id)
+    # liquibase
+    project = projects.get_project(name="liquibase")
+    liquibase_name = "liquibase-parent-3.4.1.redhat" + sufix
+    liquibase_config = buildconfigurations.create_build_configuration(
+                                                                      name=liquibase_name,
+                                                                      project=project.id,
+                                                                      environment=1,
+                                                                      scm_repo_url="git+ssh://user-pnc-gerrit@pnc-gerrit.pnc.dev.eng.bos.redhat.com:29418/pnc/liquibase-parent-3.4.1.redhat.git",
+                                                                      scm_revision="branch-liquibase-parent-3.4.1",
+                                                                      build_script="mvn -P'!rpm' -pl '!liquibase-debian' clean deploy -DskipTests")
+    buildconfigurationsets.add_build_configuration_to_set(set_id=set.id, config_id=liquibase_config.id)
+    # twitter4j
+    project = projects.get_project(name="twitter4j")
+    twitter4j_name = "twitter4j-4.0.4.redhat" + sufix
+    twitter4j_config = buildconfigurations.create_build_configuration(
+                                                                      name=twitter4j_name,
+                                                                      project=project.id,
+                                                                      environment=1,
+                                                                      scm_repo_url="git+ssh://user-pnc-gerrit@pnc-gerrit.pnc.dev.eng.bos.redhat.com:29418/pnc/twitter4j-4.0.4.redhat.git",
+                                                                      scm_revision="branch-4.0.4",
+                                                                      build_script="mvn clean deploy -DskipTests")
+    buildconfigurationsets.add_build_configuration_to_set(set_id=set.id, config_id=twitter4j_config.id)
+    # zxing
+    project = projects.get_project(name="zxing")
+    zxing_name = "zxing-parent-3.2.1.redhat" + sufix
+    zxing_config = buildconfigurations.create_build_configuration(
+                                                                  name=zxing_name,
+                                                                  project=project.id,
+                                                                  environment=1,
+                                                                  scm_repo_url="git+ssh://user-pnc-gerrit@pnc-gerrit.pnc.dev.eng.bos.redhat.com:29418/pnc/zxing-parent-3.2.1.redhat.git",
+                                                                  scm_revision="branch-zxing-3.2.1",
+                                                                  build_script="mvn clean deploy -DskipTests -Drat.numUnapprovedLicenses=2")
+    buildconfigurationsets.add_build_configuration_to_set(set_id=set.id, config_id=zxing_config.id)
+    # RH-SSO 2.2.1
     project = projects.get_project(name="keycloak")
     keycloak_name = "org.keycloak-keycloak-parent-2.2.1.Final-redhat-1" + sufix
     build_config = buildconfigurations.create_build_configuration(
