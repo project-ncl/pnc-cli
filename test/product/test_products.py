@@ -130,9 +130,11 @@ def test_sso221():
     assert build_record is not None
     print set.id
 
-def test_jdg_console830er4():
-    # JDG Management console 8.3.0.ER4 
+def test_jdg830er4():
     sufix = get_sufix()
+    set_name = "org.infinispan-infinispan-8.3.0.ER4" + sufix
+    set = buildconfigurationsets.create_build_configuration_set(name=set_name)
+    # JDG Management console 8.3.0.ER4
     project = projects.get_project(name="jdg-management-console")
     jdg_name = "org.infinispan-infinispan-management-console-8.3.0.ER4-redhat-1" + sufix
     build_config = buildconfigurations.create_build_configuration(
@@ -146,16 +148,9 @@ def test_jdg_console830er4():
                                                                   + "-DnpmDownloadRoot=http://rcm-guest.app.eng.bos.redhat.com/rcm-guest/staging/jboss-dg/node/npm/ "
                                                                   + "-DnodeDownloadRoot=http://rcm-guest.app.eng.bos.redhat.com/rcm-guest/staging/jboss-dg/node/ "
                                                                   + "-DnpmRegistryURL=http://jboss-prod-docker.app.eng.bos.redhat.com:49155")
-                                                                 
-    set = buildconfigurationsets.create_build_configuration_set(name=jdg_name)
+    
     buildconfigurationsets.add_build_configuration_to_set(set_id=set.id, config_id=build_config.id)
-    build_record = buildconfigurationsets.build_set(id=set.id)   
-    assert build_record is not None
-    print set.id
-
-def test_jdg_infinispan830er4():
     # JDG Infinispan 8.3.0.ER4
-    sufix = get_sufix()
     project = projects.get_project(name="jdg-infinispan")
     jdg_name = "org.infinispan-infinispan-8.3.0.ER4-redhat-1" + sufix
     build_config = buildconfigurations.create_build_configuration(
@@ -165,15 +160,17 @@ def test_jdg_infinispan830er4():
                                                                   scm_repo_url="git+ssh://user-pnc-gerrit@pnc-gerrit.pnc.dev.eng.bos.redhat.com:29418/pnc/org.infinispan-infinispan-8.3.0.ER4-redhat-1.git",
                                                                   scm_revision="branch-JDG_7.0.0.ER4_pnc_wa",
                                                                   build_script="mvn clean deploy -DskipTests -Pdistribution")
-    set = buildconfigurationsets.create_build_configuration_set(name=jdg_name)
+
     buildconfigurationsets.add_build_configuration_to_set(set_id=set.id, config_id=build_config.id)
     build_record = buildconfigurationsets.build_set(id=set.id)
     assert build_record is not None
     print set.id
 
-def test_jdg_console830ga():    
-    # JDG Management console 8.3.0.GA 
+def test_jdg830ga():
     sufix = get_sufix()
+    set_name = "org.infinispan-infinispan-8.3.0.Final" + sufix
+    set = buildconfigurationsets.create_build_configuration_set(name=set_name)
+    # JDG Management console 8.3.0.GA
     project = projects.get_project(name="jdg-management-console")
     jdg_name = "org.infinispan-infinispan-management-console-8.3.0.Final-redhat-1" + sufix
     build_config = buildconfigurations.create_build_configuration(
@@ -187,16 +184,9 @@ def test_jdg_console830ga():
                                                                   + "-DnpmDownloadRoot=http://rcm-guest.app.eng.bos.redhat.com/rcm-guest/staging/jboss-dg/node/npm/ "
                                                                   + "-DnodeDownloadRoot=http://rcm-guest.app.eng.bos.redhat.com/rcm-guest/staging/jboss-dg/node/ "
                                                                   + "-DnpmRegistryURL=http://jboss-prod-docker.app.eng.bos.redhat.com:49155")
-                                                                 
-    set = buildconfigurationsets.create_build_configuration_set(name=jdg_name)
-    buildconfigurationsets.add_build_configuration_to_set(set_id=set.id, config_id=build_config.id)
-    build_record = buildconfigurationsets.build_set(id=set.id)   
-    assert build_record is not None
-    print set.id    
 
-def test_jdg_infinispan830ga():
-    # JDG Infinispan 8.3.0.GA 
-    sufix = get_sufix()
+    buildconfigurationsets.add_build_configuration_to_set(set_id=set.id, config_id=build_config.id)
+    # JDG Infinispan 8.3.0.GA
     project = projects.get_project(name="jdg-infinispan")
     jdg_name = "org.infinispan-infinispan-8.3.0.Final-redhat-1" + sufix
     build_config = buildconfigurations.create_build_configuration(
@@ -206,8 +196,7 @@ def test_jdg_infinispan830ga():
                                                                   scm_repo_url="git+ssh://user-pnc-gerrit@pnc-gerrit.pnc.dev.eng.bos.redhat.com:29418/pnc/org.infinispan-infinispan-8.3.0.Final-redhat-1.git",
                                                                   scm_revision="branch-JDG_7.0.0.GA-pnc",
                                                                   build_script="mvn clean deploy -DskipTests -Pdistribution")
-                                                                 
-    set = buildconfigurationsets.create_build_configuration_set(name=jdg_name)
+
     buildconfigurationsets.add_build_configuration_to_set(set_id=set.id, config_id=build_config.id)
     build_record = buildconfigurationsets.build_set(id=set.id)   
     assert build_record is not None
