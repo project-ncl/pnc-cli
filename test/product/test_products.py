@@ -62,6 +62,9 @@ def test_sso190():
                                                                      scm_repo_url="git+ssh://user-pnc-gerrit@pnc-gerrit.pnc.dev.eng.bos.redhat.com:29418/pnc/org.keycloak-keycloak-parent-1.9.0.Final-redhat-1-da.git",
                                                                      scm_revision="branch-1.9.0.Final-redhat-1-pnc-da",
                                                                      build_script="mvn clean deploy -Pdistribution")
+    buildconfigurations.add_dependency(id=keycloak_config.id, dependency_id=liquibase_config.id)
+    buildconfigurations.add_dependency(id=keycloak_config.id, dependency_id=twitter4j_config.id)
+    buildconfigurations.add_dependency(id=keycloak_config.id, dependency_id=zxing_config.id)
     buildconfigurationsets.add_build_configuration_to_set(set_id=set.id, config_id=keycloak_config.id)
     build_record = buildconfigurationsets.build_set(id=set.id)
     assert build_record is not None
