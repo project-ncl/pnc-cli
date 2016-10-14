@@ -40,9 +40,7 @@ class Artifact(object):
         self.swagger_types = {
             'id': 'int',
             'identifier': 'str',
-            'md5': 'str',
-            'sha1': 'str',
-            'sha256': 'str',
+            'checksum': 'str',
             'size': 'int',
             'artifact_quality': 'str',
             'repo_type': 'str',
@@ -62,9 +60,7 @@ class Artifact(object):
         self.attribute_map = {
             'id': 'id',
             'identifier': 'identifier',
-            'md5': 'md5',
-            'sha1': 'sha1',
-            'sha256': 'sha256',
+            'checksum': 'checksum',
             'size': 'size',
             'artifact_quality': 'artifactQuality',
             'repo_type': 'repoType',
@@ -83,9 +79,7 @@ class Artifact(object):
 
         self._id = None
         self._identifier = None
-        self._md5 = None
-        self._sha1 = None
-        self._sha256 = None
+        self._checksum = None
         self._size = None
         self._artifact_quality = None
         self._repo_type = None
@@ -146,70 +140,26 @@ class Artifact(object):
         self._identifier = identifier
 
     @property
-    def md5(self):
+    def checksum(self):
         """
-        Gets the md5 of this Artifact.
+        Gets the checksum of this Artifact.
 
 
-        :return: The md5 of this Artifact.
+        :return: The checksum of this Artifact.
         :rtype: str
         """
-        return self._md5
+        return self._checksum
 
-    @md5.setter
-    def md5(self, md5):
+    @checksum.setter
+    def checksum(self, checksum):
         """
-        Sets the md5 of this Artifact.
+        Sets the checksum of this Artifact.
 
 
-        :param md5: The md5 of this Artifact.
+        :param checksum: The checksum of this Artifact.
         :type: str
         """
-        self._md5 = md5
-
-    @property
-    def sha1(self):
-        """
-        Gets the sha1 of this Artifact.
-
-
-        :return: The sha1 of this Artifact.
-        :rtype: str
-        """
-        return self._sha1
-
-    @sha1.setter
-    def sha1(self, sha1):
-        """
-        Sets the sha1 of this Artifact.
-
-
-        :param sha1: The sha1 of this Artifact.
-        :type: str
-        """
-        self._sha1 = sha1
-
-    @property
-    def sha256(self):
-        """
-        Gets the sha256 of this Artifact.
-
-
-        :return: The sha256 of this Artifact.
-        :rtype: str
-        """
-        return self._sha256
-
-    @sha256.setter
-    def sha256(self, sha256):
-        """
-        Sets the sha256 of this Artifact.
-
-
-        :param sha256: The sha256 of this Artifact.
-        :type: str
-        """
-        self._sha256 = sha256
+        self._checksum = checksum
 
     @property
     def size(self):

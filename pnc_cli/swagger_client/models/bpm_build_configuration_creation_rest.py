@@ -48,7 +48,8 @@ class BpmBuildConfigurationCreationRest(object):
             'project_id': 'int',
             'build_environment_id': 'int',
             'dependency_ids': 'list[int]',
-            'product_version_id': 'int'
+            'product_version_id': 'int',
+            'build_configuration_set_ids': 'list[int]'
         }
 
         self.attribute_map = {
@@ -62,7 +63,8 @@ class BpmBuildConfigurationCreationRest(object):
             'project_id': 'projectId',
             'build_environment_id': 'buildEnvironmentId',
             'dependency_ids': 'dependencyIds',
-            'product_version_id': 'productVersionId'
+            'product_version_id': 'productVersionId',
+            'build_configuration_set_ids': 'buildConfigurationSetIds'
         }
 
         self._name = None
@@ -76,6 +78,7 @@ class BpmBuildConfigurationCreationRest(object):
         self._build_environment_id = None
         self._dependency_ids = None
         self._product_version_id = None
+        self._build_configuration_set_ids = None
 
     @property
     def name(self):
@@ -318,6 +321,28 @@ class BpmBuildConfigurationCreationRest(object):
         :type: int
         """
         self._product_version_id = product_version_id
+
+    @property
+    def build_configuration_set_ids(self):
+        """
+        Gets the build_configuration_set_ids of this BpmBuildConfigurationCreationRest.
+
+
+        :return: The build_configuration_set_ids of this BpmBuildConfigurationCreationRest.
+        :rtype: list[int]
+        """
+        return self._build_configuration_set_ids
+
+    @build_configuration_set_ids.setter
+    def build_configuration_set_ids(self, build_configuration_set_ids):
+        """
+        Sets the build_configuration_set_ids of this BpmBuildConfigurationCreationRest.
+
+
+        :param build_configuration_set_ids: The build_configuration_set_ids of this BpmBuildConfigurationCreationRest.
+        :type: list[int]
+        """
+        self._build_configuration_set_ids = build_configuration_set_ids
 
     def to_dict(self):
         """

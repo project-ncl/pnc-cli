@@ -45,9 +45,87 @@ class BpmApi(object):
                 config.api_client = ApiClient()
             self.api_client = config.api_client
 
+    def get_bpm_task_by_id(self, task_id, **kwargs):
+        """
+        Get single (recently) active BPM task.
+        
+
+        This method makes a synchronous HTTP request by default. To make an
+        asynchronous HTTP request, please define a `callback` function
+        to be invoked when receiving the response.
+        >>> def callback_function(response):
+        >>>     pprint(response)
+        >>>
+        >>> thread = api.get_bpm_task_by_id(task_id, callback=callback_function)
+
+        :param callback function: The callback function
+            for asynchronous request. (optional)
+        :param int task_id: BPM task ID (required)
+        :return: BpmTaskRestSingleton
+                 If the method is called asynchronously,
+                 returns the request thread.
+        """
+        # verify the required parameter 'task_id' is set
+        if task_id is None:
+            raise ValueError("Missing the required parameter `task_id` when calling `get_bpm_task_by_id`")
+
+        all_params = ['task_id']
+        all_params.append('callback')
+
+        params = locals()
+        for key, val in iteritems(params['kwargs']):
+            if key not in all_params:
+                raise TypeError(
+                    "Got an unexpected keyword argument '%s'"
+                    " to method get_bpm_task_by_id" % key
+                )
+            params[key] = val
+        del params['kwargs']
+
+        resource_path = '/bpm/tasks/{taskId}'.replace('{format}', 'json')
+        method = 'GET'
+
+        path_params = {}
+        if 'task_id' in params:
+            path_params['taskId'] = params['task_id']
+
+        query_params = {}
+
+        header_params = {}
+
+        form_params = {}
+        files = {}
+
+        body_params = None
+
+        # HTTP header `Accept`
+        header_params['Accept'] = self.api_client.\
+            select_header_accept(['application/json'])
+        if not header_params['Accept']:
+            del header_params['Accept']
+
+        # HTTP header `Content-Type`
+        header_params['Content-Type'] = self.api_client.\
+            select_header_content_type(['application/json'])
+
+        # Authentication setting
+        auth_settings = []
+
+        response = self.api_client.call_api(resource_path, method,
+                                            path_params,
+                                            query_params,
+                                            header_params,
+                                            body=body_params,
+                                            post_params=form_params,
+                                            files=files,
+                                            response_type='BpmTaskRestSingleton',
+                                            auth_settings=auth_settings,
+                                            callback=params.get('callback'))
+        return response
+
     def get_bpm_tasks(self, **kwargs):
         """
-        List of active BPM tasks.
+        List of (recently) active BPM tasks.
         
 
         This method makes a synchronous HTTP request by default. To make an
@@ -62,7 +140,7 @@ class BpmApi(object):
             for asynchronous request. (optional)
         :param int page_index: Page Index
         :param int page_size: Pagination size
-        :return: BpmTaskPage
+        :return: BpmTaskRestPage
                  If the method is called asynchronously,
                  returns the request thread.
         """
@@ -118,7 +196,7 @@ class BpmApi(object):
                                             body=body_params,
                                             post_params=form_params,
                                             files=files,
-                                            response_type='BpmTaskPage',
+                                            response_type='BpmTaskRestPage',
                                             auth_settings=auth_settings,
                                             callback=params.get('callback'))
         return response
