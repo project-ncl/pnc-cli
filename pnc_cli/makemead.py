@@ -43,30 +43,28 @@ def make_mead(config="builder.cfg", artifact=None):
         (subarts, deps_dict) = config_reader.get_dependency_structure()
     for subartifact in subarts:
         art_params = config_reader.get_config(subartifact)
-        pprint (art_params)
+        #pprint (art_params)
         artifact = art_params['artifact']
         package = art_params['package']
-        substvers = art_params['substvers']
         version = art_params['version']
         scm_url = art_params['scmURL']
         (scm_repo_url, scm_revision) = scm_url.split("#", 2)
-        #pprint(art_params)
+        artifact_name = package + "-" + version + sufix
+        if set is None:
+            set = buildconfigurationsets.create_build_configuration_set(name=artifact_name)
+            print set.id 
         try:
             project = projects.get_project(name=artifact)        
         except ValueError:
             logging.error('No project ' + artifact)
             return 1
-        artifact_name = package + "-" + version + sufix
         build_config = buildconfigurations.create_build_configuration(
                                                                       name=artifact_name,
                                                                       project=project.id,
                                                                       environment=1, 
                                                                       scm_repo_url=scm_repo_url,
                                                                       scm_revision=scm_revision,
-                                                                      build_script="mvn clean deploy")
-        if set is None:
-            set = buildconfigurationsets.create_build_configuration_set(name=artifact_name)
-            print set.id
+                                                                      build_script="mvn clean deploy -DskipTests" + get_maven_options(art_params))
         buildconfigurationsets.add_build_configuration_to_set(set_id=set.id, config_id=build_config.id)
         print build_config.id
     build_record = buildconfigurationsets.build_set(id=set.id)
@@ -78,34 +76,20 @@ def get_sufix():
     return "-" + ''.join(random.choice(string.ascii_uppercase + string.digits)
                          for _ in range(10))
 
-def get_brew_options(params):
+def get_maven_options(params):
     result = ""
-
-    if 'goals' in params['options'].keys():
-        for goal in params['options']['goals']:
-            result += ' -G%s' % goal
-    if 'jvm_options' in params['options'].keys():
-        for jvm_option in params['options']['jvm_options']:
-            result += ' -J%s' % jvm_option
-    if 'maven_options' in params['options'].keys():
-        for maven_option in params['options']['maven_options']:
-            result += ' -M%s' % maven_option
     if 'profiles' in params['options'].keys():
         for profile in params['options']['profiles']:
             if profile.strip() != "":
                 result += ' -P%s' % profile
+    if 'maven_options' in params['options'].keys():
+        for maven_option in params['options']['maven_options']:
+            if maven_option == '-pl':
+                result += ' %s' % maven_option
+            else:
+                result += ' \'%s\'' % maven_option
     if 'properties' in params['options'].keys():
         for prop in sorted(list(params['options']['properties'].keys())):
             value = params['options']['properties'][prop]
             result += ' -D%s=%s' % (prop, value)
-    if 'patches' in params['options'].keys():
-        result += ' --patches %s' % params['options']['patches']
-    if 'scratch' in params['options'].keys():
-        result += ' --scratch'
-    if 'errors' in params['options'].keys():
-        result += ' --errors'
-    if 'packages' in params['options'].keys():
-        for extraPackage in params['options']['packages']:
-            result += ' --package %s' % extraPackage
-    result += " %s" % params['scmURL']
     return result

@@ -1,8 +1,12 @@
 from pnc_cli import buildconfigurations
 from pnc_cli import buildconfigurationsets
+from pnc_cli import makemead
 from pnc_cli import projects
 import random
 import string
+
+def test_makemead():
+    makemead.make_mead(config="builder.cfg", artifact=None)
 
 def test_sso221():
     sufix = get_sufix()
