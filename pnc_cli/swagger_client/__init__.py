@@ -7,8 +7,9 @@ from .models.artifact_rest import ArtifactRest
 from .models.attribute_singleton import AttributeSingleton
 from .models.bpm_build_configuration_creation_rest import BpmBuildConfigurationCreationRest
 from .models.bpm_notification_rest import BpmNotificationRest
-from .models.bpm_task_page import BpmTaskPage
 from .models.bpm_task_rest import BpmTaskRest
+from .models.bpm_task_rest_page import BpmTaskRestPage
+from .models.bpm_task_rest_singleton import BpmTaskRestSingleton
 from .models.build_config_set_record import BuildConfigSetRecord
 from .models.build_config_set_record_rest import BuildConfigSetRecordRest
 from .models.build_config_set_record_singleton import BuildConfigSetRecordSingleton

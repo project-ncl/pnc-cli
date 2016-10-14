@@ -60,7 +60,6 @@ class BuildConfiguration(object):
             'all_dependencies': 'list[BuildConfiguration]',
             'indirect_dependencies': 'list[BuildConfiguration]',
             'current_product_milestone': 'ProductMilestone',
-            'latest_succesful_build_record': 'BuildRecord',
             'field_handler': 'FieldHandler'
         }
 
@@ -87,7 +86,6 @@ class BuildConfiguration(object):
             'all_dependencies': 'allDependencies',
             'indirect_dependencies': 'indirectDependencies',
             'current_product_milestone': 'currentProductMilestone',
-            'latest_succesful_build_record': 'latestSuccesfulBuildRecord',
             'field_handler': 'fieldHandler'
         }
 
@@ -113,7 +111,6 @@ class BuildConfiguration(object):
         self._all_dependencies = None
         self._indirect_dependencies = None
         self._current_product_milestone = None
-        self._latest_succesful_build_record = None
         self._field_handler = None
 
     @property
@@ -599,28 +596,6 @@ class BuildConfiguration(object):
         :type: ProductMilestone
         """
         self._current_product_milestone = current_product_milestone
-
-    @property
-    def latest_succesful_build_record(self):
-        """
-        Gets the latest_succesful_build_record of this BuildConfiguration.
-
-
-        :return: The latest_succesful_build_record of this BuildConfiguration.
-        :rtype: BuildRecord
-        """
-        return self._latest_succesful_build_record
-
-    @latest_succesful_build_record.setter
-    def latest_succesful_build_record(self, latest_succesful_build_record):
-        """
-        Sets the latest_succesful_build_record of this BuildConfiguration.
-
-
-        :param latest_succesful_build_record: The latest_succesful_build_record of this BuildConfiguration.
-        :type: BuildRecord
-        """
-        self._latest_succesful_build_record = latest_succesful_build_record
 
     @property
     def field_handler(self):
