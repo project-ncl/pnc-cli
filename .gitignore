@@ -63,3 +63,17 @@ target/
 
 #Ipython Notebook
 .ipynb_checkpoints
+
+#swagger-codegen extraneous items
+pnc_cli/.gitignore
+pnc_cli/.swagger-codegen-ignore
+pnc_cli/.travis.yml
+pnc_cli/LICENSE
+pnc_cli/docs/
+pnc_cli/git_push.sh
+pnc_cli/requirements.txt
+pnc_cli/setup.py
+pnc_cli/test-requirements.txt
+pnc_cli/test/
+pnc_cli/tox.ini
+
