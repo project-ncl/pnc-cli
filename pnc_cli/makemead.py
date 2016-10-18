@@ -13,7 +13,7 @@ from tools.config_utils import ConfigReader
 
 @arg('-c', '--config', help='Configuration file to use to drive the build')
 @arg('-a', '--artifact', help='Artifact to build')
-def make_mead(config="builder.cfg", artifact=None):
+def make_mead(config="cfg/builder.cfg", artifact=None):
     """
     Create Make Mead configuration
     :param config: Make Mead config name
@@ -41,6 +41,7 @@ def make_mead(config="builder.cfg", artifact=None):
         (subarts, deps_dict) = config_reader.get_dependency_structure(artifact=artifact)
     else:
         (subarts, deps_dict) = config_reader.get_dependency_structure()
+        pprint (subarts)
     for subartifact in subarts:
         art_params = config_reader.get_config(subartifact)
         #pprint (art_params)
