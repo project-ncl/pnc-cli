@@ -130,9 +130,6 @@ def test_eap703ga():
 def test_sso_cfg():
     makemead.make_mead(config="cfg/sso.cfg", artifact=None)
 
-def test_sso_cfg_deps():
-    makemead.make_mead(config="cfg/sso-deps.cfg", artifact=None)
-
 def test_jdg_cfg():
     makemead.make_mead(config="cfg/jdg.cfg", artifact=None)
 
