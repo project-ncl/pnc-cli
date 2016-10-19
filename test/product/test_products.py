@@ -5,9 +5,6 @@ from pnc_cli import projects
 import random
 import string
 
-def test_sso_makemead():
-    makemead.make_mead(config="cfg/sso.cfg", artifact=None)
-
 def test_sso221():
     sufix = get_sufix()
     set_name = "org.keycloak-keycloak-parent-2.2.1.Final" + sufix
@@ -74,9 +71,6 @@ def test_sso221():
     assert build_record is not None
     print set.id
 
-def test_jdg_makemead():
-    makemead.make_mead(config="cfg/jdg.cfg", artifact=None)
-
 def test_jdg830ga():
     sufix = get_sufix()
     set_name = "org.infinispan-infinispan-8.3.0.Final" + sufix
@@ -132,6 +126,15 @@ def test_eap703ga():
     build_record = buildconfigurationsets.build_set(id=set.id)
     assert build_record is not None
     print set.id
+
+def test_sso_cfg():
+    makemead.make_mead(config="cfg/sso.cfg", artifact=None)
+
+def test_sso_cfg_deps():
+    makemead.make_mead(config="cfg/sso-deps.cfg", artifact=None)
+
+def test_jdg_cfg():
+    makemead.make_mead(config="cfg/jdg.cfg", artifact=None)
 
 def get_sufix():
     return "-" + ''.join(random.choice(string.ascii_uppercase + string.digits)
