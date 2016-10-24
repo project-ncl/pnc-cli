@@ -34,17 +34,17 @@ def make_mead(config="cfg/builder.cfg", artifact=None):
         print '-c false'
         return 1
 
-    #pprint (vars(config_reader))
     set = None
+    ids = dict()
     sufix = get_sufix()
-    if artifact:
-        (subarts, deps_dict) = config_reader.get_dependency_structure(artifact=artifact)
-    else:
-        (subarts, deps_dict) = config_reader.get_dependency_structure()
-        pprint (subarts)
+    (subarts, deps_dict) = config_reader.get_dependency_structure()
+    packages = config_reader.get_packages_and_dependencies()
+    pprint(packages)
+    logging.debug(subarts)
+    logging.debug(deps_dict)
     for subartifact in subarts:
         art_params = config_reader.get_config(subartifact)
-        #pprint (art_params)
+        logging.debug(art_params)
         artifact = art_params['artifact']
         package = art_params['package']
         version = art_params['version']
@@ -55,8 +55,8 @@ def make_mead(config="cfg/builder.cfg", artifact=None):
         target_name = target + sufix
         if set is None:
             set = buildconfigurationsets.create_build_configuration_set(name=target_name)
-            print target_name + ":"
-            print set.id
+            logging.debug(target_name + ":")
+            logging.debug(set.id)
         try:
             project = projects.get_project(name=artifact)        
         except ValueError:
@@ -70,12 +70,19 @@ def make_mead(config="cfg/builder.cfg", artifact=None):
                                                                       scm_revision=scm_revision,
                                                                       build_script="mvn clean deploy -DskipTests" + get_maven_options(art_params))
         buildconfigurationsets.add_build_configuration_to_set(set_id=set.id, config_id=build_config.id)
-        print artifact + ":"
-        print build_config.id
+        ids[artifact] = build_config
+        logging.debug(artifact_name + ":")
+        logging.debug(build_config.id)
+    logging.debug(ids)
+    for package, dependencies in packages.iteritems():
+        for artifact in dependencies:
+            id = ids[package]
+            subid = ids[artifact]
+            logging.debug(id.id, subid.id)
+            buildconfigurations.add_dependency(id=id.id, dependency_id=subid.id)
     build_record = buildconfigurationsets.build_set(id=set.id)
-    #pprint(build_record)
 
-    return config
+    return build_record
 
 def get_sufix():
     return "-" + ''.join(random.choice(string.ascii_uppercase + string.digits)
