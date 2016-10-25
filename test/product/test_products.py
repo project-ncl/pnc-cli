@@ -5,38 +5,6 @@ from pnc_cli import projects
 import random
 import string
 
-def test_jdg():
-    sufix = get_sufix()
-    set_name = "jb-dg-7-rhel-7-candidate" + sufix
-    set = buildconfigurationsets.create_build_configuration_set(name=set_name)
-    # JDG Management console
-    project = projects.get_project(name="jdg-management-console")
-    jdg_name = "org.infinispan-infinispan-management-console-8.4.0.DR1-redhat-1" + sufix
-    build_config = buildconfigurations.create_build_configuration(
-                                                                  name=jdg_name,
-                                                                  project=project.id,
-                                                                  environment=1, 
-                                                                  scm_repo_url="git+ssh://user-pnc-gerrit@pnc-gerrit.pnc.dev.eng.bos.redhat.com:29418/pnc/org.infinispan-infinispan-management-console-8.4.0.DR1-redhat-1.git",
-                                                                  scm_revision="branch-JDG_7.1.0.DR1",
-                                                                  build_script="mvn clean deploy -DskipTests=true")
-
-    buildconfigurationsets.add_build_configuration_to_set(set_id=set.id, config_id=build_config.id)
-    # JDG Infinispan
-    project = projects.get_project(name="jdg-infinispan")
-    jdg_name = "org.infinispan-infinispan-8.4.0.DR1-redhat-1" + sufix
-    build_config = buildconfigurations.create_build_configuration(
-                                                                  name=jdg_name,
-                                                                  project=project.id,
-                                                                  environment=1, 
-                                                                  scm_repo_url="git+ssh://user-pnc-gerrit@pnc-gerrit.pnc.dev.eng.bos.redhat.com:29418/pnc/org.infinispan-infinispan-8.4.0.DR1-redhat-1.git",
-                                                                  scm_revision="branch-JDG_7.1.0.DR1",
-                                                                  build_script="mvn clean deploy -DskipTests=true -Pdistribution")
-
-    buildconfigurationsets.add_build_configuration_to_set(set_id=set.id, config_id=build_config.id)
-    build_record = buildconfigurationsets.build_set(id=set.id)   
-    assert build_record is not None
-    print set.id
-
 def test_eap():
     # EAP 7.0.3.GA
     sufix = get_sufix()
