@@ -5,112 +5,42 @@ from pnc_cli import projects
 import random
 import string
 
-def test_sso221():
+def test_jdg():
     sufix = get_sufix()
-    set_name = "org.keycloak-keycloak-parent-2.2.1.Final" + sufix
+    set_name = "jb-dg-7-rhel-7-candidate" + sufix
     set = buildconfigurationsets.create_build_configuration_set(name=set_name)
-    # freemarker
-    #project = projects.get_project(name="freemarker")
-    #freemarker_name = "org.freemarker-freemarker-2.3.23.redhat-3" + sufix
-    #freemarker_config = buildconfigurations.create_build_configuration(
-    #                                                                   name=freemarker_name,
-    #                                                                   project=project.id,
-    #                                                                   environment=1,
-    #                                                                   scm_repo_url="git+ssh://user-pnc-gerrit@pnc-gerrit.pnc.dev.eng.bos.redhat.com:29418/pnc/freemarker-2.3.23.redhat.git",
-    #                                                                   scm_revision="branch-v2.3.23",
-    #                                                                   build_script="mvn clean deploy -DskipTests")
-    #buildconfigurationsets.add_build_configuration_to_set(set_id=set.id, config_id=freemarker_config.id)
-    # liquibase
-    project = projects.get_project(name="liquibase")
-    liquibase_name = "org.liquibase-liquibase-parent-3.4.1.redhat-2" + sufix
-    liquibase_config = buildconfigurations.create_build_configuration(
-                                                                      name=liquibase_name,
-                                                                      project=project.id,
-                                                                      environment=1,
-                                                                      scm_repo_url="git+ssh://user-pnc-gerrit@pnc-gerrit.pnc.dev.eng.bos.redhat.com:29418/pnc/liquibase-parent-3.4.1.redhat.git",
-                                                                      scm_revision="branch-liquibase-parent-3.4.1",
-                                                                      build_script="mvn clean deploy -DskipTests -P'!rpm' -pl '!liquibase-debian'")
-    buildconfigurationsets.add_build_configuration_to_set(set_id=set.id, config_id=liquibase_config.id)
-    # twitter4j
-    project = projects.get_project(name="twitter4j")
-    twitter4j_name = "org.twitter4j-twitter4j-4.0.4.redhat-3" + sufix
-    twitter4j_config = buildconfigurations.create_build_configuration(
-                                                                      name=twitter4j_name,
-                                                                      project=project.id,
-                                                                      environment=1,
-                                                                      scm_repo_url="git+ssh://user-pnc-gerrit@pnc-gerrit.pnc.dev.eng.bos.redhat.com:29418/pnc/twitter4j-4.0.4.redhat.git",
-                                                                      scm_revision="branch-4.0.4",
-                                                                      build_script="mvn clean deploy -DskipTests")
-    buildconfigurationsets.add_build_configuration_to_set(set_id=set.id, config_id=twitter4j_config.id)
-    # zxing
-    project = projects.get_project(name="zxing")
-    zxing_name = "com.google.zxing-zxing-parent-3.2.1.redhat-4" + sufix
-    zxing_config = buildconfigurations.create_build_configuration(
-                                                                  name=zxing_name,
-                                                                  project=project.id,
-                                                                  environment=1,
-                                                                  scm_repo_url="git+ssh://user-pnc-gerrit@pnc-gerrit.pnc.dev.eng.bos.redhat.com:29418/pnc/zxing-parent-3.2.1.redhat.git",
-                                                                  scm_revision="branch-zxing-3.2.1",
-                                                                  build_script="mvn clean deploy -DskipTests -Drat.numUnapprovedLicenses=2")
-    buildconfigurationsets.add_build_configuration_to_set(set_id=set.id, config_id=zxing_config.id)
-    # RH-SSO 2.2.1
-    project = projects.get_project(name="keycloak")
-    keycloak_name = "org.keycloak-keycloak-parent-2.2.1.Final-redhat-1" + sufix
-    keycloak_config = buildconfigurations.create_build_configuration(
-                                                                     name=keycloak_name,
-                                                                     project=project.id,
-                                                                     environment=1, 
-                                                                     scm_repo_url="git+ssh://user-pnc-gerrit@pnc-gerrit.pnc.dev.eng.bos.redhat.com:29418/pnc/org.keycloak-keycloak-parent-2.2.1.Final-redhat-1-da.git",
-                                                                     scm_revision="branch-2.2.1.Final-redhat-1-pnc-da",
-                                                                     build_script="mvn clean deploy -DskipTests -Pdistribution -pl '!adapters/oidc/jetty/jetty9.1' -pl '!adapters/oidc/jetty/jetty9.3' -pl '!adapters/oidc/spring-boot' -pl '!adapters/oidc/spring-security' -pl '!adapters/oidc/tomcat/tomcat6' -pl '!adapters/oidc/tomcat/tomcat7' -pl '!adapters/oidc/tomcat/tomcat8' -pl '!adapters/oidc/wildfly/wf8-subsystem' -pl '!adapters/saml/jetty/jetty-core' -pl '!adapters/saml/jetty/jetty8.1' -pl '!adapters/saml/jetty/jetty9.1' -pl '!adapters/saml/jetty/jetty9.2' -pl '!adapters/saml/jetty/jetty9.3' -pl '!adapters/saml/tomcat/tomcat6' -pl '!adapters/saml/tomcat/tomcat7' -pl '!adapters/saml/tomcat/tomcat8' -pl '!distribution/adapters/as7-eap6-adapter/as7-adapter-zip' -pl '!distribution/adapters/tomcat6-adapter-zip' -pl '!distribution/adapters/tomcat7-adapter-zip' -pl '!distribution/adapters/tomcat8-adapter-zip' -pl '!distribution/adapters/jetty81-adapter-zip' -pl '!distribution/adapters/jetty91-adapter-zip' -pl '!distribution/adapters/jetty92-adapter-zip' -pl '!distribution/adapters/jetty93-adapter-zip' -pl '!distribution/adapters/wf8-adapter/wf8-adapter-zip' -pl '!distribution/adapters/wf8-adapter/wf8-modules' -pl '!distribution/api-docs-dist' -pl '!distribution/feature-packs/adapter-feature-pack' -pl '!distribution/demo-dist' -pl '!distribution/examples-dist' -pl '!distribution/proxy-dist' -pl '!distribution/saml-adapters/as7-eap6-adapter/as7-adapter-zip' -pl '!distribution/saml-adapters/tomcat6-adapter-zip' -pl '!distribution/saml-adapters/tomcat7-adapter-zip' -pl '!distribution/saml-adapters/tomcat8-adapter-zip' -pl '!distribution/saml-adapters/jetty81-adapter-zip' -pl '!distribution/saml-adapters/jetty92-adapter-zip' -pl '!distribution/saml-adapters/jetty93-adapter-zip' -pl '!distribution/src-dist' -pl '!model/mongo' -pl '!proxy/proxy-server' -pl '!proxy/launcher/' -pl '!testsuite/proxy' -pl '!testsuite/tomcat6' -pl '!testsuite/tomcat7' -pl '!testsuite/tomcat8' -pl '!testsuite/jetty/jetty81' -pl '!testsuite/jetty/jetty91' -pl '!testsuite/jetty/jetty92' -pl '!testsuite/jetty/jetty93'")
-    buildconfigurations.add_dependency(id=keycloak_config.id, dependency_id=liquibase_config.id)
-    buildconfigurations.add_dependency(id=keycloak_config.id, dependency_id=twitter4j_config.id)
-    buildconfigurations.add_dependency(id=keycloak_config.id, dependency_id=zxing_config.id)
-    buildconfigurationsets.add_build_configuration_to_set(set_id=set.id, config_id=keycloak_config.id)
-    build_record = buildconfigurationsets.build_set(id=set.id)   
-    assert build_record is not None
-    print set.id
-
-def test_jdg830ga():
-    sufix = get_sufix()
-    set_name = "org.infinispan-infinispan-8.3.0.Final" + sufix
-    set = buildconfigurationsets.create_build_configuration_set(name=set_name)
-    # JDG Management console 8.3.0.GA
+    # JDG Management console
     project = projects.get_project(name="jdg-management-console")
-    jdg_name = "org.infinispan-infinispan-management-console-8.3.0.Final-redhat-1" + sufix
+    jdg_name = "org.infinispan-infinispan-management-console-8.4.0.DR1-redhat-1" + sufix
     build_config = buildconfigurations.create_build_configuration(
                                                                   name=jdg_name,
                                                                   project=project.id,
                                                                   environment=1, 
-                                                                  scm_repo_url="git+ssh://user-pnc-gerrit@pnc-gerrit.pnc.dev.eng.bos.redhat.com:29418/pnc/org.infinispan-infinispan-management-console-8.3.0.Final-redhat-1.git",
-                                                                  scm_revision="branch-JDG_7.0.0.GA-pnc",
-                                                                  build_script="export NVM_NODEJS_ORG_MIRROR=http://rcm-guest.app.eng.bos.redhat.com/rcm-guest/staging/jboss-dg/node\n\n"
-                                                                  + "mvn clean deploy "
-                                                                  + "-DnpmDownloadRoot=http://rcm-guest.app.eng.bos.redhat.com/rcm-guest/staging/jboss-dg/node/npm/ "
-                                                                  + "-DnodeDownloadRoot=http://rcm-guest.app.eng.bos.redhat.com/rcm-guest/staging/jboss-dg/node/ "
-                                                                  + "-DnpmRegistryURL=http://jboss-prod-docker.app.eng.bos.redhat.com:49155")
+                                                                  scm_repo_url="git+ssh://user-pnc-gerrit@pnc-gerrit.pnc.dev.eng.bos.redhat.com:29418/pnc/org.infinispan-infinispan-management-console-8.4.0.DR1-redhat-1.git",
+                                                                  scm_revision="branch-JDG_7.1.0.DR1",
+                                                                  build_script="mvn clean deploy -DskipTests=true")
 
     buildconfigurationsets.add_build_configuration_to_set(set_id=set.id, config_id=build_config.id)
-    # JDG Infinispan 8.3.0.GA
+    # JDG Infinispan
     project = projects.get_project(name="jdg-infinispan")
-    jdg_name = "org.infinispan-infinispan-8.3.0.Final-redhat-1" + sufix
+    jdg_name = "org.infinispan-infinispan-8.4.0.DR1-redhat-1" + sufix
     build_config = buildconfigurations.create_build_configuration(
                                                                   name=jdg_name,
                                                                   project=project.id,
                                                                   environment=1, 
-                                                                  scm_repo_url="git+ssh://user-pnc-gerrit@pnc-gerrit.pnc.dev.eng.bos.redhat.com:29418/pnc/org.infinispan-infinispan-8.3.0.Final-redhat-1.git",
-                                                                  scm_revision="branch-JDG_7.0.0.GA-pnc",
-                                                                  build_script="mvn clean deploy -DskipTests -Pdistribution")
+                                                                  scm_repo_url="git+ssh://user-pnc-gerrit@pnc-gerrit.pnc.dev.eng.bos.redhat.com:29418/pnc/org.infinispan-infinispan-8.4.0.DR1-redhat-1.git",
+                                                                  scm_revision="branch-JDG_7.1.0.DR1",
+                                                                  build_script="mvn clean deploy -DskipTests=true -Pdistribution")
 
     buildconfigurationsets.add_build_configuration_to_set(set_id=set.id, config_id=build_config.id)
     build_record = buildconfigurationsets.build_set(id=set.id)   
     assert build_record is not None
     print set.id
 
-def test_eap703ga():
+def test_eap():
     # EAP 7.0.3.GA
     sufix = get_sufix()
-    set_name = "org.jboss.eap-jboss-eap-parent-7.0.3.GA" + sufix
+    set_name = "jb-eap-7.0-rhel-7-candidate" + sufix
     set = buildconfigurationsets.create_build_configuration_set(name=set_name)
     project = projects.get_project(name="eap7")
     eap_name = "org.jboss.eap-jboss-eap-parent-7.0.3.GA-redhat-2" + sufix
@@ -127,10 +57,33 @@ def test_eap703ga():
     assert build_record is not None
     print set.id
 
-def test_sso_cfg():
+def test_eap71():
+    # EAP 7.1.0.Alpha
+    sufix = get_sufix()
+    set_name = "jb-eap-7.1-rhel-7-candidate" + sufix
+    set = buildconfigurationsets.create_build_configuration_set(name=set_name)
+    project = projects.get_project(name="eap7")
+    eap_name = "org.jboss.eap-jboss-eap-parent-7.1.0.Alpha1-redhat-8" + sufix
+    build_config = buildconfigurations.create_build_configuration(
+                                                                  name=eap_name,
+                                                                  project=project.id,
+                                                                  environment=1,
+                                                                  scm_repo_url="git+ssh://user-pnc-gerrit@pnc-gerrit.pnc.dev.eng.bos.redhat.com:29418/pnc/org.jboss.eap-jboss-eap-parent-7.1.0.Alpha1-redhat-8.git",
+                                                                  scm_revision="branch-EAP_7.1.0.DR7",
+                                                                  build_script="mvn clean deploy -DskipTests=true -Prelease")
+
+    buildconfigurationsets.add_build_configuration_to_set(set_id=set.id, config_id=build_config.id)
+    build_record = buildconfigurationsets.build_set(id=set.id)
+    assert build_record is not None
+    print set.id
+
+def test_cfg_sso():
     makemead.make_mead(config="cfg/sso.cfg", artifact=None)
 
-def test_jdg_cfg():
+def test_cfg_sso_deps():
+    makemead.make_mead(config="cfg/sso-deps.cfg", artifact=None)
+
+def test_cfg_jdg():
     makemead.make_mead(config="cfg/jdg.cfg", artifact=None)
 
 def get_sufix():
