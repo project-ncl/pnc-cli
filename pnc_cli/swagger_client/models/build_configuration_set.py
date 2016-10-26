@@ -43,8 +43,8 @@ class BuildConfigurationSet(object):
             'product_version': 'ProductVersion',
             'build_configurations': 'list[BuildConfiguration]',
             'build_config_set_records': 'list[BuildConfigSetRecord]',
-            'current_product_milestone': 'ProductMilestone',
-            'field_handler': 'FieldHandler'
+            'field_handler': 'FieldHandler',
+            'current_product_milestone': 'ProductMilestone'
         }
 
         self.attribute_map = {
@@ -53,8 +53,8 @@ class BuildConfigurationSet(object):
             'product_version': 'productVersion',
             'build_configurations': 'buildConfigurations',
             'build_config_set_records': 'buildConfigSetRecords',
-            'current_product_milestone': 'currentProductMilestone',
-            'field_handler': 'fieldHandler'
+            'field_handler': 'fieldHandler',
+            'current_product_milestone': 'currentProductMilestone'
         }
 
         self._id = None
@@ -62,8 +62,8 @@ class BuildConfigurationSet(object):
         self._product_version = None
         self._build_configurations = None
         self._build_config_set_records = None
-        self._current_product_milestone = None
         self._field_handler = None
+        self._current_product_milestone = None
 
     @property
     def id(self):
@@ -176,28 +176,6 @@ class BuildConfigurationSet(object):
         self._build_config_set_records = build_config_set_records
 
     @property
-    def current_product_milestone(self):
-        """
-        Gets the current_product_milestone of this BuildConfigurationSet.
-
-
-        :return: The current_product_milestone of this BuildConfigurationSet.
-        :rtype: ProductMilestone
-        """
-        return self._current_product_milestone
-
-    @current_product_milestone.setter
-    def current_product_milestone(self, current_product_milestone):
-        """
-        Sets the current_product_milestone of this BuildConfigurationSet.
-
-
-        :param current_product_milestone: The current_product_milestone of this BuildConfigurationSet.
-        :type: ProductMilestone
-        """
-        self._current_product_milestone = current_product_milestone
-
-    @property
     def field_handler(self):
         """
         Gets the field_handler of this BuildConfigurationSet.
@@ -218,6 +196,28 @@ class BuildConfigurationSet(object):
         :type: FieldHandler
         """
         self._field_handler = field_handler
+
+    @property
+    def current_product_milestone(self):
+        """
+        Gets the current_product_milestone of this BuildConfigurationSet.
+
+
+        :return: The current_product_milestone of this BuildConfigurationSet.
+        :rtype: ProductMilestone
+        """
+        return self._current_product_milestone
+
+    @current_product_milestone.setter
+    def current_product_milestone(self, current_product_milestone):
+        """
+        Sets the current_product_milestone of this BuildConfigurationSet.
+
+
+        :param current_product_milestone: The current_product_milestone of this BuildConfigurationSet.
+        :type: ProductMilestone
+        """
+        self._current_product_milestone = current_product_milestone
 
     def to_dict(self):
         """
