@@ -5,7 +5,7 @@ from pnc_cli import projects
 import random
 import string
 
-def test_eap71():
+def test_eap():
     # EAP 7.1.0.Alpha
     sufix = get_sufix()
     set_name = "jb-eap-7.1-rhel-7-candidate" + sufix
@@ -25,10 +25,10 @@ def test_eap71():
     assert build_record is not None
     print set.id
 
-def test_cfg_sso():
+def test_sso():
     makemead.make_mead(config="cfg/sso.cfg", artifact=None)
 
-def test_cfg_jdg():
+def test_jdg():
     makemead.make_mead(config="cfg/jdg.cfg", artifact=None)
 
 def get_sufix():
