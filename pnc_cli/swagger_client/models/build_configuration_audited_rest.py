@@ -534,8 +534,8 @@ class BuildConfigurationAuditedRest(object):
                 ))
             elif hasattr(value, "to_dict"):
                 result[attr] = value.to_dict()
-	    elif isinstance(value, datetime):
-		result[attr] = str(value.date())
+            elif isinstance(value, datetime):
+                result[attr] = str(value.date())
             else:
                 result[attr] = value
 
