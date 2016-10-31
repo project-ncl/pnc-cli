@@ -226,22 +226,3 @@ class ApiException(Exception):
             error_message += "HTTP response body: {0}\n".format(self.body)
 
         return error_message
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

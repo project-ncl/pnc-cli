@@ -48,7 +48,7 @@ class BuildtasksApi(object):
     def build(self, build_execution_configuration_id, **kwargs):
         """
         Cancel the build execution defined with given executionConfigurationId.
-        
+
 
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please define a `callback` function
@@ -126,7 +126,7 @@ class BuildtasksApi(object):
     def build_1(self, build_execution_configuration, **kwargs):
         """
         Triggers the build execution for a given configuration.
-        
+
 
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please define a `callback` function
@@ -210,7 +210,7 @@ class BuildtasksApi(object):
     def build_task_completed(self, task_id, build_result, **kwargs):
         """
         Notifies the completion of externally managed build task process.
-        
+
 
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please define a `callback` function
