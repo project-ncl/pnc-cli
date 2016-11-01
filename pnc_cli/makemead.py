@@ -12,8 +12,8 @@ import string
 from tools.config_utils import ConfigReader
 
 @arg('-c', '--config', help='Configuration file to use to drive the build')
-@arg('-a', '--artifact', help='Artifact to build')
-def make_mead(config="cfg/builder.cfg", artifact=None):
+@arg('-p', '--cproject', help='Create project if needed')
+def make_mead(config="cfg/builder.cfg", cproject=None):
     """
     Create Make Mead configuration
     :param config: Make Mead config name
@@ -61,7 +61,10 @@ def make_mead(config="cfg/builder.cfg", artifact=None):
             project = projects.get_project(name=artifact)        
         except ValueError:
             logging.error('No project ' + artifact)
-            return 1
+            if cproject is None:
+                return 1
+            else:
+                project = projects.create_project(name=artifact)
         build_config = buildconfigurations.create_build_configuration(
                                                                       name=artifact_name,
                                                                       project=project.id,
