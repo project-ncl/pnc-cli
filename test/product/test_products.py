@@ -2,15 +2,21 @@ from pnc_cli import buildconfigurations
 from pnc_cli import buildconfigurationsets
 from pnc_cli import makemead
 from pnc_cli import projects
+import logging
 import random
 import string
 
 def test_eap():
     # EAP 7.1.0.Alpha
+    project_name = "eap7"
     sufix = get_sufix()
     set_name = "jb-eap-7.1-rhel-7-candidate" + sufix
     set = buildconfigurationsets.create_build_configuration_set(name=set_name)
-    project = projects.get_project(name="eap7")
+    try:
+        project = projects.get_project(name=project_name)
+    except ValueError:
+        logging.error('No project ' + project_name)
+        project = projects.create_project(name=project_name)
     eap_name = "org.jboss.eap-jboss-eap-parent-7.1.0.Alpha1-redhat-8" + sufix
     build_config = buildconfigurations.create_build_configuration(
                                                                   name=eap_name,
@@ -26,10 +32,10 @@ def test_eap():
     print set.id
 
 def test_sso():
-    makemead.make_mead(config="cfg/sso.cfg", artifact=None)
+    makemead.make_mead(config="cfg/sso.cfg", cproject=True)
 
 def test_jdg():
-    makemead.make_mead(config="cfg/jdg.cfg", artifact=None)
+    makemead.make_mead(config="cfg/jdg.cfg", cproject=True)
 
 def get_sufix():
     return "-" + ''.join(random.choice(string.ascii_uppercase + string.digits)
