@@ -48,7 +48,7 @@ class ProjectsApi(object):
     def create_new(self, **kwargs):
         """
         Creates a new Project
-        
+
 
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please define a `callback` function
@@ -60,7 +60,7 @@ class ProjectsApi(object):
 
         :param callback function: The callback function
             for asynchronous request. (optional)
-        :param ProjectRest body: 
+        :param ProjectRest body:
         :return: ProjectSingleton
                  If the method is called asynchronously,
                  returns the request thread.
@@ -123,7 +123,7 @@ class ProjectsApi(object):
     def delete_specific(self, id, **kwargs):
         """
         Removes a specific project and associated build configurations
-        
+
 
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please define a `callback` function
@@ -201,7 +201,7 @@ class ProjectsApi(object):
     def get_all(self, **kwargs):
         """
         Gets all Projects
-        
+
 
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please define a `callback` function
@@ -285,7 +285,7 @@ class ProjectsApi(object):
     def get_specific(self, id, **kwargs):
         """
         Gets specific Project
-        
+
 
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please define a `callback` function
@@ -363,7 +363,7 @@ class ProjectsApi(object):
     def update(self, id, **kwargs):
         """
         Updates an existing Project
-        
+
 
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please define a `callback` function
@@ -376,7 +376,7 @@ class ProjectsApi(object):
         :param callback function: The callback function
             for asynchronous request. (optional)
         :param int id: Project id (required)
-        :param ProjectRest body: 
+        :param ProjectRest body:
         :return: None
                  If the method is called asynchronously,
                  returns the request thread.

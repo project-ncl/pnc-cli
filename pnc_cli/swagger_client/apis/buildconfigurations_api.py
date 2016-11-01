@@ -48,7 +48,7 @@ class BuildconfigurationsApi(object):
     def add_dependency(self, id, **kwargs):
         """
         Adds a dependency to the specified config
-        
+
 
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please define a `callback` function
@@ -61,7 +61,7 @@ class BuildconfigurationsApi(object):
         :param callback function: The callback function
             for asynchronous request. (optional)
         :param int id: Build Configuration id (required)
-        :param BuildConfigurationRest body: 
+        :param BuildConfigurationRest body:
         :return: None
                  If the method is called asynchronously,
                  returns the request thread.
@@ -129,7 +129,7 @@ class BuildconfigurationsApi(object):
     def add_product_version(self, id, **kwargs):
         """
         Associates a product version to the specified config
-        
+
 
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please define a `callback` function
@@ -142,7 +142,7 @@ class BuildconfigurationsApi(object):
         :param callback function: The callback function
             for asynchronous request. (optional)
         :param int id: Build Configuration id (required)
-        :param ProductVersionRest body: 
+        :param ProductVersionRest body:
         :return: None
                  If the method is called asynchronously,
                  returns the request thread.
@@ -210,7 +210,7 @@ class BuildconfigurationsApi(object):
     def clone(self, id, **kwargs):
         """
         Clones an existing Build Configuration
-        
+
 
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please define a `callback` function
@@ -288,7 +288,7 @@ class BuildconfigurationsApi(object):
     def create_new(self, **kwargs):
         """
         Creates a new Build Configuration. scmMirror* fields are deprecated and values are no longer used.
-        
+
 
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please define a `callback` function
@@ -300,7 +300,7 @@ class BuildconfigurationsApi(object):
 
         :param callback function: The callback function
             for asynchronous request. (optional)
-        :param BuildConfigurationRest body: 
+        :param BuildConfigurationRest body:
         :return: BuildConfigurationSingleton
                  If the method is called asynchronously,
                  returns the request thread.
@@ -363,7 +363,7 @@ class BuildconfigurationsApi(object):
     def delete_specific(self, id, **kwargs):
         """
         Removes a specific Build Configuration
-        
+
 
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please define a `callback` function
@@ -441,7 +441,7 @@ class BuildconfigurationsApi(object):
     def get_all(self, **kwargs):
         """
         Gets all Build Configurations
-        
+
 
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please define a `callback` function
@@ -525,7 +525,7 @@ class BuildconfigurationsApi(object):
     def get_all_by_product_id(self, product_id, **kwargs):
         """
         Gets all Build Configurations of a Product
-        
+
 
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please define a `callback` function
@@ -615,7 +615,7 @@ class BuildconfigurationsApi(object):
     def get_all_by_product_version_id(self, product_id, version_id, **kwargs):
         """
         Gets all Build Configurations of the Specified Product Version
-        
+
 
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please define a `callback` function
@@ -711,7 +711,7 @@ class BuildconfigurationsApi(object):
     def get_all_by_project_id(self, project_id, **kwargs):
         """
         Gets all Build Configurations of a Project
-        
+
 
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please define a `callback` function
@@ -801,7 +801,7 @@ class BuildconfigurationsApi(object):
     def get_build_configuration_sets(self, id, **kwargs):
         """
         Gets BuildConfiguration Sets associated with the specified BuildConfiguration
-        
+
 
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please define a `callback` function
@@ -891,7 +891,7 @@ class BuildconfigurationsApi(object):
     def get_build_records(self, id, **kwargs):
         """
         Get all build record associated with this build configuration, returns empty list if no build records are found
-        
+
 
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please define a `callback` function
@@ -981,7 +981,7 @@ class BuildconfigurationsApi(object):
     def get_builds(self, id, **kwargs):
         """
         Get all BuildRecords (running and archived) associated with this Build Configuration, returns empty list if no build records are found
-        
+
 
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please define a `callback` function
@@ -1071,7 +1071,7 @@ class BuildconfigurationsApi(object):
     def get_dependencies(self, id, **kwargs):
         """
         Get the direct dependencies of the specified configuration
-        
+
 
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please define a `callback` function
@@ -1161,7 +1161,7 @@ class BuildconfigurationsApi(object):
     def get_latest_build_record(self, id, **kwargs):
         """
         Get latest build record associated with this build configuration, returns no content if no build records are found
-        
+
 
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please define a `callback` function
@@ -1239,7 +1239,7 @@ class BuildconfigurationsApi(object):
     def get_product_versions(self, id, **kwargs):
         """
         Get associated Product Versions of the specified Configuration
-        
+
 
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please define a `callback` function
@@ -1329,7 +1329,7 @@ class BuildconfigurationsApi(object):
     def get_revision(self, id, rev, **kwargs):
         """
         Get specific audited revision of this build configuration
-        
+
 
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please define a `callback` function
@@ -1413,7 +1413,7 @@ class BuildconfigurationsApi(object):
     def get_revisions(self, id, **kwargs):
         """
         Gets audited revisions of this build configuration
-        
+
 
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please define a `callback` function
@@ -1500,7 +1500,7 @@ class BuildconfigurationsApi(object):
     def get_specific(self, id, **kwargs):
         """
         Gets a specific Build Configuration
-        
+
 
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please define a `callback` function
@@ -1578,7 +1578,7 @@ class BuildconfigurationsApi(object):
     def remove_dependency(self, id, dependency_id, **kwargs):
         """
         Removes a configuration from the specified config set
-        
+
 
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please define a `callback` function
@@ -1662,7 +1662,7 @@ class BuildconfigurationsApi(object):
     def remove_product_version(self, id, product_version_id, **kwargs):
         """
         Removes a product version from the specified config set
-        
+
 
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please define a `callback` function
@@ -1746,7 +1746,7 @@ class BuildconfigurationsApi(object):
     def trigger(self, id, **kwargs):
         """
         Triggers the build of a specific Build Configuration
-        
+
 
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please define a `callback` function
@@ -1833,7 +1833,7 @@ class BuildconfigurationsApi(object):
     def update(self, id, **kwargs):
         """
         Updates an existing Build Configuration
-        
+
 
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please define a `callback` function
@@ -1846,7 +1846,7 @@ class BuildconfigurationsApi(object):
         :param callback function: The callback function
             for asynchronous request. (optional)
         :param int id: Build Configuration id (required)
-        :param BuildConfigurationRest body: 
+        :param BuildConfigurationRest body:
         :return: None
                  If the method is called asynchronously,
                  returns the request thread.

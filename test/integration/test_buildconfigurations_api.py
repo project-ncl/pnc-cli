@@ -80,7 +80,6 @@ def test_get_all_by_product_id_invalid_param():
 
 def test_get_all_by_product_id(new_config):
     # need to add bcs to some product
-
     response = configs_api.get_all_by_product_id(product_id=1, page_index=0, page_size=1000000, sort="", q="").content
     assert response is not None
 
@@ -113,8 +112,8 @@ def test_get_all_by_project_id_invalid_param():
     testutils.assert_raises_typeerror(configs_api, 'get_all_by_project_id', project_id=1)
 
 
-def test_get_all_by_project_id():
-    response = configs_api.get_all_by_project_id(project_id=1, page_index=0, page_size=1000000, sort="", q="").content
+def test_get_all_by_project_id(new_config):
+    response = configs_api.get_all_by_project_id(project_id=new_config.project.id, page_index=0, page_size=1000000, sort="", q="").content
     assert response is not None
 
 
