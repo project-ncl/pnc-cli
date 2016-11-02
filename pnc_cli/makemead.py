@@ -13,7 +13,8 @@ from tools.config_utils import ConfigReader
 
 @arg('-c', '--config', help='Configuration file to use to drive the build')
 @arg('-p', '--cproject', help='Create project if needed')
-def make_mead(config="cfg/builder.cfg", cproject=None):
+@arg('-s', '--sufix', help='Adding sufix to artifact\'s name')
+def make_mead(config="cfg/builder.cfg", cproject=None, sufix=""):
     """
     Create Make Mead configuration
     :param config: Make Mead config name
@@ -36,7 +37,6 @@ def make_mead(config="cfg/builder.cfg", cproject=None):
 
     set = None
     ids = dict()
-    sufix = get_sufix()
     (subarts, deps_dict) = config_reader.get_dependency_structure()
     packages = config_reader.get_packages_and_dependencies()
     pprint(packages)
@@ -86,10 +86,6 @@ def make_mead(config="cfg/builder.cfg", cproject=None):
     build_record = buildconfigurationsets.build_set(id=set.id)
 
     return build_record
-
-def get_sufix():
-    return "-" + ''.join(random.choice(string.ascii_uppercase + string.digits)
-                         for _ in range(10))
 
 def get_maven_options(params):
     result = ""
