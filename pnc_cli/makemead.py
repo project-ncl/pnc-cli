@@ -11,7 +11,7 @@ from tools.config_utils import ConfigReader
 
 @arg('-c', '--config', help='Configuration file to use to drive the build')
 @arg('-b', '--run_build', help='Run Build')
-@arg('-e', '--environment', help='Environment ID (default 1)')
+@arg('-e', '--environment', help='Environment ID')
 @arg('-s', '--sufix', help='Adding sufix to artifact\'s name')
 def make_mead(config=None, run_build=None, environment=1, sufix=""):
     """
