@@ -14,13 +14,14 @@ setup(
     keywords = ['PNC','REST'],
     long_description=README,
     install_requires=[
-	    "argh >= 0.26.1",
+	"argh >= 0.26.1",
         "requests >= 2.4.3",
         "certifi >= 2015.04.28",
 	"urllib3 >= 1.12",
 	"six >= 1.9.0",
-    "validators >=0.10",
-    "tzlocal >= 1.0"
+        "validators >=0.10",
+        "tzlocal >= 1.0",
+        "pytest >= 2.0"
     ],
     classifiers=[
 	'Development Status :: 3 - Alpha',
