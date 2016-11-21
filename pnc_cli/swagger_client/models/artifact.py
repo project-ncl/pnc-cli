@@ -40,7 +40,9 @@ class Artifact(object):
         self.swagger_types = {
             'id': 'int',
             'identifier': 'str',
-            'checksum': 'str',
+            'md5': 'str',
+            'sha1': 'str',
+            'sha256': 'str',
             'size': 'int',
             'artifact_quality': 'str',
             'repo_type': 'str',
@@ -51,16 +53,18 @@ class Artifact(object):
             'origin_url': 'str',
             'import_date': 'datetime',
             'distributed_in_product_milestones': 'list[ProductMilestone]',
-            'field_handler': 'FieldHandler',
             'built': 'bool',
             'imported': 'bool',
+            'field_handler': 'FieldHandler',
             'trusted': 'bool'
         }
 
         self.attribute_map = {
             'id': 'id',
             'identifier': 'identifier',
-            'checksum': 'checksum',
+            'md5': 'md5',
+            'sha1': 'sha1',
+            'sha256': 'sha256',
             'size': 'size',
             'artifact_quality': 'artifactQuality',
             'repo_type': 'repoType',
@@ -71,15 +75,17 @@ class Artifact(object):
             'origin_url': 'originUrl',
             'import_date': 'importDate',
             'distributed_in_product_milestones': 'distributedInProductMilestones',
-            'field_handler': 'fieldHandler',
             'built': 'built',
             'imported': 'imported',
+            'field_handler': 'fieldHandler',
             'trusted': 'trusted'
         }
 
         self._id = None
         self._identifier = None
-        self._checksum = None
+        self._md5 = None
+        self._sha1 = None
+        self._sha256 = None
         self._size = None
         self._artifact_quality = None
         self._repo_type = None
@@ -90,9 +96,9 @@ class Artifact(object):
         self._origin_url = None
         self._import_date = None
         self._distributed_in_product_milestones = None
-        self._field_handler = None
         self._built = None
         self._imported = None
+        self._field_handler = None
         self._trusted = None
 
     @property
@@ -140,26 +146,70 @@ class Artifact(object):
         self._identifier = identifier
 
     @property
-    def checksum(self):
+    def md5(self):
         """
-        Gets the checksum of this Artifact.
+        Gets the md5 of this Artifact.
 
 
-        :return: The checksum of this Artifact.
+        :return: The md5 of this Artifact.
         :rtype: str
         """
-        return self._checksum
+        return self._md5
 
-    @checksum.setter
-    def checksum(self, checksum):
+    @md5.setter
+    def md5(self, md5):
         """
-        Sets the checksum of this Artifact.
+        Sets the md5 of this Artifact.
 
 
-        :param checksum: The checksum of this Artifact.
+        :param md5: The md5 of this Artifact.
         :type: str
         """
-        self._checksum = checksum
+        self._md5 = md5
+
+    @property
+    def sha1(self):
+        """
+        Gets the sha1 of this Artifact.
+
+
+        :return: The sha1 of this Artifact.
+        :rtype: str
+        """
+        return self._sha1
+
+    @sha1.setter
+    def sha1(self, sha1):
+        """
+        Sets the sha1 of this Artifact.
+
+
+        :param sha1: The sha1 of this Artifact.
+        :type: str
+        """
+        self._sha1 = sha1
+
+    @property
+    def sha256(self):
+        """
+        Gets the sha256 of this Artifact.
+
+
+        :return: The sha256 of this Artifact.
+        :rtype: str
+        """
+        return self._sha256
+
+    @sha256.setter
+    def sha256(self, sha256):
+        """
+        Sets the sha256 of this Artifact.
+
+
+        :param sha256: The sha256 of this Artifact.
+        :type: str
+        """
+        self._sha256 = sha256
 
     @property
     def size(self):
@@ -394,28 +444,6 @@ class Artifact(object):
         self._distributed_in_product_milestones = distributed_in_product_milestones
 
     @property
-    def field_handler(self):
-        """
-        Gets the field_handler of this Artifact.
-
-
-        :return: The field_handler of this Artifact.
-        :rtype: FieldHandler
-        """
-        return self._field_handler
-
-    @field_handler.setter
-    def field_handler(self, field_handler):
-        """
-        Sets the field_handler of this Artifact.
-
-
-        :param field_handler: The field_handler of this Artifact.
-        :type: FieldHandler
-        """
-        self._field_handler = field_handler
-
-    @property
     def built(self):
         """
         Gets the built of this Artifact.
@@ -458,6 +486,28 @@ class Artifact(object):
         :type: bool
         """
         self._imported = imported
+
+    @property
+    def field_handler(self):
+        """
+        Gets the field_handler of this Artifact.
+
+
+        :return: The field_handler of this Artifact.
+        :rtype: FieldHandler
+        """
+        return self._field_handler
+
+    @field_handler.setter
+    def field_handler(self, field_handler):
+        """
+        Sets the field_handler of this Artifact.
+
+
+        :param field_handler: The field_handler of this Artifact.
+        :type: FieldHandler
+        """
+        self._field_handler = field_handler
 
     @property
     def trusted(self):

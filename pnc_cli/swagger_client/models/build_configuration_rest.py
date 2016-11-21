@@ -46,8 +46,6 @@ class BuildConfigurationRest(object):
             'scm_revision': 'str',
             'scm_external_repo_url': 'str',
             'scm_external_revision': 'str',
-            'scm_mirror_repo_url': 'str',
-            'scm_mirror_revision': 'str',
             'creation_time': 'datetime',
             'last_modification_time': 'datetime',
             'archived': 'bool',
@@ -55,7 +53,8 @@ class BuildConfigurationRest(object):
             'project': 'ProjectRest',
             'environment': 'BuildEnvironmentRest',
             'dependency_ids': 'list[int]',
-            'product_version_id': 'int'
+            'product_version_id': 'int',
+            'generic_parameters': 'dict(str, str)'
         }
 
         self.attribute_map = {
@@ -67,8 +66,6 @@ class BuildConfigurationRest(object):
             'scm_revision': 'scmRevision',
             'scm_external_repo_url': 'scmExternalRepoURL',
             'scm_external_revision': 'scmExternalRevision',
-            'scm_mirror_repo_url': 'scmMirrorRepoURL',
-            'scm_mirror_revision': 'scmMirrorRevision',
             'creation_time': 'creationTime',
             'last_modification_time': 'lastModificationTime',
             'archived': 'archived',
@@ -76,7 +73,8 @@ class BuildConfigurationRest(object):
             'project': 'project',
             'environment': 'environment',
             'dependency_ids': 'dependencyIds',
-            'product_version_id': 'productVersionId'
+            'product_version_id': 'productVersionId',
+            'generic_parameters': 'genericParameters'
         }
 
         self._id = None
@@ -87,8 +85,6 @@ class BuildConfigurationRest(object):
         self._scm_revision = None
         self._scm_external_repo_url = None
         self._scm_external_revision = None
-        self._scm_mirror_repo_url = None
-        self._scm_mirror_revision = None
         self._creation_time = None
         self._last_modification_time = None
         self._archived = None
@@ -97,6 +93,7 @@ class BuildConfigurationRest(object):
         self._environment = None
         self._dependency_ids = None
         self._product_version_id = None
+        self._generic_parameters = None
 
     @property
     def id(self):
@@ -275,50 +272,6 @@ class BuildConfigurationRest(object):
         self._scm_external_revision = scm_external_revision
 
     @property
-    def scm_mirror_repo_url(self):
-        """
-        Gets the scm_mirror_repo_url of this BuildConfigurationRest.
-
-
-        :return: The scm_mirror_repo_url of this BuildConfigurationRest.
-        :rtype: str
-        """
-        return self._scm_mirror_repo_url
-
-    @scm_mirror_repo_url.setter
-    def scm_mirror_repo_url(self, scm_mirror_repo_url):
-        """
-        Sets the scm_mirror_repo_url of this BuildConfigurationRest.
-
-
-        :param scm_mirror_repo_url: The scm_mirror_repo_url of this BuildConfigurationRest.
-        :type: str
-        """
-        self._scm_mirror_repo_url = scm_mirror_repo_url
-
-    @property
-    def scm_mirror_revision(self):
-        """
-        Gets the scm_mirror_revision of this BuildConfigurationRest.
-
-
-        :return: The scm_mirror_revision of this BuildConfigurationRest.
-        :rtype: str
-        """
-        return self._scm_mirror_revision
-
-    @scm_mirror_revision.setter
-    def scm_mirror_revision(self, scm_mirror_revision):
-        """
-        Sets the scm_mirror_revision of this BuildConfigurationRest.
-
-
-        :param scm_mirror_revision: The scm_mirror_revision of this BuildConfigurationRest.
-        :type: str
-        """
-        self._scm_mirror_revision = scm_mirror_revision
-
-    @property
     def creation_time(self):
         """
         Gets the creation_time of this BuildConfigurationRest.
@@ -493,6 +446,28 @@ class BuildConfigurationRest(object):
         :type: int
         """
         self._product_version_id = product_version_id
+
+    @property
+    def generic_parameters(self):
+        """
+        Gets the generic_parameters of this BuildConfigurationRest.
+
+
+        :return: The generic_parameters of this BuildConfigurationRest.
+        :rtype: dict(str, str)
+        """
+        return self._generic_parameters
+
+    @generic_parameters.setter
+    def generic_parameters(self, generic_parameters):
+        """
+        Sets the generic_parameters of this BuildConfigurationRest.
+
+
+        :param generic_parameters: The generic_parameters of this BuildConfigurationRest.
+        :type: dict(str, str)
+        """
+        self._generic_parameters = generic_parameters
 
     def to_dict(self):
         """

@@ -42,7 +42,9 @@ class ArtifactRest(object):
             'identifier': 'str',
             'artifact_quality': 'str',
             'repo_type': 'str',
-            'checksum': 'str',
+            'md5': 'str',
+            'sha1': 'str',
+            'sha256': 'str',
             'filename': 'str',
             'deploy_url': 'str',
             'build_record_ids': 'list[int]',
@@ -57,7 +59,9 @@ class ArtifactRest(object):
             'identifier': 'identifier',
             'artifact_quality': 'artifactQuality',
             'repo_type': 'repoType',
-            'checksum': 'checksum',
+            'md5': 'md5',
+            'sha1': 'sha1',
+            'sha256': 'sha256',
             'filename': 'filename',
             'deploy_url': 'deployUrl',
             'build_record_ids': 'buildRecordIds',
@@ -71,7 +75,9 @@ class ArtifactRest(object):
         self._identifier = None
         self._artifact_quality = None
         self._repo_type = None
-        self._checksum = None
+        self._md5 = None
+        self._sha1 = None
+        self._sha256 = None
         self._filename = None
         self._deploy_url = None
         self._build_record_ids = None
@@ -181,26 +187,70 @@ class ArtifactRest(object):
         self._repo_type = repo_type
 
     @property
-    def checksum(self):
+    def md5(self):
         """
-        Gets the checksum of this ArtifactRest.
+        Gets the md5 of this ArtifactRest.
 
 
-        :return: The checksum of this ArtifactRest.
+        :return: The md5 of this ArtifactRest.
         :rtype: str
         """
-        return self._checksum
+        return self._md5
 
-    @checksum.setter
-    def checksum(self, checksum):
+    @md5.setter
+    def md5(self, md5):
         """
-        Sets the checksum of this ArtifactRest.
+        Sets the md5 of this ArtifactRest.
 
 
-        :param checksum: The checksum of this ArtifactRest.
+        :param md5: The md5 of this ArtifactRest.
         :type: str
         """
-        self._checksum = checksum
+        self._md5 = md5
+
+    @property
+    def sha1(self):
+        """
+        Gets the sha1 of this ArtifactRest.
+
+
+        :return: The sha1 of this ArtifactRest.
+        :rtype: str
+        """
+        return self._sha1
+
+    @sha1.setter
+    def sha1(self, sha1):
+        """
+        Sets the sha1 of this ArtifactRest.
+
+
+        :param sha1: The sha1 of this ArtifactRest.
+        :type: str
+        """
+        self._sha1 = sha1
+
+    @property
+    def sha256(self):
+        """
+        Gets the sha256 of this ArtifactRest.
+
+
+        :return: The sha256 of this ArtifactRest.
+        :rtype: str
+        """
+        return self._sha256
+
+    @sha256.setter
+    def sha256(self, sha256):
+        """
+        Sets the sha256 of this ArtifactRest.
+
+
+        :param sha256: The sha256 of this ArtifactRest.
+        :type: str
+        """
+        self._sha256 = sha256
 
     @property
     def filename(self):

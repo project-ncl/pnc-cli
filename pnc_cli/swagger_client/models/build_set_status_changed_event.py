@@ -38,35 +38,57 @@ class BuildSetStatusChangedEvent(object):
                                   and the value is json key in definition.
         """
         self.swagger_types = {
+            'user_id': 'int',
             'new_status': 'str',
+            'build_set_configuration_id': 'int',
             'old_status': 'str',
             'build_set_task_id': 'int',
-            'build_set_configuration_id': 'int',
             'build_set_configuration_name': 'str',
             'build_set_start_time': 'datetime',
-            'build_set_end_time': 'datetime',
-            'user_id': 'int'
+            'build_set_end_time': 'datetime'
         }
 
         self.attribute_map = {
+            'user_id': 'userId',
             'new_status': 'newStatus',
+            'build_set_configuration_id': 'buildSetConfigurationId',
             'old_status': 'oldStatus',
             'build_set_task_id': 'buildSetTaskId',
-            'build_set_configuration_id': 'buildSetConfigurationId',
             'build_set_configuration_name': 'buildSetConfigurationName',
             'build_set_start_time': 'buildSetStartTime',
-            'build_set_end_time': 'buildSetEndTime',
-            'user_id': 'userId'
+            'build_set_end_time': 'buildSetEndTime'
         }
 
+        self._user_id = None
         self._new_status = None
+        self._build_set_configuration_id = None
         self._old_status = None
         self._build_set_task_id = None
-        self._build_set_configuration_id = None
         self._build_set_configuration_name = None
         self._build_set_start_time = None
         self._build_set_end_time = None
-        self._user_id = None
+
+    @property
+    def user_id(self):
+        """
+        Gets the user_id of this BuildSetStatusChangedEvent.
+
+
+        :return: The user_id of this BuildSetStatusChangedEvent.
+        :rtype: int
+        """
+        return self._user_id
+
+    @user_id.setter
+    def user_id(self, user_id):
+        """
+        Sets the user_id of this BuildSetStatusChangedEvent.
+
+
+        :param user_id: The user_id of this BuildSetStatusChangedEvent.
+        :type: int
+        """
+        self._user_id = user_id
 
     @property
     def new_status(self):
@@ -95,6 +117,28 @@ class BuildSetStatusChangedEvent(object):
                 .format(allowed_values)
             )
         self._new_status = new_status
+
+    @property
+    def build_set_configuration_id(self):
+        """
+        Gets the build_set_configuration_id of this BuildSetStatusChangedEvent.
+
+
+        :return: The build_set_configuration_id of this BuildSetStatusChangedEvent.
+        :rtype: int
+        """
+        return self._build_set_configuration_id
+
+    @build_set_configuration_id.setter
+    def build_set_configuration_id(self, build_set_configuration_id):
+        """
+        Sets the build_set_configuration_id of this BuildSetStatusChangedEvent.
+
+
+        :param build_set_configuration_id: The build_set_configuration_id of this BuildSetStatusChangedEvent.
+        :type: int
+        """
+        self._build_set_configuration_id = build_set_configuration_id
 
     @property
     def old_status(self):
@@ -145,28 +189,6 @@ class BuildSetStatusChangedEvent(object):
         :type: int
         """
         self._build_set_task_id = build_set_task_id
-
-    @property
-    def build_set_configuration_id(self):
-        """
-        Gets the build_set_configuration_id of this BuildSetStatusChangedEvent.
-
-
-        :return: The build_set_configuration_id of this BuildSetStatusChangedEvent.
-        :rtype: int
-        """
-        return self._build_set_configuration_id
-
-    @build_set_configuration_id.setter
-    def build_set_configuration_id(self, build_set_configuration_id):
-        """
-        Sets the build_set_configuration_id of this BuildSetStatusChangedEvent.
-
-
-        :param build_set_configuration_id: The build_set_configuration_id of this BuildSetStatusChangedEvent.
-        :type: int
-        """
-        self._build_set_configuration_id = build_set_configuration_id
 
     @property
     def build_set_configuration_name(self):
@@ -233,28 +255,6 @@ class BuildSetStatusChangedEvent(object):
         :type: datetime
         """
         self._build_set_end_time = build_set_end_time
-
-    @property
-    def user_id(self):
-        """
-        Gets the user_id of this BuildSetStatusChangedEvent.
-
-
-        :return: The user_id of this BuildSetStatusChangedEvent.
-        :rtype: int
-        """
-        return self._user_id
-
-    @user_id.setter
-    def user_id(self, user_id):
-        """
-        Sets the user_id of this BuildSetStatusChangedEvent.
-
-
-        :param user_id: The user_id of this BuildSetStatusChangedEvent.
-        :type: int
-        """
-        self._user_id = user_id
 
     def to_dict(self):
         """

@@ -46,6 +46,8 @@ class BuildRecordRest(object):
             'build_configuration_id': 'int',
             'build_configuration_name': 'str',
             'build_configuration_rev': 'int',
+            'project_id': 'int',
+            'project_name': 'str',
             'user_id': 'int',
             'username': 'str',
             'scm_repo_url': 'str',
@@ -71,6 +73,8 @@ class BuildRecordRest(object):
             'build_configuration_id': 'buildConfigurationId',
             'build_configuration_name': 'buildConfigurationName',
             'build_configuration_rev': 'buildConfigurationRev',
+            'project_id': 'projectId',
+            'project_name': 'projectName',
             'user_id': 'userId',
             'username': 'username',
             'scm_repo_url': 'scmRepoURL',
@@ -95,6 +99,8 @@ class BuildRecordRest(object):
         self._build_configuration_id = None
         self._build_configuration_name = None
         self._build_configuration_rev = None
+        self._project_id = None
+        self._project_name = None
         self._user_id = None
         self._username = None
         self._scm_repo_url = None
@@ -218,7 +224,7 @@ class BuildRecordRest(object):
         :param status: The status of this BuildRecordRest.
         :type: str
         """
-        allowed_values = ["NEW", "WAITING_FOR_DEPENDENCIES", "BUILDING", "BUILD_COMPLETED", "DONE", "REJECTED", "REJECTED_FAILED_DEPENDENCIES", "REJECTED_ALREADY_BUILT", "SYSTEM_ERROR", "DONE_WITH_ERRORS"]
+        allowed_values = ["NEW", "WAITING_FOR_DEPENDENCIES", "BUILDING", "BUILD_COMPLETED", "DONE", "REJECTED", "REJECTED_FAILED_DEPENDENCIES", "REJECTED_ALREADY_BUILT", "SYSTEM_ERROR", "DONE_WITH_ERRORS", "CANCELED"]
         if status not in allowed_values:
             raise ValueError(
                 "Invalid value for `status`, must be one of {0}"
@@ -291,6 +297,50 @@ class BuildRecordRest(object):
         :type: int
         """
         self._build_configuration_rev = build_configuration_rev
+
+    @property
+    def project_id(self):
+        """
+        Gets the project_id of this BuildRecordRest.
+
+
+        :return: The project_id of this BuildRecordRest.
+        :rtype: int
+        """
+        return self._project_id
+
+    @project_id.setter
+    def project_id(self, project_id):
+        """
+        Sets the project_id of this BuildRecordRest.
+
+
+        :param project_id: The project_id of this BuildRecordRest.
+        :type: int
+        """
+        self._project_id = project_id
+
+    @property
+    def project_name(self):
+        """
+        Gets the project_name of this BuildRecordRest.
+
+
+        :return: The project_name of this BuildRecordRest.
+        :rtype: str
+        """
+        return self._project_name
+
+    @project_name.setter
+    def project_name(self, project_name):
+        """
+        Sets the project_name of this BuildRecordRest.
+
+
+        :param project_name: The project_name of this BuildRecordRest.
+        :type: str
+        """
+        self._project_name = project_name
 
     @property
     def user_id(self):
