@@ -103,6 +103,19 @@ def unique_product_name(name_input):
     return name_input
 
 
+def valid_abbreviation(abbreviation_input):
+    if len(abbreviation_input) < 0 or len(abbreviation_input) > 20:
+        raise argparse.ArgumentTypeError("a Product abbreviation must be between 0 and 20 characters")
+    return abbreviation_input
+
+
+def unique_product_abbreviation(abbreviation_input):
+    valid_abbreviation(abbreviation_input)
+    if products_api.get_all(q='abbreviation==' + abbreviation_input).content:
+        raise argparse.ArgumentTypeError("a Product with the abbreviation {} already exists".format(abbreviation_input))
+    return abbreviation_input
+
+
 # ProductVersion types
 def existing_product_version(id_input):
     valid_id(id_input)
