@@ -6,6 +6,7 @@ from pnc_cli.swagger_client.apis.products_api import ProductsApi
 from pnc_cli.swagger_client.apis.productversions_api import ProductversionsApi
 from test import testutils
 
+
 @pytest.fixture(scope='function', autouse=True)
 def get_product_api():
     global product_api
@@ -51,12 +52,13 @@ def test_update_invalid_param():
 
 
 def test_update(new_product):
-    NEW_DESC = 'PNC CLI: test_products_api updated description'
-    newname = 'newname' + testutils.gen_random_name()
+    new_desc = 'PNC CLI: test_products_api updated description'
+    new_abbreviation = testutils.gen_random_name()
+    newname = 'newname-' + new_abbreviation
     product_api.update(id=new_product.id,
-                       body=products.create_product_object(name=newname, description=NEW_DESC))
+                       body=products.create_product_object(name=newname, abbreviation=new_abbreviation, description=new_desc))
     updated_prod = product_api.get_specific(id=new_product.id).content
-    assert updated_prod.name == newname and updated_prod.description == NEW_DESC
+    assert updated_prod.name == newname and updated_prod.description == new_desc and updated_prod.abbreviation == new_abbreviation
 
 
 def test_get_product_versions_no_id():

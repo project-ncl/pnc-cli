@@ -239,6 +239,7 @@ def existing_build_record(id_input):
 def existing_built_artifact(id_input):
     pass
 
+
 # License types
 def existing_license(id_input):
     valid_id(id_input)
@@ -262,6 +263,7 @@ def valid_date(dateInput):
     except ValueError:
         raise argparse.ArgumentTypeError("Date format: yyyy-mm-dd")
     return dateInput
+
 
 def valid_id(id_input):
     if not id_input.isdigit():
