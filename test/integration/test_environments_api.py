@@ -19,9 +19,9 @@ def test_get_all():
     envs = envs_api.get_all(page_index=0, page_size=1000000, sort='', q='').content
     assert envs is not None
 
-
-def test_create_invalid_param():
-    testutils.assert_raises_typeerror(envs_api, 'create_new')
+#
+# def test_create_invalid_param():
+#     testutils.assert_raises_typeerror(envs_api, 'create_new')
 
 #def test_create_new(new_environment):
 #     env_ids = [env.id for env in envs_api.get_all(page_size=1000000).content]
@@ -41,12 +41,12 @@ def test_get_specific():
     assert envs_api.get_specific(id=1).content is not None
 
 
-def test_update_no_id():
-    testutils.assert_raises_valueerror(envs_api, 'update', id=None)
+# def test_update_no_id():
+#     testutils.assert_raises_valueerror(envs_api, 'update', id=None)
 
 
-def test_update_invalid_param():
-    testutils.assert_raises_typeerror(envs_api, 'update', id=1)
+# def test_update_invalid_param():
+#     testutils.assert_raises_typeerror(envs_api, 'update', id=1)
 
 
 # environment manipulation is currently disabled in pnc
@@ -63,12 +63,12 @@ def test_update_invalid_param():
 #     assert (retrieved_env.system_image_type == 'DOCKER_IMAGE')
 
 
-def test_delete_no_id():
-    testutils.assert_raises_valueerror(envs_api, 'delete', id=None)
+# def test_delete_no_id():
+#     testutils.assert_raises_valueerror(envs_api, 'delete', id=None)
 
 
-def test_delete_invalid_param():
-    testutils.assert_raises_typeerror(envs_api, 'delete', id=1)
+# def test_delete_invalid_param():
+#     testutils.assert_raises_typeerror(envs_api, 'delete', id=1)
 
 # environment manipulation is currently disabled in pnc
 # def test_delete(new_environment):
