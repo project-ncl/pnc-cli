@@ -59,7 +59,7 @@ def test_trigger_invalid_params():
 
 def test_trigger(new_config):
     running_api = RunningbuildrecordsApi(utils.get_api_client())
-    triggered_build = configs_api.trigger(id=new_config.id, rebuild_all=False).content
+    triggered_build = configs_api.trigger(id=new_config.id).content
     assert triggered_build is not None
     build_record = running_api.get_specific(id=triggered_build.id)
     assert build_record is not None

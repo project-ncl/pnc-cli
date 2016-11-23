@@ -34,7 +34,7 @@ def get_sets_api():
 def test_get_all(new_config):
     # start a build so that a build is running
     # need to run a legitimate build, create a buildconfiguration that will start running
-    configs_api.trigger(id=new_config.id, rebuild_all=False)
+    configs_api.trigger(id=new_config.id)
     running_builds = running_api.get_all(page_size=1000).content
     assert running_builds is not None
 
