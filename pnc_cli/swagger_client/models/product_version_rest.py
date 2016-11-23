@@ -46,7 +46,8 @@ class ProductVersionRest(object):
             'product_milestones': 'list[ProductMilestoneRest]',
             'product_releases': 'list[ProductReleaseRest]',
             'build_configuration_sets': 'list[BuildConfigurationSetRest]',
-            'build_configurations': 'list[BuildConfigurationRest]'
+            'build_configurations': 'list[BuildConfigurationRest]',
+            'attributes': 'dict(str, str)'
         }
 
         self.attribute_map = {
@@ -58,7 +59,8 @@ class ProductVersionRest(object):
             'product_milestones': 'productMilestones',
             'product_releases': 'productReleases',
             'build_configuration_sets': 'buildConfigurationSets',
-            'build_configurations': 'buildConfigurations'
+            'build_configurations': 'buildConfigurations',
+            'attributes': 'attributes'
         }
 
         self._id = None
@@ -70,6 +72,7 @@ class ProductVersionRest(object):
         self._product_releases = None
         self._build_configuration_sets = None
         self._build_configurations = None
+        self._attributes = None
 
     @property
     def id(self):
@@ -269,6 +272,28 @@ class ProductVersionRest(object):
         """
         self._build_configurations = build_configurations
 
+    @property
+    def attributes(self):
+        """
+        Gets the attributes of this ProductVersionRest.
+
+
+        :return: The attributes of this ProductVersionRest.
+        :rtype: dict(str, str)
+        """
+        return self._attributes
+
+    @attributes.setter
+    def attributes(self, attributes):
+        """
+        Sets the attributes of this ProductVersionRest.
+
+
+        :param attributes: The attributes of this ProductVersionRest.
+        :type: dict(str, str)
+        """
+        self._attributes = attributes
+
     def to_dict(self):
         """
         Returns the model properties as a dict
@@ -284,8 +309,8 @@ class ProductVersionRest(object):
                 ))
             elif hasattr(value, "to_dict"):
                 result[attr] = value.to_dict()
-            elif isinstance(value, datetime):
-                result[attr] = str(value.date())
+	    elif isinstance(value, datetime):
+		result[attr] = str(value.date())
             else:
                 result[attr] = value
 

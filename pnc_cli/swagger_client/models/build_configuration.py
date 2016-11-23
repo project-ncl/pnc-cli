@@ -55,14 +55,13 @@ class BuildConfiguration(object):
             'last_modification_time': 'datetime',
             'dependencies': 'list[BuildConfiguration]',
             'dependants': 'list[BuildConfiguration]',
-            'repositories': 'str',
             'generic_parameters': 'dict(str, str)',
             'all_dependencies': 'list[BuildConfiguration]',
-            'field_handler': 'FieldHandler',
             'indirect_dependencies': 'list[BuildConfiguration]',
             'archived': 'bool',
             'current_product_milestone': 'ProductMilestone',
-            'latest_succesful_build_record': 'BuildRecord'
+            'latest_succesful_build_record': 'BuildRecord',
+            'field_handler': 'FieldHandler'
         }
 
         self.attribute_map = {
@@ -83,14 +82,13 @@ class BuildConfiguration(object):
             'last_modification_time': 'lastModificationTime',
             'dependencies': 'dependencies',
             'dependants': 'dependants',
-            'repositories': 'repositories',
             'generic_parameters': 'genericParameters',
             'all_dependencies': 'allDependencies',
-            'field_handler': 'fieldHandler',
             'indirect_dependencies': 'indirectDependencies',
             'archived': 'archived',
             'current_product_milestone': 'currentProductMilestone',
-            'latest_succesful_build_record': 'latestSuccesfulBuildRecord'
+            'latest_succesful_build_record': 'latestSuccesfulBuildRecord',
+            'field_handler': 'fieldHandler'
         }
 
         self._id = None
@@ -110,14 +108,13 @@ class BuildConfiguration(object):
         self._last_modification_time = None
         self._dependencies = None
         self._dependants = None
-        self._repositories = None
         self._generic_parameters = None
         self._all_dependencies = None
-        self._field_handler = None
         self._indirect_dependencies = None
         self._archived = None
         self._current_product_milestone = None
         self._latest_succesful_build_record = None
+        self._field_handler = None
 
     @property
     def id(self):
@@ -494,28 +491,6 @@ class BuildConfiguration(object):
         self._dependants = dependants
 
     @property
-    def repositories(self):
-        """
-        Gets the repositories of this BuildConfiguration.
-
-
-        :return: The repositories of this BuildConfiguration.
-        :rtype: str
-        """
-        return self._repositories
-
-    @repositories.setter
-    def repositories(self, repositories):
-        """
-        Sets the repositories of this BuildConfiguration.
-
-
-        :param repositories: The repositories of this BuildConfiguration.
-        :type: str
-        """
-        self._repositories = repositories
-
-    @property
     def generic_parameters(self):
         """
         Gets the generic_parameters of this BuildConfiguration.
@@ -558,28 +533,6 @@ class BuildConfiguration(object):
         :type: list[BuildConfiguration]
         """
         self._all_dependencies = all_dependencies
-
-    @property
-    def field_handler(self):
-        """
-        Gets the field_handler of this BuildConfiguration.
-
-
-        :return: The field_handler of this BuildConfiguration.
-        :rtype: FieldHandler
-        """
-        return self._field_handler
-
-    @field_handler.setter
-    def field_handler(self, field_handler):
-        """
-        Sets the field_handler of this BuildConfiguration.
-
-
-        :param field_handler: The field_handler of this BuildConfiguration.
-        :type: FieldHandler
-        """
-        self._field_handler = field_handler
 
     @property
     def indirect_dependencies(self):
@@ -669,6 +622,28 @@ class BuildConfiguration(object):
         """
         self._latest_succesful_build_record = latest_succesful_build_record
 
+    @property
+    def field_handler(self):
+        """
+        Gets the field_handler of this BuildConfiguration.
+
+
+        :return: The field_handler of this BuildConfiguration.
+        :rtype: FieldHandler
+        """
+        return self._field_handler
+
+    @field_handler.setter
+    def field_handler(self, field_handler):
+        """
+        Sets the field_handler of this BuildConfiguration.
+
+
+        :param field_handler: The field_handler of this BuildConfiguration.
+        :type: FieldHandler
+        """
+        self._field_handler = field_handler
+
     def to_dict(self):
         """
         Returns the model properties as a dict
@@ -684,8 +659,8 @@ class BuildConfiguration(object):
                 ))
             elif hasattr(value, "to_dict"):
                 result[attr] = value.to_dict()
-            elif isinstance(value, datetime):
-                result[attr] = str(value.date())
+	    elif isinstance(value, datetime):
+		result[attr] = str(value.date())
             else:
                 result[attr] = value
 

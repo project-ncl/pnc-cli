@@ -48,7 +48,7 @@ class TestApi(object):
     def send_build_set_status_changed_event(self, **kwargs):
         """
         Sends BuildSetStatusChangedEvent just like it was from Core, useful for testing WebSockets
-
+        
 
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please define a `callback` function
@@ -60,7 +60,7 @@ class TestApi(object):
 
         :param callback function: The callback function
             for asynchronous request. (optional)
-        :param BuildSetStatusChangedEvent body:
+        :param BuildSetStatusChangedEvent body: 
         :return: None
                  If the method is called asynchronously,
                  returns the request thread.
@@ -123,7 +123,7 @@ class TestApi(object):
     def send_build_status_changed_event(self, **kwargs):
         """
         Sends BuildStatusChangedEvent just like it was from Core, useful for testing WebSockets
-
+        
 
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please define a `callback` function
@@ -135,7 +135,7 @@ class TestApi(object):
 
         :param callback function: The callback function
             for asynchronous request. (optional)
-        :param BuildStatusChangedEventRest body:
+        :param BuildStatusChangedEventRest body: 
         :return: None
                  If the method is called asynchronously,
                  returns the request thread.

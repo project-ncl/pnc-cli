@@ -43,8 +43,8 @@ class BuildConfigurationSet(object):
             'product_version': 'ProductVersion',
             'build_configurations': 'list[BuildConfiguration]',
             'build_config_set_records': 'list[BuildConfigSetRecord]',
-            'field_handler': 'FieldHandler',
-            'current_product_milestone': 'ProductMilestone'
+            'current_product_milestone': 'ProductMilestone',
+            'field_handler': 'FieldHandler'
         }
 
         self.attribute_map = {
@@ -53,8 +53,8 @@ class BuildConfigurationSet(object):
             'product_version': 'productVersion',
             'build_configurations': 'buildConfigurations',
             'build_config_set_records': 'buildConfigSetRecords',
-            'field_handler': 'fieldHandler',
-            'current_product_milestone': 'currentProductMilestone'
+            'current_product_milestone': 'currentProductMilestone',
+            'field_handler': 'fieldHandler'
         }
 
         self._id = None
@@ -62,8 +62,8 @@ class BuildConfigurationSet(object):
         self._product_version = None
         self._build_configurations = None
         self._build_config_set_records = None
-        self._field_handler = None
         self._current_product_milestone = None
+        self._field_handler = None
 
     @property
     def id(self):
@@ -176,28 +176,6 @@ class BuildConfigurationSet(object):
         self._build_config_set_records = build_config_set_records
 
     @property
-    def field_handler(self):
-        """
-        Gets the field_handler of this BuildConfigurationSet.
-
-
-        :return: The field_handler of this BuildConfigurationSet.
-        :rtype: FieldHandler
-        """
-        return self._field_handler
-
-    @field_handler.setter
-    def field_handler(self, field_handler):
-        """
-        Sets the field_handler of this BuildConfigurationSet.
-
-
-        :param field_handler: The field_handler of this BuildConfigurationSet.
-        :type: FieldHandler
-        """
-        self._field_handler = field_handler
-
-    @property
     def current_product_milestone(self):
         """
         Gets the current_product_milestone of this BuildConfigurationSet.
@@ -219,6 +197,28 @@ class BuildConfigurationSet(object):
         """
         self._current_product_milestone = current_product_milestone
 
+    @property
+    def field_handler(self):
+        """
+        Gets the field_handler of this BuildConfigurationSet.
+
+
+        :return: The field_handler of this BuildConfigurationSet.
+        :rtype: FieldHandler
+        """
+        return self._field_handler
+
+    @field_handler.setter
+    def field_handler(self, field_handler):
+        """
+        Sets the field_handler of this BuildConfigurationSet.
+
+
+        :param field_handler: The field_handler of this BuildConfigurationSet.
+        :type: FieldHandler
+        """
+        self._field_handler = field_handler
+
     def to_dict(self):
         """
         Returns the model properties as a dict
@@ -234,8 +234,8 @@ class BuildConfigurationSet(object):
                 ))
             elif hasattr(value, "to_dict"):
                 result[attr] = value.to_dict()
-            elif isinstance(value, datetime):
-                result[attr] = str(value.date())
+	    elif isinstance(value, datetime):
+		result[attr] = str(value.date())
             else:
                 result[attr] = value
 

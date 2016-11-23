@@ -47,7 +47,7 @@ class Artifact(object):
             'artifact_quality': 'str',
             'repo_type': 'str',
             'filename': 'str',
-            'deploy_url': 'str',
+            'deploy_path': 'str',
             'build_records': 'list[BuildRecord]',
             'dependant_build_records': 'list[BuildRecord]',
             'origin_url': 'str',
@@ -69,7 +69,7 @@ class Artifact(object):
             'artifact_quality': 'artifactQuality',
             'repo_type': 'repoType',
             'filename': 'filename',
-            'deploy_url': 'deployUrl',
+            'deploy_path': 'deployPath',
             'build_records': 'buildRecords',
             'dependant_build_records': 'dependantBuildRecords',
             'origin_url': 'originUrl',
@@ -90,7 +90,7 @@ class Artifact(object):
         self._artifact_quality = None
         self._repo_type = None
         self._filename = None
-        self._deploy_url = None
+        self._deploy_path = None
         self._build_records = None
         self._dependant_build_records = None
         self._origin_url = None
@@ -312,26 +312,26 @@ class Artifact(object):
         self._filename = filename
 
     @property
-    def deploy_url(self):
+    def deploy_path(self):
         """
-        Gets the deploy_url of this Artifact.
+        Gets the deploy_path of this Artifact.
 
 
-        :return: The deploy_url of this Artifact.
+        :return: The deploy_path of this Artifact.
         :rtype: str
         """
-        return self._deploy_url
+        return self._deploy_path
 
-    @deploy_url.setter
-    def deploy_url(self, deploy_url):
+    @deploy_path.setter
+    def deploy_path(self, deploy_path):
         """
-        Sets the deploy_url of this Artifact.
+        Sets the deploy_path of this Artifact.
 
 
-        :param deploy_url: The deploy_url of this Artifact.
+        :param deploy_path: The deploy_path of this Artifact.
         :type: str
         """
-        self._deploy_url = deploy_url
+        self._deploy_path = deploy_path
 
     @property
     def build_records(self):
@@ -546,8 +546,8 @@ class Artifact(object):
                 ))
             elif hasattr(value, "to_dict"):
                 result[attr] = value.to_dict()
-            elif isinstance(value, datetime):
-                result[attr] = str(value.date())
+	    elif isinstance(value, datetime):
+		result[attr] = str(value.date())
             else:
                 result[attr] = value
 

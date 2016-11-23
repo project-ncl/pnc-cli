@@ -50,7 +50,6 @@ class BuildConfigurationAuditedRest(object):
             'scm_external_revision': 'str',
             'creation_time': 'datetime',
             'last_modification_time': 'datetime',
-            'repositories': 'str',
             'project_id': 'int',
             'environment_id': 'int',
             'project': 'ProjectRest',
@@ -70,7 +69,6 @@ class BuildConfigurationAuditedRest(object):
             'scm_external_revision': 'scmExternalRevision',
             'creation_time': 'creationTime',
             'last_modification_time': 'lastModificationTime',
-            'repositories': 'repositories',
             'project_id': 'projectId',
             'environment_id': 'environmentId',
             'project': 'project',
@@ -89,7 +87,6 @@ class BuildConfigurationAuditedRest(object):
         self._scm_external_revision = None
         self._creation_time = None
         self._last_modification_time = None
-        self._repositories = None
         self._project_id = None
         self._environment_id = None
         self._project = None
@@ -360,28 +357,6 @@ class BuildConfigurationAuditedRest(object):
         self._last_modification_time = last_modification_time
 
     @property
-    def repositories(self):
-        """
-        Gets the repositories of this BuildConfigurationAuditedRest.
-
-
-        :return: The repositories of this BuildConfigurationAuditedRest.
-        :rtype: str
-        """
-        return self._repositories
-
-    @repositories.setter
-    def repositories(self, repositories):
-        """
-        Sets the repositories of this BuildConfigurationAuditedRest.
-
-
-        :param repositories: The repositories of this BuildConfigurationAuditedRest.
-        :type: str
-        """
-        self._repositories = repositories
-
-    @property
     def project_id(self):
         """
         Gets the project_id of this BuildConfigurationAuditedRest.
@@ -484,8 +459,8 @@ class BuildConfigurationAuditedRest(object):
                 ))
             elif hasattr(value, "to_dict"):
                 result[attr] = value.to_dict()
-            elif isinstance(value, datetime):
-                result[attr] = str(value.date())
+	    elif isinstance(value, datetime):
+		result[attr] = str(value.date())
             else:
                 result[attr] = value
 

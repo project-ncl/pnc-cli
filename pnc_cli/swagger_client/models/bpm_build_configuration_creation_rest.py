@@ -49,7 +49,8 @@ class BpmBuildConfigurationCreationRest(object):
             'build_environment_id': 'int',
             'dependency_ids': 'list[int]',
             'product_version_id': 'int',
-            'build_configuration_set_ids': 'list[int]'
+            'build_configuration_set_ids': 'list[int]',
+            'generic_parameters': 'dict(str, str)'
         }
 
         self.attribute_map = {
@@ -64,7 +65,8 @@ class BpmBuildConfigurationCreationRest(object):
             'build_environment_id': 'buildEnvironmentId',
             'dependency_ids': 'dependencyIds',
             'product_version_id': 'productVersionId',
-            'build_configuration_set_ids': 'buildConfigurationSetIds'
+            'build_configuration_set_ids': 'buildConfigurationSetIds',
+            'generic_parameters': 'genericParameters'
         }
 
         self._name = None
@@ -79,6 +81,7 @@ class BpmBuildConfigurationCreationRest(object):
         self._dependency_ids = None
         self._product_version_id = None
         self._build_configuration_set_ids = None
+        self._generic_parameters = None
 
     @property
     def name(self):
@@ -344,6 +347,28 @@ class BpmBuildConfigurationCreationRest(object):
         """
         self._build_configuration_set_ids = build_configuration_set_ids
 
+    @property
+    def generic_parameters(self):
+        """
+        Gets the generic_parameters of this BpmBuildConfigurationCreationRest.
+
+
+        :return: The generic_parameters of this BpmBuildConfigurationCreationRest.
+        :rtype: dict(str, str)
+        """
+        return self._generic_parameters
+
+    @generic_parameters.setter
+    def generic_parameters(self, generic_parameters):
+        """
+        Sets the generic_parameters of this BpmBuildConfigurationCreationRest.
+
+
+        :param generic_parameters: The generic_parameters of this BpmBuildConfigurationCreationRest.
+        :type: dict(str, str)
+        """
+        self._generic_parameters = generic_parameters
+
     def to_dict(self):
         """
         Returns the model properties as a dict
@@ -359,8 +384,8 @@ class BpmBuildConfigurationCreationRest(object):
                 ))
             elif hasattr(value, "to_dict"):
                 result[attr] = value.to_dict()
-            elif isinstance(value, datetime):
-                result[attr] = str(value.date())
+	    elif isinstance(value, datetime):
+		result[attr] = str(value.date())
             else:
                 result[attr] = value
 
