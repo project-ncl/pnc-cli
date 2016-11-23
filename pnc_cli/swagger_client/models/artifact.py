@@ -53,9 +53,9 @@ class Artifact(object):
             'origin_url': 'str',
             'import_date': 'datetime',
             'distributed_in_product_milestones': 'list[ProductMilestone]',
+            'field_handler': 'FieldHandler',
             'built': 'bool',
             'imported': 'bool',
-            'field_handler': 'FieldHandler',
             'trusted': 'bool'
         }
 
@@ -75,9 +75,9 @@ class Artifact(object):
             'origin_url': 'originUrl',
             'import_date': 'importDate',
             'distributed_in_product_milestones': 'distributedInProductMilestones',
+            'field_handler': 'fieldHandler',
             'built': 'built',
             'imported': 'imported',
-            'field_handler': 'fieldHandler',
             'trusted': 'trusted'
         }
 
@@ -96,9 +96,9 @@ class Artifact(object):
         self._origin_url = None
         self._import_date = None
         self._distributed_in_product_milestones = None
+        self._field_handler = None
         self._built = None
         self._imported = None
-        self._field_handler = None
         self._trusted = None
 
     @property
@@ -444,6 +444,28 @@ class Artifact(object):
         self._distributed_in_product_milestones = distributed_in_product_milestones
 
     @property
+    def field_handler(self):
+        """
+        Gets the field_handler of this Artifact.
+
+
+        :return: The field_handler of this Artifact.
+        :rtype: FieldHandler
+        """
+        return self._field_handler
+
+    @field_handler.setter
+    def field_handler(self, field_handler):
+        """
+        Sets the field_handler of this Artifact.
+
+
+        :param field_handler: The field_handler of this Artifact.
+        :type: FieldHandler
+        """
+        self._field_handler = field_handler
+
+    @property
     def built(self):
         """
         Gets the built of this Artifact.
@@ -488,28 +510,6 @@ class Artifact(object):
         self._imported = imported
 
     @property
-    def field_handler(self):
-        """
-        Gets the field_handler of this Artifact.
-
-
-        :return: The field_handler of this Artifact.
-        :rtype: FieldHandler
-        """
-        return self._field_handler
-
-    @field_handler.setter
-    def field_handler(self, field_handler):
-        """
-        Sets the field_handler of this Artifact.
-
-
-        :param field_handler: The field_handler of this Artifact.
-        :type: FieldHandler
-        """
-        self._field_handler = field_handler
-
-    @property
     def trusted(self):
         """
         Gets the trusted of this Artifact.
@@ -546,8 +546,8 @@ class Artifact(object):
                 ))
             elif hasattr(value, "to_dict"):
                 result[attr] = value.to_dict()
-            elif isinstance(value, datetime):
-                result[attr] = str(value.date())
+	    elif isinstance(value, datetime):
+		result[attr] = str(value.date())
             else:
                 result[attr] = value
 

@@ -48,7 +48,7 @@ class BpmApi(object):
     def get_bpm_task_by_id(self, task_id, **kwargs):
         """
         Get single (recently) active BPM task.
-
+        
 
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please define a `callback` function
@@ -126,7 +126,7 @@ class BpmApi(object):
     def get_bpm_tasks(self, **kwargs):
         """
         List of (recently) active BPM tasks.
-
+        
 
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please define a `callback` function
@@ -204,7 +204,7 @@ class BpmApi(object):
     def notify_task(self, task_id, **kwargs):
         """
         Notify PNC about a BPM task event. Accepts polymorphic JSON {\"eventType\": \"string\"} based on \"eventType\" field.
-
+        
 
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please define a `callback` function
@@ -282,7 +282,7 @@ class BpmApi(object):
     def start_bc_creation_task(self, body, **kwargs):
         """
         Start BC creation task.
-
+        
 
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please define a `callback` function

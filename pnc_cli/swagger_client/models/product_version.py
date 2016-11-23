@@ -45,6 +45,7 @@ class ProductVersion(object):
             'product_milestones': 'list[ProductMilestone]',
             'current_product_milestone': 'ProductMilestone',
             'build_configurations': 'list[BuildConfiguration]',
+            'brew_tag_prefix': 'str',
             'field_handler': 'FieldHandler',
             'product_releases': 'list[ProductRelease]'
         }
@@ -57,6 +58,7 @@ class ProductVersion(object):
             'product_milestones': 'productMilestones',
             'current_product_milestone': 'currentProductMilestone',
             'build_configurations': 'buildConfigurations',
+            'brew_tag_prefix': 'brewTagPrefix',
             'field_handler': 'fieldHandler',
             'product_releases': 'productReleases'
         }
@@ -68,6 +70,7 @@ class ProductVersion(object):
         self._product_milestones = None
         self._current_product_milestone = None
         self._build_configurations = None
+        self._brew_tag_prefix = None
         self._field_handler = None
         self._product_releases = None
 
@@ -226,6 +229,28 @@ class ProductVersion(object):
         self._build_configurations = build_configurations
 
     @property
+    def brew_tag_prefix(self):
+        """
+        Gets the brew_tag_prefix of this ProductVersion.
+
+
+        :return: The brew_tag_prefix of this ProductVersion.
+        :rtype: str
+        """
+        return self._brew_tag_prefix
+
+    @brew_tag_prefix.setter
+    def brew_tag_prefix(self, brew_tag_prefix):
+        """
+        Sets the brew_tag_prefix of this ProductVersion.
+
+
+        :param brew_tag_prefix: The brew_tag_prefix of this ProductVersion.
+        :type: str
+        """
+        self._brew_tag_prefix = brew_tag_prefix
+
+    @property
     def field_handler(self):
         """
         Gets the field_handler of this ProductVersion.
@@ -284,8 +309,8 @@ class ProductVersion(object):
                 ))
             elif hasattr(value, "to_dict"):
                 result[attr] = value.to_dict()
-            elif isinstance(value, datetime):
-                result[attr] = str(value.date())
+	    elif isinstance(value, datetime):
+		result[attr] = str(value.date())
             else:
                 result[attr] = value
 
