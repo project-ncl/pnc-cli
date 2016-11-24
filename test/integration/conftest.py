@@ -15,7 +15,9 @@ from pnc_cli import projects
 
 @pytest.fixture(scope='module')
 def new_product():
-    product = products.create_product(name=testutils.gen_random_name() + "-product",
+    randname = testutils.gen_random_name()
+    product = products.create_product(randname + "-product",
+                                      randname,
                                       description="PNC CLI: test product")
     return product
 
@@ -32,18 +34,18 @@ def new_project(request):
     return project
 
 
-@pytest.fixture(scope='module')
-def new_environment(request):
-    randname = testutils.gen_random_name()
-    env = environments.create_environment(name=randname,
-                                          system_image_id=randname,
-                                          system_image_type="DOCKER_IMAGE")
-
-    def teardown():
-        environments.delete_environment(id=env.id)
-
-    request.addfinalizer(teardown)
-    return env
+# @pytest.fixture(scope='module')
+# def new_environment(request):
+#     randname = testutils.gen_random_name()
+#     env = environments.create_environment(name=randname,
+#                                           system_image_id=randname,
+#                                           system_image_type="DOCKER_IMAGE")
+#
+#     def teardown():
+#         environments.delete_environment(id=env.id)
+#
+#     request.addfinalizer(teardown)
+#     return env
 
 
 @pytest.fixture(scope='function')
@@ -59,11 +61,12 @@ def new_set(request):
 
 
 @pytest.fixture(scope='function')
-def new_config(request, new_project, new_environment):
+#def new_config(request, new_project, new_environment):
+def new_config(request, new_project):
     created_bc = buildconfigurations.create_build_configuration(
         name=testutils.gen_random_name() + '-config',
         project=new_project.id,
-        environment=new_environment.id,
+        environment=1,
         build_script='mvn javadoc:jar deploy',
         product_version_id=1,
         scm_repo_url='https://github.com/project-ncl/pnc-simple-test-project.git',

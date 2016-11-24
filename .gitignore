@@ -77,3 +77,5 @@ pnc_cli/test-requirements.txt
 pnc_cli/test/
 pnc_cli/tox.ini
 
+#test run generated files
+results.xml

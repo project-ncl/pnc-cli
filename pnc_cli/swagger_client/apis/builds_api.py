@@ -126,7 +126,7 @@ class BuildsApi(object):
     def get_all(self, **kwargs):
         """
         Gets all Build Records
-
+        
 
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please define a `callback` function
@@ -210,7 +210,7 @@ class BuildsApi(object):
     def get_specific(self, id, **kwargs):
         """
         Gets a BuildRecord (active or archived)
-
+        
 
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please define a `callback` function

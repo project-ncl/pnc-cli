@@ -73,12 +73,16 @@ def test_run_single_build(new_config):
 
 
 @pytest.mark.skip(reason="Blocked by issue with repour (NCL-2195)")
+#def test_run_group_build(request, new_set, new_environment, new_project):
 def test_run_group_build(request, new_set, new_environment, new_project):
     assert (new_set is not None, 'Unable to create Build Configuration Group')
-    assert (new_environment is not None, 'Unable to create Build Environment')
-    config_one = new_config(request, new_project, new_environment)
-    config_two = new_config(request, new_project, new_environment)
-    config_three = new_config(request, new_project, new_environment)
+    #assert (new_environment is not None, 'Unable to create Build Environment')
+    # config_one = new_config(request, new_project, new_environment)
+    # config_two = new_config(request, new_project, new_environment)
+    # config_three = new_config(request, new_project, new_environment)
+    config_one = new_config(request, new_project)
+    config_two = new_config(request, new_project)
+    config_three = new_config(request, new_project)
     sets_api.add_configuration(id=new_set.id, body=config_one)
     sets_api.add_configuration(id=new_set.id, body=config_two)
     sets_api.add_configuration(id=new_set.id, body=config_three)

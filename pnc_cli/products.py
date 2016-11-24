@@ -20,18 +20,17 @@ def create_product_object(**kwargs):
 
 
 @arg("name", help="Name for the Product", type=types.unique_product_name)
+@arg("abbreviation", help="The abbreviation or \"short name\" of the new Product", type=types.unique_product_abbreviation)
 @arg("-d", "--description", help="Detailed description of the new Product")
-@arg("-a", "--abbreviation",
-     help="The abbreviation or \"short name\" of the new Product")
 @arg("-p", "--product-code", help="The Product code for the new Product")
 @arg("-sn", "--pgm-system-name", help="The system code for the new Product")
 @arg("-pvids", "--product-version-ids", type=types.existing_product_version, nargs='+',
      help="Space separated list of associated ProductVersion ids.")
-def create_product(name, **kwargs):
+def create_product(name, abbreviation, **kwargs):
     """
     Create a new Product
     """
-    product = create_product_object(name=name, **kwargs)
+    product = create_product_object(name=name, abbreviation=abbreviation, **kwargs)
     response = utils.checked_api_call(products_api, 'create_new', body=product)
     if response:
         return response.content
