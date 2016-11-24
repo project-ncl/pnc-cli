@@ -3,7 +3,7 @@ import random
 import string
 
 def test_eap():
-    makemead.make_mead(config="cfg/eap.cfg", run_build=True, sufix=get_sufix())
+    makemead.make_mead(config="cfg/eap.cfg", sufix=get_sufix())
 
 def test_sso():
     makemead.make_mead(config="cfg/sso.cfg", run_build=True, sufix=get_sufix())
