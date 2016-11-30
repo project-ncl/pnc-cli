@@ -224,7 +224,7 @@ class BuildRecordRest(object):
         :param status: The status of this BuildRecordRest.
         :type: str
         """
-        allowed_values = ["NEW", "WAITING_FOR_DEPENDENCIES", "BUILDING", "BUILD_COMPLETED", "DONE", "REJECTED", "REJECTED_FAILED_DEPENDENCIES", "REJECTED_ALREADY_BUILT", "SYSTEM_ERROR", "DONE_WITH_ERRORS", "CANCELED"]
+        allowed_values = ["NEW", "WAITING_FOR_DEPENDENCIES", "BUILDING", "BUILD_COMPLETED", "DONE", "REJECTED", "REJECTED_FAILED_DEPENDENCIES", "REJECTED_ALREADY_BUILT", "SYSTEM_ERROR", "DONE_WITH_ERRORS", "CANCELLED"]
         if status not in allowed_values:
             raise ValueError(
                 "Invalid value for `status`, must be one of {0}"

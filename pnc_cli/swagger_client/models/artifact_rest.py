@@ -46,12 +46,14 @@ class ArtifactRest(object):
             'sha1': 'str',
             'sha256': 'str',
             'filename': 'str',
-            'deploy_url': 'str',
+            'deploy_path': 'str',
             'build_record_ids': 'list[int]',
             'dependant_build_record_ids': 'list[int]',
             'import_date': 'datetime',
             'origin_url': 'str',
-            'size': 'int'
+            'size': 'int',
+            'deploy_url': 'str',
+            'public_url': 'str'
         }
 
         self.attribute_map = {
@@ -63,12 +65,14 @@ class ArtifactRest(object):
             'sha1': 'sha1',
             'sha256': 'sha256',
             'filename': 'filename',
-            'deploy_url': 'deployUrl',
+            'deploy_path': 'deployPath',
             'build_record_ids': 'buildRecordIds',
             'dependant_build_record_ids': 'dependantBuildRecordIds',
             'import_date': 'importDate',
             'origin_url': 'originUrl',
-            'size': 'size'
+            'size': 'size',
+            'deploy_url': 'deployUrl',
+            'public_url': 'publicUrl'
         }
 
         self._id = None
@@ -79,12 +83,14 @@ class ArtifactRest(object):
         self._sha1 = None
         self._sha256 = None
         self._filename = None
-        self._deploy_url = None
+        self._deploy_path = None
         self._build_record_ids = None
         self._dependant_build_record_ids = None
         self._import_date = None
         self._origin_url = None
         self._size = None
+        self._deploy_url = None
+        self._public_url = None
 
     @property
     def id(self):
@@ -275,26 +281,26 @@ class ArtifactRest(object):
         self._filename = filename
 
     @property
-    def deploy_url(self):
+    def deploy_path(self):
         """
-        Gets the deploy_url of this ArtifactRest.
+        Gets the deploy_path of this ArtifactRest.
 
 
-        :return: The deploy_url of this ArtifactRest.
+        :return: The deploy_path of this ArtifactRest.
         :rtype: str
         """
-        return self._deploy_url
+        return self._deploy_path
 
-    @deploy_url.setter
-    def deploy_url(self, deploy_url):
+    @deploy_path.setter
+    def deploy_path(self, deploy_path):
         """
-        Sets the deploy_url of this ArtifactRest.
+        Sets the deploy_path of this ArtifactRest.
 
 
-        :param deploy_url: The deploy_url of this ArtifactRest.
+        :param deploy_path: The deploy_path of this ArtifactRest.
         :type: str
         """
-        self._deploy_url = deploy_url
+        self._deploy_path = deploy_path
 
     @property
     def build_record_ids(self):
@@ -405,6 +411,50 @@ class ArtifactRest(object):
         :type: int
         """
         self._size = size
+
+    @property
+    def deploy_url(self):
+        """
+        Gets the deploy_url of this ArtifactRest.
+
+
+        :return: The deploy_url of this ArtifactRest.
+        :rtype: str
+        """
+        return self._deploy_url
+
+    @deploy_url.setter
+    def deploy_url(self, deploy_url):
+        """
+        Sets the deploy_url of this ArtifactRest.
+
+
+        :param deploy_url: The deploy_url of this ArtifactRest.
+        :type: str
+        """
+        self._deploy_url = deploy_url
+
+    @property
+    def public_url(self):
+        """
+        Gets the public_url of this ArtifactRest.
+
+
+        :return: The public_url of this ArtifactRest.
+        :rtype: str
+        """
+        return self._public_url
+
+    @public_url.setter
+    def public_url(self, public_url):
+        """
+        Sets the public_url of this ArtifactRest.
+
+
+        :param public_url: The public_url of this ArtifactRest.
+        :type: str
+        """
+        self._public_url = public_url
 
     def to_dict(self):
         """
