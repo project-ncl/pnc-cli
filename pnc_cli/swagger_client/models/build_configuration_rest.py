@@ -49,7 +49,6 @@ class BuildConfigurationRest(object):
             'creation_time': 'datetime',
             'last_modification_time': 'datetime',
             'archived': 'bool',
-            'repositories': 'str',
             'project': 'ProjectRest',
             'environment': 'BuildEnvironmentRest',
             'dependency_ids': 'list[int]',
@@ -69,7 +68,6 @@ class BuildConfigurationRest(object):
             'creation_time': 'creationTime',
             'last_modification_time': 'lastModificationTime',
             'archived': 'archived',
-            'repositories': 'repositories',
             'project': 'project',
             'environment': 'environment',
             'dependency_ids': 'dependencyIds',
@@ -88,7 +86,6 @@ class BuildConfigurationRest(object):
         self._creation_time = None
         self._last_modification_time = None
         self._archived = None
-        self._repositories = None
         self._project = None
         self._environment = None
         self._dependency_ids = None
@@ -336,28 +333,6 @@ class BuildConfigurationRest(object):
         :type: bool
         """
         self._archived = archived
-
-    @property
-    def repositories(self):
-        """
-        Gets the repositories of this BuildConfigurationRest.
-
-
-        :return: The repositories of this BuildConfigurationRest.
-        :rtype: str
-        """
-        return self._repositories
-
-    @repositories.setter
-    def repositories(self, repositories):
-        """
-        Sets the repositories of this BuildConfigurationRest.
-
-
-        :param repositories: The repositories of this BuildConfigurationRest.
-        :type: str
-        """
-        self._repositories = repositories
 
     @property
     def project(self):

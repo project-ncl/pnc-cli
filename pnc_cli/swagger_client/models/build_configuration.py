@@ -55,7 +55,6 @@ class BuildConfiguration(object):
             'last_modification_time': 'datetime',
             'dependencies': 'list[BuildConfiguration]',
             'dependants': 'list[BuildConfiguration]',
-            'repositories': 'str',
             'generic_parameters': 'dict(str, str)',
             'all_dependencies': 'list[BuildConfiguration]',
             'field_handler': 'FieldHandler',
@@ -83,7 +82,6 @@ class BuildConfiguration(object):
             'last_modification_time': 'lastModificationTime',
             'dependencies': 'dependencies',
             'dependants': 'dependants',
-            'repositories': 'repositories',
             'generic_parameters': 'genericParameters',
             'all_dependencies': 'allDependencies',
             'field_handler': 'fieldHandler',
@@ -110,7 +108,6 @@ class BuildConfiguration(object):
         self._last_modification_time = None
         self._dependencies = None
         self._dependants = None
-        self._repositories = None
         self._generic_parameters = None
         self._all_dependencies = None
         self._field_handler = None
@@ -492,28 +489,6 @@ class BuildConfiguration(object):
         :type: list[BuildConfiguration]
         """
         self._dependants = dependants
-
-    @property
-    def repositories(self):
-        """
-        Gets the repositories of this BuildConfiguration.
-
-
-        :return: The repositories of this BuildConfiguration.
-        :rtype: str
-        """
-        return self._repositories
-
-    @repositories.setter
-    def repositories(self, repositories):
-        """
-        Sets the repositories of this BuildConfiguration.
-
-
-        :param repositories: The repositories of this BuildConfiguration.
-        :type: str
-        """
-        self._repositories = repositories
 
     @property
     def generic_parameters(self):

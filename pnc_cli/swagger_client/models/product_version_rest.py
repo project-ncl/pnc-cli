@@ -47,7 +47,7 @@ class ProductVersionRest(object):
             'product_releases': 'list[ProductReleaseRest]',
             'build_configuration_sets': 'list[BuildConfigurationSetRest]',
             'build_configurations': 'list[BuildConfigurationRest]',
-            'brew_tag_prefix': 'str'
+            'attributes': 'dict(str, str)'
         }
 
         self.attribute_map = {
@@ -60,7 +60,7 @@ class ProductVersionRest(object):
             'product_releases': 'productReleases',
             'build_configuration_sets': 'buildConfigurationSets',
             'build_configurations': 'buildConfigurations',
-            'brew_tag_prefix': 'brewTagPrefix'
+            'attributes': 'attributes'
         }
 
         self._id = None
@@ -72,7 +72,7 @@ class ProductVersionRest(object):
         self._product_releases = None
         self._build_configuration_sets = None
         self._build_configurations = None
-        self._brew_tag_prefix = None
+        self._attributes = None
 
     @property
     def id(self):
@@ -273,26 +273,26 @@ class ProductVersionRest(object):
         self._build_configurations = build_configurations
 
     @property
-    def brew_tag_prefix(self):
+    def attributes(self):
         """
-        Gets the brew_tag_prefix of this ProductVersionRest.
+        Gets the attributes of this ProductVersionRest.
 
 
-        :return: The brew_tag_prefix of this ProductVersionRest.
-        :rtype: str
+        :return: The attributes of this ProductVersionRest.
+        :rtype: dict(str, str)
         """
-        return self._brew_tag_prefix
+        return self._attributes
 
-    @brew_tag_prefix.setter
-    def brew_tag_prefix(self, brew_tag_prefix):
+    @attributes.setter
+    def attributes(self, attributes):
         """
-        Sets the brew_tag_prefix of this ProductVersionRest.
+        Sets the attributes of this ProductVersionRest.
 
 
-        :param brew_tag_prefix: The brew_tag_prefix of this ProductVersionRest.
-        :type: str
+        :param attributes: The attributes of this ProductVersionRest.
+        :type: dict(str, str)
         """
-        self._brew_tag_prefix = brew_tag_prefix
+        self._attributes = attributes
 
     def to_dict(self):
         """
