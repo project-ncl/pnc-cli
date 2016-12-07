@@ -5,6 +5,7 @@ import logging
 import os
 from pnc_cli import buildconfigurations
 from pnc_cli import buildconfigurationsets
+from pnc_cli import products
 from pnc_cli import projects
 from pprint import pprint
 from tools.config_utils import ConfigReader
@@ -13,7 +14,9 @@ from tools.config_utils import ConfigReader
 @arg('-b', '--run_build', help='Run Build')
 @arg('-e', '--environment', help='Environment ID')
 @arg('-s', '--sufix', help='Adding sufix to artifact\'s name')
-def make_mead(config=None, run_build=None, environment=1, sufix=""):
+@arg('-p', '--product_name', help='Product name')
+@arg('-v', '--product_version', help='Product version')
+def make_mead(config=None, run_build=None, environment=1, sufix="", product_name=None, product_version=None):
     """
     Create Make Mead configuration
     :param config: Make Mead config name
@@ -21,6 +24,14 @@ def make_mead(config=None, run_build=None, environment=1, sufix=""):
     """    
     if config is None:
         logging.error('Config file --config is not specified.')
+        return 1
+
+    if product_name is None:
+        logging.error('Product Name --product-name is not specified.')
+        return 1
+
+    if product_version is None:
+        logging.error('Product Version --product-version is not specified.')
         return 1
 
     if not os.path.isfile(config):
@@ -39,12 +50,23 @@ def make_mead(config=None, run_build=None, environment=1, sufix=""):
         return 1
 
     set = None
+    product_version_id = None
     ids = dict()
     (subarts, deps_dict) = config_reader.get_dependency_structure()
     packages = config_reader.get_packages_and_dependencies()
     pprint(packages)
     logging.debug(subarts)
     logging.debug(deps_dict)
+
+    try:
+        products_versions = products.list_versions_for_product(name=product_name)
+        for product in products_versions:
+            if product.version == product_version:
+                product_version_id = product.id
+    except ValueError:
+        logging.error('Product version not found')
+        return 1
+
     for subartifact in subarts:
         art_params = config_reader.get_config(subartifact)
         logging.debug(art_params)
@@ -52,10 +74,9 @@ def make_mead(config=None, run_build=None, environment=1, sufix=""):
         package = art_params['package']
         version = art_params['version']
         scm_url = art_params['scmURL']
-        target = art_params['target']
         (scm_repo_url, scm_revision) = scm_url.split("#", 2)
         artifact_name = package + "-" + version + sufix
-        target_name = target + sufix
+        target_name = product_name + "-" + product_version + "-all" + sufix
 
         if set is None:
             try:
@@ -76,23 +97,25 @@ def make_mead(config=None, run_build=None, environment=1, sufix=""):
         try:
             build_config_id = buildconfigurations.get_build_configuration_id_by_name(name=artifact_name)
             buildconfigurations.update_build_configuration(
-                                                                      id=build_config_id,
-                                                                      name=artifact_name,
-                                                                      project=project.id,
-                                                                      environment=environment, 
-                                                                      scm_repo_url=scm_repo_url,
-                                                                      scm_revision=scm_revision,
-                                                                      build_script="mvn clean deploy -DskipTests" + get_maven_options(art_params))
+                                                           id=build_config_id,
+                                                           name=artifact_name,
+                                                           project=project.id,
+                                                           environment=environment, 
+                                                           scm_repo_url=scm_repo_url,
+                                                           scm_revision=scm_revision,
+                                                           build_script="mvn clean deploy -DskipTests" + get_maven_options(art_params),
+                                                           product_version_id=product_version_id)
             build_config = buildconfigurations.get_build_configuration(id=build_config_id)
         except ValueError:
             logging.debug('No build config with name ' + artifact_name)
             build_config = buildconfigurations.create_build_configuration(
-                                                                      name=artifact_name,
-                                                                      project=project.id,
-                                                                      environment=environment, 
-                                                                      scm_repo_url=scm_repo_url,
-                                                                      scm_revision=scm_revision,
-                                                                      build_script="mvn clean deploy -DskipTests" + get_maven_options(art_params))
+                                                                          name=artifact_name,
+                                                                          project=project.id,
+                                                                          environment=environment, 
+                                                                          scm_repo_url=scm_repo_url,
+                                                                          scm_revision=scm_revision,
+                                                                          build_script="mvn clean deploy -DskipTests" + get_maven_options(art_params),
+                                                                          product_version_id=product_version_id)
             buildconfigurationsets.add_build_configuration_to_set(set_id=set.id, config_id=build_config.id)
         ids[artifact] = build_config
         logging.debug(build_config.id)
