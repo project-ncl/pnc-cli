@@ -242,7 +242,7 @@ def test_remove_dependency_invalid_param():
 def test_dependency_operations(new_config):
     depname = testutils.gen_random_name()
     dep = buildconfigurations.create_build_configuration(name=depname, project=1, environment=1,
-                                                         scm_repo_url='http://someurl.com')
+                                                         scm_repo_url='git+ssh://user-pnc-gerrit@pnc-gerrit.pnc.dev.eng.bos.redhat.com:29418')
     configs_api.add_dependency(id=new_config.id, body=dep)
     dependency_ids = [dep.id for dep in
                       configs_api.get_dependencies(id=new_config.id, page_index=0, page_size=1000000, sort='',
