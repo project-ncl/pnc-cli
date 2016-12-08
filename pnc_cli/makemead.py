@@ -3,6 +3,7 @@ from ConfigParser import NoSectionError
 from argh import arg
 import logging
 import os
+import re
 from pnc_cli import buildconfigurations
 from pnc_cli import buildconfigurationsets
 from pnc_cli import products
@@ -75,7 +76,7 @@ def make_mead(config=None, run_build=None, environment=1, sufix="", product_name
         version = art_params['version']
         scm_url = art_params['scmURL']
         (scm_repo_url, scm_revision) = scm_url.split("#", 2)
-        artifact_name = package + "-" + version + sufix
+        artifact_name = package + "-" + re.sub("[\-\.]*redhat\-\d+", "", version) + sufix
         target_name = product_name + "-" + product_version + "-all" + sufix
 
         if set is None:
