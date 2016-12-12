@@ -3,12 +3,12 @@ from ConfigParser import NoSectionError
 from argh import arg
 import logging
 import os
-import re
 from pnc_cli import buildconfigurations
 from pnc_cli import buildconfigurationsets
 from pnc_cli import products
 from pnc_cli import projects
 from pprint import pprint
+import re
 from tools.config_utils import ConfigReader
 
 @arg('-c', '--config', help='Configuration file to use to drive the build')
@@ -105,7 +105,8 @@ def make_mead(config=None, run_build=None, environment=1, sufix="", product_name
                                                            scm_repo_url=scm_repo_url,
                                                            scm_revision=scm_revision,
                                                            build_script="mvn clean deploy -DskipTests" + get_maven_options(art_params),
-                                                           product_version_id=product_version_id)
+                                                           product_version_id=product_version_id,
+                                                           generic_parameters=get_pme_properties(art_params))
             build_config = buildconfigurations.get_build_configuration(id=build_config_id)
         except ValueError:
             logging.debug('No build config with name ' + artifact_name)
@@ -116,7 +117,8 @@ def make_mead(config=None, run_build=None, environment=1, sufix="", product_name
                                                                           scm_repo_url=scm_repo_url,
                                                                           scm_revision=scm_revision,
                                                                           build_script="mvn clean deploy -DskipTests" + get_maven_options(art_params),
-                                                                          product_version_id=product_version_id)
+                                                                          product_version_id=product_version_id,
+                                                                          generic_parameters=get_pme_properties(art_params))
             buildconfigurationsets.add_build_configuration_to_set(set_id=set.id, config_id=build_config.id)
         ids[artifact] = build_config
         logging.debug(build_config.id)
@@ -136,6 +138,7 @@ def make_mead(config=None, run_build=None, environment=1, sufix="", product_name
 
 def get_maven_options(params):
     result = ""
+
     if 'profiles' in params['options'].keys():
         for profile in params['options']['profiles']:
             if profile.strip() != "":
@@ -146,8 +149,15 @@ def get_maven_options(params):
                 result += ' %s' % maven_option
             else:
                 result += ' \'%s\'' % maven_option
+
+    return result
+
+def get_pme_properties(params):
+    result = ""
+
     if 'properties' in params['options'].keys():
         for prop in sorted(list(params['options']['properties'].keys())):
             value = params['options']['properties'][prop]
-            result += ' -D%s=%s' % (prop, value)
-    return result
+            result += '-D%s=%s ' % (prop, value)
+
+    return {'CUSTOM_PME_PARAMETERS': result}
