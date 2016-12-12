@@ -69,7 +69,7 @@ def new_config(request, new_project):
         environment=1,
         build_script='mvn javadoc:jar deploy',
         product_version_id=1,
-        scm_repo_url='https://github.com/project-ncl/pnc-simple-test-project.git',
+        scm_repo_url='git+ssh://user-pnc-gerrit@pnc-gerrit.pnc.dev.eng.bos.redhat.com:29418',
         scm_revision='1.0')
 
     def teardown():
