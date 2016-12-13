@@ -106,7 +106,7 @@ def make_mead(config=None, run_build=None, environment=1, sufix="", product_name
                                                            scm_revision=scm_revision,
                                                            build_script="mvn clean deploy -DskipTests" + get_maven_options(art_params),
                                                            product_version_id=product_version_id,
-                                                           generic_parameters=get_pme_properties(art_params))
+                                                           generic_parameters={'CUSTOM_PME_PARAMETERS': get_pme_properties(art_params)})
             build_config = buildconfigurations.get_build_configuration(id=build_config_id)
         except ValueError:
             logging.debug('No build config with name ' + artifact_name)
@@ -118,7 +118,7 @@ def make_mead(config=None, run_build=None, environment=1, sufix="", product_name
                                                                           scm_revision=scm_revision,
                                                                           build_script="mvn clean deploy -DskipTests" + get_maven_options(art_params),
                                                                           product_version_id=product_version_id,
-                                                                          generic_parameters=get_pme_properties(art_params))
+                                                                          generic_parameters={'CUSTOM_PME_PARAMETERS': get_pme_properties(art_params)})
             buildconfigurationsets.add_build_configuration_to_set(set_id=set.id, config_id=build_config.id)
         ids[artifact] = build_config
         logging.debug(build_config.id)
@@ -149,6 +149,7 @@ def get_maven_options(params):
                 result += ' %s' % maven_option
             else:
                 result += ' \'%s\'' % maven_option
+    result += get_pme_properties(params)
 
     return result
 
@@ -158,6 +159,6 @@ def get_pme_properties(params):
     if 'properties' in params['options'].keys():
         for prop in sorted(list(params['options']['properties'].keys())):
             value = params['options']['properties'][prop]
-            result += '-D%s=%s ' % (prop, value)
+            result += ' -D%s=%s' % (prop, value)
 
-    return {'CUSTOM_PME_PARAMETERS': result}
+    return re.sub("\-Dversion\.suffix\=redhat\-\d+", "", result)
