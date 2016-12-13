@@ -161,4 +161,4 @@ def get_pme_properties(params):
             value = params['options']['properties'][prop]
             result += ' -D%s=%s' % (prop, value)
 
-    return re.sub("\-Dversion\.suffix\=redhat\-\d+", "", result)
+    return re.sub("\-Dversion\.suffix\=redhat\-\d+", "-Dversion.incremental.suffix=redhat", result)
