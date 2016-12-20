@@ -76,7 +76,7 @@ def make_mead(config=None, run_build=None, environment=1, sufix="", product_name
             artifact = art_params['pnc.projectName']
         else:
             artifact = art_params['artifact']
-        pprint(art_params)
+        logging.debug(art_params)
         package = art_params['package']
         version = art_params['version']
         scm_url = art_params['scmURL']
