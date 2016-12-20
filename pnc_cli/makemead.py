@@ -71,7 +71,12 @@ def make_mead(config=None, run_build=None, environment=1, sufix="", product_name
     for subartifact in subarts:
         art_params = config_reader.get_config(subartifact)
         logging.debug(art_params)
-        artifact = art_params['artifact']
+        if 'pnc.projectName' in art_params.keys():
+            print 'pnc.projectName'
+            artifact = art_params['pnc.projectName']
+        else:
+            artifact = art_params['artifact']
+        pprint(art_params)
         package = art_params['package']
         version = art_params['version']
         scm_url = art_params['scmURL']
@@ -83,7 +88,7 @@ def make_mead(config=None, run_build=None, environment=1, sufix="", product_name
             try:
                 set = buildconfigurationsets.get_build_configuration_set(name=target_name)
             except ValueError:
-                set = buildconfigurationsets.create_build_configuration_set(name=target_name)
+                set = buildconfigurationsets.create_build_configuration_set(name=target_name, product_version_id=product_version_id)
             logging.debug(target_name + ":")
             logging.debug(set.id)
 
