@@ -75,9 +75,11 @@ def make_mead(config=None, run_build=None, environment=1, sufix="", product_name
         logging.debug(art_params)
         if 'pnc.projectName' in art_params.keys():
             logging.debug("Overriding project name with " + art_params['pnc.projectName'])
+            pprint("Overriding project name with " + art_params['pnc.projectName'])
             artifact = art_params['pnc.projectName']
         else:
             logging.debug("Using default project name " + art_params['artifact'])
+            pprint("Using default project name " + art_params['artifact'])
             artifact = art_params['artifact']
             
         logging.debug(art_params)
@@ -146,16 +148,25 @@ def get_maven_options(params):
     return result
 
 def get_pme_properties(params):
+    not_supported_params = ("strictAlignment", "version.suffix", "overrideTransitive")
     result = ""
 
     if 'properties' in params['options'].keys():
         for prop in sorted(list(params['options']['properties'].keys())):
             value = params['options']['properties'][prop]
-            result += ' -D%s=%s' % (prop, value)
+            if prop not in not_supported_params:
+                result += ' -D%s=%s' % (prop, value)
 
-    return re.sub("\-Dversion\.suffix\=redhat\-\d+", "-Dversion.incremental.suffix=redhat", result) 
-#TODO remove the defaults from here
+    return result 
 
+def get_generic_parameters(params):
+    pme_properties = get_pme_properties(params)
+    if pme_properties == "":
+        return dict()
+    else:
+        return {'CUSTOM_PME_PARAMETERS': pme_properties}
+    
+    
 def update_build_configuration(environment, product_version_id, art_params, scm_repo_url, scm_revision, artifact_name, project):
     build_config_id = buildconfigurations.get_build_configuration_id_by_name(name=artifact_name)
     buildconfigurations.update_build_configuration(
@@ -167,7 +178,7 @@ def update_build_configuration(environment, product_version_id, art_params, scm_
                                                    scm_revision=scm_revision,
                                                    build_script="mvn clean deploy -DskipTests" + get_maven_options(art_params),
                                                    product_version_id=product_version_id,
-                                                   generic_parameters={'CUSTOM_PME_PARAMETERS': get_pme_properties(art_params)})
+                                                   generic_parameters=get_generic_parameters(art_params))
     return buildconfigurations.get_build_configuration(id=build_config_id)
 
 def create_build_configuration(environment, bc_set, product_version_id, art_params, scm_repo_url, 
@@ -179,7 +190,7 @@ def create_build_configuration(environment, bc_set, product_version_id, art_para
         scm_revision=scm_revision, 
         build_script="mvn clean deploy -DskipTests" + get_maven_options(art_params), 
         product_version_id=product_version_id, 
-        generic_parameters={'CUSTOM_PME_PARAMETERS':get_pme_properties(art_params)})
+        generic_parameters=get_generic_parameters(art_params))
     buildconfigurationsets.add_build_configuration_to_set(set_id=bc_set.id, config_id=build_config.id)
     return build_config
 
