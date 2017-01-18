@@ -2,8 +2,8 @@
 A python CLI around the PNC REST API
 
 Installation:
- * pip install pnc-cli
-
+ * python setup.py install --user
+ 
 Usage:
  * Configure the REST endpoint for PNC in USER_HOME/.config/pnc-cli/pnc-cli.conf
  * pnc -h for a list of valid operations.
