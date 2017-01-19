@@ -25,7 +25,7 @@ def get_id_by_name(api, search_name):
     :param search_name: name to test for
     :return ID of entity matching search_name, None otherwise
     """
-    entities = api.get_all(q='name==' + search_name).content
+    entities = api.get_all(q='name==' + "'" + search_name + "'").content
     if entities:
         return entities[0].id
     return

@@ -79,3 +79,8 @@ pnc_cli/tox.ini
 
 #test run generated files
 results.xml
+
+.project
+.pydevproject
+.settings/
+
