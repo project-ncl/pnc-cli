@@ -104,7 +104,8 @@ def make_mead(config=None, run_build=None, environment=1, sufix="", product_name
         except ValueError:
             logging.debug('No build config with name ' + artifact_name)
             build_config = create_build_configuration(environment, bc_set, product_version_id, art_params, scm_repo_url, 
-                                                      scm_revision, artifact_name, project)
+                                                      scm_revision, artifact_name, project,
+                                                      use_external_scm_fields=external)
             
         ids[artifact] = build_config
         logging.debug(build_config.id)
@@ -192,17 +193,62 @@ def update_build_configuration(environment, product_version_id, art_params, scm_
                                                    generic_parameters=get_generic_parameters(art_params))
     return buildconfigurations.get_build_configuration(id=build_config_id)
 
-def create_build_configuration(environment, bc_set, product_version_id, art_params, scm_repo_url, 
-                               scm_revision, artifact_name, project):
-    build_config = buildconfigurations.create_build_configuration(name=artifact_name, 
-        project=project.id, 
-        environment=environment, 
-        scm_repo_url=scm_repo_url, 
-        scm_revision=scm_revision, 
-        build_script="mvn clean deploy -DskipTests" + get_maven_options(art_params), 
-        product_version_id=product_version_id, 
-        generic_parameters=get_generic_parameters(art_params))
-    buildconfigurationsets.add_build_configuration_to_set(set_id=bc_set.id, config_id=build_config.id)
-    return build_config
+#Example payload
+#post /bpm/tasks/start-build-configuration-creation 
+#{
+#  "name": "BCCreation_test_jbartece",
+#  "description": "string",
+#  "buildScript": "mvn clean deploy",
+#  "scmRepoURL": null,
+#  "scmRevision": null,
+#  "scmExternalRepoURL": "http://git.app.eng.bos.redhat.com/git/twitter4j.git",
+#  "scmExternalRevision": "4.0.4",
+#  "projectId": 1,
+#  "buildEnvironmentId": 1,
+#  "dependencyIds": [
+#  ],
+#  "productVersionId": 1,
+#  "buildConfigurationSetIds": [
+#  ],
+#  "genericParameters": {}
+#}
+
+#Response Body
+#30
+def create_build_configuration(environment_id, bc_set, product_version_id, art_params, scm_repo_url, 
+                               scm_revision, artifact_name, project, use_external_scm_fields):
+    bpm_task_id = 0
+    
+    if use_external_scm_fields:
+        #Create BPM build config using post /bpm/tasks/start-build-configuration-creation 
+        #Set these SCM fields: scmExternalRepoURL and scmExternalRevision
+        bpm_task_id = 10
+    else:
+        #Create BPM build config using post /bpm/tasks/start-build-configuration-creation 
+        #Set these SCM fields: scmRepoURL and scmRevision
+        #Fields scmExternalRepoURL and scmExternalRevision can be optionally filled too
+        bpm_task_id = 10    
+
+    
+    #Using polling every 30s check this endpoint: get /bpm/tasks/{bpm_task_id} 
+    #until eventType is:
+    # BCC_CONFIG_SET_ADDITION_ERROR BCC_CREATION_ERROR BCC_REPO_CLONE_ERROR BCC_REPO_CREATION_ERROR -> ERROR -> end with error
+    # BCC_CREATION_SUCCESS  -> SUCCESS
+    
+    #Inform user that he should update the config
+    if use_external_scm_fields:
+        pprint("!! IMPORTANT !! - ACTION REQUIRED !!")
+        pprint("External repository " + "TODO ORIGINAL URL" 
+               + " was forked to internal Git server. YOU MUST TO UPDATE YOUR CONFIG FILE WITH THE NEW VALUE.")
+        pprint("New repository URL is: " + "TODO INTERNAL URL")
+    
+    #Get BC - GET build-configurations?q='$NAME'
+    #Not found-> BC creation failed and the task was garbage collected -> fail
+    #Success -> add BC to BCSet and return BC
+    #    buildconfigurationsets.add_build_configuration_to_set(set_id=bc_set.id, config_id=build_config.id)
+    #    return build_config
+
+
+
 
 
