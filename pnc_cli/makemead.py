@@ -1,15 +1,20 @@
 from ConfigParser import Error
 from ConfigParser import NoSectionError
-from argh import arg
 import logging
 import os
-from pnc_cli import buildconfigurations
+from pprint import pprint
+import re
+
+from argh import arg
+from pnc_cli import buildconfigurations, bpmbuildconfigurations
 from pnc_cli import buildconfigurationsets
 from pnc_cli import products
 from pnc_cli import projects
-from pprint import pprint
-import re
+from pnc_cli import utils
+from pnc_cli.bpmbuildconfigurations import create_bpm_build_configuration
+from pnc_cli.swagger_client import BpmApi
 from tools.config_utils import ConfigReader
+
 
 @arg('-c', '--config', help='Configuration file to use to drive the build')
 @arg('-b', '--run_build', help='Run Build')
@@ -25,20 +30,7 @@ def make_mead(config=None, run_build=None, environment=1, sufix="", product_name
     :param config: Make Mead config name
     :return:
     """    
-    if config is None:
-        logging.error('Config file --config is not specified.')
-        return 1
-
-    if product_name is None:
-        logging.error('Product Name --product-name is not specified.')
-        return 1
-
-    if product_version is None:
-        logging.error('Product Version --product-version is not specified.')
-        return 1
-
-    if not os.path.isfile(config):
-        logging.error('Config file %s not found.', os.path.abspath(config))
+    if validate_input_parameters(config, product_name, product_version) != 0:
         return 1
 
     try:
@@ -131,6 +123,25 @@ def make_mead(config=None, run_build=None, environment=1, sufix="", product_name
 
     return bc_set
 
+def validate_input_parameters(config, product_name, product_version):
+    if config is None:
+        logging.error('Config file --config is not specified.')
+        return 1
+
+    if product_name is None:
+        logging.error('Product Name --product-name is not specified.')
+        return 1
+
+    if product_version is None:
+        logging.error('Product Version --product-version is not specified.')
+        return 1
+
+    if not os.path.isfile(config):
+        logging.error('Config file %s not found.', os.path.abspath(config))
+        return 1
+    
+    return 0
+    
 def get_maven_options(params):
     result = ""
 
