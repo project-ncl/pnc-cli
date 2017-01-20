@@ -4,15 +4,17 @@ import logging
 import os
 from pprint import pprint
 import re
+import time
 
 from argh import arg
-from pnc_cli import buildconfigurations, bpmbuildconfigurations
+from pnc_cli import buildconfigurations
 from pnc_cli import buildconfigurationsets
 from pnc_cli import products
 from pnc_cli import projects
-from pnc_cli import utils
-from pnc_cli.bpmbuildconfigurations import create_bpm_build_configuration
-from pnc_cli.swagger_client import BpmApi
+from pnc_cli.bpmbuildconfigurations import create_bpm_build_configuration, \
+    get_bpm_task_by_id
+from pnc_cli.buildconfigurations import get_build_configuration_id_by_name, \
+    get_build_configuration__by_name
 from tools.config_utils import ConfigReader
 
 
@@ -24,7 +26,7 @@ from tools.config_utils import ConfigReader
 @arg('-v', '--product_version', help='Product version')
 @arg('--external', help="""If bc_set the SCM URLs are considered as external and therefore the repositories will be forked to Gerrit
  and the user MUST update the config file with the new values for next runs""")
-def make_mead(config=None, run_build=None, environment=1, sufix="", product_name=None, product_version=None, external = False):
+def make_mead(config=None, run_build=False, environment=1, sufix="", product_name=None, product_version=None, external = False):
     """
     Create Make Mead configuration
     :param config: Make Mead config name
@@ -67,11 +69,11 @@ def make_mead(config=None, run_build=None, environment=1, sufix="", product_name
         logging.debug(art_params)
         if 'pnc.projectName' in art_params.keys():
             logging.debug("Overriding project name with " + art_params['pnc.projectName'])
-            pprint("Overriding project name with " + art_params['pnc.projectName'])
+            #pprint("Overriding project name with " + art_params['pnc.projectName'])
             artifact = art_params['pnc.projectName']
         else:
             logging.debug("Using default project name " + art_params['artifact'])
-            pprint("Using default project name " + art_params['artifact'])
+            #pprint("Using default project name " + art_params['artifact'])
             artifact = art_params['artifact']
             
         logging.debug(art_params)
@@ -106,6 +108,8 @@ def make_mead(config=None, run_build=None, environment=1, sufix="", product_name
             build_config = create_build_configuration(environment, bc_set, product_version_id, art_params, scm_repo_url, 
                                                       scm_revision, artifact_name, project,
                                                       use_external_scm_fields=external)
+        if build_config == None:
+            return 10
             
         ids[artifact] = build_config
         logging.debug(build_config.id)
@@ -118,7 +122,7 @@ def make_mead(config=None, run_build=None, environment=1, sufix="", product_name
             logging.debug(id.id, subid.id)
             buildconfigurations.add_dependency(id=id.id, dependency_id=subid.id)
 
-    if run_build is not None:
+    if run_build:
         build_record = buildconfigurationsets.build_set(id=bc_set.id)
         pprint(build_record)
 
@@ -232,7 +236,6 @@ def create_build_configuration(environment_id, bc_set, product_version_id, art_p
                                              dependency_ids = [],
                                              build_configuration_set_ids = [],
                                              generic_parameters=get_generic_parameters(art_params))  
-        bpm_task_id = 10
     else:
         #Create BPM build config using post /bpm/tasks/start-build-configuration-creation 
         #Set these SCM fields: scmRepoURL and scmRevision
@@ -253,20 +256,49 @@ def create_build_configuration(environment_id, bc_set, product_version_id, art_p
     #until eventType is:
     # BCC_CONFIG_SET_ADDITION_ERROR BCC_CREATION_ERROR BCC_REPO_CLONE_ERROR BCC_REPO_CREATION_ERROR -> ERROR -> end with error
     # BCC_CREATION_SUCCESS  -> SUCCESS
+    error_event_types = ("BCC_CONFIG_SET_ADDITION_ERROR", "BCC_CREATION_ERROR", "BCC_REPO_CLONE_ERROR", "BCC_REPO_CREATION_ERROR")
+    time.sleep(2)
+    while True:
+        bpm_task = get_bpm_task_by_id(bpm_task_id)
+        
+        if contains_event_type(bpm_task.content.events, ("BCC_CREATION_SUCCESS", )):
+            break
+        
+        if contains_event_type(bpm_task.content.events, error_event_types):
+            pprint("Creation of Build Configuration failed")
+            pprint(bpm_task.content)
+            return None
+        
+        pprint("Waiting until Build Configuration " + artifact_name + " is created.")
+        time.sleep(10)
+
     
+    #Get BC - GET build-configurations?q='$NAME'
+    #Not found-> BC creation failed and the task was garbage collected -> fail
+    #Success -> add BC to BCSet and return BC
+    build_config = get_build_configuration__by_name(artifact_name)
+    if build_config == None:
+        pprint("Creation of Build Configuration failed. Unfortunately the details were garbage collected on PNC side.")
+        return None        
+        
+    pprint("Build Configuration " + artifact_name + " is created.")
     #Inform user that he should update the config
     if use_external_scm_fields:
         pprint("!! IMPORTANT !! - ACTION REQUIRED !!")
         pprint("External repository " + scm_repo_url
                + " was forked to internal Git server. YOU MUST TO UPDATE YOUR CONFIG FILE WITH THE NEW VALUE.")
-        pprint("New repository URL is: " + "TODO INTERNAL URL")
-    
-    #Get BC - GET build-configurations?q='$NAME'
-    #Not found-> BC creation failed and the task was garbage collected -> fail
-    #Success -> add BC to BCSet and return BC
-    #    buildconfigurationsets.add_build_configuration_to_set(set_id=bc_set.id, config_id=build_config.id)
-    #    return build_config
+        pprint("New repository URL is: " + build_config.scm_repo_url)
+        
+    buildconfigurationsets.add_build_configuration_to_set(set_id=bc_set.id, config_id=build_config.id)
+    return build_config
 
+    
+def contains_event_type(events, types):
+    for event in events:
+        if(event.event_type in types):   
+            return True  
+        
+    return False
 
 
 

@@ -47,5 +47,7 @@ def create_bpm_build_configuration(**kwargs):
         configs_api, 'start_bc_creation_task', body=build_configuration)
     if response:
         return response
-    
-    
+
+def get_bpm_task_by_id(bpm_task_id):
+    return utils.checked_api_call(configs_api, "get_bpm_task_by_id", task_id=bpm_task_id )
+
