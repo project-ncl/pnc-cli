@@ -222,14 +222,33 @@ def create_build_configuration(environment_id, bc_set, product_version_id, art_p
     if use_external_scm_fields:
         #Create BPM build config using post /bpm/tasks/start-build-configuration-creation 
         #Set these SCM fields: scmExternalRepoURL and scmExternalRevision
+        bpm_task_id = create_bpm_build_configuration(name=artifact_name, 
+                                             project_id=project.id,         
+                                             build_environment_id=environment_id, 
+                                             scm_external_repo_url=scm_repo_url, 
+                                             scm_external_revision=scm_revision,
+                                             build_script="mvn clean deploy -DskipTests" + get_maven_options(art_params), 
+                                             product_version_id=product_version_id, 
+                                             dependency_ids = [],
+                                             build_configuration_set_ids = [],
+                                             generic_parameters=get_generic_parameters(art_params))  
         bpm_task_id = 10
     else:
         #Create BPM build config using post /bpm/tasks/start-build-configuration-creation 
         #Set these SCM fields: scmRepoURL and scmRevision
         #Fields scmExternalRepoURL and scmExternalRevision can be optionally filled too
-        bpm_task_id = 10    
+        bpm_task_id = create_bpm_build_configuration(name=artifact_name, 
+                                                     project_id=project.id,         
+                                                     build_environment_id=environment_id, 
+                                                     scm_repo_url=scm_repo_url, 
+                                                     scm_revision=scm_revision,
+                                                     build_script="mvn clean deploy -DskipTests" + get_maven_options(art_params), 
+                                                     product_version_id=product_version_id, 
+                                                     dependency_ids = [],
+                                                     build_configuration_set_ids = [],
+                                                     generic_parameters=get_generic_parameters(art_params))  
 
-    
+
     #Using polling every 30s check this endpoint: get /bpm/tasks/{bpm_task_id} 
     #until eventType is:
     # BCC_CONFIG_SET_ADDITION_ERROR BCC_CREATION_ERROR BCC_REPO_CLONE_ERROR BCC_REPO_CREATION_ERROR -> ERROR -> end with error
@@ -238,7 +257,7 @@ def create_build_configuration(environment_id, bc_set, product_version_id, art_p
     #Inform user that he should update the config
     if use_external_scm_fields:
         pprint("!! IMPORTANT !! - ACTION REQUIRED !!")
-        pprint("External repository " + "TODO ORIGINAL URL" 
+        pprint("External repository " + scm_repo_url
                + " was forked to internal Git server. YOU MUST TO UPDATE YOUR CONFIG FILE WITH THE NEW VALUE.")
         pprint("New repository URL is: " + "TODO INTERNAL URL")
     
