@@ -1,15 +1,22 @@
 from ConfigParser import Error
 from ConfigParser import NoSectionError
-from argh import arg
 import logging
 import os
+from pprint import pprint
+import re
+import time
+
+from argh import arg
 from pnc_cli import buildconfigurations
 from pnc_cli import buildconfigurationsets
 from pnc_cli import products
 from pnc_cli import projects
-from pprint import pprint
-import re
+from pnc_cli.bpmbuildconfigurations import create_bpm_build_configuration, \
+    get_bpm_task_by_id
+from pnc_cli.buildconfigurations import get_build_configuration_id_by_name, \
+    get_build_configuration__by_name
 from tools.config_utils import ConfigReader
+
 
 @arg('-c', '--config', help='Configuration file to use to drive the build')
 @arg('-b', '--run_build', help='Run Build')
@@ -19,26 +26,13 @@ from tools.config_utils import ConfigReader
 @arg('-v', '--product_version', help='Product version')
 @arg('--external', help="""If bc_set the SCM URLs are considered as external and therefore the repositories will be forked to Gerrit
  and the user MUST update the config file with the new values for next runs""")
-def make_mead(config=None, run_build=None, environment=1, sufix="", product_name=None, product_version=None, external = False):
+def make_mead(config=None, run_build=False, environment=1, sufix="", product_name=None, product_version=None, external = False):
     """
     Create Make Mead configuration
     :param config: Make Mead config name
     :return:
     """    
-    if config is None:
-        logging.error('Config file --config is not specified.')
-        return 1
-
-    if product_name is None:
-        logging.error('Product Name --product-name is not specified.')
-        return 1
-
-    if product_version is None:
-        logging.error('Product Version --product-version is not specified.')
-        return 1
-
-    if not os.path.isfile(config):
-        logging.error('Config file %s not found.', os.path.abspath(config))
+    if validate_input_parameters(config, product_name, product_version) != 0:
         return 1
 
     try:
@@ -75,11 +69,11 @@ def make_mead(config=None, run_build=None, environment=1, sufix="", product_name
         logging.debug(art_params)
         if 'pnc.projectName' in art_params.keys():
             logging.debug("Overriding project name with " + art_params['pnc.projectName'])
-            pprint("Overriding project name with " + art_params['pnc.projectName'])
+            #pprint("Overriding project name with " + art_params['pnc.projectName'])
             artifact = art_params['pnc.projectName']
         else:
             logging.debug("Using default project name " + art_params['artifact'])
-            pprint("Using default project name " + art_params['artifact'])
+            #pprint("Using default project name " + art_params['artifact'])
             artifact = art_params['artifact']
             
         logging.debug(art_params)
@@ -112,7 +106,10 @@ def make_mead(config=None, run_build=None, environment=1, sufix="", product_name
         except ValueError:
             logging.debug('No build config with name ' + artifact_name)
             build_config = create_build_configuration(environment, bc_set, product_version_id, art_params, scm_repo_url, 
-                                                      scm_revision, artifact_name, project)
+                                                      scm_revision, artifact_name, project,
+                                                      use_external_scm_fields=external)
+        if build_config == None:
+            return 10
             
         ids[artifact] = build_config
         logging.debug(build_config.id)
@@ -125,12 +122,31 @@ def make_mead(config=None, run_build=None, environment=1, sufix="", product_name
             logging.debug(id.id, subid.id)
             buildconfigurations.add_dependency(id=id.id, dependency_id=subid.id)
 
-    if run_build is not None:
+    if run_build:
         build_record = buildconfigurationsets.build_set(id=bc_set.id)
         pprint(build_record)
 
     return bc_set
 
+def validate_input_parameters(config, product_name, product_version):
+    if config is None:
+        logging.error('Config file --config is not specified.')
+        return 1
+
+    if product_name is None:
+        logging.error('Product Name --product-name is not specified.')
+        return 1
+
+    if product_version is None:
+        logging.error('Product Version --product-version is not specified.')
+        return 1
+
+    if not os.path.isfile(config):
+        logging.error('Config file %s not found.', os.path.abspath(config))
+        return 1
+    
+    return 0
+    
 def get_maven_options(params):
     result = ""
 
@@ -181,17 +197,109 @@ def update_build_configuration(environment, product_version_id, art_params, scm_
                                                    generic_parameters=get_generic_parameters(art_params))
     return buildconfigurations.get_build_configuration(id=build_config_id)
 
-def create_build_configuration(environment, bc_set, product_version_id, art_params, scm_repo_url, 
-                               scm_revision, artifact_name, project):
-    build_config = buildconfigurations.create_build_configuration(name=artifact_name, 
-        project=project.id, 
-        environment=environment, 
-        scm_repo_url=scm_repo_url, 
-        scm_revision=scm_revision, 
-        build_script="mvn clean deploy -DskipTests" + get_maven_options(art_params), 
-        product_version_id=product_version_id, 
-        generic_parameters=get_generic_parameters(art_params))
+#Example payload
+#post /bpm/tasks/start-build-configuration-creation 
+#{
+#  "name": "BCCreation_test_jbartece",
+#  "description": "string",
+#  "buildScript": "mvn clean deploy",
+#  "scmRepoURL": null,
+#  "scmRevision": null,
+#  "scmExternalRepoURL": "http://git.app.eng.bos.redhat.com/git/twitter4j.git",
+#  "scmExternalRevision": "4.0.4",
+#  "projectId": 1,
+#  "buildEnvironmentId": 1,
+#  "dependencyIds": [
+#  ],
+#  "productVersionId": 1,
+#  "buildConfigurationSetIds": [
+#  ],
+#  "genericParameters": {}
+#}
+
+#Response Body
+#30
+def create_build_configuration(environment_id, bc_set, product_version_id, art_params, scm_repo_url, 
+                               scm_revision, artifact_name, project, use_external_scm_fields):
+    bpm_task_id = 0
+    
+    if use_external_scm_fields:
+        #Create BPM build config using post /bpm/tasks/start-build-configuration-creation 
+        #Set these SCM fields: scmExternalRepoURL and scmExternalRevision
+        bpm_task_id = create_bpm_build_configuration(name=artifact_name, 
+                                             project_id=project.id,         
+                                             build_environment_id=environment_id, 
+                                             scm_external_repo_url=scm_repo_url, 
+                                             scm_external_revision=scm_revision,
+                                             build_script="mvn clean deploy -DskipTests" + get_maven_options(art_params), 
+                                             product_version_id=product_version_id, 
+                                             dependency_ids = [],
+                                             build_configuration_set_ids = [],
+                                             generic_parameters=get_generic_parameters(art_params))  
+    else:
+        #Create BPM build config using post /bpm/tasks/start-build-configuration-creation 
+        #Set these SCM fields: scmRepoURL and scmRevision
+        #Fields scmExternalRepoURL and scmExternalRevision can be optionally filled too
+        bpm_task_id = create_bpm_build_configuration(name=artifact_name, 
+                                                     project_id=project.id,         
+                                                     build_environment_id=environment_id, 
+                                                     scm_repo_url=scm_repo_url, 
+                                                     scm_revision=scm_revision,
+                                                     build_script="mvn clean deploy -DskipTests" + get_maven_options(art_params), 
+                                                     product_version_id=product_version_id, 
+                                                     dependency_ids = [],
+                                                     build_configuration_set_ids = [],
+                                                     generic_parameters=get_generic_parameters(art_params))  
+
+
+    #Using polling every 30s check this endpoint: get /bpm/tasks/{bpm_task_id} 
+    #until eventType is:
+    # BCC_CONFIG_SET_ADDITION_ERROR BCC_CREATION_ERROR BCC_REPO_CLONE_ERROR BCC_REPO_CREATION_ERROR -> ERROR -> end with error
+    # BCC_CREATION_SUCCESS  -> SUCCESS
+    error_event_types = ("BCC_CONFIG_SET_ADDITION_ERROR", "BCC_CREATION_ERROR", "BCC_REPO_CLONE_ERROR", "BCC_REPO_CREATION_ERROR")
+    time.sleep(2)
+    while True:
+        bpm_task = get_bpm_task_by_id(bpm_task_id)
+        
+        if contains_event_type(bpm_task.content.events, ("BCC_CREATION_SUCCESS", )):
+            break
+        
+        if contains_event_type(bpm_task.content.events, error_event_types):
+            pprint("Creation of Build Configuration failed")
+            pprint(bpm_task.content)
+            return None
+        
+        pprint("Waiting until Build Configuration " + artifact_name + " is created.")
+        time.sleep(10)
+
+    
+    #Get BC - GET build-configurations?q='$NAME'
+    #Not found-> BC creation failed and the task was garbage collected -> fail
+    #Success -> add BC to BCSet and return BC
+    build_config = get_build_configuration__by_name(artifact_name)
+    if build_config == None:
+        pprint("Creation of Build Configuration failed. Unfortunately the details were garbage collected on PNC side.")
+        return None        
+        
+    pprint("Build Configuration " + artifact_name + " is created.")
+    #Inform user that he should update the config
+    if use_external_scm_fields:
+        pprint("!! IMPORTANT !! - ACTION REQUIRED !!")
+        pprint("External repository " + scm_repo_url
+               + " was forked to internal Git server. YOU MUST TO UPDATE YOUR CONFIG FILE WITH THE NEW VALUE.")
+        pprint("New repository URL is: " + build_config.scm_repo_url)
+        
     buildconfigurationsets.add_build_configuration_to_set(set_id=bc_set.id, config_id=build_config.id)
     return build_config
+
+    
+def contains_event_type(events, types):
+    for event in events:
+        if(event.event_type in types):   
+            return True  
+        
+    return False
+
+
 
 

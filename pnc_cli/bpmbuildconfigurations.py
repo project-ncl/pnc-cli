@@ -7,6 +7,8 @@ from pnc_cli import utils
 from pnc_cli.swagger_client import BpmApi
 from pnc_cli.swagger_client import EnvironmentsApi
 from pnc_cli.swagger_client import ProjectsApi
+from pprint import pprint
+
 
 api_client = utils.get_api_client()
 projects_api = ProjectsApi(api_client)
@@ -21,8 +23,8 @@ def create_build_conf_object(**kwargs):
 
 @arg("name", help="Name for the new BuildConfiguration.", type=types.valid_bc_name)
 # allow specifying project by name?
-@arg("project", help="ID of the Project to associate the BuildConfiguration with.", type=types.existing_project_id)
-@arg("environment", help="ID of the Environment for the new BuildConfiguration.",
+@arg("project_id", help="ID of the Project to associate the BuildConfiguration with.", type=types.existing_project_id)
+@arg("environment_id", help="ID of the Environment for the new BuildConfiguration.",
      type=types.existing_environment_id)
 @arg("scm_repo_url", help="URL to the sources of the BuildConfiguration.")
 @arg("scm_revision", help="Revision of the sources in scm-url for this BuildConfiguration.")
@@ -39,15 +41,13 @@ def create_bpm_build_configuration(**kwargs):
     Create a new BuildConfiguration. BuildConfigurations represent the settings and configuration required to run a build of a specific version of the associated Project's source code.
     If a ProductVersion ID is provided, the BuildConfiguration will have access to artifacts which were produced for that version, but may not have been released yet.
     """
-    project_id = kwargs.get('project')
-    project_rest = common.get_entity(projects_api, project_id)
-    kwargs['project'] = project_rest
-    env_id = kwargs.get('environment')
-    env_rest = common.get_entity(envs_api, env_id)
-    kwargs['environment'] = env_rest
 
     build_configuration = create_build_conf_object(**kwargs)
     response = utils.checked_api_call(
         configs_api, 'start_bc_creation_task', body=build_configuration)
     if response:
-        return response.content
+        return response
+
+def get_bpm_task_by_id(bpm_task_id):
+    return utils.checked_api_call(configs_api, "get_bpm_task_by_id", task_id=bpm_task_id )
+

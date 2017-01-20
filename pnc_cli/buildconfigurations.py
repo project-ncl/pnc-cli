@@ -37,6 +37,17 @@ def get_build_configuration_id_by_name(name):
         return None
     return response[0].id
 
+def get_build_configuration__by_name(name):
+    """
+    Returns the build configuration matching the name
+    :param name: name of build configuration
+    :return: The matching build configuration, or None if no match found
+    """
+    response = utils.checked_api_call(configs_api, 'get_all', q='name==' + name).content
+    if not response:
+        return None
+    return response[0]
+
 
 def config_id_exists(search_id):
     """

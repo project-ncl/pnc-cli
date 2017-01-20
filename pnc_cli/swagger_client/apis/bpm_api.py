@@ -352,7 +352,7 @@ class BpmApi(object):
                                             body=body_params,
                                             post_params=form_params,
                                             files=files,
-                                            response_type=None,
+                                            response_type=int,
                                             auth_settings=auth_settings,
                                             callback=params.get('callback'))
         return response
