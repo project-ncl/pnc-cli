@@ -136,10 +136,10 @@ def make_mead(config=None, run_build=False, environment=1, sufix="", product_nam
     logging.debug(ids)
     for package, dependencies in packages.iteritems():
         for artifact in dependencies:
-            id = ids[package]
+            bc_id = ids[package]
             subid = ids[artifact]
-            logging.debug(id.id, subid.id)
-            buildconfigurations.add_dependency(id=id.id, dependency_id=subid.id)
+            logging.debug(bc_id.id, subid.id)
+            buildconfigurations.add_dependency(id=bc_id.id, dependency_id=subid.id)
 
     #Run build if requested
     if run_build:
