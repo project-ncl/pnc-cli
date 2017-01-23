@@ -25,9 +25,13 @@ from tools.config_utils import ConfigReader
 @arg('-v', '--product_version', help='Product version')
 @arg('--external', help="""If bc_set the SCM URLs are considered as external and therefore the repositories will be forked to Gerrit
  and the user MUST update the config file with the new values for next runs""")
-
+@arg('--look-up-only', help="""You can do a partial import by a config and specify, which Build Configurations
+ should be looked up by name. You can specify multiple sections and separate them by comma (no spaces should be included).
+ Example: --look-up-only jdg-infinispan
+ Will look up jdg-infinispan section and process a look up of BC by name (jdg-infinispan-${version_field}. 
+""")
 def make_mead(config=None, run_build=False, environment=1, sufix="", product_name=None, product_version=None, 
-              external = False):
+              external = False, look_up_only=""):
     """
     Create Build group based on Make-Mead configuration file
     :param config: Make Mead config name
@@ -65,6 +69,9 @@ def make_mead(config=None, run_build=False, environment=1, sufix="", product_nam
     except ValueError:
         logging.error('Product version not found')
         return 1
+    
+    #Create a list for look-up-only
+    look_up_only_list = look_up_only.split(",")
 
     #Iterate through all sections in configuration file
     for subartifact in subarts:
@@ -105,15 +112,20 @@ def make_mead(config=None, run_build=False, environment=1, sufix="", product_nam
         logging.debug(artifact_name + ":")
         logging.debug(project.id)
 
-        #Update or create Build Config
-        try:
-            build_config = update_build_configuration(environment, product_version_id, art_params, scm_repo_url, 
-                                                      scm_revision, artifact_name, project)
-        except ValueError:
-            logging.debug('No build config with name ' + artifact_name)
-            build_config = create_build_configuration(environment, bc_set, product_version_id, art_params, scm_repo_url, 
-                                                      scm_revision, artifact_name, project,
-                                                      use_external_scm_fields=external)
+        #Lookup or update or create Build Config
+        if package in look_up_only_list:
+            build_config = get_build_configuration__by_name(artifact_name)
+            if build_config == None:
+                pprint("Look up of an existing Build Configuration failed. No build configuration with name " + artifact_name + " found.")
+        else:
+            try:
+                build_config = update_build_configuration(environment, product_version_id, art_params, scm_repo_url, 
+                                                          scm_revision, artifact_name, project)
+            except ValueError:
+                logging.debug('No build config with name ' + artifact_name)
+                build_config = create_build_configuration(environment, bc_set, product_version_id, art_params, scm_repo_url, 
+                                                          scm_revision, artifact_name, project,
+                                                          use_external_scm_fields=external)
         if build_config == None:
             return 10
             
