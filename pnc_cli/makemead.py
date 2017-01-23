@@ -17,17 +17,19 @@ from pnc_cli.buildconfigurations import get_build_configuration__by_name
 from tools.config_utils import ConfigReader
 
 
-@arg('-c', '--config', help='Configuration file to use to drive the build')
+@arg('-c', '--config', help='Make-mead style configuration file possibly extended with pnc.* data fields.')
 @arg('-b', '--run_build', help='Run Build')
-@arg('-e', '--environment', help='Environment ID')
-@arg('-s', '--sufix', help='Adding sufix to artifact\'s name')
+@arg('-e', '--environment', help='PNC Environment ID')
+@arg('-s', '--sufix', help='Adding suffix to artifact\'s name')
 @arg('-p', '--product_name', help='Product name')
 @arg('-v', '--product_version', help='Product version')
 @arg('--external', help="""If bc_set the SCM URLs are considered as external and therefore the repositories will be forked to Gerrit
  and the user MUST update the config file with the new values for next runs""")
-def make_mead(config=None, run_build=False, environment=1, sufix="", product_name=None, product_version=None, external = False):
+
+def make_mead(config=None, run_build=False, environment=1, sufix="", product_name=None, product_version=None, 
+              external = False):
     """
-    Create Make Mead configuration
+    Create Build group based on Make-Mead configuration file
     :param config: Make Mead config name
     :return:
     """    
@@ -54,6 +56,7 @@ def make_mead(config=None, run_build=False, environment=1, sufix="", product_nam
     logging.debug(subarts)
     logging.debug(deps_dict)
 
+    #Lookup product version
     try:
         products_versions = products.list_versions_for_product(name=product_name)
         for product in products_versions:
@@ -63,6 +66,7 @@ def make_mead(config=None, run_build=False, environment=1, sufix="", product_nam
         logging.error('Product version not found')
         return 1
 
+    #Iterate through all sections in configuration file
     for subartifact in subarts:
         art_params = config_reader.get_config(subartifact)
         logging.debug(art_params)
@@ -83,6 +87,7 @@ def make_mead(config=None, run_build=False, environment=1, sufix="", product_nam
         artifact_name = package + "-" + re.sub("[\-\.]*redhat\-\d+", "", version) + sufix
         target_name = product_name + "-" + product_version + "-all" + sufix
 
+        #Lookup or create Build Configuration Set
         if bc_set is None:
             try:
                 bc_set = buildconfigurationsets.get_build_configuration_set(name=target_name)
@@ -91,6 +96,7 @@ def make_mead(config=None, run_build=False, environment=1, sufix="", product_nam
             logging.debug(target_name + ":")
             logging.debug(bc_set.id)
 
+        #Lookup or create a Project
         try:
             project = projects.get_project(name=artifact)        
         except ValueError:
@@ -99,6 +105,7 @@ def make_mead(config=None, run_build=False, environment=1, sufix="", product_nam
         logging.debug(artifact_name + ":")
         logging.debug(project.id)
 
+        #Update or create Build Config
         try:
             build_config = update_build_configuration(environment, product_version_id, art_params, scm_repo_url, 
                                                       scm_revision, artifact_name, project)
@@ -113,6 +120,7 @@ def make_mead(config=None, run_build=False, environment=1, sufix="", product_nam
         ids[artifact] = build_config
         logging.debug(build_config.id)
         
+    #Construct dependency tree of Build Configs
     logging.debug(ids)
     for package, dependencies in packages.iteritems():
         for artifact in dependencies:
@@ -121,6 +129,7 @@ def make_mead(config=None, run_build=False, environment=1, sufix="", product_nam
             logging.debug(id.id, subid.id)
             buildconfigurations.add_dependency(id=id.id, dependency_id=subid.id)
 
+    #Run build if requested
     if run_build:
         build_record = buildconfigurationsets.build_set(id=bc_set.id)
         pprint(build_record)
