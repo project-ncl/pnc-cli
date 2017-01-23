@@ -13,8 +13,7 @@ from pnc_cli import products
 from pnc_cli import projects
 from pnc_cli.bpmbuildconfigurations import create_bpm_build_configuration, \
     get_bpm_task_by_id
-from pnc_cli.buildconfigurations import get_build_configuration_id_by_name, \
-    get_build_configuration__by_name
+from pnc_cli.buildconfigurations import get_build_configuration__by_name
 from tools.config_utils import ConfigReader
 
 
@@ -197,28 +196,7 @@ def update_build_configuration(environment, product_version_id, art_params, scm_
                                                    generic_parameters=get_generic_parameters(art_params))
     return buildconfigurations.get_build_configuration(id=build_config_id)
 
-#Example payload
-#post /bpm/tasks/start-build-configuration-creation 
-#{
-#  "name": "BCCreation_test_jbartece",
-#  "description": "string",
-#  "buildScript": "mvn clean deploy",
-#  "scmRepoURL": null,
-#  "scmRevision": null,
-#  "scmExternalRepoURL": "http://git.app.eng.bos.redhat.com/git/twitter4j.git",
-#  "scmExternalRevision": "4.0.4",
-#  "projectId": 1,
-#  "buildEnvironmentId": 1,
-#  "dependencyIds": [
-#  ],
-#  "productVersionId": 1,
-#  "buildConfigurationSetIds": [
-#  ],
-#  "genericParameters": {}
-#}
 
-#Response Body
-#30
 def create_build_configuration(environment_id, bc_set, product_version_id, art_params, scm_repo_url, 
                                scm_revision, artifact_name, project, use_external_scm_fields):
     bpm_task_id = 0
