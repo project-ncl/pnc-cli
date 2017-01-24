@@ -113,10 +113,12 @@ def make_mead(config=None, run_build=False, environment=1, sufix="", product_nam
         logging.debug(project.id)
 
         #Lookup or update or create Build Config
-        if package in look_up_only_list:
+        if subartifact in look_up_only_list:
             build_config = get_build_configuration__by_name(artifact_name)
             if build_config == None:
                 pprint("Look up of an existing Build Configuration failed. No build configuration with name " + artifact_name + " found.")
+            else:
+                buildconfigurationsets.add_build_configuration_to_set(set_id=bc_set.id, config_id=build_config.id)  
         else:
             try:
                 build_config = update_build_configuration(environment, product_version_id, art_params, scm_repo_url, 
