@@ -21,10 +21,6 @@ def create_license_object(**kwargs):
 @arg("full_content", help="Full textual content of the new License")
 @arg("-r", "--ref-url", help="URL containing a reference for the License")
 @arg("-sn", "--short-name", help="Abbreviation or \"short name\" for the License")
-@arg("-pids", "--projects-ids", nargs='+',
-     help="List of project ids that should be associated with the new License. IDs must denote existing projects",
-     type=types.existing_product_id)
-# TODO: read full_content from a file.
 def create_license(**kwargs):
     """
     Create a new License
@@ -63,9 +59,6 @@ def delete_license(license_id):
 @arg("-c", "--full-content", help="Full textual content of the new License")
 @arg("-r", "--ref-url", help="URL containing a reference for the License")
 @arg("-sn", "--short-name", help="Abbreviation or \"short name\" for the License")
-@arg("-pids", "--projects-ids", nargs='+',
-     help="List of project ids that should be associated with the new License. IDs must denote existing projects",
-     type=types.existing_product_id)
 def update_license(license_id, **kwargs):
     """
     Replace the License with given ID with a new License
