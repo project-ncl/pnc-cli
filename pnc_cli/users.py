@@ -106,3 +106,10 @@ def update_user(id=None, name=None, **kwargs):
     response = utils.checked_api_call(users_api, 'update', id=found_id, body=to_update)
     if response:
         return response.content
+
+
+@arg('username')
+@arg('password')
+def login(username, password):
+
+    pass

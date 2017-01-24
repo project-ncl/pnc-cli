@@ -70,6 +70,7 @@ def get_auth_token(config):
 config = configparser.ConfigParser(allow_no_value=False)
 configfilename = os.path.expanduser("~") + "/.config/pnc-cli/pnc-cli.conf"
 configdirname = os.path.dirname(configfilename)
+
 try:
     os.makedirs(configdirname)
 except OSError as e:
@@ -135,3 +136,36 @@ def contains_only_none_values(dictionary):
         if dictionary[key] is not None:
             return False
     return True
+
+
+def get_config():
+    config = configparser.ConfigParser(allow_no_value=False)
+    configparser.ConfigParser(allow_no_value=False)
+    configfilename = os.path.expanduser("~") + "/.config/pnc-cli/pnc-cli.conf"
+    configdirname = os.path.dirname(configfilename)
+
+    try:
+        os.makedirs(configdirname)
+    except OSError as e:
+        if e.errno != errno.EEXIST:
+            raise
+
+    found = config.read(os.path.join(configfilename))
+
+    if not found:
+        config.add_section('PNC')
+        config.set('PNC', 'pncUrl', 'http://localhost:8080/')
+        # prompt user for his keycloak username / passwords
+        config.set('PNC', 'keycloakUrl', '')
+        config.set('PNC', 'keycloakRealm', 'pncredhat')
+        config.set('PNC', 'keycloakClientId', 'pncdirect')
+        username = input('Username: ')
+        password = getpass.getpass('Password: ')
+        config.set('PNC', 'username', username)
+        config.set('PNC', 'password', password)
+        with open(os.path.join(configfilename), 'w') as configfile:
+            config.write(configfile)
+        logging.warning(
+            "New config file written to ~/.config/pnc-cli/pnc-cli.conf. Configure pncUrl and keycloakUrl values.")
+        exit(1)
+    return config
