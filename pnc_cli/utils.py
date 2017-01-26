@@ -14,6 +14,7 @@ import re
 import errno
 import os
 import datetime
+import time
 
 try:
     input = raw_input
@@ -131,6 +132,11 @@ epoch = datetime.datetime.utcfromtimestamp(0)
 
 def unix_time_millis(dt):
     millis = int((dt - epoch).total_seconds() * 1000.0)
+    return millis
+
+
+def current_time_millis():
+    millis = int(round(time.time() * 1000))
     return millis
 
 
