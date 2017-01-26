@@ -8,6 +8,14 @@ class KeycloakConfig():
         self.parse_realm(config)
         self.parse_url(config)
 
+    def __getstate__(self):
+        # things that need to be pickled here
+        pass
+
+    def __setstate__(self):
+        # how to restore pickling here
+        pass
+
     def parse_url(self, config):
         try:
             url = config.get('PNC', 'keycloakUrl')
