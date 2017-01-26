@@ -5,9 +5,10 @@ import pnc_cli.cli_types as types
 from pnc_cli import utils
 from pnc_cli.swagger_client.apis import BuildconfigurationsetsApi
 from pnc_cli.swagger_client.apis import BuildconfigsetrecordsApi
+import pnc_cli.user_config as uc
 
-sets_api = BuildconfigurationsetsApi(utils.get_api_client())
-bcsr_api = BuildconfigsetrecordsApi(utils.get_api_client())
+sets_api = BuildconfigurationsetsApi(uc.user.get_api_client())
+bcsr_api = BuildconfigsetrecordsApi(uc.user.get_api_client())
 
 
 @arg("-p", "--page-size", help="Limit the amount of build records returned")
