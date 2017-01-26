@@ -25,6 +25,9 @@ from pnc_cli.swagger_client.rest import ApiException
 
 __author__ = 'thauser'
 
+CONFIG_LOCATION = os.path.expanduser("~") + "/.config/pnc-cli/"
+CONFIG_FILENAME = "pnc-cli.conf"
+CONFIG = CONFIG_LOCATION + CONFIG_FILENAME
 
 def get_auth_token(config):
     try:
@@ -141,8 +144,8 @@ def contains_only_none_values(dictionary):
 def get_config():
     config = configparser.ConfigParser(allow_no_value=False)
     configparser.ConfigParser(allow_no_value=False)
-    configfilename = os.path.expanduser("~") + "/.config/pnc-cli/pnc-cli.conf"
-    configdirname = os.path.dirname(configfilename)
+    configfilename = CONFIG
+    configdirname = CONFIG_LOCATION
 
     try:
         os.makedirs(configdirname)
