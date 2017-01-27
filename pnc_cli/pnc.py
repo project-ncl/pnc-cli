@@ -14,11 +14,26 @@ from pnc_cli import products
 from pnc_cli import productversions
 from pnc_cli import projects
 from pnc_cli import runningbuilds
-from pnc_cli import users
+import pnc_cli.user_config as uc
 from pnc_cli import makemead
 
+
+def login():
+    """
+    Log in to PNC using the supplied username and password. The keycloak token will
+    be saved for all subsequent pnc-cli operations until login is called again
+    :return:
+    """
+    uc.user.username = uc.user.input_username()
+    uc.user.password = uc.user.input_password()
+    uc.user.token = uc.user.retrieve_keycloak_token()
+    uc.user.apiclient = uc.user.create_api_client()
+    uc.save()
+
+
 parser = argh.ArghParser()
-parser.add_commands([products.create_product,
+parser.add_commands([login,
+                     products.create_product,
                      products.get_product,
                      products.list_products,
                      products.list_versions_for_product,
@@ -96,10 +111,6 @@ parser.add_commands([products.create_product,
                      buildconfigsetrecords.get_build_configuration_set_record,
                      buildconfigsetrecords.list_build_configuration_set_records,
                      buildconfigsetrecords.list_records_for_build_config_set,
-                     users.create_user,
-                     users.get_user,
-                     users.list_users,
-                     users.update_user,
                      makemead.make_mead])
 parser.autocomplete()
 
@@ -109,4 +120,4 @@ def main():
 
 
 if __name__ == "__main__":
-    parser.dispatch()
+    main()
