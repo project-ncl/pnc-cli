@@ -7,9 +7,10 @@ from pnc_cli import productmilestones
 from pnc_cli.swagger_client import ProductReleaseRest
 from pnc_cli.swagger_client import ProductreleasesApi
 from pnc_cli.swagger_client import ProductversionsApi
+import pnc_cli.user_config as uc
 
-productversions_api = ProductversionsApi(utils.get_api_client())
-releases_api = ProductreleasesApi(utils.get_api_client())
+productversions_api = ProductversionsApi(uc.user.get_api_client())
+releases_api = ProductreleasesApi(uc.user.get_api_client())
 
 
 def create_product_release_object(**kwargs):

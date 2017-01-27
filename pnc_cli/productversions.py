@@ -8,10 +8,10 @@ import pnc_cli.cli_types as types
 from pnc_cli import swagger_client
 from pnc_cli.swagger_client.apis.products_api import ProductsApi
 from pnc_cli.swagger_client.apis.productversions_api import ProductversionsApi
+import pnc_cli.user_config as uc
 
-client = utils.get_api_client()
-versions_api = ProductversionsApi(client)
-products_api = ProductsApi(client)
+versions_api = ProductversionsApi(uc.user.get_api_client())
+products_api = ProductsApi(uc.user.get_api_client())
 
 __author__ = 'thauser'
 

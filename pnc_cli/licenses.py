@@ -1,4 +1,3 @@
-
 from argh import arg
 from six import iteritems
 
@@ -7,7 +6,9 @@ import pnc_cli.utils as utils
 
 from pnc_cli.swagger_client import LicenseRest
 from pnc_cli.swagger_client import LicensesApi
-licenses_api = LicensesApi(utils.get_api_client())
+import pnc_cli.user_config as uc
+
+licenses_api = LicensesApi(uc.user.get_api_client())
 
 
 def create_license_object(**kwargs):

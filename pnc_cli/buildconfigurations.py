@@ -10,13 +10,13 @@ from pnc_cli.swagger_client import EnvironmentsApi
 from pnc_cli.swagger_client import ProductsApi
 from pnc_cli.swagger_client import ProductversionsApi
 from pnc_cli.swagger_client import ProjectsApi
+import pnc_cli.user_config as uc
 
-api_client = utils.get_api_client()
-projects_api = ProjectsApi(api_client)
-configs_api = BuildconfigurationsApi(api_client)
-envs_api = EnvironmentsApi(api_client)
-versions_api = ProductversionsApi(api_client)
-products_api = ProductsApi(api_client)
+projects_api = ProjectsApi(uc.user.get_api_client())
+configs_api = BuildconfigurationsApi(uc.user.get_api_client())
+envs_api = EnvironmentsApi(uc.user.get_api_client())
+versions_api = ProductversionsApi(uc.user.get_api_client())
+products_api = ProductsApi(uc.user.get_api_client())
 
 
 def create_build_conf_object(**kwargs):

@@ -6,8 +6,9 @@ import pnc_cli.cli_types as types
 import pnc_cli.utils as utils
 from pnc_cli.swagger_client import ProductRest
 from pnc_cli.swagger_client import ProductsApi
+import pnc_cli.user_config as uc
 
-products_api = ProductsApi(utils.get_api_client())
+products_api = ProductsApi(uc.user.get_api_client())
 
 __author__ = 'thauser'
 

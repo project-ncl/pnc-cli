@@ -17,8 +17,9 @@ from pnc_cli.swagger_client import ProductsApi
 from pnc_cli.swagger_client import ProductversionsApi
 from pnc_cli.swagger_client import ProjectsApi
 from pnc_cli.swagger_client import RunningbuildrecordsApi
+import pnc_cli.user_config as uc
 
-api_client = utils.get_api_client()
+api_client = uc.user.get_api_client()
 
 # BuildConfigurations
 configs_api = BuildconfigurationsApi(api_client)

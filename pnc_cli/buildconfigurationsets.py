@@ -7,10 +7,10 @@ import pnc_cli.utils as utils
 from pnc_cli import swagger_client
 from pnc_cli.swagger_client.apis.buildconfigurations_api import BuildconfigurationsApi
 from pnc_cli.swagger_client.apis.buildconfigurationsets_api import BuildconfigurationsetsApi
+import pnc_cli.user_config as uc
 
-client = utils.get_api_client()
-sets_api = BuildconfigurationsetsApi(client)
-configs_api = BuildconfigurationsApi(client)
+sets_api = BuildconfigurationsetsApi(uc.user.get_api_client())
+configs_api = BuildconfigurationsApi(uc.user.get_api_client())
 
 
 def _create_build_config_set_object(**kwargs):

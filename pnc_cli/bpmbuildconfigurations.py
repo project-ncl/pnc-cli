@@ -1,19 +1,16 @@
 from argh import arg
 
-import pnc_cli.common as common
 import pnc_cli.cli_types as types
 from pnc_cli import swagger_client
 from pnc_cli import utils
 from pnc_cli.swagger_client import BpmApi
 from pnc_cli.swagger_client import EnvironmentsApi
 from pnc_cli.swagger_client import ProjectsApi
-from pprint import pprint
+import pnc_cli.user_config as uc
 
-
-api_client = utils.get_api_client()
-projects_api = ProjectsApi(api_client)
-configs_api = BpmApi(api_client)
-envs_api = EnvironmentsApi(api_client)
+projects_api = ProjectsApi(uc.user.get_api_client())
+configs_api = BpmApi(uc.user.get_api_client())
+envs_api = EnvironmentsApi(uc.user.get_api_client())
 
 def create_build_conf_object(**kwargs):
     created_build_configuration = swagger_client.BpmBuildConfigurationCreationRest()

@@ -8,10 +8,10 @@ import pnc_cli.utils as utils
 from pnc_cli.swagger_client import ProductMilestoneRest
 from pnc_cli.swagger_client import ProductmilestonesApi
 from pnc_cli.swagger_client import ProductversionsApi
+import pnc_cli.user_config as uc
 
-client = utils.get_api_client()
-productversions_api = ProductversionsApi(client)
-milestones_api = ProductmilestonesApi(client)
+productversions_api = ProductversionsApi(uc.user.get_api_client())
+milestones_api = ProductmilestonesApi(uc.user.get_api_client())
 
 
 def create_milestone_object(**kwargs):

@@ -6,11 +6,11 @@ import pnc_cli.utils as utils
 from pnc_cli.swagger_client import BuildrecordsApi
 from pnc_cli.swagger_client import BuildconfigurationsApi
 from pnc_cli.swagger_client import ProjectsApi
+import pnc_cli.user_config as uc
 
-client = utils.get_api_client()
-records_api = BuildrecordsApi(client)
-configs_api = BuildconfigurationsApi(client)
-projects_api = ProjectsApi(client)
+records_api = BuildrecordsApi(uc.user.get_api_client())
+configs_api = BuildconfigurationsApi(uc.user.get_api_client())
+projects_api = ProjectsApi(uc.user.get_api_client())
 
 
 @arg("-p", "--page-size", help="Limit the amount of BuildRecords returned", type=int)

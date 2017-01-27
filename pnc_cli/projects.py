@@ -7,8 +7,9 @@ import pnc_cli.cli_types as types
 import pnc_cli.utils as utils
 from pnc_cli.swagger_client import ProjectRest
 from pnc_cli.swagger_client import ProjectsApi
+import pnc_cli.user_config as uc
 
-projects_api = ProjectsApi(utils.get_api_client())
+projects_api = ProjectsApi(uc.user.get_api_client())
 
 
 def _create_project_object(**kwargs):
