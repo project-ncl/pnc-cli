@@ -27,8 +27,16 @@ class UserConfig():
     def __init__(self):
         config = utils.get_config()
         self.token_time = 0
-        self.username = None
-        self.password = None
+        user_from_config = config.get('PNC', 'username')
+        if user_from_config:
+            self.username = user_from_config
+        else:
+            self.username = None
+        pwd_from_config = config.get('PNC', 'password')
+        if pwd_from_config:
+            self.password = pwd_from_config
+        else:
+            self.password = None
         self.pnc_config = psc.PncServerConfig(config)
         self.keycloak_config = kc.KeycloakConfig(config)
         self.token = self.retrieve_keycloak_token()
