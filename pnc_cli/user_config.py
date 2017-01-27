@@ -1,16 +1,23 @@
 import atexit
+import getpass
 import json
 import logging
 import os
 import pickle
 
-import iniparse.configparser as configparser
 import requests
-import swagger_client
 
+import swagger_client
 import pnc_cli.utils as utils
 import keycloak_config as kc
 import pnc_server_config as psc
+
+
+# make sure that input behaves as expected
+try:
+    input = raw_input
+except NameError:
+    pass
 
 SAVED_USER_FILENAME = "saved-user.p"
 SAVED_USER = utils.CONFIG_LOCATION + SAVED_USER_FILENAME
@@ -20,20 +27,15 @@ class UserConfig():
     def __init__(self):
         config = utils.get_config()
         self.token_time = 0
-        self.username = ""
-        self.password = ""
-        self.token = None
-        self.apiclient = None
+        self.username = None
+        self.password = None
         self.pnc_config = psc.PncServerConfig(config)
         self.keycloak_config = kc.KeycloakConfig(config)
-        self.parse_username(config)
-        self.parse_password(config)
         self.token = self.retrieve_keycloak_token()
-        self.token_time = utils.current_time_millis()
         self.apiclient = self.create_api_client()
 
     def __getstate__(self):
-        return (self.keycloak_config, self.username, self.password, self.token, self.token_time)
+        return self.keycloak_config, self.username, self.password, self.token, self.token_time
 
     def __setstate__(self, state):
         # here we need to read the config file again, to check that values for URLs haven't changed. the way to
@@ -47,10 +49,14 @@ class UserConfig():
         # check for changes in keycloak configuration; if so, we'll need to get a new token regardless of time
         current_keycloak_config = kc.KeycloakConfig(config)
         if not current_keycloak_config == saved_kc_config:
+            print("Keycloak server has been reconfigured. Retrieving new token...")
             self.keycloak_config = current_keycloak_config
             newtoken = True
+        else:
+            self.keycloak_config = saved_kc_config
         # if more than a day has passed since we saved the token, or if the urls have changed, get a new one
-        if utils.current_time_millis() - self.token_time > 86400000:
+        if not newtoken and utils.current_time_millis() - self.token_time > 86400000:
+            print("Keycloak token has expired for user {}. Retrieving new token...".format(self.username))
             newtoken = True
 
         if newtoken:
@@ -59,61 +65,56 @@ class UserConfig():
         self.apiclient = self.create_api_client()
 
     # this function gets input from the user to set the username
-    def parse_username(self, config):
-        try:
-            username = config.get('PNC', 'username')
-        except configparser.NoOptionError:
-            logging.error('Username missing. Define "username" in pnc-cli.conf for authentication.')
-            return
-        self.username = username
+    def input_username(self):
+        username = input('Username: ')
+        return username
 
     # this function gets input from the user to set the password
-    def parse_password(self, config):
-        try:
-            password = config.get('PNC', 'password')
-        except configparser.NoOptionError:
-            logging.error('Username missing. Define "username" in pnc-cli.conf for authentication.')
-            return
-        self.password = password
-
-    def set_username(self, username):
-        self.username = username
-
-    def set_password(self, password):
-        self.password = password
+    def input_password(self):
+        password = getpass.getpass('Password: ')
+        return password
 
     def retrieve_keycloak_token(self):
-        params = {'grant_type': 'password',
-                  'client_id': self.keycloak_config.client_id,
-                  'username': self.username,
-                  'password': self.password}
-        r = requests.post(self.keycloak_config.url, params, verify=False)
-        if r.status_code == 200:
-            reply = json.loads(r.content.decode('utf-8'))
-            return str(reply.get('access_token'))
-
-
+        if self.username and self.password:
+            params = {'grant_type': 'password',
+                      'client_id': self.keycloak_config.client_id,
+                      'username': self.username,
+                      'password': self.password}
+            r = requests.post(self.keycloak_config.url, params, verify=False)
+            if r.status_code == 200:
+                print("Token retrieved for {}.".format(self.username))
+                self.token_time = utils.current_time_millis()
+                reply = json.loads(r.content.decode('utf-8'))
+                return str(reply.get('access_token'))
+            else:
+                print("Failed to retrieve token:")
+                print(r)
+                print(r.content)
+                exit(1)
+        else:
+            print("No credentials. Authentication is not possible.")
 
     def create_api_client(self):
-        # add time check for the token setting
-        # if token has expired
-        return swagger_client.ApiClient(self.pnc_config.url, header_name='Authorization',
-                                                  header_value='Bearer ' + self.token)
-        # if the token is None, create a client without auth
-        # self.apiclient = swagger_client.ApiClient(self.pnc_config.url)
+        if self.token:
+            return swagger_client.ApiClient(self.pnc_config.url, header_name='Authorization',
+                                            header_value='Bearer ' + self.token)
+        else:
+            print("No Keycloak token is present. Commands requiring authentication will fail.")
+            return swagger_client.ApiClient(self.pnc_config.url)
 
     def get_api_client(self):
         return self.apiclient
 
 
 if os.path.exists(SAVED_USER):
-    user = pickle.load(open(SAVED_USER, "r"))
+    user = pickle.load(open(SAVED_USER, "rb"))
 else:
     user = UserConfig()
 
+
 def save():
-        # do pickle stuff
-        pickle.dump(user, open(SAVED_USER, "w"), protocol=pickle.HIGHEST_PROTOCOL)
+    pickle.dump(user, open(SAVED_USER, "wb"), protocol=pickle.HIGHEST_PROTOCOL)
+
 
 atexit.register(save)
 
