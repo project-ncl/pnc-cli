@@ -1,41 +1,36 @@
 __author__ = 'thauser'
 import pytest
-import datetime
 
 from pnc_cli.swagger_client.apis import ProductsApi
 from pnc_cli.swagger_client.apis import ProductreleasesApi
 from pnc_cli.swagger_client.apis import ProductmilestonesApi
 from pnc_cli.swagger_client.apis import ProductversionsApi
-from pnc_cli import utils
-from pnc_cli import productreleases
-from pnc_cli import productmilestones
-from pnc_cli import productversions
-from pnc_cli import products
 from test import testutils
+import pnc_cli.user_config as uc
 
 
 @pytest.fixture(scope='module', autouse=True)
 def get_product_api():
     global product_api
-    product_api = ProductsApi(utils.get_api_client())
+    product_api = ProductsApi(uc.user.get_api_client())
 
 
 @pytest.fixture(scope='module', autouse=True)
 def get_milestones_api():
     global milestones_api
-    milestones_api = ProductmilestonesApi(utils.get_api_client())
+    milestones_api = ProductmilestonesApi(uc.user.get_api_client())
 
 
 @pytest.fixture(scope='module', autouse=True)
 def get_releases_api():
     global releases_api
-    releases_api = ProductreleasesApi(utils.get_api_client())
+    releases_api = ProductreleasesApi(uc.user.get_api_client())
 
 
 @pytest.fixture(scope='module', autouse=True)
 def get_version_api():
     global versions_api
-    versions_api = ProductversionsApi(utils.get_api_client())
+    versions_api = ProductversionsApi(uc.user.get_api_client())
 
 
 def test_get_all_invalid_param():

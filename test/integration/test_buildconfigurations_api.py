@@ -1,15 +1,15 @@
+import time
+
 import pytest
-from pnc_cli import products
-from pnc_cli import projects
-from pnc_cli import environments
+
 from pnc_cli import buildconfigurations
 from pnc_cli import productversions
 from pnc_cli.swagger_client import BuildconfigurationsApi
 from pnc_cli.swagger_client import RunningbuildrecordsApi
 from pnc_cli import utils
 from test import testutils
+import pnc_cli.user_config as uc
 
-import time
 
 current_time_millis = lambda: int(round(time.time() * 1000))
 
@@ -17,7 +17,7 @@ current_time_millis = lambda: int(round(time.time() * 1000))
 @pytest.fixture(scope='function', autouse=True)
 def get_configs_api():
     global configs_api
-    configs_api = BuildconfigurationsApi(utils.get_api_client())
+    configs_api = BuildconfigurationsApi(uc.user.get_api_client())
 
 
 def test_get_all_invalid_params():
@@ -58,7 +58,7 @@ def test_trigger_invalid_params():
 
 
 def test_trigger(new_config):
-    running_api = RunningbuildrecordsApi(utils.get_api_client())
+    running_api = RunningbuildrecordsApi(uc.user.get_api_client())
     triggered_build = configs_api.trigger(id=new_config.id).content
     assert triggered_build is not None
     build_record = running_api.get_specific(id=triggered_build.id)

@@ -1,34 +1,28 @@
-import time
-
 import pytest
 
-from pnc_cli import buildconfigurationsets
-from pnc_cli import buildconfigurations
-from pnc_cli import projects
-from pnc_cli import environments
-from pnc_cli import utils
 from test import testutils
 from pnc_cli.swagger_client.apis.buildconfigurations_api import BuildconfigurationsApi
 from pnc_cli.swagger_client.apis.runningbuildrecords_api import RunningbuildrecordsApi
 from pnc_cli.swagger_client.apis.buildconfigurationsets_api import BuildconfigurationsetsApi
+import pnc_cli.user_config as uc
 
 
 @pytest.fixture(scope='function', autouse=True)
 def get_running_api():
     global running_api
-    running_api = RunningbuildrecordsApi(utils.get_api_client())
+    running_api = RunningbuildrecordsApi(uc.user.get_api_client())
 
 
 @pytest.fixture(scope='function', autouse=True)
 def get_configs_api():
     global configs_api
-    configs_api = BuildconfigurationsApi(utils.get_api_client())
+    configs_api = BuildconfigurationsApi(uc.user.get_api_client())
 
 
 @pytest.fixture(scope='function', autouse=True)
 def get_sets_api():
     global sets_api
-    sets_api = BuildconfigurationsetsApi(utils.get_api_client())
+    sets_api = BuildconfigurationsetsApi(uc.user.get_api_client())
 
 
 def test_get_all(new_config):

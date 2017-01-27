@@ -1,14 +1,14 @@
 import pytest
-from pnc_cli import environments
+
 from pnc_cli.swagger_client.apis.environments_api import EnvironmentsApi
-from pnc_cli import utils
 from test import testutils
+import pnc_cli.user_config as uc
 
 
 @pytest.fixture(scope='function', autouse=True)
 def get_envs_api():
     global envs_api
-    envs_api = EnvironmentsApi(utils.get_api_client())
+    envs_api = EnvironmentsApi(uc.user.get_api_client())
 
 
 def test_get_all_invalid_param():

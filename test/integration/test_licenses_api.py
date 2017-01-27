@@ -3,12 +3,13 @@ from pnc_cli import licenses
 from pnc_cli.swagger_client.apis.licenses_api import LicensesApi
 from pnc_cli import utils
 from test import testutils
+import pnc_cli.user_config as uc
 
 
 @pytest.fixture(scope='module', autouse=True)
 def get_licenses_api():
     global licenses_api
-    licenses_api = LicensesApi(utils.get_api_client())
+    licenses_api = LicensesApi(uc.user.get_api_client())
 
 
 @pytest.fixture(scope='module')

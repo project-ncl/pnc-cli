@@ -1,9 +1,9 @@
 import pytest
 
 __author__ = 'thauser'
-from pnc_cli import utils
 from pnc_cli.swagger_client.apis import BuildconfigsetrecordsApi
 from test import testutils
+import pnc_cli.user_config as uc
 
 bcsr_api = None
 
@@ -11,7 +11,7 @@ bcsr_api = None
 @pytest.fixture(scope='function', autouse=True)
 def init_api():
     global bcsr_api
-    bcsr_api = BuildconfigsetrecordsApi(utils.get_api_client())
+    bcsr_api = BuildconfigsetrecordsApi(uc.user.get_api_client())
 
 
 def test_get_all_invalid_param():

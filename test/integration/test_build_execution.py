@@ -16,6 +16,7 @@ from pnc_cli.swagger_client.apis.runningbuildrecords_api import Runningbuildreco
 from pnc_cli.swagger_client.apis.buildconfigurationsets_api import BuildconfigurationsetsApi
 from pnc_cli.swagger_client.apis.buildrecords_api import BuildrecordsApi
 from test.integration.conftest import new_config
+import pnc_cli.user_config as uc
 
 # setup logging to print timestamps
 logging.basicConfig(format='[%(asctime)s %(levelname)s] %(message)s')
@@ -31,25 +32,25 @@ BUILD_STATUS_DONE = 'DONE'
 @pytest.fixture(scope='function', autouse=True)
 def get_running_api():
     global running_api
-    running_api = RunningbuildrecordsApi(utils.get_api_client())
+    running_api = RunningbuildrecordsApi(uc.user.get_api_client())
 
 
 @pytest.fixture(scope='function', autouse=True)
 def get_configs_api():
     global configs_api
-    configs_api = BuildconfigurationsApi(utils.get_api_client())
+    configs_api = BuildconfigurationsApi(uc.user.get_api_client())
 
 
 @pytest.fixture(scope='function', autouse=True)
 def get_sets_api():
     global sets_api
-    sets_api = BuildconfigurationsetsApi(utils.get_api_client())
+    sets_api = BuildconfigurationsetsApi(uc.user.get_api_client())
 
 
 @pytest.fixture(scope='function', autouse=True)
 def get_records_api():
     global records_api
-    records_api = BuildrecordsApi(utils.get_api_client())
+    records_api = BuildrecordsApi(uc.user.get_api_client())
 
 
 @pytest.mark.skip(reason="PNC doesn't complete builds in reasonable time")

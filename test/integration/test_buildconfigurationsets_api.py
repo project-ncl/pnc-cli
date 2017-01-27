@@ -2,18 +2,19 @@ import pytest
 
 from test.integration.conftest import new_config
 
-__author__ = 'thauser'
-
 from pnc_cli import buildconfigurationsets
 from pnc_cli import utils
 from test import testutils
 from pnc_cli.swagger_client.apis.buildconfigurationsets_api import BuildconfigurationsetsApi
+import pnc_cli.user_config as uc
+
+__author__ = 'thauser'
 
 
 @pytest.fixture(scope='function', autouse=True)
 def get_sets_api():
     global sets_api
-    sets_api = BuildconfigurationsetsApi(utils.get_api_client())
+    sets_api = BuildconfigurationsetsApi(uc.user.get_api_client())
 
 
 def test_get_all_invalid_param():
@@ -151,7 +152,8 @@ def test_build_no_id():
 def test_build_invalid_param():
     testutils.assert_raises_typeerror(sets_api, 'build', id=1)
 
-#def test_build(request, new_set, new_project, new_environment):
+
+# def test_build(request, new_set, new_project, new_environment):
 def test_build(request, new_set, new_project):
     # config_one = new_config(request, new_project, new_environment)
     # config_two = new_config(request, new_project, new_environment)
