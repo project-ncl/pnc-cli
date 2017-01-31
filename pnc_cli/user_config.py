@@ -27,23 +27,15 @@ class UserConfig():
     def __init__(self):
         config = utils.get_config()
         self.token_time = 0
-        user_from_config = config.get('PNC', 'username')
-        if user_from_config:
-            self.username = user_from_config
-        else:
-            self.username = None
-        pwd_from_config = config.get('PNC', 'password')
-        if pwd_from_config:
-            self.password = pwd_from_config
-        else:
-            self.password = None
+        self.username = self.load_username_from_config(config)
+        self.password = self.load_password_from_config(config)
         self.pnc_config = psc.PncServerConfig(config)
         self.keycloak_config = kc.KeycloakConfig(config)
         self.token = self.retrieve_keycloak_token()
         self.apiclient = self.create_api_client()
 
     def __getstate__(self):
-        return self.keycloak_config, self.username, self.password, self.token, self.token_time
+        return self.keycloak_config, self.username, self.token, self.token_time
 
     def __setstate__(self, state):
         # here we need to read the config file again, to check that values for URLs haven't changed. the way to
@@ -51,7 +43,7 @@ class UserConfig():
         # to be changed much once it's in place
         newtoken = False
         config = utils.get_config()
-        saved_kc_config, self.username, self.password, self.token, self.token_time = state
+        saved_kc_config, self.username, self.token, self.token_time = state
         self.pnc_config = psc.PncServerConfig(config)
 
         # check for changes in keycloak configuration; if so, we'll need to get a new token regardless of time
@@ -62,26 +54,52 @@ class UserConfig():
             newtoken = True
         else:
             self.keycloak_config = saved_kc_config
-        # if more than a day has passed since we saved the token, or if the urls have changed, get a new one
+
+        # if more than a day has passed since we saved the token, and keycloak server configuration is not modified,
+        # get a new one
         if not newtoken and utils.current_time_millis() - self.token_time > 86400000:
+            #input the password again since we no longer cache it
             print("Keycloak token has expired for user {}. Retrieving new token...".format(self.username))
             newtoken = True
 
         if newtoken:
+            # enter password to get new token, but only if the user has not entered a password in pnc-cli.conf
+            password = self.load_password_from_config(config)
+            if password:
+                self.password = password
+            else:
+                self.password = self.input_password()
             self.token = self.retrieve_keycloak_token()
-
         self.apiclient = self.create_api_client()
 
     # this function gets input from the user to set the username
     def input_username(self):
-        username = input('Username: ')
+        username = input('PNC username: ')
         return username
 
     # this function gets input from the user to set the password
     def input_password(self):
-        password = getpass.getpass('Password: ')
+        password = getpass.getpass('PNC password: ')
         return password
 
+    def load_username_from_config(self, config):
+        try:
+            username = config.get('PNC', 'username')
+            print("Loaded username from pnc-cli.conf: {}").format(username)
+            return username
+        except ConfigParser.NoOptionError:
+            return None
+
+    def load_password_from_config(self, config):
+        try:
+            password = config.get('PNC', 'password')
+            print("Loaded password from pnc-cli.conf")
+            return password
+        except ConfigParser.NoOptionError:
+            return None
+
+
+    # retrieves a token from the keycloak server using the configured username / password / keycloak server
     def retrieve_keycloak_token(self):
         if self.username and self.password:
             params = {'grant_type': 'password',
@@ -116,12 +134,14 @@ class UserConfig():
 
 if os.path.exists(SAVED_USER):
     user = pickle.load(open(SAVED_USER, "rb"))
+    print("Using cached user: {}").format(user.username)
 else:
     user = UserConfig()
 
 
 def save():
-    pickle.dump(user, open(SAVED_USER, "wb"), protocol=pickle.HIGHEST_PROTOCOL)
+    if user.token:
+        pickle.dump(user, open(SAVED_USER, "wb"), protocol=pickle.HIGHEST_PROTOCOL)
 
 
 atexit.register(save)
