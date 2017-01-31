@@ -1,7 +1,7 @@
+import ConfigParser
 import atexit
 import getpass
 import json
-import logging
 import os
 import pickle
 
@@ -11,6 +11,7 @@ import swagger_client
 import pnc_cli.utils as utils
 import keycloak_config as kc
 import pnc_server_config as psc
+
 
 
 # make sure that input behaves as expected
