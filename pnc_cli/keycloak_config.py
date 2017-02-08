@@ -1,7 +1,6 @@
 import logging
 
-import iniparse.configparser as configparser
-import utils
+import configparser
 
 
 class KeycloakConfig():
