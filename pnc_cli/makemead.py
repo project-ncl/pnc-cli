@@ -63,6 +63,9 @@ def make_mead(config=None, run_build=False, environment=1, sufix="", product_nam
     #Lookup product version
     try:
         products_versions = products.list_versions_for_product(name=product_name)
+        if not products_versions:
+            logging.error('Product does not have any versions')
+            return 1
         for product in products_versions:
             if product.version == product_version:
                 product_version_id = product.id
