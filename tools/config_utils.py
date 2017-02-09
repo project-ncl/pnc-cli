@@ -229,6 +229,10 @@ class ConfigReader:
         section_config['version'] = parser.get(section, 'version')
         section_config['substvers'] = string.replace(section_config['version'], "-", "_")
         section_config['scmURL'] = parser.get(section, 'scmURL')
+        if parser.has_option(section, 'pnc.buildScript'):
+            section_config['pnc.buildScript'] = parser.get(section, 'pnc.buildScript')
+        if parser.has_option(section, 'pnc.projectName'):
+            section_config['pnc.projectName'] = parser.get(section, 'pnc.projectName')
         if parser.has_option(section, 'skiptests'):
             section_config['skiptests'] = parser.get(section, 'skiptests')
         if parser.has_option(section, 'downstreamjobs'):

@@ -170,7 +170,10 @@ def validate_input_parameters(config, product_name, product_version):
     return 0
     
 def get_maven_options(params):
-    result = ""
+    if 'pnc.buildScript' in params.keys():
+        return params['pnc.buildScript']
+
+    result = "mvn clean deploy -DskipTests"
 
     if 'profiles' in params['options'].keys():
         for profile in params['options']['profiles']:
@@ -214,7 +217,7 @@ def update_build_configuration(environment, product_version_id, art_params, scm_
                                                    environment=environment, 
                                                    scm_repo_url=scm_repo_url,
                                                    scm_revision=scm_revision,
-                                                   build_script="mvn clean deploy -DskipTests" + get_maven_options(art_params),
+                                                   build_script=get_maven_options(art_params),
                                                    product_version_id=product_version_id,
                                                    generic_parameters=get_generic_parameters(art_params))
     return buildconfigurations.get_build_configuration(id=build_config_id)
@@ -232,7 +235,7 @@ def create_build_configuration(environment_id, bc_set, product_version_id, art_p
                                              build_environment_id=environment_id, 
                                              scm_external_repo_url=scm_repo_url, 
                                              scm_external_revision=scm_revision,
-                                             build_script="mvn clean deploy -DskipTests" + get_maven_options(art_params), 
+                                             build_script=get_maven_options(art_params),
                                              product_version_id=product_version_id, 
                                              dependency_ids = [],
                                              build_configuration_set_ids = [],
@@ -246,7 +249,7 @@ def create_build_configuration(environment_id, bc_set, product_version_id, art_p
                                                      build_environment_id=environment_id, 
                                                      scm_repo_url=scm_repo_url, 
                                                      scm_revision=scm_revision,
-                                                     build_script="mvn clean deploy -DskipTests" + get_maven_options(art_params), 
+                                                     build_script=get_maven_options(art_params),
                                                      product_version_id=product_version_id, 
                                                      dependency_ids = [],
                                                      build_configuration_set_ids = [],
