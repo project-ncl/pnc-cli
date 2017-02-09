@@ -80,14 +80,13 @@ def make_mead(config=None, run_build=False, environment=1, sufix="", product_nam
     for subartifact in subarts:
         art_params = config_reader.get_config(subartifact)
         logging.debug(art_params)
+        artifact = art_params['artifact']
         if 'pnc.projectName' in art_params.keys():
             logging.debug("Overriding project name with " + art_params['pnc.projectName'])
-            #pprint("Overriding project name with " + art_params['pnc.projectName'])
-            artifact = art_params['pnc.projectName']
+            project_name = art_params['pnc.projectName']
         else:
-            logging.debug("Using default project name " + art_params['artifact'])
-            #pprint("Using default project name " + art_params['artifact'])
-            artifact = art_params['artifact']
+            logging.debug("Using default project name " + artifact)
+            project_name = artifact
             
         logging.debug(art_params)
         package = art_params['package']
@@ -108,10 +107,10 @@ def make_mead(config=None, run_build=False, environment=1, sufix="", product_nam
 
         #Lookup or create a Project
         try:
-            project = projects.get_project(name=artifact)        
+            project = projects.get_project(name=project_name)        
         except ValueError:
-            logging.debug('No project ' + artifact + ". Creating a new one")
-            project = projects.create_project(name=artifact)
+            logging.debug('No project ' + project_name + ". Creating a new one")
+            project = projects.create_project(name=project_name)
         logging.debug(artifact_name + ":")
         logging.debug(project.id)
 
