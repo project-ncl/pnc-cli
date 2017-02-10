@@ -136,7 +136,7 @@ class UserConfig():
 
 if os.path.exists(SAVED_USER):
     user = pickle.load(open(SAVED_USER, "rb"))
-    print("Using cached user: {}").format(user.username)
+    print("Command performed with user: {}").format(user.username)
 else:
     user = UserConfig()
 
