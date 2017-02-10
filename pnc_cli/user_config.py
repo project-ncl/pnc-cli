@@ -1,3 +1,4 @@
+from argh import arg
 import ConfigParser
 import atexit
 import getpass
@@ -59,7 +60,7 @@ class UserConfig():
         # if more than a day has passed since we saved the token, and keycloak server configuration is not modified,
         # get a new one
         if not newtoken and utils.current_time_millis() - self.token_time > 86400000:
-            #input the password again since we no longer cache it
+            # input the password again since we no longer cache it
             print("Keycloak token has expired for user {}. Retrieving new token...".format(self.username))
             newtoken = True
 
@@ -147,3 +148,25 @@ def save():
 
 atexit.register(save)
 
+
+@arg("-u", "--username", help="Username for the new user")
+@arg("-p", "--password", help="Password for the specified user")
+def login(username=None, password=None):
+    """
+    Log in to PNC using the supplied username and password. The keycloak token will
+    be saved for all subsequent pnc-cli operations until login is called again
+    :return:
+    """
+    if username:
+        user.username = username
+    else:
+        user.username = user.input_username()
+
+    if password:
+        user.password = password
+    else:
+        user.password = user.input_password()
+
+    user.token = user.retrieve_keycloak_token()
+    user.apiclient = user.create_api_client()
+    save()

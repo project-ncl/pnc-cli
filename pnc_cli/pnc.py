@@ -18,21 +18,11 @@ import pnc_cli.user_config as uc
 from pnc_cli import makemead
 
 
-def login():
-    """
-    Log in to PNC using the supplied username and password. The keycloak token will
-    be saved for all subsequent pnc-cli operations until login is called again
-    :return:
-    """
-    uc.user.username = uc.user.input_username()
-    uc.user.password = uc.user.input_password()
-    uc.user.token = uc.user.retrieve_keycloak_token()
-    uc.user.apiclient = uc.user.create_api_client()
-    uc.save()
+
 
 
 parser = argh.ArghParser()
-parser.add_commands([login,
+parser.add_commands([uc.login,
                      products.create_product,
                      products.get_product,
                      products.list_products,
