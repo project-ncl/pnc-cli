@@ -11,7 +11,7 @@ from pnc_cli import buildconfigurations
 from pnc_cli import buildconfigurationsets
 from pnc_cli import products
 from pnc_cli import projects
-from pnc_cli.bpmbuildconfigurations import create_bpm_build_configuration, \
+from pnc_cli.bpmbuildconfigurations import create_build_configuration, \
     get_bpm_task_by_id
 from pnc_cli.buildconfigurations import get_build_configuration__by_name
 from tools.config_utils import ConfigReader
@@ -232,30 +232,30 @@ def create_build_configuration(environment_id, bc_set, product_version_id, art_p
     if use_external_scm_fields:
         #Create BPM build config using post /bpm/tasks/start-build-configuration-creation 
         #Set these SCM fields: scmExternalRepoURL and scmExternalRevision
-        bpm_task_id = create_bpm_build_configuration(name=artifact_name, 
-                                             project_id=project.id,         
-                                             build_environment_id=environment_id, 
-                                             scm_external_repo_url=scm_repo_url, 
-                                             scm_external_revision=scm_revision,
-                                             build_script=get_maven_options(art_params),
-                                             product_version_id=product_version_id, 
-                                             dependency_ids = [],
-                                             build_configuration_set_ids = [],
-                                             generic_parameters=get_generic_parameters(art_params))  
+        bpm_task_id = create_build_configuration(name=artifact_name,
+                                                 project_id=project.id,
+                                                 build_environment_id=environment_id,
+                                                 scm_external_repo_url=scm_repo_url,
+                                                 scm_external_revision=scm_revision,
+                                                 build_script=get_maven_options(art_params),
+                                                 product_version_id=product_version_id,
+                                                 dependency_ids = [],
+                                                 build_configuration_set_ids = [],
+                                                 generic_parameters=get_generic_parameters(art_params))
     else:
         #Create BPM build config using post /bpm/tasks/start-build-configuration-creation 
         #Set these SCM fields: scmRepoURL and scmRevision
         #Fields scmExternalRepoURL and scmExternalRevision can be optionally filled too
-        bpm_task_id = create_bpm_build_configuration(name=artifact_name, 
-                                                     project_id=project.id,         
-                                                     build_environment_id=environment_id, 
-                                                     scm_repo_url=scm_repo_url, 
-                                                     scm_revision=scm_revision,
-                                                     build_script=get_maven_options(art_params),
-                                                     product_version_id=product_version_id, 
-                                                     dependency_ids = [],
-                                                     build_configuration_set_ids = [],
-                                                     generic_parameters=get_generic_parameters(art_params))  
+        bpm_task_id = create_build_configuration(name=artifact_name,
+                                                 project_id=project.id,
+                                                 build_environment_id=environment_id,
+                                                 scm_repo_url=scm_repo_url,
+                                                 scm_revision=scm_revision,
+                                                 build_script=get_maven_options(art_params),
+                                                 product_version_id=product_version_id,
+                                                 dependency_ids = [],
+                                                 build_configuration_set_ids = [],
+                                                 generic_parameters=get_generic_parameters(art_params))
 
 
     #Using polling every 30s check this endpoint: get /bpm/tasks/{bpm_task_id} 

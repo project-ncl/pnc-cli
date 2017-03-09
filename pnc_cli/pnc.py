@@ -2,6 +2,7 @@
 # PYTHON_ARGCOMPLETE_OK
 import argh
 
+from pnc_cli import bpmbuildconfigurations
 from pnc_cli import buildconfigsetrecords
 from pnc_cli import buildconfigurations
 from pnc_cli import buildconfigurationsets
@@ -44,7 +45,7 @@ parser.add_commands([uc.login,
                      licenses.update_license,
                      buildconfigurations.add_dependency,
                      buildconfigurations.build,
-                     buildconfigurations.create_build_configuration,
+                     bpmbuildconfigurations.create_build_configuration,
                      buildconfigurations.delete_build_configuration,
                      buildconfigurations.get_build_configuration,
                      buildconfigurations.get_revision_of_build_configuration,

@@ -60,6 +60,7 @@ def valid_bc_name(name_input):
 
 
 def unique_bc_name(name_input):
+    valid_bc_name(name_input)
     if common.get_id_by_name(configs_api, name_input):
         raise argparse.ArgumentTypeError("BuildConfiguration name '{}' is already in use".format(name_input))
     return name_input
@@ -275,4 +276,12 @@ def valid_id(id_input):
 def valid_url(urlInput):
     if not validators.url(urlInput):
         raise argparse.ArgumentTypeError("invalid url")
+    return urlInput
+
+def valid_internal_url(urlInput):
+    if not urlInput.startswith("git+ssh://pnc-gerrit-stage@code-stage.eng.nay.redhat.com:29418"):
+        raise argparse.ArgumentTypeError("An internal SCM repository URL must start with: git+ssh://pnc-gerrit-stage@code-stage.eng.nay.redhat.com:29418")
+    if urlInput == "git+ssh://pnc-gerrit-stage@code-stage.eng.nay.redhat.com:29418":
+        raise argparse.ArgumentTypeError("No specific internal repository specified.")
+    valid_url(urlInput)
     return urlInput
