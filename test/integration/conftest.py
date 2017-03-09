@@ -1,11 +1,11 @@
 __author__ = 'thauser'
 
 import pytest
-
+import time
 from test import testutils
 from pnc_cli import buildconfigurations
 from pnc_cli import buildconfigurationsets
-from pnc_cli import environments
+from pnc_cli import bpmbuildconfigurations
 from pnc_cli import products
 from pnc_cli import productversions
 from pnc_cli import productmilestones
@@ -34,20 +34,6 @@ def new_project(request):
     return project
 
 
-# @pytest.fixture(scope='module')
-# def new_environment(request):
-#     randname = testutils.gen_random_name()
-#     env = environments.create_environment(name=randname,
-#                                           system_image_id=randname,
-#                                           system_image_type="DOCKER_IMAGE")
-#
-#     def teardown():
-#         environments.delete_environment(id=env.id)
-#
-#     request.addfinalizer(teardown)
-#     return env
-
-
 @pytest.fixture(scope='function')
 def new_set(request):
     set = buildconfigurationsets.create_build_configuration_set(name=testutils.gen_random_name() + "-set",
@@ -59,18 +45,43 @@ def new_set(request):
     request.addfinalizer(teardown)
     return set
 
+#helper function for checking BC creation
+def contains_event_type(events, types):
+    for event in events:
+        if (event.event_type in types):
+            return True
+
+    return False
 
 @pytest.fixture(scope='function')
 #def new_config(request, new_project, new_environment):
 def new_config(request, new_project):
-    created_bc = buildconfigurations.create_build_configuration(
-        name=testutils.gen_random_name() + '-config',
+    bc_name = testutils.gen_random_name() + '-config'
+    task_id = bpmbuildconfigurations.create_build_configuration(
+        name=bc_name,
         project=new_project.id,
-        environment=1,
+        build_environment=1,
         build_script='mvn javadoc:jar deploy',
         product_version_id=1,
-        scm_repo_url='git+ssh://user-pnc-gerrit@pnc-gerrit.pnc.dev.eng.bos.redhat.com:29418',
-        scm_revision='1.0')
+        scm_external_repo_url='https://github.com/project-ncl/pnc-simple-test-project.git',
+        scm_external_revision='master')
+
+    error_event_types = (
+    "BCC_CONFIG_SET_ADDITION_ERROR", "BCC_CREATION_ERROR", "BCC_REPO_CLONE_ERROR", "BCC_REPO_CREATION_ERROR")
+    # wait for BC creation to complete.
+    time.sleep(2)
+    while True:
+        bpm_task = bpmbuildconfigurations.get_bpm_task_by_id(task_id)
+
+        if contains_event_type(bpm_task.content.events, ("BCC_CREATION_SUCCESS",)):
+            break
+
+        if contains_event_type(bpm_task.content.events, error_event_types):
+            return None
+
+        time.sleep(10)
+
+    created_bc = buildconfigurations.get_build_configuration_by_name(bc_name)
 
     def teardown():
         buildconfigurations.delete_build_configuration(id=created_bc.id)
