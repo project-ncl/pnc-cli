@@ -32,7 +32,8 @@ def test_get_specific_invalid_param():
 
 
 def test_get_specific():
-    bcrset = bcsr_api.get_specific(id=1).content
+    bcrsets = bcsr_api.get_all(page_index=0, page_size=1000000, sort='', q='').content
+    bcrset = bcsr_api.get_specific(bcrsets[1].id).content
     assert bcrset is not None
 
 
