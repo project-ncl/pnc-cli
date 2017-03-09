@@ -13,7 +13,7 @@ from pnc_cli import products
 from pnc_cli import projects
 from pnc_cli.bpmbuildconfigurations import create_build_configuration, \
     get_bpm_task_by_id
-from pnc_cli.buildconfigurations import get_build_configuration__by_name
+from pnc_cli.buildconfigurations import get_build_configuration_by_name
 from tools.config_utils import ConfigReader
 
 
@@ -116,7 +116,7 @@ def make_mead(config=None, run_build=False, environment=1, sufix="", product_nam
 
         #Lookup or update or create Build Config
         if subartifact in look_up_only_list:
-            build_config = get_build_configuration__by_name(artifact_name)
+            build_config = get_build_configuration_by_name(artifact_name)
             if build_config == None:
                 pprint("Look up of an existing Build Configuration failed. No build configuration with name " + artifact_name + " found.")
             else:
@@ -282,7 +282,7 @@ def create_build_configuration(environment_id, bc_set, product_version_id, art_p
     #Get BC - GET build-configurations?q='$NAME'
     #Not found-> BC creation failed and the task was garbage collected -> fail
     #Success -> add BC to BCSet and return BC
-    build_config = get_build_configuration__by_name(artifact_name)
+    build_config = get_build_configuration_by_name(artifact_name)
     if build_config == None:
         pprint("Creation of Build Configuration failed. Unfortunately the details were garbage collected on PNC side.")
         return None        
@@ -303,7 +303,7 @@ def contains_event_type(events, types):
     for event in events:
         if(event.event_type in types):   
             return True  
-        
+
     return False
 
 

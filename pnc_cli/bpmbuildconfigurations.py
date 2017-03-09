@@ -57,13 +57,13 @@ def create_build_configuration(**kwargs):
         logging.error("The external repository revision must be provided for the external repository.")
         return
 
-    if not kwargs["dependency_ids"]:
+    if not kwargs.get("dependency_ids"):
         kwargs["dependency_ids"] = []
 
-    if not kwargs["build_configuration_set_ids"]:
+    if not kwargs.get("build_configuration_set_ids"):
         kwargs["build_configuration_set_ids"] = []
 
-    if not kwargs["generic_parameters"]:
+    if not kwargs.get("generic_parameters"):
         kwargs["generic_parameters"] = {}
 
     build_configuration = create_build_conf_object(**kwargs)

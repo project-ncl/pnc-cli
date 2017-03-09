@@ -37,7 +37,7 @@ def get_build_configuration_id_by_name(name):
         return None
     return response[0].id
 
-def get_build_configuration__by_name(name):
+def get_build_configuration_by_name(name):
     """
     Returns the build configuration matching the name
     :param name: name of build configuration
