@@ -53,9 +53,9 @@ class Artifact(object):
             'origin_url': 'str',
             'import_date': 'datetime',
             'distributed_in_product_milestones': 'list[ProductMilestone]',
-            'field_handler': 'FieldHandler',
-            'built': 'bool',
             'imported': 'bool',
+            'built': 'bool',
+            'field_handler': 'FieldHandler',
             'trusted': 'bool'
         }
 
@@ -75,9 +75,9 @@ class Artifact(object):
             'origin_url': 'originUrl',
             'import_date': 'importDate',
             'distributed_in_product_milestones': 'distributedInProductMilestones',
-            'field_handler': 'fieldHandler',
-            'built': 'built',
             'imported': 'imported',
+            'built': 'built',
+            'field_handler': 'fieldHandler',
             'trusted': 'trusted'
         }
 
@@ -96,9 +96,9 @@ class Artifact(object):
         self._origin_url = None
         self._import_date = None
         self._distributed_in_product_milestones = None
-        self._field_handler = None
-        self._built = None
         self._imported = None
+        self._built = None
+        self._field_handler = None
         self._trusted = None
 
     @property
@@ -444,26 +444,26 @@ class Artifact(object):
         self._distributed_in_product_milestones = distributed_in_product_milestones
 
     @property
-    def field_handler(self):
+    def imported(self):
         """
-        Gets the field_handler of this Artifact.
+        Gets the imported of this Artifact.
 
 
-        :return: The field_handler of this Artifact.
-        :rtype: FieldHandler
+        :return: The imported of this Artifact.
+        :rtype: bool
         """
-        return self._field_handler
+        return self._imported
 
-    @field_handler.setter
-    def field_handler(self, field_handler):
+    @imported.setter
+    def imported(self, imported):
         """
-        Sets the field_handler of this Artifact.
+        Sets the imported of this Artifact.
 
 
-        :param field_handler: The field_handler of this Artifact.
-        :type: FieldHandler
+        :param imported: The imported of this Artifact.
+        :type: bool
         """
-        self._field_handler = field_handler
+        self._imported = imported
 
     @property
     def built(self):
@@ -488,26 +488,26 @@ class Artifact(object):
         self._built = built
 
     @property
-    def imported(self):
+    def field_handler(self):
         """
-        Gets the imported of this Artifact.
+        Gets the field_handler of this Artifact.
 
 
-        :return: The imported of this Artifact.
-        :rtype: bool
+        :return: The field_handler of this Artifact.
+        :rtype: FieldHandler
         """
-        return self._imported
+        return self._field_handler
 
-    @imported.setter
-    def imported(self, imported):
+    @field_handler.setter
+    def field_handler(self, field_handler):
         """
-        Sets the imported of this Artifact.
+        Sets the field_handler of this Artifact.
 
 
-        :param imported: The imported of this Artifact.
-        :type: bool
+        :param field_handler: The field_handler of this Artifact.
+        :type: FieldHandler
         """
-        self._imported = imported
+        self._field_handler = field_handler
 
     @property
     def trusted(self):
