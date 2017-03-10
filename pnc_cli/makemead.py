@@ -11,8 +11,7 @@ from pnc_cli import buildconfigurations
 from pnc_cli import buildconfigurationsets
 from pnc_cli import products
 from pnc_cli import projects
-from pnc_cli.bpmbuildconfigurations import create_build_configuration, \
-    get_bpm_task_by_id
+from pnc_cli import bpmbuildconfigurations
 from pnc_cli.buildconfigurations import get_build_configuration_by_name
 from tools.config_utils import ConfigReader
 
@@ -232,7 +231,7 @@ def create_build_configuration(environment_id, bc_set, product_version_id, art_p
     if use_external_scm_fields:
         #Create BPM build config using post /bpm/tasks/start-build-configuration-creation 
         #Set these SCM fields: scmExternalRepoURL and scmExternalRevision
-        bpm_task_id = create_build_configuration(name=artifact_name,
+        bpm_task_id = bpmbuildconfigurations.create_build_configuration(name=artifact_name,
                                                  project_id=project.id,
                                                  build_environment_id=environment_id,
                                                  scm_external_repo_url=scm_repo_url,
@@ -246,7 +245,7 @@ def create_build_configuration(environment_id, bc_set, product_version_id, art_p
         #Create BPM build config using post /bpm/tasks/start-build-configuration-creation 
         #Set these SCM fields: scmRepoURL and scmRevision
         #Fields scmExternalRepoURL and scmExternalRevision can be optionally filled too
-        bpm_task_id = create_build_configuration(name=artifact_name,
+        bpm_task_id = bpmbuildconfigurations.create_build_configuration(name=artifact_name,
                                                  project_id=project.id,
                                                  build_environment_id=environment_id,
                                                  scm_repo_url=scm_repo_url,
@@ -265,7 +264,7 @@ def create_build_configuration(environment_id, bc_set, product_version_id, art_p
     error_event_types = ("BCC_CONFIG_SET_ADDITION_ERROR", "BCC_CREATION_ERROR", "BCC_REPO_CLONE_ERROR", "BCC_REPO_CREATION_ERROR")
     time.sleep(2)
     while True:
-        bpm_task = get_bpm_task_by_id(bpm_task_id)
+        bpm_task = bpmbuildconfigurations.get_bpm_task_by_id(bpm_task_id)
         
         if contains_event_type(bpm_task.content.events, ("BCC_CREATION_SUCCESS", )):
             break
