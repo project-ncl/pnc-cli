@@ -163,7 +163,7 @@ def test_get_build_records_invalid_param():
 
 def test_get_build_records():
     bcs = buildconfigurations.list_build_configurations()
-    response = configs_api.get_build_records(id=bcs[1], page_index=0, page_size=1000000, sort='', q='').content
+    response = configs_api.get_build_records(id=bcs[1].id, page_index=0, page_size=1000000, sort='', q='').content
     assert response is not None
 
 
@@ -177,7 +177,7 @@ def test_get_latest_build_record_invalid_param():
 
 def test_get_latest_build_record():
     bcs = buildconfigurations.list_build_configurations()
-    response = configs_api.get_latest_build_record(id=bcs[1]).content
+    response = configs_api.get_latest_build_record(id=bcs[1].id).content
     assert response is not None
 
 
