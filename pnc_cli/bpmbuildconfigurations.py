@@ -10,7 +10,7 @@ from pnc_cli.swagger_client import ProjectsApi
 import pnc_cli.user_config as uc
 
 projects_api = ProjectsApi(uc.user.get_api_client())
-builds_api = BpmApi(uc.user.get_api_client())
+bpm_api = BpmApi(uc.user.get_api_client())
 envs_api = EnvironmentsApi(uc.user.get_api_client())
 
 def create_build_conf_object(**kwargs):
@@ -68,10 +68,10 @@ def create_build_configuration(**kwargs):
 
     build_configuration = create_build_conf_object(**kwargs)
     response = utils.checked_api_call(
-        builds_api, 'start_bc_creation_task', body=build_configuration)
+        bpm_api, 'start_bc_creation_task', body=build_configuration)
     if response:
         return response
 
 def get_bpm_task_by_id(bpm_task_id):
-    return utils.checked_api_call(builds_api, "get_bpm_task_by_id", task_id=bpm_task_id)
+    return utils.checked_api_call(bpm_api, "get_bpm_task_by_id", task_id=bpm_task_id)
 
