@@ -6,7 +6,7 @@ from pnc_cli import buildconfigurations
 from pnc_cli import productversions
 from pnc_cli.swagger_client import BuildconfigurationsApi
 from pnc_cli.swagger_client import RunningbuildrecordsApi
-from pnc_cli import utils
+from pnc_cli import cli_types
 from test import testutils
 import pnc_cli.user_config as uc
 
@@ -162,7 +162,8 @@ def test_get_build_records_invalid_param():
 
 
 def test_get_build_records():
-    response = configs_api.get_build_records(id=1, page_index=0, page_size=1000000, sort='', q='').content
+    bcs = buildconfigurations.list_build_configurations()
+    response = configs_api.get_build_records(id=bcs[1], page_index=0, page_size=1000000, sort='', q='').content
     assert response is not None
 
 
@@ -175,7 +176,8 @@ def test_get_latest_build_record_invalid_param():
 
 
 def test_get_latest_build_record():
-    response = configs_api.get_latest_build_record(id=1).content
+    bcs = buildconfigurations.list_build_configurations()
+    response = configs_api.get_latest_build_record(id=bcs[1]).content
     assert response is not None
 
 
@@ -242,7 +244,8 @@ def test_remove_dependency_invalid_param():
 def test_dependency_operations(new_config):
     depname = testutils.gen_random_name()
     dep = buildconfigurations.create_build_configuration(name=depname, project=1, environment=1,
-                                                         scm_repo_url='git+ssh://user-pnc-gerrit@pnc-gerrit.pnc.dev.eng.bos.redhat.com:29418')
+                                                         scm_repo_url='git+ssh://pnc-gerrit-stage@code-stage.eng.nay.redhat.com:29418/productization/git.app.eng.bos.redhat.com/liquibase.git',
+                                                         scm_revision='branch-liquibase-parent-3.4.1')
     configs_api.add_dependency(id=new_config.id, body=dep)
     dependency_ids = [dep.id for dep in
                       configs_api.get_dependencies(id=new_config.id, page_index=0, page_size=1000000, sort='',

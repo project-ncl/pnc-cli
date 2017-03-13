@@ -57,31 +57,14 @@ def contains_event_type(events, types):
 #def new_config(request, new_project, new_environment):
 def new_config(request, new_project):
     bc_name = testutils.gen_random_name() + '-config'
-    task_id = bpmbuildconfigurations.create_build_configuration(
+    created_bc = buildconfigurations.create_build_configuration(
         name=bc_name,
         project=new_project.id,
-        build_environment=1,
+        environment=1,
         build_script='mvn javadoc:jar deploy',
         product_version_id=1,
-        scm_external_repo_url='https://github.com/project-ncl/pnc-simple-test-project.git',
-        scm_external_revision='master')
-
-    error_event_types = (
-    "BCC_CONFIG_SET_ADDITION_ERROR", "BCC_CREATION_ERROR", "BCC_REPO_CLONE_ERROR", "BCC_REPO_CREATION_ERROR")
-    # wait for BC creation to complete.
-    time.sleep(2)
-    while True:
-        bpm_task = bpmbuildconfigurations.get_bpm_task_by_id(task_id)
-
-        if contains_event_type(bpm_task.content.events, ("BCC_CREATION_SUCCESS",)):
-            break
-
-        if contains_event_type(bpm_task.content.events, error_event_types):
-            return None
-
-        time.sleep(10)
-
-    created_bc = buildconfigurations.get_build_configuration_by_name(bc_name)
+        scm_repo_url='git+ssh://pnc-gerrit-stage@code-stage.eng.nay.redhat.com:29418/productization/git.app.eng.bos.redhat.com/liquibase.git',
+        scm_revision='branch-liquibase-parent-3.4.1')
 
     def teardown():
         buildconfigurations.delete_build_configuration(id=created_bc.id)
