@@ -11,3 +11,4 @@ rm pnc_cli/test-requirements.txt
 rm -rf pnc_cli/test/
 rm pnc_cli/tox.ini
 patch -p1 < supportlevelpage.patch
+patch -p1 < bpmapi.patch
