@@ -60,7 +60,7 @@ def new_config(request, new_project):
     created_bc = buildconfigurations.create_build_configuration(
         name=bc_name,
         project=new_project.id,
-        environment=1,
+        environment=2,
         build_script='mvn javadoc:jar deploy',
         product_version_id=1,
         scm_repo_url='git+ssh://pnc-gerrit-stage@code-stage.eng.nay.redhat.com:29418/productization/git.app.eng.bos.redhat.com/liquibase.git',
