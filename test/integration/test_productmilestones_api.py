@@ -3,7 +3,6 @@ from pnc_cli.swagger_client import ArtifactRest
 
 __author__ = 'thauser'
 from pnc_cli.swagger_client.apis import ProductmilestonesApi
-from pnc_cli import utils
 from test import testutils
 import pnc_cli.user_config as uc
 
