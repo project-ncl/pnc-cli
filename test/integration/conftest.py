@@ -61,10 +61,10 @@ def new_config(request, new_project):
         name=bc_name,
         project=new_project.id,
         environment=2,
-        build_script='mvn javadoc:jar deploy',
+        build_script='mvn deploy',
         product_version_id=1,
-        scm_repo_url='git+ssh://pnc-gerrit-stage@code-stage.eng.nay.redhat.com:29418/productization/git.app.eng.bos.redhat.com/liquibase.git',
-        scm_revision='branch-liquibase-parent-3.4.1')
+        scm_repo_url='git+ssh://pnc-gerrit-stage@code-stage.eng.nay.redhat.com:29418/productization/github.com/pnc-simple-test-project.git',
+        scm_revision='master')
 
     def teardown():
         buildconfigurations.delete_build_configuration(id=created_bc.id)
