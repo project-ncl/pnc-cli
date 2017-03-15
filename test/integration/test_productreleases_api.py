@@ -59,8 +59,8 @@ def test_get_all_by_product_version_id_invalid_param():
     testutils.assert_raises_typeerror(releases_api, 'get_all_by_product_version_id', version_id=1)
 
 
-def test_get_all_by_product_version_id():
-    assert releases_api.get_all_by_product_version_id(version_id=1, page_index=0, page_size=1000000, sort='',
+def test_get_all_by_product_version_id(new_version):
+    assert releases_api.get_all_by_product_version_id(version_id=new_version.id, page_index=0, page_size=1000000, sort='',
                                                       q='').content is not None
 
 
