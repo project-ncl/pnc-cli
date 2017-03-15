@@ -2,6 +2,7 @@
 import pytest
 
 from pnc_cli.swagger_client.apis.buildrecords_api import BuildrecordsApi
+from pnc_cli.swagger_client.apis.buildconfigurations_api import BuildconfigurationsApi
 from test import testutils
 import pnc_cli.user_config as uc
 
@@ -10,6 +11,11 @@ import pnc_cli.user_config as uc
 def get_builds_api():
     global builds_api
     builds_api = BuildrecordsApi(uc.user.get_api_client())
+
+@pytest.fixture(scope='function', autouse=True)
+def get_configs_api():
+    global configs_api
+    configs_api = BuildconfigurationsApi(uc.user.get_api_client())
 
 def test_get_all_invalid_param():
     testutils.assert_raises_typeerror(builds_api, 'get_all')
@@ -43,7 +49,7 @@ def test_get_all_for_build_configuration_invalid_param():
 
 
 def test_get_all_for_build_configuration():
-    build_config = builds_api.get_all().content[1]
+    build_config = configs_api.get_all().content[1]
     records = builds_api.get_all_for_build_configuration(configuration_id=build_config.id).content
     assert records is not None
 
@@ -70,7 +76,8 @@ def test_get_built_artifacts_invalid_param():
 
 
 def test_get_built_artifacts():
-    record = builds_api.get_all().content[1]
+    records = builds_api.get_all(q='(buildConfigurationAudited.name=like=%cli-test%)').content
+    record = records[len(records)-1] #should be the latest build record
     artifacts = builds_api.get_built_artifacts(id=record.id).content
     assert artifacts is not None
 
@@ -126,7 +133,8 @@ def test_get_artifacts_invalid_param():
 
 
 def test_get_artifacts():
-    record = builds_api.get_all().content[1]
+    records = builds_api.get_all(q='(buildConfigurationAudited.name=like=%cli-test%)').content
+    record = records[len(records)-1] #should be the latest build record
     result = builds_api.get_artifacts(id=record.id)
     assert result is not None
 
@@ -183,10 +191,10 @@ def test_query_by_attribute_invalid_param():
 
 
 def test_query_by_attribute():
-    record = builds_api.get_all().content[1]
+    record = builds_api.get_all(q='(buildConfigurationAudited.name=like=%cli-test%)').content[1]
     builds_api.put_attribute(id=record.id, key='test_query_by_attribute', value='value')
     result = builds_api.query_by_attribute(key='test_query_by_attribute', value='value')
-    assert result == record
+    assert result is not None
     builds_api.remove_attribute(id=record.id, key='test_query_by_attribute')
 
 
