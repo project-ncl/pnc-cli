@@ -6,7 +6,6 @@ from pnc_cli import buildconfigurations
 from pnc_cli import productversions
 from pnc_cli.swagger_client import BuildconfigurationsApi
 from pnc_cli.swagger_client import RunningbuildrecordsApi
-from pnc_cli import cli_types
 from test import testutils
 import pnc_cli.user_config as uc
 
