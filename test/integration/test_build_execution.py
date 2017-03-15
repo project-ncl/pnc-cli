@@ -53,7 +53,7 @@ def get_records_api():
     records_api = BuildrecordsApi(uc.user.get_api_client())
 
 
-@pytest.mark.skip(reason="PNC doesn't complete builds in reasonable time")
+#@pytest.mark.skip(reason="PNC doesn't complete builds in reasonable time")
 def test_run_single_build(new_config):
     """ Run a single build configuration defined by the 'new_config' method
     and verify the build output """
@@ -73,9 +73,9 @@ def test_run_single_build(new_config):
     build_record_checks(build_record)
 
 
-@pytest.mark.skip(reason="Blocked by issue with repour (NCL-2195)")
+#@pytest.mark.skip(reason="Blocked by issue with repour (NCL-2195)")
 #def test_run_group_build(request, new_set, new_environment, new_project):
-def test_run_group_build(request, new_set, new_environment, new_project):
+def test_run_group_build(request, new_set, new_project):
     assert (new_set is not None, 'Unable to create Build Configuration Group')
     #assert (new_environment is not None, 'Unable to create Build Environment')
     # config_one = new_config(request, new_project, new_environment)
