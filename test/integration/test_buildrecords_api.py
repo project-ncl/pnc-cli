@@ -91,7 +91,8 @@ def test_get_dependency_artifacts_invalid_param():
 
 
 def test_get_dependency_artifacts():
-    record = builds_api.get_all().content[1]
+    records = builds_api.get_all(q='(buildConfigurationAudited.name=like=%cli-test%)').content
+    record = records[len(records)-1] # latest build performed
     artifacts = builds_api.get_dependency_artifacts(id=record.id).content
     assert artifacts is not None
 
