@@ -2,6 +2,7 @@ import pytest
 from pnc_cli.swagger_client import ArtifactRest
 
 __author__ = 'thauser'
+from pnc_cli.swagger_client.apis import BuildrecordsApi
 from pnc_cli.swagger_client.apis import ProductmilestonesApi
 from test import testutils
 import pnc_cli.user_config as uc
@@ -11,6 +12,11 @@ import pnc_cli.user_config as uc
 def get_milestone_api():
     global milestone_api
     milestone_api = ProductmilestonesApi(uc.user.get_api_client())
+
+@pytest.fixture(scope='function', autouse=True)
+def get_records_api():
+    global records_api
+    records_api = BuildrecordsApi(uc.user.get_api_client())
 
 
 def test_get_all_invalid_param():
@@ -80,13 +86,14 @@ def test_add_distributed_artifact_invalid_param():
     testutils.assert_raises_typeerror(milestone_api, 'add_distributed_artifact', id=1)
 
 
-def test_add_distributed_artifact():
-    milestone_api.remove_distributed_artifact(id=1, artifact_id=1)
-    artifact_to_add = ArtifactRest()
-    artifact_to_add.id = 1
-    milestone_api.add_distributed_artifact(id=1, body=artifact_to_add)
-    artifacts = milestone_api.get_distributed_artifacts(id=1).content
-    assert 1 in [x.id for x in artifacts]
+def test_add_distributed_artifact(new_milestone):
+    test_builds = records_api.get_all(q='(buildConfigurationAudited.name=like=%cli-test%)').content
+    record = test_builds[len(test_builds)-1] # latest test build
+    artifact = records_api.get_built_artifacts(record.id).content[1] # first artifact
+    milestone_api.remove_distributed_artifact(id=new_milestone.id, artifact_id=artifact.id)
+    milestone_api.add_distributed_artifact(id=new_milestone.id, body=artifact)
+    artifacts = milestone_api.get_distributed_artifacts(id=new_milestone.id).content
+    assert artifact.id in [x.id for x in artifacts]
 
 
 def test_get_distributed_artifacts_no_id():
@@ -97,8 +104,8 @@ def test_get_distributed_artifacts_invalid_param():
     testutils.assert_raises_typeerror(milestone_api, 'get_distributed_artifacts', id=1)
 
 
-def test_get_distributed_artifacts():
-    result = milestone_api.get_distributed_artifacts(id=1).content
+def test_get_distributed_artifacts(new_milestone):
+    result = milestone_api.get_distributed_artifacts(id=new_milestone.id).content
     assert result is not None
 
 
@@ -110,22 +117,27 @@ def test_get_distributed_builds_invalid_param():
     testutils.assert_raises_typeerror(milestone_api, 'get_distributed_builds', id=1)
 
 
-def test_get_distributed_builds():
-    result = milestone_api.get_distributed_builds(id=1).content
+def test_get_distributed_builds(new_milestone):
+    result = milestone_api.get_distributed_builds(id=new_milestone.id).content
     assert result is not None
 
 
-def test_remove_configuration_no_milestone_id():
+def test_remove_distributed_artifact_no_milestone_id():
     testutils.assert_raises_valueerror(milestone_api, 'remove_distributed_artifact', id=None, artifact_id=1)
 
 
-def test_remove_configuration_no_artifact_id():
+def test_remove_distributed_artifact_no_artifact_id():
     testutils.assert_raises_valueerror(milestone_api, 'remove_distributed_artifact', id=1, artifact_id=None)
 
 
-def test_remove_configuration_invalid_param():
+def test_remove_distributed_artifact_invalid_param():
     testutils.assert_raises_typeerror(milestone_api, 'remove_distributed_artifact', id=1, artifact_id=1)
 
 
-def test_remove_configuration():
-    milestone_api.remove_distributed_artifact(id=1, artifact_id=1)
+def test_remove_distributed_artifact(new_milestone):
+    test_builds = records_api.get_all(q='(buildConfigurationAudited.name=like=%cli-test%)').content
+    record = test_builds[len(test_builds)-1] # latest test build
+    artifact = records_api.get_built_artifacts(record.id).content[1] # first artifact
+    milestone_api.remove_distributed_artifact(id=new_milestone.id, artifact_id=artifact.id)
+    artifacts = milestone_api.get_distributed_artifacts(new_milestone.id).content
+    assert artifacts is None or artifact.id not in [x.id for x in artifacts] # assert that removing the artifact either means there are no artifacts, or at least the removed artifact is not present
