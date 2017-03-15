@@ -154,13 +154,13 @@ def test_build_invalid_param():
 
 
 # def test_build(request, new_set, new_project, new_environment):
-def test_build(request, new_set, new_project):
+def test_build(request, new_set, new_project, new_version):
     # config_one = new_config(request, new_project, new_environment)
     # config_two = new_config(request, new_project, new_environment)
     # config_three = new_config(request, new_project, new_environment)
-    config_one = new_config(request, new_project)
-    config_two = new_config(request, new_project)
-    config_three = new_config(request, new_project)
+    config_one = new_config(request, new_project, new_version)
+    config_two = new_config(request, new_project, new_version)
+    config_three = new_config(request, new_project, new_version)
     sets_api.add_configuration(id=new_set.id, body=config_one)
     sets_api.add_configuration(id=new_set.id, body=config_two)
     sets_api.add_configuration(id=new_set.id, body=config_three)
