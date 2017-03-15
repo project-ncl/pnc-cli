@@ -1,16 +1,15 @@
 __author__ = 'thauser'
 
 import pytest
-import time
-from test import testutils
+
 from pnc_cli import buildconfigurations
 from pnc_cli import buildconfigurationsets
-from pnc_cli import bpmbuildconfigurations
-from pnc_cli import products
-from pnc_cli import productversions
 from pnc_cli import productmilestones
 from pnc_cli import productreleases
+from pnc_cli import products
+from pnc_cli import productversions
 from pnc_cli import projects
+from test import testutils
 
 
 @pytest.fixture(scope='module')
@@ -54,15 +53,14 @@ def contains_event_type(events, types):
     return False
 
 @pytest.fixture(scope='function')
-#def new_config(request, new_project, new_environment):
-def new_config(request, new_project):
+def new_config(request, new_project, new_version):
     bc_name = testutils.gen_random_name() + '-config'
     created_bc = buildconfigurations.create_build_configuration(
         name=bc_name,
         project=new_project.id,
         environment=2,
         build_script='mvn deploy',
-        product_version_id=1,
+        product_version_id=new_version.id,
         scm_repo_url='git+ssh://pnc-gerrit-stage@code-stage.eng.nay.redhat.com:29418/productization/github.com/pnc-simple-test-project.git',
         scm_revision='master')
 
