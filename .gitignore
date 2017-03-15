@@ -83,4 +83,4 @@ results.xml
 .project
 .pydevproject
 .settings/
-
+cfg/*
