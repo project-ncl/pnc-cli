@@ -278,10 +278,13 @@ def valid_url(urlInput):
         raise argparse.ArgumentTypeError("invalid url")
     return urlInput
 
+
+# validation is different depnding on the PNC url.
 def valid_internal_url(urlInput):
-    if not urlInput.startswith("git+ssh://pnc-gerrit-stage@code-stage.eng.nay.redhat.com:29418"):
-        raise argparse.ArgumentTypeError("An internal SCM repository URL must start with: git+ssh://pnc-gerrit-stage@code-stage.eng.nay.redhat.com:29418")
-    if urlInput == "git+ssh://pnc-gerrit-stage@code-stage.eng.nay.redhat.com:29418":
+    repo_start = utils.get_internal_repo_start(uc.user.pnc_config.url)
+    if not urlInput.startswith(repo_start):
+        raise argparse.ArgumentTypeError("An internal SCM repository URL must start with: " + repo_start)
+    if urlInput == repo_start:
         raise argparse.ArgumentTypeError("No specific internal repository specified.")
     valid_url(urlInput)
     return urlInput
