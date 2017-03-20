@@ -44,9 +44,7 @@ def checked_api_call(api, func, **kwargs):
     else:
         return response
 
-
 epoch = datetime.datetime.utcfromtimestamp(0)
-
 
 def unix_time_millis(dt):
     millis = int((dt - epoch).total_seconds() * 1000.0)
@@ -96,3 +94,10 @@ def get_config():
             "New config file written to ~/.config/pnc-cli/pnc-cli.conf. Configure pncUrl and keycloakUrl values.")
         exit(1)
     return config
+
+
+def get_internal_repo_start(environment):
+    if "stage" in environment:
+        return 'git+ssh://pnc-gerrit-stage@code-stage.eng.nay.redhat.com:29418/'
+    elif "devel" in environment:
+        return 'git+ssh://user-pnc-gerrit@pnc-gerrit.pnc.dev.eng.bos.redhat.com:29418/'
