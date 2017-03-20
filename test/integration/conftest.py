@@ -2,6 +2,7 @@ __author__ = 'thauser'
 
 import pytest
 
+import pnc_cli.user_config as uc
 from pnc_cli import buildconfigurations
 from pnc_cli import buildconfigurationsets
 from pnc_cli import productmilestones
@@ -44,16 +45,22 @@ def new_set(request):
     request.addfinalizer(teardown)
     return set
 
-#helper function for checking BC creation
+
+# helper function for checking BC creation
 def contains_event_type(events, types):
     for event in events:
         if (event.event_type in types):
             return True
-
     return False
 
 @pytest.fixture(scope='function')
 def new_config(request, new_project, new_version):
+    # detect our environment.
+    if "stage" in uc.user.pnc_config.url:
+        repo_url = 'git+ssh://pnc-gerrit-stage@code-stage.eng.nay.redhat.com:29418/productization/github.com/pnc-simple-test-project.git'
+    elif "devel" in uc.user.pnc_config.url:
+        repo_url = 'git+ssh://user-pnc-gerrit@pnc-gerrit.pnc.dev.eng.bos.redhat.com:29418/productization/github.com/pnc-simple-test-project.git'
+
     bc_name = testutils.gen_random_name() + '-config'
     created_bc = buildconfigurations.create_build_configuration(
         name=bc_name,
@@ -61,7 +68,7 @@ def new_config(request, new_project, new_version):
         environment=2,
         build_script='mvn deploy',
         product_version_id=new_version.id,
-        scm_repo_url='git+ssh://pnc-gerrit-stage@code-stage.eng.nay.redhat.com:29418/productization/github.com/pnc-simple-test-project.git',
+        scm_repo_url=repo_url,
         scm_revision='master')
 
     def teardown():

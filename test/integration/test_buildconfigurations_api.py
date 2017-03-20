@@ -237,14 +237,17 @@ def test_remove_dependency_invalid_param():
     testutils.assert_raises_typeerror(configs_api, 'remove_dependency', id=1, dependency_id=1)
 
 
-# add_dependency
-# get_dependencies
-# remove_dependency
 def test_dependency_operations(new_config):
+    # again detect environment
+    if "stage" in uc.user.pnc_config.url:
+        repo_url = 'git+ssh://pnc-gerrit-stage@code-stage.eng.nay.redhat.com:29418/productization/github.com/pnc-simple-test-project.git'
+    elif "devel" in uc.user.pnc_config.url:
+        repo_url = 'git+ssh://user-pnc-gerrit@pnc-gerrit.pnc.dev.eng.bos.redhat.com:29418/productization/github.com/pnc-simple-test-project.git'
+
     depname = testutils.gen_random_name()
-    dep = buildconfigurations.create_build_configuration(name=depname, project=1, environment=1,
-                                                         scm_repo_url='git+ssh://pnc-gerrit-stage@code-stage.eng.nay.redhat.com:29418/productization/git.app.eng.bos.redhat.com/liquibase.git',
-                                                         scm_revision='branch-liquibase-parent-3.4.1')
+    dep = buildconfigurations.create_build_configuration(name=depname, project=new_config.project.id, environment=new_config.environment.id,
+                                                         scm_repo_url=repo_url,
+                                                         scm_revision='master')
     configs_api.add_dependency(id=new_config.id, body=dep)
     dependency_ids = [dep.id for dep in
                       configs_api.get_dependencies(id=new_config.id, page_index=0, page_size=1000000, sort='',
