@@ -15,7 +15,7 @@ from pnc_cli.swagger_client.apis.buildconfigurations_api import Buildconfigurati
 from pnc_cli.swagger_client.apis.runningbuildrecords_api import RunningbuildrecordsApi
 from pnc_cli.swagger_client.apis.buildconfigurationsets_api import BuildconfigurationsetsApi
 from pnc_cli.swagger_client.apis.buildrecords_api import BuildrecordsApi
-from test.integration.conftest import new_config
+from test.integration.conftest import new_config, create_config
 import pnc_cli.user_config as uc
 
 # setup logging to print timestamps
@@ -78,9 +78,9 @@ def test_run_group_build(request, new_set, new_project, new_version):
     # config_one = new_config(request, new_project, new_environment)
     # config_two = new_config(request, new_project, new_environment)
     # config_three = new_config(request, new_project, new_environment)
-    config_one = new_config(request, new_project, new_version)
-    config_two = new_config(request, new_project, new_version)
-    config_three = new_config(request, new_project, new_version)
+    config_one = create_config(request, new_project, new_version, 1)
+    config_two = create_config(request, new_project, new_version, 2)
+    config_three = create_config(request, new_project, new_version, 3)
     sets_api.add_configuration(id=new_set.id, body=config_one)
     sets_api.add_configuration(id=new_set.id, body=config_two)
     sets_api.add_configuration(id=new_set.id, body=config_three)
@@ -174,3 +174,4 @@ def check_pom_for_redhat_version_update(diff):
     """Check the POM file diff for the redhat version update"""
     search = POM_VERSION_UPDATE_REGEX.search(diff)
     return (search is not None)
+

@@ -55,11 +55,23 @@ def contains_event_type(events, types):
 
 @pytest.fixture(scope='function')
 def new_config(request, new_project, new_version):
+    created_bc = create_config(request, new_project, new_version, 1)
+    return created_bc
+
+
+def create_config(request, new_project, new_version, project_number):
+    if (project_number == 2):
+        ending = '-2'
+    elif (project_number == 3):
+        ending = '-3'
+    else:
+        ending = ''
+
     # detect our environment.
     if "stage" in uc.user.pnc_config.url:
-        repo_url = 'git+ssh://pnc-gerrit-stage@code-stage.eng.nay.redhat.com:29418/productization/github.com/pnc-simple-test-project.git'
+        repo_url = 'git+ssh://pnc-gerrit-stage@code-stage.eng.nay.redhat.com:29418/productization/github.com/pnc-simple-test-project'+ending+'.git'
     elif "devel" in uc.user.pnc_config.url:
-        repo_url = 'git+ssh://user-pnc-gerrit@pnc-gerrit.pnc.dev.eng.bos.redhat.com:29418/productization/github.com/pnc-simple-test-project.git'
+        repo_url = 'git+ssh://user-pnc-gerrit@pnc-gerrit.pnc.dev.eng.bos.redhat.com:29418/productization/github.com/pnc-simple-test-project'+ending+'.git'
 
     bc_name = testutils.gen_random_name() + '-config'
     created_bc = buildconfigurations.create_build_configuration(
@@ -76,7 +88,6 @@ def new_config(request, new_project, new_version):
 
     request.addfinalizer(teardown)
     return created_bc
-
 
 @pytest.fixture(scope='module')
 def new_version(new_product):
