@@ -53,14 +53,13 @@ def get_records_api():
     records_api = BuildrecordsApi(uc.user.get_api_client())
 
 
-@pytest.mark.skip(reason="PNC doesn't complete builds in reasonable time")
 def test_run_single_build(new_config):
     """ Run a single build configuration defined by the 'new_config' method
     and verify the build output """
-    assert (new_config is not None, 'Unable to create build configuration')
+    assert (new_config is not None)
 
     triggered_build = configs_api.trigger(id=new_config.id).content
-    assert (triggered_build is not None, 'Unable to start build')
+    assert (triggered_build is not None)
 
     logger.info("Build %s is running...", triggered_build.id)
     while True:
@@ -73,38 +72,36 @@ def test_run_single_build(new_config):
     build_record_checks(build_record)
 
 
-@pytest.mark.skip(reason="Blocked by issue with repour (NCL-2195)")
-#def test_run_group_build(request, new_set, new_environment, new_project):
-def test_run_group_build(request, new_set, new_environment, new_project):
-    assert (new_set is not None, 'Unable to create Build Configuration Group')
-    #assert (new_environment is not None, 'Unable to create Build Environment')
+def test_run_group_build(request, new_set, new_project, new_version):
+    assert (new_set is not None)
+    # assert (new_environment is not None, 'Unable to create Build Environment')
     # config_one = new_config(request, new_project, new_environment)
     # config_two = new_config(request, new_project, new_environment)
     # config_three = new_config(request, new_project, new_environment)
-    config_one = new_config(request, new_project)
-    config_two = new_config(request, new_project)
-    config_three = new_config(request, new_project)
+    config_one = new_config(request, new_project, new_version)
+    config_two = new_config(request, new_project, new_version)
+    config_three = new_config(request, new_project, new_version)
     sets_api.add_configuration(id=new_set.id, body=config_one)
     sets_api.add_configuration(id=new_set.id, body=config_two)
     sets_api.add_configuration(id=new_set.id, body=config_three)
 
     # this returns a list of build_records, one for each build configuration in the set
     triggered_build = sets_api.build(id=new_set.id).content
-    assert (triggered_build is not None, 'Unable to start build')
+    assert (triggered_build is not None)
 
     triggered_build_ids = [x.id for x in triggered_build]
     for id in triggered_build_ids:
         logger.info("Group Build: Build %s is running...", id)
 
     config_set_records = sets_api.get_all_build_config_set_records(id=new_set.id).content
-    assert (config_set_records is not None, 'Unable to get running config set')
-    assert (len(config_set_records) > 0, 'No running config sets found')
+    assert (config_set_records is not None)
+    assert (len(config_set_records) > 0)
 
     while True:
         # TODO: this is not 100% reliable because the array we want might not be the first one (although it's very unlikely)
         # we have to do this for now because the id of the build config set record is only available in the header
         # location field of the triggered_build, and the header is not directly available from the swagger api response
-        if not running_api.get_all_for_bc_set(id=config_set_records[0].id).content:
+        if not running_api.get_all_for_bc_set_record(id=config_set_records[0].id).content:
             break
         time.sleep(5)
     for id in triggered_build_ids:
@@ -141,7 +138,7 @@ def build_record_artifact_checks(build_record_id):
 
     # Check that each artifact URL points to a valid file and the checksums match
     for artifact in artifacts:
-        parsed_url = urlparse(artifact.deploy_url)
+        parsed_url = urlparse(artifact.public_url)
         conn = httplib.HTTPConnection(parsed_url.netloc)
         conn.request('HEAD', parsed_url.path)
         response = conn.getresponse()
@@ -150,7 +147,7 @@ def build_record_artifact_checks(build_record_id):
         conn = httplib.HTTPConnection(parsed_url.netloc)
         conn.request('GET', parsed_url.path + str('.md5'))
         response_body = conn.getresponse().read()
-        assert (response_body == artifact.checksum)
+        assert (response_body == artifact.md5)
 
 
 def checkout_git_sources(repo_url, revision):
@@ -161,7 +158,7 @@ def checkout_git_sources(repo_url, revision):
         origin = git_repo.remote("origin")
         origin.fetch()
     else:
-        kwargs = {"config":"http.sslVerify=false"}
+        kwargs = {"config": "http.sslVerify=false"}
         git_repo = Repo.clone_from(repo_url, repo_dir, **kwargs)
     git_repo.head.reference = git_repo.commit(revision)
     git_repo.head.reset(index=True, working_tree=True)
@@ -177,6 +174,3 @@ def check_pom_for_redhat_version_update(diff):
     """Check the POM file diff for the redhat version update"""
     search = POM_VERSION_UPDATE_REGEX.search(diff)
     return (search is not None)
-
-
-
