@@ -18,6 +18,7 @@ from pnc_cli.swagger_client import ProductversionsApi
 from pnc_cli.swagger_client import ProjectsApi
 from pnc_cli.swagger_client import RunningbuildrecordsApi
 import pnc_cli.user_config as uc
+import requests
 
 api_client = uc.user.get_api_client()
 
@@ -269,13 +270,15 @@ def valid_date(dateInput):
 
 def valid_id(id_input):
     if not id_input.isdigit():
-        raise argparse.ArgumentTypeError("an ID must be a positive integer")
+        raise argparse.ArgumentTypeError("An ID must be a positive integer")
     return id_input
 
 
 def valid_url(urlInput):
     if not validators.url(urlInput):
-        raise argparse.ArgumentTypeError("invalid url")
+        raise argparse.ArgumentTypeError("Invalid url")
+    if not requests.get(urlInput).status_code is 404:
+        raise argparse.ArgumentTypeError("Resource at given URL does not exist.")
     return urlInput
 
 
