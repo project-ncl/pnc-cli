@@ -174,12 +174,17 @@ def get_maven_options(params):
     if 'pnc.buildScript' in params.keys():
         return params['pnc.buildScript']
 
-    result = "mvn clean deploy -DskipTests"
+    result = "mvn clean deploy"
 
+    if 'goals' in params['options'].keys():
+        for goal in params['options']['goals']:
+            if goal.strip() != "":
+                result += ' %s' % goal
     if 'profiles' in params['options'].keys():
         for profile in params['options']['profiles']:
             if profile.strip() != "":
                 result += ' -P%s' % profile
+    result += ' -DskipTests'
     if 'maven_options' in params['options'].keys():
         for maven_option in params['options']['maven_options']:
             if maven_option == '-pl':
