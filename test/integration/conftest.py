@@ -70,14 +70,16 @@ def create_config(request, new_project, new_version, project_number):
     # detect our environment.
     if "stage" in uc.user.pnc_config.url:
         repo_url = 'git+ssh://pnc-gerrit-stage@code-stage.eng.nay.redhat.com:29418/productization/github.com/pnc-simple-test-project'+ending+'.git'
+        env = 2
     elif "devel" in uc.user.pnc_config.url:
         repo_url = 'git+ssh://user-pnc-gerrit@pnc-gerrit.pnc.dev.eng.bos.redhat.com:29418/productization/github.com/pnc-simple-test-project'+ending+'.git'
+        env = 3
 
     bc_name = testutils.gen_random_name() + '-config'
     created_bc = buildconfigurations.create_build_configuration(
         name=bc_name,
         project=new_project.id,
-        environment=2,
+        environment=env,
         build_script='mvn deploy',
         product_version_id=new_version.id,
         scm_repo_url=repo_url,
