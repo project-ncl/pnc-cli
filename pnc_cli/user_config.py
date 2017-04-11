@@ -123,6 +123,25 @@ class UserConfig():
         else:
             print("No credentials. Authentication is not possible.")
 
+    def retrieve_client_token(self):
+        client_id = 'ipaas-ci'
+        params = {'grant_type': 'client_credentials',
+                  'client_id': client_id,
+                  'client_secret': 'c211649d-d3b6-41c8-acde-5e476697361c'
+        }
+        r = requests.post(self.keycloak_config.url, params, verify=False)
+        if r.status_code == 200:
+            print("Token retrieved for client from {}.".format(client_id))
+            self.token_time = utils.current_time_millis()
+            reply = json.loads(r.content.decode('utf-8'))
+            return str(reply.get('access_token'))
+        else:
+            print("Failed to retrieve client token:")
+            print(r)
+            print(r.content)
+            exit(1)
+
+
     def create_api_client(self):
         if self.token:
             return swagger_client.ApiClient(self.pnc_config.url, header_name='Authorization',
