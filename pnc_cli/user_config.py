@@ -111,7 +111,6 @@ class UserConfig():
     # retrieves a token from the keycloak server using the configured username / password / keycloak server
     def retrieve_keycloak_token(self):
         if self.keycloak_config.client_mode in trueValues:
-            self.keycloak_config.client_id = 'ipaas-ci'
             params = {'grant_type': 'client_credentials',
                       'client_id': self.keycloak_config.client_id,
                       'client_secret': self.keycloak_config.client_secret,
