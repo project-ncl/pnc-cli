@@ -25,6 +25,8 @@ except NameError:
 SAVED_USER_FILENAME = "saved-user.p"
 SAVED_USER = utils.CONFIG_LOCATION + SAVED_USER_FILENAME
 
+trueValues = ['True', 'true', '1']
+
 
 class UserConfig():
     def __init__(self):
@@ -66,13 +68,17 @@ class UserConfig():
             newtoken = True
 
         if newtoken:
-            # enter password to get new token, but only if the user has not entered a password in pnc-cli.conf
-            password = self.load_password_from_config(config)
-            if password:
-                self.password = password
+            # if using client auth, we simply get a new token.
+            if (self.keycloak_config.client_mode in ['True', 'true', '1']):
+                self.token = self.retrieve_keycloak_token()
             else:
-                self.password = self.input_password()
-            self.token = self.retrieve_keycloak_token()
+                # enter password to get new token, but only if the user has not entered a password in pnc-cli.conf
+                password = self.load_password_from_config(config)
+                if password:
+                    self.password = password
+                else:
+                    self.password = self.input_password()
+                self.token = self.retrieve_keycloak_token()
         self.apiclient = self.create_api_client()
 
     # this function gets input from the user to set the username
@@ -104,43 +110,42 @@ class UserConfig():
 
     # retrieves a token from the keycloak server using the configured username / password / keycloak server
     def retrieve_keycloak_token(self):
-        if self.username and self.password:
-            params = {'grant_type': 'password',
+        if self.keycloak_config.client_mode in trueValues:
+            self.keycloak_config.client_id = 'ipaas-ci'
+            params = {'grant_type': 'client_credentials',
                       'client_id': self.keycloak_config.client_id,
-                      'username': self.username,
-                      'password': self.password}
+                      'client_secret': self.keycloak_config.client_secret,
+            }
             r = requests.post(self.keycloak_config.url, params, verify=False)
             if r.status_code == 200:
-                print("Token retrieved for {}.".format(self.username))
+                print("Token retrieved for client from {}.".format(self.keycloak_config.client_id))
                 self.token_time = utils.current_time_millis()
                 reply = json.loads(r.content.decode('utf-8'))
                 return str(reply.get('access_token'))
             else:
-                print("Failed to retrieve token:")
+                print("Failed to retrieve client token:")
                 print(r)
                 print(r.content)
                 exit(1)
         else:
-            print("No credentials. Authentication is not possible.")
-
-    def retrieve_client_token(self):
-        client_id = 'ipaas-ci'
-        params = {'grant_type': 'client_credentials',
-                  'client_id': client_id,
-                  'client_secret': 'c211649d-d3b6-41c8-acde-5e476697361c'
-        }
-        r = requests.post(self.keycloak_config.url, params, verify=False)
-        if r.status_code == 200:
-            print("Token retrieved for client from {}.".format(client_id))
-            self.token_time = utils.current_time_millis()
-            reply = json.loads(r.content.decode('utf-8'))
-            return str(reply.get('access_token'))
-        else:
-            print("Failed to retrieve client token:")
-            print(r)
-            print(r.content)
-            exit(1)
-
+            if self.username and self.password:
+                params = {'grant_type': 'password',
+                          'client_id': self.keycloak_config.client_id,
+                          'username': self.username,
+                          'password': self.password}
+                r = requests.post(self.keycloak_config.url, params, verify=False)
+                if r.status_code == 200:
+                    print("Token retrieved for {}.".format(self.username))
+                    self.token_time = utils.current_time_millis()
+                    reply = json.loads(r.content.decode('utf-8'))
+                    return str(reply.get('access_token'))
+                else:
+                    print("Failed to retrieve token:")
+                    print(r)
+                    print(r.content)
+                    exit(1)
+            else:
+                print("No credentials. Authentication is not possible.")
 
     def create_api_client(self):
         if self.token:
@@ -156,7 +161,10 @@ class UserConfig():
 
 if os.path.exists(SAVED_USER):
     user = pickle.load(open(SAVED_USER, "rb"))
-    sys.stderr.write("Command performed with user: {}\n".format(user.username))
+    if user.keycloak_config.client_mode in trueValues:
+        sys.stderr.write("Command performed using client authorization.\n")
+    else:
+        sys.stderr.write("Command performed with user: {}\n".format(user.username))
 else:
     user = UserConfig()
 
