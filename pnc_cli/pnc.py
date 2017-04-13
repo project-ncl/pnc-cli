@@ -15,6 +15,7 @@ from pnc_cli import products
 from pnc_cli import productversions
 from pnc_cli import projects
 from pnc_cli import runningbuilds
+from pnc_cli import users
 import pnc_cli.user_config as uc
 from pnc_cli import makemead
 
@@ -102,6 +103,7 @@ parser.add_commands([uc.login,
                      buildconfigsetrecords.get_build_configuration_set_record,
                      buildconfigsetrecords.list_build_configuration_set_records,
                      buildconfigsetrecords.list_records_for_build_config_set,
+                     users.get_logged_user,
                      makemead.make_mead])
 parser.autocomplete()
 
