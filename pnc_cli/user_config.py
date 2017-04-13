@@ -164,6 +164,8 @@ if os.path.exists(SAVED_USER):
         sys.stderr.write("Command performed using client authorization.\n")
     else:
         sys.stderr.write("Command performed with user: {}\n".format(user.username))
+    users_api = swagger_client.UsersApi(user.get_api_client())
+    utils.checked_api_call(users_api, 'get_logged_user') # inits the user if it doesn't exist in pnc's db already
 else:
     user = UserConfig()
 
