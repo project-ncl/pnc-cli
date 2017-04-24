@@ -95,6 +95,17 @@ def make_mead(config=None, run_build=False, environment=1, sufix="", product_nam
         artifact_name = package + "-" + re.sub("[\-\.]*redhat\-\d+", "", version) + sufix
         target_name = product_name + "-" + product_version + "-all" + sufix
 
+        #WA for subfolder builds (? in SCM url)
+        if "?" in scm_repo_url:
+            folder = scm_repo_url[scm_repo_url.index('?')+1:]
+            scm_repo_url = scm_repo_url[:scm_repo_url.index('?')]
+            if 'maven_options' not in art_params['options'].keys():
+                art_params['options']['maven_options'] = []
+            art_params['options']['maven_options'].append("-f./"+folder+"/pom.xml")
+            if 'properties' not in art_params['options'].keys():
+                art_params['options']['properties'] = {}
+            art_params['options']['properties']['exec_folder'] = folder
+
         #Lookup or create Build Configuration Set
         if bc_set is None:
             try:
@@ -201,7 +212,9 @@ def get_pme_properties(params):
     if 'properties' in params['options'].keys():
         for prop in sorted(list(params['options']['properties'].keys())):
             value = params['options']['properties'][prop]
-            if prop not in not_supported_params:
+            if prop == "exec_folder":
+                result += ' --file=./%s/pom.xml' % value
+            elif prop not in not_supported_params:
                 result += ' -D%s=%s' % (prop, value)
 
     return result 
