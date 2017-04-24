@@ -297,7 +297,7 @@ def create_build_configuration(environment_id, bc_set, product_version_id, art_p
         pprint("!! IMPORTANT !! - ACTION REQUIRED !!")
         pprint("External repository " + scm_repo_url
                + " was forked to internal Git server. YOU MUST TO UPDATE YOUR CONFIG FILE WITH THE NEW VALUE.")
-        pprint("New repository URL is: " + build_config.scm_repo_url)
+        pprint("New repository URL is: " + build_config.scm_repo_url + "#" + build_config.scm_revision)
         
     buildconfigurationsets.add_build_configuration_to_set(set_id=bc_set.id, config_id=build_config.id)
     return build_config
