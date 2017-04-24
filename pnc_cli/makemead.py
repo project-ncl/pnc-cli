@@ -50,7 +50,6 @@ def make_mead(config=None, run_build=False, environment=1, sufix="", product_nam
         print '-c false'
         return 1
 
-    bc_set = None
     product_version_id = None
     ids = dict()
     (subarts, deps_dict) = config_reader.get_dependency_structure()
@@ -75,6 +74,15 @@ def make_mead(config=None, run_build=False, environment=1, sufix="", product_nam
     #Create a list for look-up-only
     look_up_only_list = look_up_only.split(",")
 
+    #Lookup or create Build Configuration Set
+    target_name = product_name + "-" + product_version + "-all" + sufix
+    try:
+        bc_set = buildconfigurationsets.get_build_configuration_set(name=target_name)
+    except ValueError:
+        bc_set = buildconfigurationsets.create_build_configuration_set(name=target_name, product_version_id=product_version_id)
+    logging.debug(target_name + ":")
+    logging.debug(bc_set.id)
+
     #Iterate through all sections in configuration file
     for subartifact in subarts:
         art_params = config_reader.get_config(subartifact)
@@ -93,7 +101,6 @@ def make_mead(config=None, run_build=False, environment=1, sufix="", product_nam
         scm_url = art_params['scmURL']
         (scm_repo_url, scm_revision) = scm_url.split("#", 2)
         artifact_name = package + "-" + re.sub("[\-\.]*redhat\-\d+", "", version) + sufix
-        target_name = product_name + "-" + product_version + "-all" + sufix
 
         #WA for subfolder builds (? in SCM url)
         if "?" in scm_repo_url:
@@ -106,15 +113,6 @@ def make_mead(config=None, run_build=False, environment=1, sufix="", product_nam
                 art_params['options']['properties'] = {}
             art_params['options']['properties']['exec_folder'] = folder
 
-        #Lookup or create Build Configuration Set
-        if bc_set is None:
-            try:
-                bc_set = buildconfigurationsets.get_build_configuration_set(name=target_name)
-            except ValueError:
-                bc_set = buildconfigurationsets.create_build_configuration_set(name=target_name, product_version_id=product_version_id)
-            logging.debug(target_name + ":")
-            logging.debug(bc_set.id)
-
         #Lookup or create a Project
         try:
             project = projects.get_project(name=project_name)        
@@ -125,21 +123,28 @@ def make_mead(config=None, run_build=False, environment=1, sufix="", product_nam
         logging.debug(project.id)
 
         #Lookup or update or create Build Config
+        build_config = get_build_configuration_by_name(artifact_name)
         if subartifact in look_up_only_list:
-            build_config = get_build_configuration_by_name(artifact_name)
             if build_config == None:
                 pprint("Look up of an existing Build Configuration failed. No build configuration with name " + artifact_name + " found.")
-            else:
-                buildconfigurationsets.add_build_configuration_to_set(set_id=bc_set.id, config_id=build_config.id)  
         else:
-            try:
-                build_config = update_build_configuration(environment, product_version_id, art_params, scm_repo_url, 
-                                                          scm_revision, artifact_name, project)
-            except ValueError:
+            if build_config == None:
                 logging.debug('No build config with name ' + artifact_name)
-                build_config = create_build_configuration(environment, bc_set, product_version_id, art_params, scm_repo_url, 
+                build_config = create_build_configuration(environment, bc_set, product_version_id, art_params, scm_repo_url,
                                                           scm_revision, artifact_name, project,
                                                           use_external_scm_fields=external)
+            else:
+                if external:
+                    pprint("Updating of an existing Build Configuration is not possible with external repositories (NCL-2963). Build Configuration: " + artifact_name)
+                    return 1
+                else:
+                    build_config = update_build_configuration(environment, product_version_id, art_params, scm_repo_url,
+                                                              scm_revision, artifact_name, project)
+
+        # Make sure existing configs are added the group
+        if build_config is not None and not external and build_config.id not in bc_set.build_configuration_ids:
+            buildconfigurationsets.add_build_configuration_to_set(set_id=bc_set.id, config_id=build_config.id)
+
         if build_config == None:
             return 10
             
