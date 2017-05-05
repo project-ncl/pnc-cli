@@ -3,6 +3,7 @@ __author__ = 'thauser'
 import pytest
 
 import pnc_cli.user_config as uc
+from pnc_cli import environments
 from pnc_cli import buildconfigurations
 from pnc_cli import buildconfigurationsets
 from pnc_cli import productmilestones
@@ -67,19 +68,25 @@ def create_config(request, new_project, new_version, project_number):
     else:
         ending = ''
 
-    # detect our environment.
+    # detect our environment to assign appropriate internal repository
     if "stage" in uc.user.pnc_config.url:
         repo_url = 'git+ssh://pnc-gerrit-stage@code-stage.eng.nay.redhat.com:29418/productization/github.com/pnc-simple-test-project'+ending+'.git'
-        env = 2
     elif "devel" in uc.user.pnc_config.url:
         repo_url = 'git+ssh://user-pnc-gerrit@pnc-gerrit.pnc.dev.eng.bos.redhat.com:29418/productization/github.com/pnc-simple-test-project'+ending+'.git'
-        env = 3
+
+    # detect an appropriate environment
+    available_environments = environments.list_environments()
+
+    for x in available_environments:
+        if "OpenJDK 1.8.0; Mvn 3.3.9" in x.name:
+            env_id = x.id
+            break
 
     bc_name = testutils.gen_random_name() + '-config'
     created_bc = buildconfigurations.create_build_configuration(
         name=bc_name,
         project=new_project.id,
-        environment=env,
+        environment=env_id,
         build_script='mvn deploy',
         product_version_id=new_version.id,
         scm_repo_url=repo_url,
