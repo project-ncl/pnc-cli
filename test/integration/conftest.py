@@ -78,9 +78,15 @@ def create_config(request, new_project, new_version, project_number):
     available_environments = environments.list_environments()
 
     for x in available_environments:
+        # set the env_id to one of the environments. This allows us to set
+        # env_id to an existing environment id even if no environment contains
+        # "OpenJDK 1.8.0; Mvn 3.3.9" 
+        env_id = x.id
         if "OpenJDK 1.8.0; Mvn 3.3.9" in x.name:
             env_id = x.id
             break
+
+
 
     bc_name = testutils.gen_random_name() + '-config'
     created_bc = buildconfigurations.create_build_configuration(
