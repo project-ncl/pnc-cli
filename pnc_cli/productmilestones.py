@@ -45,9 +45,9 @@ def list_milestones(page_size=200, q="", sort=""):
     """
     List all ProductMilestones
     """
-    response = utils.checked_api_call(milestones_api, 'get_all', page_size=page_size, q=q, sort=sort).content
+    response = utils.checked_api_call(milestones_api, 'get_all', page_size=page_size, q=q, sort=sort)
     if response:
-        return response
+        return utils.format_json_list(response.content)
 
 
 @arg("product_version_id", help="ID of the ProductVersion to create a ProductMilestone from.",
@@ -75,7 +75,7 @@ def create_milestone(**kwargs):
         'create_new',
         body=created_milestone)
     if response:
-        return response.content
+        return utils.format_json(response.content)
 
 
 @arg("id", help="ProductVersion ID to retrieve milestones for.", type=types.existing_product_version)
@@ -86,15 +86,15 @@ def list_milestones_for_version(id):
     response = utils.checked_api_call(
         milestones_api,
         'get_all_by_product_version_id',
-        version_id=id).content
+        version_id=id)
     if response:
-        return response
+        return utils.format_json_list(response.content)
 
 
 @arg("id", help="ProductMilestone ID to retrieve.", type=types.existing_product_milestone)
 def get_milestone(id):
     response = utils.checked_api_call(milestones_api, 'get_specific', id=id)
-    return response.content
+    return utils.format_json(response.content)
 
 
 @arg("id", help="ProductMilestone ID to update.", type=types.existing_product_milestone)
@@ -126,7 +126,7 @@ def update_milestone(id, **kwargs):
     response = utils.checked_api_call(
         milestones_api, 'update', id=id, body=existing_milestone)
     if response:
-        return response.content
+        return utils.format_json(response.content)
 
 
 @arg("id", help="ID of the ProductMilestone to list distributed artifacts for.", type=types.existing_product_milestone)
@@ -136,7 +136,7 @@ def update_milestone(id, **kwargs):
 def list_distributed_artifacts(id, page_size=200, sort="", q=""):
     response = utils.checked_api_call(milestones_api, 'get_distributed_artifacts', id=id, page_size=page_size, sort=sort, q=q)
     if response:
-        return response.content
+        return utils.format_json_list(response.content)
 
 
 @arg('id', help="ID of the ProductMilestone to add a distributed artifact to.", type=types.existing_product_milestone)
@@ -160,4 +160,4 @@ def remove_distributed_artifact():
 def list_distributed_builds(id, page_size=200, sort='', q=''):
     response = utils.checked_api_call(milestones_api, 'get_distributed_builds', id=id, page_size=page_size, sort=sort, q=q)
     if response:
-        return response.content
+        return utils.format_json_list(response.content)

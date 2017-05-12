@@ -20,7 +20,7 @@ def list_build_configuration_set_records(page_size=200, sort="", q=""):
     """
     response = utils.checked_api_call(bcsr_api, 'get_all', page_size=page_size, sort=sort, q=q)
     if response:
-        return response.content
+        return utils.format_json_list(response.content)
 
 
 @arg("id", help="ID of build configuration set record to retrieve.", type=types.existing_bc_set_record)
@@ -30,7 +30,7 @@ def get_build_configuration_set_record(id):
     """
     response = utils.checked_api_call(bcsr_api, 'get_specific', id=id)
     if response:
-        return response.content
+        return utils.format_json(response.content)
 
 
 @arg("id", help="ID of BuildConfigSetRecord to retrieve build records from.", type=types.existing_bc_set_record)
@@ -43,4 +43,4 @@ def list_records_for_build_config_set(id, page_size=200, sort="", q=""):
     """
     response = utils.checked_api_call(bcsr_api, 'get_build_records', id=id, page_size=page_size, sort=sort, q=q)
     if response:
-        return response.content
+        return utils.format_json_list(response.content)

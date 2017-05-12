@@ -29,7 +29,7 @@ def create_license(**kwargs):
     License = create_license_object(**kwargs)
     response = utils.checked_api_call(licenses_api, 'create_new', body=License)
     if response:
-        return response.content
+        return utils.format_json(response.content)
 
 
 @arg("id", help="ID for the License to retrieve", type=types.existing_license)
@@ -40,7 +40,7 @@ def get_license(id):
     response = utils.checked_api_call(
         licenses_api, 'get_specific', id= id)
     if response:
-        return response.content
+        return utils.format_json(response.content)
 
 
 @arg("license_id", help="ID of the License to delete", type=types.existing_license)
@@ -52,7 +52,7 @@ def delete_license(license_id):
 
     response = utils.checked_api_call(licenses_api, 'delete', id=license_id)
     if response:
-        return response.content
+        return utils.format_json(response.content)
 
 
 @arg("license_id", help="ID of the License to update", type=types.existing_license)
@@ -76,7 +76,7 @@ def update_license(license_id, **kwargs):
         id=int(license_id),
         body=updated_license)
     if response:
-        return response.content
+        return utils.format_json(response.content)
 
 
 @arg("-p", "--page-size", help="Limit the amount of product releases returned")
@@ -88,4 +88,4 @@ def list_licenses(page_size=200, sort="", q=""):
     """
     response = utils.checked_api_call(licenses_api, 'get_all', page_size=page_size, sort=sort, q=q)
     if response:
-        return response.content
+        return utils.format_json_list(response.content)

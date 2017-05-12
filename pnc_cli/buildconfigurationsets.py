@@ -29,7 +29,7 @@ def list_build_configuration_sets(page_size=200, sort="", q=""):
     """
     response = utils.checked_api_call(sets_api, 'get_all', page_size=page_size, sort=sort, q=q)
     if response:
-        return response.content
+        return utils.format_json_list(response.content)
 
 
 @arg("name", help="Name for the new BuildConfigurationSet.", type=types.unique_bc_set_name)
@@ -45,7 +45,7 @@ def create_build_configuration_set(**kwargs):
     config_set = _create_build_config_set_object(**kwargs)
     response = utils.checked_api_call(sets_api, 'create_new', body=config_set)
     if response:
-        return response.content
+        return utils.format_json(response.content)
 
 
 @arg("-id", "--id", help="ID of the BuildConfigurationSet to retrieve", type=types.existing_bc_set_id)
@@ -57,7 +57,7 @@ def get_build_configuration_set(id=None, name=None):
     found_id = common.set_id(sets_api, id, name)
     response = utils.checked_api_call(sets_api, 'get_specific', id=found_id)
     if response:
-        return response.content
+        return utils.format_json(response.content)
 
 
 @arg("id", help="ID of the BuildConfigurationSet to update.", type=types.existing_bc_set_id)
@@ -78,7 +78,7 @@ def update_build_configuration_set(id, **kwargs):
 
     response = utils.checked_api_call(sets_api, 'update', id=id, body=set_to_update)
     if response:
-        return response.content
+        return utils.format_json(response.content)
 
 
 @arg("-i", "--id", help="ID of the BuildConfigurationSet to delete.", type=types.existing_bc_set_id)
@@ -90,7 +90,7 @@ def delete_build_configuration_set(id=None, name=None):
     set_id = common.set_id(sets_api, id, name)
     response = utils.checked_api_call(sets_api, 'delete_specific', id=set_id)
     if response:
-        return response.content
+        return utils.format_json(response.content)
 
 
 @arg("-i", "--id", help="ID of the BuildConfigurationSet to build.", type=types.existing_bc_set_id)
@@ -102,7 +102,7 @@ def build_set(id=None, name=None):
     found_id = common.set_id(sets_api, id, name)
     response = utils.checked_api_call(sets_api, 'build', id=found_id)
     if response:
-        return response.content
+        return utils.format_json(response.content)
 
 
 @arg("-i", "--id", help="ID of the BuildConfigurationSet to build.", type=types.existing_bc_set_id)
@@ -117,7 +117,7 @@ def list_build_configurations_for_set(id=None, name=None, page_size=200, sort=""
     found_id = common.set_id(sets_api, id, name)
     response = utils.checked_api_call(sets_api, 'get_configurations', id=found_id, page_size=page_size, sort=sort, q=q)
     if response:
-        return response.content
+        return utils.format_json_list(response.content)
 
 
 @arg("-sid", "--set-id", help="ID of the BuildConfigurationSet to add to", type=types.existing_bc_set_id)
@@ -140,7 +140,7 @@ def add_build_configuration_to_set(
         id=config_set_id,
         body=bc)
     if response:
-        return response.content
+        return utils.format_json(response.content)
 
 
 @arg("-sid", "--set-id", help="ID of the BuildConfigurationSet to remove from", type=types.existing_bc_set_id)
@@ -158,7 +158,7 @@ def remove_build_configuration_from_set(set_id=None, set_name=None, config_id=No
         id=config_set_id,
         config_id=bc_id)
     if response:
-        return response.content
+        return utils.format_json(response.content)
 
 
 @arg("-i", "--id", help="ID of the BuildConfigurationSet", type=types.existing_bc_set_id)
@@ -173,4 +173,4 @@ def list_build_records_for_set(id=None, name=None, page_size=200, sort="", q="")
     found_id = common.set_id(sets_api, id, name)
     response = utils.checked_api_call(sets_api, 'get_build_records', id=found_id, page_size=page_size, sort=sort, q=q)
     if response:
-        return response.content
+        return utils.format_json_list(response.content)

@@ -3,12 +3,12 @@ import argparse
 from argh import arg
 from six import iteritems
 
-import pnc_cli.common as common
 import pnc_cli.cli_types as types
+import pnc_cli.common as common
+import pnc_cli.user_config as uc
 import pnc_cli.utils as utils
 from pnc_cli.swagger_client import BuildEnvironmentRest
 from pnc_cli.swagger_client import EnvironmentsApi
-import pnc_cli.user_config as uc
 
 envs_api = EnvironmentsApi(uc.user.get_api_client())
 
@@ -51,7 +51,7 @@ def create_environment(**kwargs):
     environment = create_environment_object(**kwargs)
     response = utils.checked_api_call(envs_api, 'create_new', body=environment)
     if response:
-        return response.content
+        return utils.format_json(response.content)
 
 
 @arg("id", help="ID of the environment to update.", type=types.existing_environment_id)
@@ -73,7 +73,7 @@ def update_environment(id, **kwargs):
     response = utils.checked_api_call(
         envs_api, 'update', id=id, body=to_update)
     if response:
-        return response.content
+        return utils.format_json(response.content)
 
 
 @arg("-i", "--id", help="ID of the BuildEnvironment to delete.", type=types.existing_environment_id)
@@ -95,7 +95,7 @@ def get_environment(id=None, name=None):
     """
     search_id = common.set_id(envs_api, id, name)
     response = utils.checked_api_call(envs_api, 'get_specific', id=search_id)
-    return response.content
+    return utils.format_json(response.content)
 
 
 @arg("-p", "--page-size", help="Limit the amount of BuildEnvironments returned", type=int)
@@ -107,4 +107,5 @@ def list_environments(page_size=200, sort="", q=""):
     """
     response = utils.checked_api_call(envs_api, 'get_all', page_size=page_size, sort=sort, q=q)
     if response:
-        return response.content
+        return utils.format_json_list(response.content)
+

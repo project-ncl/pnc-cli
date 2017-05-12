@@ -11,4 +11,4 @@ users_api = UsersApi(uc.user.get_api_client())
 def get_logged_user():
     response = utils.checked_api_call(users_api, 'get_logged_user')
     if response:
-        return response.content
+        return utils.format_json(response.content)

@@ -34,7 +34,7 @@ def create_product(name, abbreviation, **kwargs):
     product = create_product_object(name=name, abbreviation=abbreviation, **kwargs)
     response = utils.checked_api_call(products_api, 'create_new', body=product)
     if response:
-        return response.content
+        return utils.format_json(response.content)
 
 
 @arg("product-id", help="ID of the Product to update", type=types.existing_product_id)
@@ -58,7 +58,7 @@ def update_product(product_id, **kwargs):
     response = utils.checked_api_call(
         products_api, 'update', id=product_id, body=to_update)
     if response:
-        return response.content
+        return utils.format_json(response.content)
 
 
 @arg("-i", "--id", help="ID of the Product to retrieve", type=types.existing_product_id)
@@ -70,7 +70,7 @@ def get_product(id=None, name=None):
     prod_id = common.set_id(products_api, id, name)
     response = utils.checked_api_call(products_api, 'get_specific', id=prod_id)
     if response:
-        return response.content
+        return utils.format_json(response.content)
 
 
 @arg("-i", "--id", help="ID of the Product to retrieve versions from", type=types.existing_product_id)
@@ -86,7 +86,7 @@ def list_versions_for_product(id=None, name=None, page_size=200, sort='', q=''):
     response = utils.checked_api_call(
         products_api, 'get_product_versions', id=prod_id, page_size=page_size, sort=sort, q=q)
     if response:
-        return response.content
+        return utils.format_json_list(response.content)
 
 
 @arg("-p", "--page-size", help="Limit the amount of Products returned", type=int)
@@ -98,4 +98,4 @@ def list_products(page_size=200, sort="", q=""):
     """
     response = utils.checked_api_call(products_api, 'get_all', page_size=page_size, q=q, sort=sort)
     if response:
-        return response.content
+        return utils.format_json_list(response.content)

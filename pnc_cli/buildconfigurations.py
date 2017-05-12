@@ -184,7 +184,7 @@ def create_build_configuration(**kwargs):
     response = utils.checked_api_call(
         configs_api, 'create_new', body=build_configuration)
     if response:
-        return response.content
+        return utils.format_json(response.content)
 
 
 @arg("-i", "--id", help="ID of the Product to list BuildConfigurations for.", type=types.existing_product_id)
@@ -200,7 +200,7 @@ def list_build_configurations_for_product(id=None, name=None, page_size=200, sor
     response = utils.checked_api_call(configs_api, 'get_all_by_product_id', product_id=found_id, page_size=page_size,
                                       sort=sort, q=q)
     if response:
-        return response.content
+        return utils.format_json_list(response.content)
 
 
 @arg("-i", "--id", help="ID of the Project to list BuildConfigurations for.", type=int)
@@ -216,7 +216,7 @@ def list_build_configurations_for_project(id=None, name=None, page_size=200, sor
     response = utils.checked_api_call(configs_api, 'get_all_by_project_id', project_id=found_id, page_size=page_size,
                                       sort=sort, q=q)
     if response:
-        return response.content
+        return utils.format_json_list(response.content)
 
 
 @arg("product_id", help="ID of the Product which contains the desired ProductVersion.",
@@ -234,7 +234,7 @@ def list_build_configurations_for_product_version(product_id, version_id, page_s
     response = utils.checked_api_call(configs_api, 'get_all_by_product_version_id', product_id=found_product_id,
                                       version_id=version_id, page_size=page_size, sort=sort, q=q)
     if response:
-        return response.content
+        return utils.format_json_list(response.content)
 
 
 @arg("-i", "--id", help="ID of the BuildConfiguration to list dependencies for.", type=types.existing_bc_id)
@@ -246,7 +246,7 @@ def list_dependencies(id=None, name=None, page_size=200, sort="", q=""):
     found_id = common.set_id(configs_api, id, name)
     response = utils.checked_api_call(configs_api, 'get_dependencies', id=found_id, page_size=page_size, sort=sort, q=q)
     if response:
-        return response.content
+        return utils.format_json_list(response.content)
 
 
 @arg("-i", "--id", help="ID of the BuildConfiguration to add a dependency to.", type=types.existing_bc_id)
@@ -265,7 +265,7 @@ def add_dependency(id=None, name=None, dependency_id=None, dependency_name=None)
     dependency = configs_api.get_specific(id=to_add).content
     response = utils.checked_api_call(configs_api, 'add_dependency', id=add_to, body=dependency)
     if response:
-        return response.content
+        return utils.format_json(response.content)
 
 
 @arg("-i", "--id", help="ID of the BuildConfiguration to remove a dependency from.", type=types.existing_bc_id)
@@ -283,7 +283,7 @@ def remove_dependency(id=None, name=None, dependency_id=None, dependency_name=No
 
     response = utils.checked_api_call(configs_api, 'remove_dependency', id=found_id, dependency_id=found_dep_id)
     if response:
-        return response.content
+        return utils.format_json(response.content)
 
 
 @arg("-i", "--id", help="ID of the BuildConfiguration to list ProductVersions for.", type=types.existing_bc_id)
@@ -299,7 +299,7 @@ def list_product_versions_for_build_configuration(id=None, name=None, page_size=
     response = utils.checked_api_call(configs_api, 'get_product_versions', id=found_id, page_size=page_size, sort=sort,
                                       q=q)
     if response:
-        return response.content
+        return utils.format_json_list(response.content)
 
 
 @arg("-i", "--id", help="ID of the BuildConfiguration to add a ProductVersion to.", type=types.existing_bc_id)
@@ -314,7 +314,7 @@ def add_product_version_to_build_configuration(id=None, name=None, product_versi
     to_add = common.get_entity(versions_api, product_version_id)
     response = utils.checked_api_call(configs_api, 'add_product_version', id=found_id, body=to_add)
     if response:
-        return response.content
+        return utils.format_json(response.content)
 
 
 @arg("-i", "--id", help="ID of the BuildConfiguration to remove a ProductVersion from.", type=types.existing_bc_id)
@@ -329,7 +329,7 @@ def remove_product_version_from_build_configuration(id=None, name=None, product_
     response = utils.checked_api_call(configs_api, 'remove_product_version', id=found_id,
                                       product_version_id=product_version_id)
     if response:
-        return response.content
+        return utils.format_json(response.content)
 
 
 @arg("-i", "--id", help="ID of the BuildConfiguration to list audited revisions for.", type=types.existing_bc_id)
@@ -344,7 +344,7 @@ def list_revisions_of_build_configuration(id=None, name=None, page_size=200, sor
     found_id = common.set_id(configs_api, id, name)
     response = utils.checked_api_call(configs_api, 'get_revisions', id=found_id, page_size=page_size, sort=sort)
     if response:
-        return response.content
+        return utils.format_json_list(response.content)
 
 
 @arg("-i", "--id", help="ID of the BuildConfiguration to retrieve a revision from.", type=types.existing_bc_id)
@@ -357,7 +357,7 @@ def get_revision_of_build_configuration(id=None, name=None, revision_id=None):
     found_id = common.set_id(configs_api, id, name)
     response = utils.checked_api_call(configs_api, 'get_revision', id=found_id, rev=revision_id)
     if response:
-        return response.content
+        return utils.format_json(response.content)
 
 
 @arg("-p", "--page-size", help="Limit the amount of build records returned", type=int)
@@ -369,4 +369,4 @@ def list_build_configurations(page_size=200, sort="", q=""):
     """
     response = utils.checked_api_call(configs_api, 'get_all', page_size=page_size, sort=sort, q=q)
     if response:
-        return response.content
+        return utils.format_json_list(response.content)

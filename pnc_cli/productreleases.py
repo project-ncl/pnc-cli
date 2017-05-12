@@ -29,7 +29,7 @@ def list_product_releases(page_size=200, sort="", q=""):
     """
     response = utils.checked_api_call(releases_api, 'get_all', page_size=page_size, sort=sort, q=q)
     if response:
-        return response.content
+        return utils.format_json_list(response.content)
 
 
 # no more than one release per milestone
@@ -67,7 +67,7 @@ def create_release(**kwargs):
     response = utils.checked_api_call(
         releases_api, 'create_new', body=created_release)
     if response:
-        return response.content
+        return utils.format_json(response.content)
 
 
 @arg("id", help="ProductVersion ID to retrieve releases for.", type=types.existing_product_version)
@@ -78,7 +78,7 @@ def list_releases_for_version(id):
     response = utils.checked_api_call(
         releases_api, 'get_all_by_product_version_id', version_id=id)
     if response:
-        return response.content
+        return utils.format_json_list(response.content)
 
 
 @arg("id", help="ID of the ProductRelease to retrieve.", type=types.existing_product_release)
@@ -88,7 +88,7 @@ def get_release(id):
     """
     response = utils.checked_api_call(releases_api, 'get_specific', id=id)
     if response:
-        return response.content
+        return utils.format_json(response.content)
 
 
 @arg("id", help="ID of the release to update.", type=types.existing_product_release)
@@ -111,4 +111,4 @@ def update_release(id, **kwargs):
     response = utils.checked_api_call(
         releases_api, 'update', id=id, body=to_update)
     if response:
-        return response.content
+        return utils.format_json(response.content)

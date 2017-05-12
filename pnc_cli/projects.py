@@ -31,7 +31,7 @@ def create_project(**kwargs):
     project = _create_project_object(**kwargs)
     response = utils.checked_api_call(projects_api, 'create_new', body=project)
     if response:
-        return response.content
+        return utils.format_json(response.content)
 
 
 @arg("id", help="ID for the Project that will be updated.", type=types.existing_project_id)
@@ -52,7 +52,7 @@ def update_project(id, **kwargs):
         if value is not None:
             setattr(to_update, key, value)
     response = utils.checked_api_call(projects_api, 'update', id=id, body=to_update)
-    return response
+    return utils.format_json(response.content)
 
 
 @arg("-id", "--id", help="ID of the Project to retrieve", type=types.existing_project_id)
@@ -64,7 +64,7 @@ def get_project(id=None, name=None):
     proj_id = common.set_id(projects_api, id, name)
     response = utils.checked_api_call(projects_api, 'get_specific', id=proj_id)
     if response:
-        return response.content
+        return utils.format_json(response.content)
 
 
 @arg("-id", "--id", help="ID of the Project to delete", type=types.existing_project_id)
@@ -76,7 +76,7 @@ def delete_project(id=None, name=None):
     proj_id = common.set_id(projects_api, id, name)
     response = utils.checked_api_call(projects_api, 'delete_specific', id=proj_id)
     if response:
-        return response.content
+        return utils.format_json(response.content)
 
 
 @arg("-p", "--page-size", help="Limit the amount of Projects returned", type=int)
@@ -88,4 +88,4 @@ def list_projects(page_size=200, sort="", q=""):
     """
     response = utils.checked_api_call(projects_api, 'get_all', page_size=page_size, sort=sort, q=q)
     if response:
-        return response.content
+        return utils.format_json_list(response.content)

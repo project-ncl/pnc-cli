@@ -1,8 +1,8 @@
 import getpass
+import json
 import logging
 
 import requests
-
 
 requests.packages.urllib3.disable_warnings()
 
@@ -43,6 +43,21 @@ def checked_api_call(api, func, **kwargs):
         print(e)
     else:
         return response
+
+
+def format_json_list(page_model):
+    if page_model is not None:
+        json_list = []
+        for element in page_model:
+            json_list.append(format_json(element))
+        return json_list
+    else:
+        return None
+
+
+def format_json(rest_model):
+    return json.dumps(rest_model.to_dict(), sort_keys=True, indent=4, separators=(',', ': '))
+
 
 epoch = datetime.datetime.utcfromtimestamp(0)
 

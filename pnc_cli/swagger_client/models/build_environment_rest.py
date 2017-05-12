@@ -38,7 +38,7 @@ class BuildEnvironmentRest(object):
                                   and the value is json key in definition.
         """
         self.swagger_types = {
-            'id': 'int',
+            "id": "int",
             'name': 'str',
             'description': 'str',
             'system_image_repository_url': 'str',
@@ -49,7 +49,7 @@ class BuildEnvironmentRest(object):
         }
 
         self.attribute_map = {
-            'id': 'id',
+            "id": "id",
             'name': 'name',
             'description': 'description',
             'system_image_repository_url': 'systemImageRepositoryUrl',
