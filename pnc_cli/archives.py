@@ -1,10 +1,11 @@
+import json
 import logging
 import os
-import sys
 import shutil
 import tarfile
 import urllib
 
+import pnc_cli.utils as utils
 from argh import arg
 from pnc_cli import productmilestones
 from pnc_cli import buildrecords
@@ -31,22 +32,19 @@ def create_zip(directory_name):
     shutil.make_archive(archive_name, 'zip', target + directory_name)
     print("Successfully created sources archive: " + archive_name + ".zip")
 
-
+# TODO: validate call results
 def download_sources_artifacts(milestone_id, directory_name):
-    milestone = productmilestones.get_milestone(milestone_id)
-    build_record_ids = milestone.performed_builds
+    milestone = json.loads(productmilestones.get_milestone(milestone_id))
+    build_record_ids = milestone['performed_builds']
     for record_id in build_record_ids:
         print("downloading build record["+str(record_id)+"]")
-        built_artifacts = buildrecords.list_built_artifacts(record_id, 100000)
-        sources_artifacts = [artifact for artifact in built_artifacts if artifact.filename.endswith("project-sources.tar.gz")]
+        record = json.loads(buildrecords.get_build_record(record_id))
+        if (str(record['status']) == "DONE"):
+            built_artifacts = utils.checked_api_call(buildrecords.records_api, 'get_built_artifacts', id=record_id, page_size=100000)
 
-        if len(sources_artifacts) != 1:
-            print("Invalid number of project sources artifacts for build_record_id=" + str(record_id)
-                  + ". Expecting exactly 1, found: " + str(len(sources_artifacts)) + ", artifacts found: " + str(sources_artifacts))
-            sys.exit(1)
-
-        for artifact in sources_artifacts:
-            download_and_unpack(artifact, directory_name)
+            sources_artifacts = [artifact for artifact in built_artifacts.content if artifact.filename.endswith("project-sources.tar.gz")]
+            for artifact in sources_artifacts:
+                download_and_unpack(artifact, directory_name)
 
 
 def download_and_unpack(artifact, directory_name):
@@ -54,10 +52,8 @@ def download_and_unpack(artifact, directory_name):
     urllib.urlretrieve(artifact.public_url, sources_tgz)
     output_directory = target+directory_name
     tar = tarfile.open(sources_tgz, "r:gz")
-    print("extracting " + sources_tgz)
     tar.extractall(output_directory)
     tar.close()
-    print("done")
 
 
 def create_work_dir(directory_name):
