@@ -38,7 +38,7 @@ def make_mead(config=None, run_build=False, environment=1, sufix="", product_nam
     :param config: Make Mead config name
     :return:
     """    
-    if validate_input_parameters(config, product_name, product_version) != 0:
+    if not validate_input_parameters(config, product_name, product_version):
         return 1
 
     try:
@@ -170,23 +170,23 @@ def make_mead(config=None, run_build=False, environment=1, sufix="", product_nam
     return utils.format_json(bc_set)
 
 def validate_input_parameters(config, product_name, product_version):
+    valid = True
     if config is None:
         logging.error('Config file --config is not specified.')
-        return 1
+        valid = False
+    elif not os.path.isfile(config):
+        logging.error('Config file %s not found.', os.path.abspath(config))
+        valid = False
 
     if product_name is None:
         logging.error('Product Name --product-name is not specified.')
-        return 1
+        valid = False
 
     if product_version is None:
         logging.error('Product Version --product-version is not specified.')
-        return 1
-
-    if not os.path.isfile(config):
-        logging.error('Config file %s not found.', os.path.abspath(config))
-        return 1
+        valid = False
     
-    return 0
+    return valid
     
 def get_maven_options(params):
     if 'pnc.buildScript' in params.keys():
