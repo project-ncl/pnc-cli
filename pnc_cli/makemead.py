@@ -52,7 +52,6 @@ def make_mead(config=None, run_build=False, environment=1, sufix="", product_nam
         print '-c false'
         return 1
 
-    product_version_id = None
     ids = dict()
     (subarts, deps_dict) = config_reader.get_dependency_structure()
     packages = config_reader.get_packages_and_dependencies()
@@ -60,17 +59,8 @@ def make_mead(config=None, run_build=False, environment=1, sufix="", product_nam
     logging.debug(subarts)
     logging.debug(deps_dict)
 
-    #Lookup product version
-    try:
-        products_versions = products.list_versions_for_product_raw(name=product_name)
-        if not products_versions:
-            logging.error('Product does not have any versions')
-            return 1
-        for product in products_versions:
-            if product.version == product_version:
-                product_version_id = product.id
-    except ValueError:
-        logging.error('Product version not found')
+    product_version_id = lookup_product_version()
+    if product_version_id is None:
         return 1
     
     #Create a list for look-up-only
@@ -168,6 +158,19 @@ def make_mead(config=None, run_build=False, environment=1, sufix="", product_nam
         pprint(build_record)
 
     return utils.format_json(bc_set)
+
+def lookup_product_version():
+    try:
+        products_versions = products.list_versions_for_product_raw(name=product_name)
+        if not products_versions:
+            logging.error('Product does not have any versions')
+            return None
+        for product in products_versions:
+            if product.version == product_version:
+                return product.id
+    except ValueError:
+        logging.error('Product version not found')
+        return None
 
 def validate_input_parameters(config, product_name, product_version):
     valid = True
