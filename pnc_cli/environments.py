@@ -86,6 +86,13 @@ def delete_environment(id=None, name=None):
     response = utils.checked_api_call(envs_api, 'delete', id=found_id)
     return response
 
+def get_environment_raw(id=None, name=None):
+    """
+    Get a specific Environment by name or ID
+    """
+    search_id = common.set_id(envs_api, id, name)
+    response = utils.checked_api_call(envs_api, 'get_specific', id=search_id)
+    return response.content
 
 @arg("-i", "--id", help="ID of the BuildEnvironment to retrieve.", type=types.existing_environment_id)
 @arg("-n", "--name", help="Name of the BuildEnvironment to retrieve.", type=types.existing_environment_name)
