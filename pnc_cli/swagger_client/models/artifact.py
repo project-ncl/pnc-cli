@@ -53,8 +53,8 @@ class Artifact(object):
             'origin_url': 'str',
             'import_date': 'datetime',
             'distributed_in_product_milestones': 'list[ProductMilestone]',
-            'imported': 'bool',
             'built': 'bool',
+            'imported': 'bool',
             'field_handler': 'FieldHandler',
             'trusted': 'bool'
         }
@@ -75,8 +75,8 @@ class Artifact(object):
             'origin_url': 'originUrl',
             'import_date': 'importDate',
             'distributed_in_product_milestones': 'distributedInProductMilestones',
-            'imported': 'imported',
             'built': 'built',
+            'imported': 'imported',
             'field_handler': 'fieldHandler',
             'trusted': 'trusted'
         }
@@ -96,8 +96,8 @@ class Artifact(object):
         self._origin_url = None
         self._import_date = None
         self._distributed_in_product_milestones = None
-        self._imported = None
         self._built = None
+        self._imported = None
         self._field_handler = None
         self._trusted = None
 
@@ -444,28 +444,6 @@ class Artifact(object):
         self._distributed_in_product_milestones = distributed_in_product_milestones
 
     @property
-    def imported(self):
-        """
-        Gets the imported of this Artifact.
-
-
-        :return: The imported of this Artifact.
-        :rtype: bool
-        """
-        return self._imported
-
-    @imported.setter
-    def imported(self, imported):
-        """
-        Sets the imported of this Artifact.
-
-
-        :param imported: The imported of this Artifact.
-        :type: bool
-        """
-        self._imported = imported
-
-    @property
     def built(self):
         """
         Gets the built of this Artifact.
@@ -486,6 +464,28 @@ class Artifact(object):
         :type: bool
         """
         self._built = built
+
+    @property
+    def imported(self):
+        """
+        Gets the imported of this Artifact.
+
+
+        :return: The imported of this Artifact.
+        :rtype: bool
+        """
+        return self._imported
+
+    @imported.setter
+    def imported(self, imported):
+        """
+        Sets the imported of this Artifact.
+
+
+        :param imported: The imported of this Artifact.
+        :type: bool
+        """
+        self._imported = imported
 
     @property
     def field_handler(self):

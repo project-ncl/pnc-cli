@@ -42,10 +42,8 @@ class BuildConfigurationRest(object):
             'name': 'str',
             'description': 'str',
             'build_script': 'str',
-            'scm_repo_url': 'str',
+            'repository_configuration': 'RepositoryConfigurationRest',
             'scm_revision': 'str',
-            'scm_external_repo_url': 'str',
-            'scm_external_revision': 'str',
             'creation_time': 'datetime',
             'last_modification_time': 'datetime',
             'archived': 'bool',
@@ -53,6 +51,7 @@ class BuildConfigurationRest(object):
             'environment': 'BuildEnvironmentRest',
             'dependency_ids': 'list[int]',
             'product_version_id': 'int',
+            'build_configuration_set_ids': 'list[int]',
             'generic_parameters': 'dict(str, str)'
         }
 
@@ -61,10 +60,8 @@ class BuildConfigurationRest(object):
             'name': 'name',
             'description': 'description',
             'build_script': 'buildScript',
-            'scm_repo_url': 'scmRepoURL',
+            'repository_configuration': 'repositoryConfiguration',
             'scm_revision': 'scmRevision',
-            'scm_external_repo_url': 'scmExternalRepoURL',
-            'scm_external_revision': 'scmExternalRevision',
             'creation_time': 'creationTime',
             'last_modification_time': 'lastModificationTime',
             'archived': 'archived',
@@ -72,6 +69,7 @@ class BuildConfigurationRest(object):
             'environment': 'environment',
             'dependency_ids': 'dependencyIds',
             'product_version_id': 'productVersionId',
+            'build_configuration_set_ids': 'buildConfigurationSetIds',
             'generic_parameters': 'genericParameters'
         }
 
@@ -79,10 +77,8 @@ class BuildConfigurationRest(object):
         self._name = None
         self._description = None
         self._build_script = None
-        self._scm_repo_url = None
+        self._repository_configuration = None
         self._scm_revision = None
-        self._scm_external_repo_url = None
-        self._scm_external_revision = None
         self._creation_time = None
         self._last_modification_time = None
         self._archived = None
@@ -90,6 +86,7 @@ class BuildConfigurationRest(object):
         self._environment = None
         self._dependency_ids = None
         self._product_version_id = None
+        self._build_configuration_set_ids = None
         self._generic_parameters = None
 
     @property
@@ -181,26 +178,26 @@ class BuildConfigurationRest(object):
         self._build_script = build_script
 
     @property
-    def scm_repo_url(self):
+    def repository_configuration(self):
         """
-        Gets the scm_repo_url of this BuildConfigurationRest.
+        Gets the repository_configuration of this BuildConfigurationRest.
 
 
-        :return: The scm_repo_url of this BuildConfigurationRest.
-        :rtype: str
+        :return: The repository_configuration of this BuildConfigurationRest.
+        :rtype: RepositoryConfigurationRest
         """
-        return self._scm_repo_url
+        return self._repository_configuration
 
-    @scm_repo_url.setter
-    def scm_repo_url(self, scm_repo_url):
+    @repository_configuration.setter
+    def repository_configuration(self, repository_configuration):
         """
-        Sets the scm_repo_url of this BuildConfigurationRest.
+        Sets the repository_configuration of this BuildConfigurationRest.
 
 
-        :param scm_repo_url: The scm_repo_url of this BuildConfigurationRest.
-        :type: str
+        :param repository_configuration: The repository_configuration of this BuildConfigurationRest.
+        :type: RepositoryConfigurationRest
         """
-        self._scm_repo_url = scm_repo_url
+        self._repository_configuration = repository_configuration
 
     @property
     def scm_revision(self):
@@ -223,50 +220,6 @@ class BuildConfigurationRest(object):
         :type: str
         """
         self._scm_revision = scm_revision
-
-    @property
-    def scm_external_repo_url(self):
-        """
-        Gets the scm_external_repo_url of this BuildConfigurationRest.
-
-
-        :return: The scm_external_repo_url of this BuildConfigurationRest.
-        :rtype: str
-        """
-        return self._scm_external_repo_url
-
-    @scm_external_repo_url.setter
-    def scm_external_repo_url(self, scm_external_repo_url):
-        """
-        Sets the scm_external_repo_url of this BuildConfigurationRest.
-
-
-        :param scm_external_repo_url: The scm_external_repo_url of this BuildConfigurationRest.
-        :type: str
-        """
-        self._scm_external_repo_url = scm_external_repo_url
-
-    @property
-    def scm_external_revision(self):
-        """
-        Gets the scm_external_revision of this BuildConfigurationRest.
-
-
-        :return: The scm_external_revision of this BuildConfigurationRest.
-        :rtype: str
-        """
-        return self._scm_external_revision
-
-    @scm_external_revision.setter
-    def scm_external_revision(self, scm_external_revision):
-        """
-        Sets the scm_external_revision of this BuildConfigurationRest.
-
-
-        :param scm_external_revision: The scm_external_revision of this BuildConfigurationRest.
-        :type: str
-        """
-        self._scm_external_revision = scm_external_revision
 
     @property
     def creation_time(self):
@@ -421,6 +374,28 @@ class BuildConfigurationRest(object):
         :type: int
         """
         self._product_version_id = product_version_id
+
+    @property
+    def build_configuration_set_ids(self):
+        """
+        Gets the build_configuration_set_ids of this BuildConfigurationRest.
+
+
+        :return: The build_configuration_set_ids of this BuildConfigurationRest.
+        :rtype: list[int]
+        """
+        return self._build_configuration_set_ids
+
+    @build_configuration_set_ids.setter
+    def build_configuration_set_ids(self, build_configuration_set_ids):
+        """
+        Sets the build_configuration_set_ids of this BuildConfigurationRest.
+
+
+        :param build_configuration_set_ids: The build_configuration_set_ids of this BuildConfigurationRest.
+        :type: list[int]
+        """
+        self._build_configuration_set_ids = build_configuration_set_ids
 
     @property
     def generic_parameters(self):

@@ -60,6 +60,7 @@ class BuildRecord(object):
             'product_milestone': 'ProductMilestone',
             'build_config_set_record': 'BuildConfigSetRecord',
             'attributes': 'dict(str, str)',
+            'repour_log': 'str',
             'field_handler': 'FieldHandler'
         }
 
@@ -86,6 +87,7 @@ class BuildRecord(object):
             'product_milestone': 'productMilestone',
             'build_config_set_record': 'buildConfigSetRecord',
             'attributes': 'attributes',
+            'repour_log': 'repourLog',
             'field_handler': 'fieldHandler'
         }
 
@@ -111,6 +113,7 @@ class BuildRecord(object):
         self._product_milestone = None
         self._build_config_set_record = None
         self._attributes = None
+        self._repour_log = None
         self._field_handler = None
 
     @property
@@ -602,6 +605,28 @@ class BuildRecord(object):
         :type: dict(str, str)
         """
         self._attributes = attributes
+
+    @property
+    def repour_log(self):
+        """
+        Gets the repour_log of this BuildRecord.
+
+
+        :return: The repour_log of this BuildRecord.
+        :rtype: str
+        """
+        return self._repour_log
+
+    @repour_log.setter
+    def repour_log(self, repour_log):
+        """
+        Sets the repour_log of this BuildRecord.
+
+
+        :param repour_log: The repour_log of this BuildRecord.
+        :type: str
+        """
+        self._repour_log = repour_log
 
     @property
     def field_handler(self):

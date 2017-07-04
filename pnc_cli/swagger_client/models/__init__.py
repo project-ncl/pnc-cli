@@ -5,7 +5,6 @@ from .artifact import Artifact
 from .artifact_page import ArtifactPage
 from .artifact_rest import ArtifactRest
 from .attribute_singleton import AttributeSingleton
-from .bpm_build_configuration_creation_rest import BpmBuildConfigurationCreationRest
 from .bpm_notification_rest import BpmNotificationRest
 from .bpm_task_rest import BpmTaskRest
 from .bpm_task_rest_page import BpmTaskRestPage
@@ -66,6 +65,13 @@ from .project import Project
 from .project_page import ProjectPage
 from .project_rest import ProjectRest
 from .project_singleton import ProjectSingleton
+from .repository_configuration import RepositoryConfiguration
+from .repository_configuration_page import RepositoryConfigurationPage
+from .repository_configuration_rest import RepositoryConfigurationRest
+from .repository_configuration_singleton import RepositoryConfigurationSingleton
+from .repository_creation_rest import RepositoryCreationRest
+from .repository_creation_result_rest import RepositoryCreationResultRest
+from .repository_creation_url_auto_rest import RepositoryCreationUrlAutoRest
 from .singleton import Singleton
 from .ssh_credentials import SshCredentials
 from .ssh_credentials_singleton import SshCredentialsSingleton

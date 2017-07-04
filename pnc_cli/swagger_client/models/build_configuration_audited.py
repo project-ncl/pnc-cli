@@ -43,14 +43,13 @@ class BuildConfigurationAudited(object):
             'id_rev': 'IdRev',
             'name': 'str',
             'build_script': 'str',
-            'scm_repo_url': 'str',
+            'repository_configuration': 'RepositoryConfiguration',
             'scm_revision': 'str',
-            'scm_external_repo_url': 'str',
-            'scm_external_revision': 'str',
             'description': 'str',
             'project': 'Project',
             'build_environment': 'BuildEnvironment',
             'build_records': 'list[BuildRecord]',
+            'generic_parameters': 'dict(str, str)',
             'field_handler': 'FieldHandler'
         }
 
@@ -60,14 +59,13 @@ class BuildConfigurationAudited(object):
             'id_rev': 'idRev',
             'name': 'name',
             'build_script': 'buildScript',
-            'scm_repo_url': 'scmRepoURL',
+            'repository_configuration': 'repositoryConfiguration',
             'scm_revision': 'scmRevision',
-            'scm_external_repo_url': 'scmExternalRepoURL',
-            'scm_external_revision': 'scmExternalRevision',
             'description': 'description',
             'project': 'project',
             'build_environment': 'buildEnvironment',
             'build_records': 'buildRecords',
+            'generic_parameters': 'genericParameters',
             'field_handler': 'fieldHandler'
         }
 
@@ -76,14 +74,13 @@ class BuildConfigurationAudited(object):
         self._id_rev = None
         self._name = None
         self._build_script = None
-        self._scm_repo_url = None
+        self._repository_configuration = None
         self._scm_revision = None
-        self._scm_external_repo_url = None
-        self._scm_external_revision = None
         self._description = None
         self._project = None
         self._build_environment = None
         self._build_records = None
+        self._generic_parameters = None
         self._field_handler = None
 
     @property
@@ -197,26 +194,26 @@ class BuildConfigurationAudited(object):
         self._build_script = build_script
 
     @property
-    def scm_repo_url(self):
+    def repository_configuration(self):
         """
-        Gets the scm_repo_url of this BuildConfigurationAudited.
+        Gets the repository_configuration of this BuildConfigurationAudited.
 
 
-        :return: The scm_repo_url of this BuildConfigurationAudited.
-        :rtype: str
+        :return: The repository_configuration of this BuildConfigurationAudited.
+        :rtype: RepositoryConfiguration
         """
-        return self._scm_repo_url
+        return self._repository_configuration
 
-    @scm_repo_url.setter
-    def scm_repo_url(self, scm_repo_url):
+    @repository_configuration.setter
+    def repository_configuration(self, repository_configuration):
         """
-        Sets the scm_repo_url of this BuildConfigurationAudited.
+        Sets the repository_configuration of this BuildConfigurationAudited.
 
 
-        :param scm_repo_url: The scm_repo_url of this BuildConfigurationAudited.
-        :type: str
+        :param repository_configuration: The repository_configuration of this BuildConfigurationAudited.
+        :type: RepositoryConfiguration
         """
-        self._scm_repo_url = scm_repo_url
+        self._repository_configuration = repository_configuration
 
     @property
     def scm_revision(self):
@@ -239,50 +236,6 @@ class BuildConfigurationAudited(object):
         :type: str
         """
         self._scm_revision = scm_revision
-
-    @property
-    def scm_external_repo_url(self):
-        """
-        Gets the scm_external_repo_url of this BuildConfigurationAudited.
-
-
-        :return: The scm_external_repo_url of this BuildConfigurationAudited.
-        :rtype: str
-        """
-        return self._scm_external_repo_url
-
-    @scm_external_repo_url.setter
-    def scm_external_repo_url(self, scm_external_repo_url):
-        """
-        Sets the scm_external_repo_url of this BuildConfigurationAudited.
-
-
-        :param scm_external_repo_url: The scm_external_repo_url of this BuildConfigurationAudited.
-        :type: str
-        """
-        self._scm_external_repo_url = scm_external_repo_url
-
-    @property
-    def scm_external_revision(self):
-        """
-        Gets the scm_external_revision of this BuildConfigurationAudited.
-
-
-        :return: The scm_external_revision of this BuildConfigurationAudited.
-        :rtype: str
-        """
-        return self._scm_external_revision
-
-    @scm_external_revision.setter
-    def scm_external_revision(self, scm_external_revision):
-        """
-        Sets the scm_external_revision of this BuildConfigurationAudited.
-
-
-        :param scm_external_revision: The scm_external_revision of this BuildConfigurationAudited.
-        :type: str
-        """
-        self._scm_external_revision = scm_external_revision
 
     @property
     def description(self):
@@ -371,6 +324,28 @@ class BuildConfigurationAudited(object):
         :type: list[BuildRecord]
         """
         self._build_records = build_records
+
+    @property
+    def generic_parameters(self):
+        """
+        Gets the generic_parameters of this BuildConfigurationAudited.
+
+
+        :return: The generic_parameters of this BuildConfigurationAudited.
+        :rtype: dict(str, str)
+        """
+        return self._generic_parameters
+
+    @generic_parameters.setter
+    def generic_parameters(self, generic_parameters):
+        """
+        Sets the generic_parameters of this BuildConfigurationAudited.
+
+
+        :param generic_parameters: The generic_parameters of this BuildConfigurationAudited.
+        :type: dict(str, str)
+        """
+        self._generic_parameters = generic_parameters
 
     @property
     def field_handler(self):

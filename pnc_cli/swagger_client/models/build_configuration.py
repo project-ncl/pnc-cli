@@ -41,10 +41,8 @@ class BuildConfiguration(object):
             'id': 'int',
             'name': 'str',
             'build_script': 'str',
-            'scm_repo_url': 'str',
+            'repository_configuration': 'RepositoryConfiguration',
             'scm_revision': 'str',
-            'scm_external_repo_url': 'str',
-            'scm_external_revision': 'str',
             'description': 'str',
             'product_version': 'ProductVersion',
             'project': 'Project',
@@ -68,10 +66,8 @@ class BuildConfiguration(object):
             'id': 'id',
             'name': 'name',
             'build_script': 'buildScript',
-            'scm_repo_url': 'scmRepoURL',
+            'repository_configuration': 'repositoryConfiguration',
             'scm_revision': 'scmRevision',
-            'scm_external_repo_url': 'scmExternalRepoURL',
-            'scm_external_revision': 'scmExternalRevision',
             'description': 'description',
             'product_version': 'productVersion',
             'project': 'project',
@@ -94,10 +90,8 @@ class BuildConfiguration(object):
         self._id = None
         self._name = None
         self._build_script = None
-        self._scm_repo_url = None
+        self._repository_configuration = None
         self._scm_revision = None
-        self._scm_external_repo_url = None
-        self._scm_external_revision = None
         self._description = None
         self._product_version = None
         self._project = None
@@ -183,26 +177,26 @@ class BuildConfiguration(object):
         self._build_script = build_script
 
     @property
-    def scm_repo_url(self):
+    def repository_configuration(self):
         """
-        Gets the scm_repo_url of this BuildConfiguration.
+        Gets the repository_configuration of this BuildConfiguration.
 
 
-        :return: The scm_repo_url of this BuildConfiguration.
-        :rtype: str
+        :return: The repository_configuration of this BuildConfiguration.
+        :rtype: RepositoryConfiguration
         """
-        return self._scm_repo_url
+        return self._repository_configuration
 
-    @scm_repo_url.setter
-    def scm_repo_url(self, scm_repo_url):
+    @repository_configuration.setter
+    def repository_configuration(self, repository_configuration):
         """
-        Sets the scm_repo_url of this BuildConfiguration.
+        Sets the repository_configuration of this BuildConfiguration.
 
 
-        :param scm_repo_url: The scm_repo_url of this BuildConfiguration.
-        :type: str
+        :param repository_configuration: The repository_configuration of this BuildConfiguration.
+        :type: RepositoryConfiguration
         """
-        self._scm_repo_url = scm_repo_url
+        self._repository_configuration = repository_configuration
 
     @property
     def scm_revision(self):
@@ -225,50 +219,6 @@ class BuildConfiguration(object):
         :type: str
         """
         self._scm_revision = scm_revision
-
-    @property
-    def scm_external_repo_url(self):
-        """
-        Gets the scm_external_repo_url of this BuildConfiguration.
-
-
-        :return: The scm_external_repo_url of this BuildConfiguration.
-        :rtype: str
-        """
-        return self._scm_external_repo_url
-
-    @scm_external_repo_url.setter
-    def scm_external_repo_url(self, scm_external_repo_url):
-        """
-        Sets the scm_external_repo_url of this BuildConfiguration.
-
-
-        :param scm_external_repo_url: The scm_external_repo_url of this BuildConfiguration.
-        :type: str
-        """
-        self._scm_external_repo_url = scm_external_repo_url
-
-    @property
-    def scm_external_revision(self):
-        """
-        Gets the scm_external_revision of this BuildConfiguration.
-
-
-        :return: The scm_external_revision of this BuildConfiguration.
-        :rtype: str
-        """
-        return self._scm_external_revision
-
-    @scm_external_revision.setter
-    def scm_external_revision(self, scm_external_revision):
-        """
-        Sets the scm_external_revision of this BuildConfiguration.
-
-
-        :param scm_external_revision: The scm_external_revision of this BuildConfiguration.
-        :type: str
-        """
-        self._scm_external_revision = scm_external_revision
 
     @property
     def description(self):

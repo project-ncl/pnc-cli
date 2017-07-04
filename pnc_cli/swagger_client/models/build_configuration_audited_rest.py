@@ -44,16 +44,15 @@ class BuildConfigurationAuditedRest(object):
             'name': 'str',
             'description': 'str',
             'build_script': 'str',
-            'scm_repo_url': 'str',
+            'repository_configuration': 'RepositoryConfigurationRest',
             'scm_revision': 'str',
-            'scm_external_repo_url': 'str',
-            'scm_external_revision': 'str',
             'creation_time': 'datetime',
             'last_modification_time': 'datetime',
             'project_id': 'int',
             'environment_id': 'int',
             'project': 'ProjectRest',
-            'environment': 'BuildEnvironmentRest'
+            'environment': 'BuildEnvironmentRest',
+            'generic_parameters': 'dict(str, str)'
         }
 
         self.attribute_map = {
@@ -63,16 +62,15 @@ class BuildConfigurationAuditedRest(object):
             'name': 'name',
             'description': 'description',
             'build_script': 'buildScript',
-            'scm_repo_url': 'scmRepoURL',
+            'repository_configuration': 'repositoryConfiguration',
             'scm_revision': 'scmRevision',
-            'scm_external_repo_url': 'scmExternalRepoURL',
-            'scm_external_revision': 'scmExternalRevision',
             'creation_time': 'creationTime',
             'last_modification_time': 'lastModificationTime',
             'project_id': 'projectId',
             'environment_id': 'environmentId',
             'project': 'project',
-            'environment': 'environment'
+            'environment': 'environment',
+            'generic_parameters': 'genericParameters'
         }
 
         self._id = None
@@ -81,16 +79,15 @@ class BuildConfigurationAuditedRest(object):
         self._name = None
         self._description = None
         self._build_script = None
-        self._scm_repo_url = None
+        self._repository_configuration = None
         self._scm_revision = None
-        self._scm_external_repo_url = None
-        self._scm_external_revision = None
         self._creation_time = None
         self._last_modification_time = None
         self._project_id = None
         self._environment_id = None
         self._project = None
         self._environment = None
+        self._generic_parameters = None
 
     @property
     def id(self):
@@ -225,26 +222,26 @@ class BuildConfigurationAuditedRest(object):
         self._build_script = build_script
 
     @property
-    def scm_repo_url(self):
+    def repository_configuration(self):
         """
-        Gets the scm_repo_url of this BuildConfigurationAuditedRest.
+        Gets the repository_configuration of this BuildConfigurationAuditedRest.
 
 
-        :return: The scm_repo_url of this BuildConfigurationAuditedRest.
-        :rtype: str
+        :return: The repository_configuration of this BuildConfigurationAuditedRest.
+        :rtype: RepositoryConfigurationRest
         """
-        return self._scm_repo_url
+        return self._repository_configuration
 
-    @scm_repo_url.setter
-    def scm_repo_url(self, scm_repo_url):
+    @repository_configuration.setter
+    def repository_configuration(self, repository_configuration):
         """
-        Sets the scm_repo_url of this BuildConfigurationAuditedRest.
+        Sets the repository_configuration of this BuildConfigurationAuditedRest.
 
 
-        :param scm_repo_url: The scm_repo_url of this BuildConfigurationAuditedRest.
-        :type: str
+        :param repository_configuration: The repository_configuration of this BuildConfigurationAuditedRest.
+        :type: RepositoryConfigurationRest
         """
-        self._scm_repo_url = scm_repo_url
+        self._repository_configuration = repository_configuration
 
     @property
     def scm_revision(self):
@@ -267,50 +264,6 @@ class BuildConfigurationAuditedRest(object):
         :type: str
         """
         self._scm_revision = scm_revision
-
-    @property
-    def scm_external_repo_url(self):
-        """
-        Gets the scm_external_repo_url of this BuildConfigurationAuditedRest.
-
-
-        :return: The scm_external_repo_url of this BuildConfigurationAuditedRest.
-        :rtype: str
-        """
-        return self._scm_external_repo_url
-
-    @scm_external_repo_url.setter
-    def scm_external_repo_url(self, scm_external_repo_url):
-        """
-        Sets the scm_external_repo_url of this BuildConfigurationAuditedRest.
-
-
-        :param scm_external_repo_url: The scm_external_repo_url of this BuildConfigurationAuditedRest.
-        :type: str
-        """
-        self._scm_external_repo_url = scm_external_repo_url
-
-    @property
-    def scm_external_revision(self):
-        """
-        Gets the scm_external_revision of this BuildConfigurationAuditedRest.
-
-
-        :return: The scm_external_revision of this BuildConfigurationAuditedRest.
-        :rtype: str
-        """
-        return self._scm_external_revision
-
-    @scm_external_revision.setter
-    def scm_external_revision(self, scm_external_revision):
-        """
-        Sets the scm_external_revision of this BuildConfigurationAuditedRest.
-
-
-        :param scm_external_revision: The scm_external_revision of this BuildConfigurationAuditedRest.
-        :type: str
-        """
-        self._scm_external_revision = scm_external_revision
 
     @property
     def creation_time(self):
@@ -443,6 +396,28 @@ class BuildConfigurationAuditedRest(object):
         :type: BuildEnvironmentRest
         """
         self._environment = environment
+
+    @property
+    def generic_parameters(self):
+        """
+        Gets the generic_parameters of this BuildConfigurationAuditedRest.
+
+
+        :return: The generic_parameters of this BuildConfigurationAuditedRest.
+        :rtype: dict(str, str)
+        """
+        return self._generic_parameters
+
+    @generic_parameters.setter
+    def generic_parameters(self, generic_parameters):
+        """
+        Sets the generic_parameters of this BuildConfigurationAuditedRest.
+
+
+        :param generic_parameters: The generic_parameters of this BuildConfigurationAuditedRest.
+        :type: dict(str, str)
+        """
+        self._generic_parameters = generic_parameters
 
     def to_dict(self):
         """

@@ -5,7 +5,6 @@ from .models.artifact import Artifact
 from .models.artifact_page import ArtifactPage
 from .models.artifact_rest import ArtifactRest
 from .models.attribute_singleton import AttributeSingleton
-from .models.bpm_build_configuration_creation_rest import BpmBuildConfigurationCreationRest
 from .models.bpm_notification_rest import BpmNotificationRest
 from .models.bpm_task_rest import BpmTaskRest
 from .models.bpm_task_rest_page import BpmTaskRestPage
@@ -66,6 +65,13 @@ from .models.project import Project
 from .models.project_page import ProjectPage
 from .models.project_rest import ProjectRest
 from .models.project_singleton import ProjectSingleton
+from .models.repository_configuration import RepositoryConfiguration
+from .models.repository_configuration_page import RepositoryConfigurationPage
+from .models.repository_configuration_rest import RepositoryConfigurationRest
+from .models.repository_configuration_singleton import RepositoryConfigurationSingleton
+from .models.repository_creation_rest import RepositoryCreationRest
+from .models.repository_creation_result_rest import RepositoryCreationResultRest
+from .models.repository_creation_url_auto_rest import RepositoryCreationUrlAutoRest
 from .models.singleton import Singleton
 from .models.ssh_credentials import SshCredentials
 from .models.ssh_credentials_singleton import SshCredentialsSingleton
@@ -90,6 +96,8 @@ from .apis.productreleases_api import ProductreleasesApi
 from .apis.products_api import ProductsApi
 from .apis.productversions_api import ProductversionsApi
 from .apis.projects_api import ProjectsApi
+from .apis.repositoryconfigurations_api import RepositoryconfigurationsApi
+from .apis.repositorycreation_api import RepositorycreationApi
 from .apis.runningbuildrecords_api import RunningbuildrecordsApi
 from .apis.test_api import TestApi
 from .apis.users_api import UsersApi
