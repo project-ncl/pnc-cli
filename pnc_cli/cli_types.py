@@ -277,8 +277,6 @@ def valid_id(id_input):
 def valid_url(urlInput):
     if not validators.url(urlInput):
         raise argparse.ArgumentTypeError("Invalid url")
-    if not requests.get(urlInput).status_code is 404:
-        raise argparse.ArgumentTypeError("Resource at given URL does not exist.")
     return urlInput
 
 
