@@ -19,6 +19,15 @@ def _create_project_object(**kwargs):
     return created_project
 
 
+def create_project_raw(**kwargs):
+    """
+    Create a new Project. Typically, a Project represents a single source code repository, as well as the information related to development of those sources.
+    """
+    project = _create_project_object(**kwargs)
+    response = utils.checked_api_call(projects_api, 'create_new', body=project)
+    if response:
+        return response.content
+
 @arg("name", help="Name for the Project", type=types.unique_project_name)
 @arg("-d", "--description", help="Detailed description of the new Project")
 @arg("-p", "--project-url", help="SCM Url for the Project", type=types.valid_url)
@@ -28,10 +37,9 @@ def create_project(**kwargs):
     """
     Create a new Project. Typically, a Project represents a single source code repository, as well as the information related to development of those sources.
     """
-    project = _create_project_object(**kwargs)
-    response = utils.checked_api_call(projects_api, 'create_new', body=project)
-    if response:
-        return utils.format_json(response.content)
+    content = create_project_raw(kwargs)
+    if content:
+        return utils.format_json(content)
 
 
 @arg("id", help="ID for the Project that will be updated.", type=types.existing_project_id)
@@ -55,16 +63,24 @@ def update_project(id, **kwargs):
     return utils.format_json(response.content)
 
 
-@arg("-id", "--id", help="ID of the Project to retrieve", type=types.existing_project_id)
-@arg("-n", "--name", help="Name of the Project to retrieve", type=types.existing_project_name)
-def get_project(id=None, name=None):
+def get_project_raw(id=None, name=None):
     """
     Get a specific Project by ID or name
     """
     proj_id = common.set_id(projects_api, id, name)
     response = utils.checked_api_call(projects_api, 'get_specific', id=proj_id)
     if response:
-        return utils.format_json(response.content)
+        return response.content
+
+@arg("-id", "--id", help="ID of the Project to retrieve", type=types.existing_project_id)
+@arg("-n", "--name", help="Name of the Project to retrieve", type=types.existing_project_name)
+def get_project(id=None, name=None):
+    """
+    Get a specific Project by ID or name
+    """
+    content = get_project(id, name)
+    if content:
+        return utils.format_json(content)
 
 
 @arg("-id", "--id", help="ID of the Project to delete", type=types.existing_project_id)

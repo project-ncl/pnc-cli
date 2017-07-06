@@ -6,6 +6,7 @@ from pprint import pprint
 import re
 import time
 
+import pnc_cli.utils as utils
 from argh import arg
 from pnc_cli import buildconfigurations
 from pnc_cli import buildconfigurationsets
@@ -60,7 +61,7 @@ def make_mead(config=None, run_build=False, environment=1, sufix="", product_nam
 
     #Lookup product version
     try:
-        products_versions = products.list_versions_for_product(name=product_name)
+        products_versions = products.list_versions_for_product_raw(name=product_name)
         if not products_versions:
             logging.error('Product does not have any versions')
             return 1
@@ -77,9 +78,9 @@ def make_mead(config=None, run_build=False, environment=1, sufix="", product_nam
     #Lookup or create Build Configuration Set
     target_name = product_name + "-" + product_version + "-all" + sufix
     try:
-        bc_set = buildconfigurationsets.get_build_configuration_set(name=target_name)
+        bc_set = buildconfigurationsets.get_build_configuration_set_raw(name=target_name)
     except ValueError:
-        bc_set = buildconfigurationsets.create_build_configuration_set(name=target_name, product_version_id=product_version_id)
+        bc_set = buildconfigurationsets.create_build_configuration_set_raw(name=target_name, product_version_id=product_version_id)
     logging.debug(target_name + ":")
     logging.debug(bc_set.id)
 
@@ -115,10 +116,10 @@ def make_mead(config=None, run_build=False, environment=1, sufix="", product_nam
 
         #Lookup or create a Project
         try:
-            project = projects.get_project(name=project_name)        
+            project = projects.get_project_raw(name=project_name)
         except ValueError:
             logging.debug('No project ' + project_name + ". Creating a new one")
-            project = projects.create_project(name=project_name)
+            project = projects.create_project_raw(name=project_name)
         logging.debug(artifact_name + ":")
         logging.debug(project.id)
 
@@ -162,10 +163,10 @@ def make_mead(config=None, run_build=False, environment=1, sufix="", product_nam
 
     #Run build if requested
     if run_build:
-        build_record = buildconfigurationsets.build_set(id=bc_set.id)
+        build_record = buildconfigurationsets.build_set_raw(id=bc_set.id)
         pprint(build_record)
 
-    return bc_set
+    return utils.format_json(bc_set)
 
 def validate_input_parameters(config, product_name, product_version):
     if config is None:
