@@ -73,6 +73,16 @@ def get_product(id=None, name=None):
         return utils.format_json(response.content)
 
 
+def list_versions_for_product_raw(id=None, name=None, page_size=200, sort='', q=''):
+    """
+    List all ProductVersions for a given Product
+    """
+    prod_id = common.set_id(products_api, id, name)
+    response = utils.checked_api_call(
+        products_api, 'get_product_versions', id=prod_id, page_size=page_size, sort=sort, q=q)
+    if response:
+        return response.content
+
 @arg("-i", "--id", help="ID of the Product to retrieve versions from", type=types.existing_product_id)
 @arg("-n", "--name", help="Name of the Product to retrieve versions from", type=types.existing_product_name)
 @arg("-p", "--page-size", help="Limit the amount of Product Versions returned", type=int)
@@ -82,11 +92,9 @@ def list_versions_for_product(id=None, name=None, page_size=200, sort='', q=''):
     """
     List all ProductVersions for a given Product
     """
-    prod_id = common.set_id(products_api, id, name)
-    response = utils.checked_api_call(
-        products_api, 'get_product_versions', id=prod_id, page_size=page_size, sort=sort, q=q)
-    if response:
-        return utils.format_json_list(response.content)
+    content = list_versions_for_product_raw(id, name, page_size, sort, q)
+    if content:
+        return utils.format_json_list(content)
 
 
 @arg("-p", "--page-size", help="Limit the amount of Products returned", type=int)

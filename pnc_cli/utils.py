@@ -50,7 +50,7 @@ def format_json_list(page_model):
         json_list = []
         for element in page_model:
             json_list.append(format_json(element))
-        return json_list
+        return "[" + ",".join(json_list) + "]"
     else:
         return None
 
