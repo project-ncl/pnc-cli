@@ -106,22 +106,23 @@ def delete_build_configuration_set(id=None, name=None):
     if response:
         return utils.format_json(response.content)
 
-def build_set_raw(id=None, name=None):
+def build_set_raw(id=None, name=None, force = False):
     """
     Start a build of the given BuildConfigurationSet
     """
     found_id = common.set_id(sets_api, id, name)
-    response = utils.checked_api_call(sets_api, 'build', id=found_id)
+    response = utils.checked_api_call(sets_api, 'build', id=found_id, rebuild_all=force)
     if response:
         return response.content
 
 @arg("-i", "--id", help="ID of the BuildConfigurationSet to build.", type=types.existing_bc_set_id)
 @arg("-n", "--name", help="Name of the BuildConfigurationSet to build.", type=types.existing_bc_set_name)
-def build_set(id=None, name=None):
+@arg("-f", "--force", help="Force rebuild of all configurations")
+def build_set(id=None, name=None, force=False):
     """
     Start a build of the given BuildConfigurationSet
     """
-    content = build_set_raw(id, name)
+    content = build_set_raw(id, name, force)
     if common:
         return utils.format_json_list(content)
 
