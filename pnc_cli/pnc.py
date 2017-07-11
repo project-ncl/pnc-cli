@@ -14,6 +14,7 @@ from pnc_cli import productreleases
 from pnc_cli import products
 from pnc_cli import productversions
 from pnc_cli import projects
+from pnc_cli import repositoryconfigurations
 from pnc_cli import runningbuilds
 from pnc_cli import users
 from pnc_cli import archives
@@ -101,6 +102,11 @@ parser.add_commands([uc.login,
                      productmilestones.list_milestones,
                      productmilestones.list_milestones_for_version,
                      productmilestones.update_milestone,
+                     repositoryconfigurations.get_repository_configuration,
+                     repositoryconfigurations.update_repository_configuration,
+                     repositoryconfigurations.create_repository_configuration,
+                     repositoryconfigurations.list_repository_configurations,
+                     repositoryconfigurations.search_repository_configuration,
                      buildconfigsetrecords.get_build_configuration_set_record,
                      buildconfigsetrecords.list_build_configuration_set_records,
                      buildconfigsetrecords.list_records_for_build_config_set,

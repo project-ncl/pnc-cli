@@ -16,6 +16,7 @@ from pnc_cli.swagger_client import ProductreleasesApi
 from pnc_cli.swagger_client import ProductsApi
 from pnc_cli.swagger_client import ProductversionsApi
 from pnc_cli.swagger_client import ProjectsApi
+from pnc_cli.swagger_client import RepositoryconfigurationsApi
 from pnc_cli.swagger_client import RunningbuildrecordsApi
 import pnc_cli.user_config as uc
 import requests
@@ -24,6 +25,7 @@ api_client = uc.user.get_api_client()
 
 # BuildConfigurations
 configs_api = BuildconfigurationsApi(api_client)
+repos_api = RepositoryconfigurationsApi(api_client)
 sets_api = BuildconfigurationsetsApi(api_client)
 
 envs_api = EnvironmentsApi(api_client)
@@ -85,6 +87,11 @@ def existing_bc_id(id_input):
         raise argparse.ArgumentTypeError("no BuildConfiguration with ID {} exists".format(id_input))
     return id_input
 
+# RepositoryConfiguration Types
+def existing_rc_id(id_input):
+    valid_id(id_input)
+    if not common.id_exists(repos_api, id_input):
+        raise argparse.ArgumentTypeError("no RepositoryConfiguration with ID {} exists".format(id_input))
 
 # Product Types
 def existing_product_id(id_input):
@@ -279,6 +286,14 @@ def valid_url(urlInput):
         raise argparse.ArgumentTypeError("Invalid url")
     return urlInput
 
+def t_or_f(arg):
+    ua = str(arg).upper()
+    if 'TRUE'.startswith(ua):
+       return True
+    elif 'FALSE'.startswith(ua):
+       return False
+    else:
+       raise argparse.ArgumentTypeError("Only true or false is possible.")
 
 # validation is different depnding on the PNC url.
 def valid_internal_url(urlInput):
