@@ -14,7 +14,7 @@ bpm_api = BpmApi(uc.user.get_api_client())
 envs_api = EnvironmentsApi(uc.user.get_api_client())
 
 def create_build_conf_object(**kwargs):
-    created_build_configuration = swagger_client.BpmBuildConfigurationCreationRest()
+    created_build_configuration = swagger_client.BuildConfigurationRest()
     for key, value in kwargs.items():
         setattr(created_build_configuration, str(key), value)
     return created_build_configuration
@@ -25,37 +25,20 @@ def create_build_conf_object(**kwargs):
 @arg("build_environment_id", help="ID of the Environment for the new BuildConfiguration.",
      type=types.existing_environment_id)
 @arg("build_script", help="Script to execute for the BuildConfiguration.")
-@arg("-iurl", "--scm_repo_url", type=types.valid_internal_url, help="Internal repository URL to the sources of the BuildConfiguration.")
-@arg("-irev", "--scm_revision", help="Revision of the internal repository sources for this BuildConfiguration.")
-@arg("-exturl", "--scm_external_repo_url", type=types.valid_url, help="URL to the external sources of the BuildConfiguration.")
-@arg("-extrev", "--scm_external_revision", help="Revision of the external sources in scm-url for this BuildConfiguration.")
+@arg("repository", type=types.valid_url, help="Repository URL to the sources of the BuildConfiguration.")
+@arg("revision", help="Revision of the repository sources for this BuildConfiguration.")
 @arg("-d", "--description", help="Description of the new build configuration.")
 @arg("-pvi", "--product-version-id", type=types.existing_product_version, help="Associated ProductVersion ID.")
 @arg("-dids", "--dependency-ids", type=types.existing_bc_id, nargs="+",
      help="List of BuildConfiguration IDs that are dependencies of this BuildConfiguration.")
 @arg("-bcsids", "--build-configuration-set-ids", type=types.existing_bc_set_id, nargs="+", help="List of BuildConfiguration set IDs this BuildConfiguration should be a member of.")
 @arg("-gp", "--generic-parameters", help="Set of arbitrary additional key=value pairs.")
-def create_build_configuration(**kwargs):
+def create_build_configuration(repository, revision, **kwargs):
     """
     Create a new BuildConfiguration. BuildConfigurations represent the settings and configuration required to run a build of a specific version of the associated Project's source code.
     If a ProductVersion ID is provided, the BuildConfiguration will have access to artifacts which were produced for that version, but may not have been released yet.
     :return BPM Task ID of the new BuildConfiguration creation
     """
-    scm_repo_url = kwargs.get("scm_repo_url")
-    external_url = kwargs.get("scm_external_repo_url")
-
-
-    if scm_repo_url is None and external_url is None:
-        logging.error("At least one scm-url must be specified.")
-        return
-
-    if scm_repo_url and kwargs.get("scm_revision") is None:
-        logging.error("The repository revision must be provided for the internal repository.")
-        return
-
-    if external_url and kwargs.get('scm_external_revision') is None:
-        logging.error("The external repository revision must be provided for the external repository.")
-        return
 
     if not kwargs.get("dependency_ids"):
         kwargs["dependency_ids"] = []
@@ -66,9 +49,13 @@ def create_build_configuration(**kwargs):
     if not kwargs.get("generic_parameters"):
         kwargs["generic_parameters"] = {}
 
-    build_configuration = create_build_conf_object(**kwargs)
+    build_configuration = create_build_conf_object(scm_revision=revision, **kwargs)
+    repo_creation = swagger_client.RepositoryCreationUrlAutoRest()
+    repo_creation.scm_url = repository
+    repo_creation.build_configuration_rest = build_configuration
+
     response = utils.checked_api_call(
-        bpm_api, 'start_bc_creation_task', body=build_configuration)
+        bpm_api, 'start_r_creation_task_with_single_url', body=repo_creation)
     if response:
         return response
 
