@@ -6,6 +6,7 @@ import pnc_cli.cli_types as types
 from pnc_cli import swagger_client
 from pnc_cli import utils
 from pnc_cli.swagger_client import BuildconfigurationsApi
+from pnc_cli.swagger_client import RepositoryconfigurationsApi
 from pnc_cli.swagger_client import EnvironmentsApi
 from pnc_cli.swagger_client import ProductsApi
 from pnc_cli.swagger_client import ProductversionsApi
@@ -14,6 +15,7 @@ import pnc_cli.user_config as uc
 
 projects_api = ProjectsApi(uc.user.get_api_client())
 configs_api = BuildconfigurationsApi(uc.user.get_api_client())
+repos_api = RepositoryconfigurationsApi(uc.user.get_api_client())
 envs_api = EnvironmentsApi(uc.user.get_api_client())
 versions_api = ProductversionsApi(uc.user.get_api_client())
 products_api = ProductsApi(uc.user.get_api_client())
@@ -94,7 +96,7 @@ def get_build_configuration(id=None, name=None):
 @arg("-e", "--environment", help="ID of the Environment for the new BuildConfiguration.",
      type=types.existing_environment_id)
 @arg("-d", "--description", help="Description of the new build configuration.")
-@arg("-surl", "--scm-url", help="URL to the sources of the BuildConfiguration.")
+@arg("-r", "--repository-configuration", help="ID of the RepositoryConfiguration for the BuildConfiguration.")
 @arg("-srev", "--scm-revision", help="Revision of the sources in scm-url for this BuildConfiguration.")
 @arg("-bs", "--build-script", help="Script to execute for the BuildConfiguration.")
 def update_build_configuration(id, **kwargs):
@@ -114,6 +116,12 @@ def update_build_configuration(id, **kwargs):
         project_rest = common.get_entity(projects_api, project_id)
         update_project = {'project': project_rest}
         kwargs.update(update_project)
+
+    repository_id = kwargs.get('repository_configuration')
+    if repository_id:
+        repository_rest = common.get_entity(repos_api, repository_id)
+        update_repository = {'repository_configuration': repository_rest}
+        kwargs.update(update_repository)
 
     env_id = kwargs.get('environment')
     if env_id:
@@ -160,7 +168,7 @@ def delete_build_configuration(id=None, name=None):
 @arg("project", help="ID of the Project to associate the BuildConfiguration with.", type=types.existing_project_id)
 @arg("environment", help="ID of the Environment for the new BuildConfiguration.",
      type=types.existing_environment_id)
-@arg("scm_repo_url", help="URL to the sources of the BuildConfiguration.")
+@arg("repository-configuration", help="ID of the RepositoryConfiguration with the sources of the BuildConfiguration.")
 @arg("scm_revision", help="Revision of the sources in scm-url for this BuildConfiguration.")
 @arg("build_script", help="Script to execute for the BuildConfiguration.")
 @arg("-d", "--description", help="Description of the new build configuration.")
@@ -176,6 +184,9 @@ def create_build_configuration(**kwargs):
     project_id = kwargs.get('project')
     project_rest = common.get_entity(projects_api, project_id)
     kwargs['project'] = project_rest
+    repository_id = kwargs.get('repository_configuration')
+    repository_rest = common.get_entity(repos_api, repository_id)
+    kwargs['repository_configuration'] = repository_rest
     env_id = kwargs.get('environment')
     env_rest = common.get_entity(envs_api, env_id)
     kwargs['environment'] = env_rest
