@@ -37,7 +37,7 @@ def create_project(**kwargs):
     """
     Create a new Project. Typically, a Project represents a single source code repository, as well as the information related to development of those sources.
     """
-    content = create_project_raw(kwargs)
+    content = create_project_raw(**kwargs)
     if content:
         return utils.format_json(content)
 
@@ -60,7 +60,10 @@ def update_project(id, **kwargs):
         if value is not None:
             setattr(to_update, key, value)
     response = utils.checked_api_call(projects_api, 'update', id=id, body=to_update)
-    return utils.format_json(response.content)
+    if response:
+        return utils.format_json(response.content)
+    else:
+        return utils.format_json(utils.checked_api_call(projects_api, 'get_specific', id=id).content)
 
 
 def get_project_raw(id=None, name=None):
