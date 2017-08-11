@@ -50,7 +50,7 @@ def create_build_configuration_set(**kwargs):
     """
     Create a new BuildConfigurationSet.
     """
-    content = create_build_configuration_set_raw(kwargs)
+    content = create_build_configuration_set_raw(**kwargs)
     if content:
         return utils.format_json(content)
 
