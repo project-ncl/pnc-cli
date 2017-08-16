@@ -54,7 +54,7 @@ class UserConfig():
         # check for changes in keycloak configuration; if so, we'll need to get a new token regardless of time
         current_keycloak_config = kc.KeycloakConfig(config)
         if not current_keycloak_config == saved_kc_config:
-            print("Keycloak server has been reconfigured. Retrieving new token...")
+            sys.stderr.write("Keycloak server has been reconfigured. Retrieving new token...\n")
             self.keycloak_config = current_keycloak_config
             newtoken = True
         else:
@@ -64,7 +64,7 @@ class UserConfig():
         # get a new one
         if not newtoken and utils.current_time_millis() - self.token_time > 86400000:
             # input the password again since we no longer cache it
-            print("Keycloak token has expired for user {}. Retrieving new token...".format(self.username))
+            sys.stderr.write("Keycloak token has expired for user {}. Retrieving new token...\n".format(self.username))
             newtoken = True
 
         if newtoken:
@@ -94,7 +94,7 @@ class UserConfig():
     def load_username_from_config(self, config):
         try:
             username = config.get('PNC', 'username')
-            print("Loaded username from pnc-cli.conf: {}").format(username)
+            sys.stderr.write("Loaded username from pnc-cli.conf: {}\n".format(username))
             return username
         except ConfigParser.NoOptionError:
             return None
@@ -102,7 +102,7 @@ class UserConfig():
     def load_password_from_config(self, config):
         try:
             password = config.get('PNC', 'password')
-            print("Loaded password from pnc-cli.conf")
+            sys.stderr.write("Loaded password from pnc-cli.conf\n")
             return password
         except ConfigParser.NoOptionError:
             return None
@@ -117,7 +117,7 @@ class UserConfig():
             }
             r = requests.post(self.keycloak_config.url, params, verify=False)
             if r.status_code == 200:
-                print("Token retrieved for client from {}.".format(self.keycloak_config.client_id))
+                sys.stderr.write("Token retrieved for client from {}.\n".format(self.keycloak_config.client_id))
                 self.token_time = utils.current_time_millis()
                 reply = json.loads(r.content.decode('utf-8'))
                 return str(reply.get('access_token'))
@@ -134,7 +134,7 @@ class UserConfig():
                           'password': self.password}
                 r = requests.post(self.keycloak_config.url, params, verify=False)
                 if r.status_code == 200:
-                    print("Token retrieved for {}.".format(self.username))
+                    sys.stderr.write("Token retrieved for {}.\n".format(self.username))
                     self.token_time = utils.current_time_millis()
                     reply = json.loads(r.content.decode('utf-8'))
                     return str(reply.get('access_token'))
