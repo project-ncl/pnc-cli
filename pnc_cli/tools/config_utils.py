@@ -1,15 +1,14 @@
 # -*- coding: utf-8 -*-
 
-import copy
 import logging
 import os
 import re
-from ConfigParser import ConfigParser, RawConfigParser, NoOptionError, NoSectionError,DuplicateSectionError
 import string
-from tasks import Tasks
+from ConfigParser import ConfigParser, NoOptionError, NoSectionError, DuplicateSectionError
 
 import utils
 from scm_utils import ScmInfo, get_scm_info
+from tasks import Tasks
 
 
 def get_config_option(params, option):
@@ -632,7 +631,7 @@ class ConfigException(BaseException):
         super(ConfigException, self).__init__(message)
 
 
-from ConfigParser import InterpolationError, InterpolationMissingOptionError
+from ConfigParser import InterpolationMissingOptionError
 from ConfigParser import InterpolationSyntaxError, InterpolationDepthError
 from ConfigParser import MAX_INTERPOLATION_DEPTH
 from ConfigParser import DEFAULTSECT
