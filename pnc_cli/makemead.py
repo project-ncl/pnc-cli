@@ -1,20 +1,21 @@
-from ConfigParser import Error
-from ConfigParser import NoSectionError
 import logging
 import os
-from pprint import pprint
 import re
 import time
+from ConfigParser import Error
+from ConfigParser import NoSectionError
+from pprint import pprint
+
+from argh import arg
 
 import pnc_cli.utils as utils
-from argh import arg
+from pnc_cli import bpmbuildconfigurations
 from pnc_cli import buildconfigurations
 from pnc_cli import buildconfigurationsets
 from pnc_cli import products
 from pnc_cli import projects
-from pnc_cli import bpmbuildconfigurations
 from pnc_cli.buildconfigurations import get_build_configuration_by_name
-from tools.config_utils import ConfigReader
+from pnc_cli.tools import ConfigReader
 
 
 @arg('-c', '--config', help='Make-mead style configuration file possibly extended with pnc.* data fields.')

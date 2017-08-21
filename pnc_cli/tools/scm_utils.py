@@ -2,16 +2,16 @@
 
 import copy
 import logging
-import maven_utils
 import os
 import re
 import shutil
-import web_utils
-from subprocess import Popen
 from subprocess import PIPE
+from subprocess import Popen
 from subprocess import STDOUT
-from maven_utils import MavenArtifact
 
+import maven_utils
+import web_utils
+from maven_utils import MavenArtifact
 
 git_version = None
 
