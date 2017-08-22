@@ -15,7 +15,7 @@ from pnc_cli import buildconfigurationsets
 from pnc_cli import products
 from pnc_cli import projects
 from pnc_cli.buildconfigurations import get_build_configuration_by_name
-from pnc_cli.tools import ConfigReader
+from pnc_cli.tools.config_utils import ConfigReader
 
 
 @arg('-c', '--config', help='Make-mead style configuration file possibly extended with pnc.* data fields.')
