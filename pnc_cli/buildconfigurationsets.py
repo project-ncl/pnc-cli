@@ -1,6 +1,8 @@
 from argh import arg
 from six import iteritems
 
+import json
+
 import pnc_cli.common as common
 import pnc_cli.cli_types as types
 import pnc_cli.utils as utils
@@ -196,3 +198,31 @@ def list_build_records_for_set(id=None, name=None, page_size=200, sort="", q="")
     response = utils.checked_api_call(sets_api, 'get_build_records', id=found_id, page_size=page_size, sort=sort, q=q)
     if response:
         return utils.format_json_list(response.content)
+
+
+@arg("-i", "--id", help="ID of the BuildConfigurationSet", type=types.existing_bc_set_id)
+@arg("-n", "--name", help="Name of the BuildConfigurationSet", type=types.existing_bc_set_name)
+@arg("-p", "--page-size", help="Limit the amount of build records returned", type=int)
+@arg("-s", "--sort", help="Sorting RSQL")
+@arg("-q", help="RSQL query")
+def list_build_set_records(id=None, name=None, page_size=200, sort="", q=""):
+    """
+    List all build set records for a BuildConfigurationSet
+    """
+    found_id = common.set_id(sets_api, id, name)
+    response = utils.checked_api_call(sets_api, 'get_all_build_config_set_records', id=found_id, page_size=page_size, sort=sort, q=q)
+    if response:
+        return utils.format_json_list(response.content)
+
+
+@arg("-i", "--id", help="ID of the BuildConfigurationSet", type=types.existing_bc_set_id)
+@arg("-n", "--name", help="Name of the BuildConfigurationSet", type=types.existing_bc_set_name)
+def latest_build_set_records_status(id=None, name=None):
+    """
+    List latest build set record status
+    """
+    data = list_build_set_records(id, name)
+    data_json = json.loads(data)
+    if len(data_json) > 0:
+        data_json.sort(key=lambda obj: obj['id'], reverse=True)
+        return "Build Config Set Record #" + str(data_json[0]['id']) + ": " + data_json[0]['status']
