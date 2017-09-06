@@ -306,7 +306,7 @@ def create_build_configuration_and_repo(environment, bc_set, product_version_id,
     #Create BPM build config using post /bpm/tasks/start-build-configuration-creation
     #Set these SCM fields: scmRepoURL and scmRevision
     #Fields scmExternalRepoURL and scmExternalRevision can be optionally filled too
-    bpm_task_id = bpmbuildconfigurations.create_build_configuration(
+    bpm_task_id = bpmbuildconfigurations.create_build_configuration_process(
                                              repository=scm_repo_url,
                                              revision=scm_revision,
                                              name=artifact_name,
