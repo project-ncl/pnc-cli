@@ -25,7 +25,13 @@ from pnc_cli.swagger_client.rest import ApiException
 
 __author__ = 'thauser'
 
-CONFIG_LOCATION = os.path.expanduser("~") + "/.config/pnc-cli/"
+envconfig = os.environ.get('PNC_CONFIG_LOCATION')
+if envconfig is not None:
+    if not envconfig.endswith("/"):
+        envconfig += "/"
+    CONFIG_LOCATION = envconfig
+else:
+    CONFIG_LOCATION = os.path.expanduser("~") + "/.config/pnc-cli/"
 CONFIG_FILENAME = "pnc-cli.conf"
 CONFIG = CONFIG_LOCATION + CONFIG_FILENAME
 
@@ -105,8 +111,7 @@ def get_config():
         config.set('PNC', 'password', password)
         with open(os.path.join(configfilename), 'w') as configfile:
             config.write(configfile)
-        logging.warning(
-            "New config file written to ~/.config/pnc-cli/pnc-cli.conf. Configure pncUrl and keycloakUrl values.")
+        logging.warning("New config file written to %s. Configure pncUrl and keycloakUrl values." % configfilename)
         exit(1)
     return config
 
