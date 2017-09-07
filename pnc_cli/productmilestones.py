@@ -1,4 +1,6 @@
 import argparse
+import datetime
+import time
 
 from argh import arg
 from six import iteritems
@@ -18,9 +20,7 @@ def create_milestone_object(**kwargs):
     created_milestone = ProductMilestoneRest()
     for key, value in iteritems(kwargs):
         setattr(created_milestone, key, value)
-    return created_milestone
-
-
+    return created_milestone 
 def check_date_order(start_date, end_date):
     if not start_date <= end_date:
         raise argparse.ArgumentTypeError("Error: start date must be before end date")
@@ -125,6 +125,72 @@ def update_milestone(id, **kwargs):
         setattr(existing_milestone, key, value)
     response = utils.checked_api_call(
         milestones_api, 'update', id=id, body=existing_milestone)
+    if response:
+        return utils.format_json(response.content)
+
+
+def _get_latest_release_status(milestone_id):
+    """
+    Get latest release status
+
+    Due to a bug in PNC (NCL-3326), the get_latest_release might return null
+    when calling for get_latest_release endpoint just after the release process
+    is started.
+
+    Bug is fixed in commit: 2fa935f7, however it is not in the 1.1.x branch for
+    PNC
+
+    For now if we get ValueError exception, assume that status is UNKNOWN
+    """
+    try:
+        latest_release = utils.checked_api_call(milestones_api, 'get_latest_release', id=milestone_id).content.status
+    except ValueError:
+        latest_release = "UNKNOWN"
+
+    return latest_release
+
+
+@arg("id", help="ProductMilestone ID to update.", type=types.existing_product_milestone)
+@arg("-rd", "--release-date", help="Release date for the ProductMilestone. If not specified, current date is used",
+     type=types.valid_date)
+@arg("-w", "--wait", help="Wait for release process to finish", action='store_true')
+def close_milestone(id, **kwargs):
+    """
+    Close a milestone. This triggers its release process.
+
+    The user can optionally specify the release-date, otherwise today's date is
+    used.
+
+    If the wait parameter is specified and set to True, upon closing the milestone,
+    we'll periodically check that the release being processed is done.
+
+    Required:
+    - id: int
+
+    Optional:
+    - release_date: string in format '<yyyy>-<mm>-<dd>'
+    - wait key: bool
+    """
+    release_date = kwargs.get('release_date')
+    if not release_date:
+        release_date = datetime.datetime.now()
+
+    existing_milestone = utils.checked_api_call(milestones_api, 'get_specific', id=id).content
+    setattr(existing_milestone, 'end_date', release_date)
+
+    response = utils.checked_api_call(
+        milestones_api, 'update', id=id, body=existing_milestone)
+
+    latest_release = _get_latest_release_status(id)
+
+    if kwargs.get('wait') == True:
+        while latest_release == 'IN_PROGRESS' or latest_release == 'UNKNOWN':
+            print("Latest release for milestone is in progress, waiting till it finishes...")
+            time.sleep(60)
+            latest_release = _get_latest_release_status(id)
+
+        print("Status of release for milestone: " + latest_release)
+
     if response:
         return utils.format_json(response.content)
 
