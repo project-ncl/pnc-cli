@@ -98,9 +98,9 @@ def get_milestone(id):
 
 
 @arg("id", help="ProductMilestone ID to update.", type=types.existing_product_milestone)
-@arg("-v, --version", help="New version for the ProductMilestone.", type=types.valid_version_update)
-@arg("-sd, --starting-date", help="New start date for the ProductMilestone.", type=types.valid_date)
-@arg("-ped, --planned-end-date", help="New release date for the ProductMilestone.", type=types.valid_date)
+@arg("-v", "--version", help="New version for the ProductMilestone.", type=types.valid_version_update)
+@arg("-sd", "--starting-date", help="New start date for the ProductMilestone.", type=types.valid_date)
+@arg("-ped", "--planned-end-date", help="New release date for the ProductMilestone.", type=types.valid_date)
 def update_milestone(id, **kwargs):
     """
     Update a ProductMilestone
