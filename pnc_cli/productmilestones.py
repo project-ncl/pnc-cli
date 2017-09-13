@@ -134,6 +134,22 @@ def update_milestone(id, **kwargs):
      type=types.valid_date)
 @arg("-w", "--wait", help="Wait for release process to finish", action='store_true')
 def close_milestone(id, **kwargs):
+    """
+    Close a milestone. This triggers its release process.
+
+    The user can optionally specify the release-date, otherwise today's date is
+    used.
+
+    If the wait parameter is specified and set to True, upon closing the milestone,
+    we'll periodically check that the release being processed is done.
+
+    Required:
+    - id: int
+
+    Optional:
+    - release_date: string in format '<yyyy>-<mm>-<dd>'
+    - wait key: bool
+    """
     release_date = kwargs.get('release_date')
     if not release_date:
         release_date = datetime.datetime.now()
