@@ -97,6 +97,7 @@ def get_build_configuration(id=None, name=None):
      type=types.existing_environment_id)
 @arg("-d", "--description", help="Description of the new build configuration.")
 @arg("-r", "--repository-configuration", help="ID of the RepositoryConfiguration for the BuildConfiguration.")
+@arg("-pvi", "--product-version-id", help="Associated ProductVersion ID.")
 @arg("-srev", "--scm-revision", help="Revision of the sources in scm-url for this BuildConfiguration.")
 @arg("-bs", "--build-script", help="Script to execute for the BuildConfiguration.")
 def update_build_configuration(id, **kwargs):
@@ -168,7 +169,7 @@ def delete_build_configuration(id=None, name=None):
 @arg("project", help="ID of the Project to associate the BuildConfiguration with.", type=types.existing_project_id)
 @arg("environment", help="ID of the Environment for the new BuildConfiguration.",
      type=types.existing_environment_id)
-@arg("repository-configuration", help="ID of the RepositoryConfiguration with the sources of the BuildConfiguration.")
+@arg("repository_configuration", help="ID of the RepositoryConfiguration with the sources of the BuildConfiguration.")
 @arg("scm_revision", help="Revision of the sources in scm-url for this BuildConfiguration.")
 @arg("build_script", help="Script to execute for the BuildConfiguration.")
 @arg("-d", "--description", help="Description of the new build configuration.")
