@@ -106,9 +106,7 @@ def get_config():
         config.set('PNC', 'keycloakRealm', 'pncredhat')
         config.set('PNC', 'keycloakClientId', 'pncdirect')
         username = input('Username: ')
-        password = getpass.getpass('Password: ')
         config.set('PNC', 'username', username)
-        config.set('PNC', 'password', password)
         with open(os.path.join(configfilename), 'w') as configfile:
             config.write(configfile)
         logging.warning("New config file written to %s. Configure pncUrl and keycloakUrl values." % configfilename)
