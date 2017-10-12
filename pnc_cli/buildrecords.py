@@ -71,11 +71,14 @@ def get_build_record(id):
 @arg("-p", "--page-size", help="Limit the amount of Artifacts returned", type=int)
 @arg("-s", "--sort", help="Sorting RSQL")
 @arg("-q", help="RSQL query")
-def list_built_artifacts(id, page_size=200, sort="", q=""):
+@arg("--page-index", help="Page index")
+def list_built_artifacts(id, page_size=200, sort="", q="", page_index=0):
     """
     List Artifacts associated with a BuildRecord
     """
-    response = utils.checked_api_call(records_api, 'get_built_artifacts', id=id, page_size=page_size, sort=sort, q=q)
+    response = utils.checked_api_call(records_api, 'get_built_artifacts', id=id,
+            page_size=page_size, sort=sort, q=q,
+            page_index=page_index)
     if response:
         return utils.format_json_list(response.content)
 
