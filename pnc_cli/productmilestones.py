@@ -130,8 +130,6 @@ def update_milestone(id, **kwargs):
 
 
 @arg("id", help="ProductMilestone ID to update.", type=types.existing_product_milestone)
-@arg("-rd", "--release-date", help="Release date for the ProductMilestone. If not specified, current date is used",
-     type=types.valid_date)
 @arg("-w", "--wait", help="Wait for release process to finish", action='store_true')
 def close_milestone(id, **kwargs):
     """
@@ -147,18 +145,12 @@ def close_milestone(id, **kwargs):
     - id: int
 
     Optional:
-    - release_date: string in format '<yyyy>-<mm>-<dd>'
     - wait key: bool
     """
-    release_date = kwargs.get('release_date')
-    if not release_date:
-        release_date = datetime.datetime.now()
-
     existing_milestone = utils.checked_api_call(milestones_api, 'get_specific', id=id).content
-    setattr(existing_milestone, 'end_date', release_date)
 
     response = utils.checked_api_call(
-        milestones_api, 'update', id=id, body=existing_milestone)
+        milestones_api, 'close_milestone', id=id, body=existing_milestone)
 
     latest_release = utils.checked_api_call(milestones_api, 'get_latest_release', id=id).content
 
