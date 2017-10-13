@@ -71,7 +71,7 @@ def get_build_record(id):
 @arg("-p", "--page-size", help="Limit the amount of Artifacts returned", type=int)
 @arg("-s", "--sort", help="Sorting RSQL")
 @arg("-q", help="RSQL query")
-@arg("--page-index", help="Page index")
+@arg("--page-index", help="Page index", type=int)
 def list_built_artifacts(id, page_size=200, sort="", q="", page_index=0):
     """
     List Artifacts associated with a BuildRecord
