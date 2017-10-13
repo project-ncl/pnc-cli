@@ -16,7 +16,6 @@ from .products_api import ProductsApi
 from .productversions_api import ProductversionsApi
 from .projects_api import ProjectsApi
 from .repositoryconfigurations_api import RepositoryconfigurationsApi
-from .repositorycreation_api import RepositorycreationApi
 from .runningbuildrecords_api import RunningbuildrecordsApi
 from .test_api import TestApi
 from .users_api import UsersApi

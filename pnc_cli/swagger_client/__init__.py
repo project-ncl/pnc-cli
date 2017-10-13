@@ -70,7 +70,6 @@ from .models.repository_configuration_page import RepositoryConfigurationPage
 from .models.repository_configuration_rest import RepositoryConfigurationRest
 from .models.repository_configuration_singleton import RepositoryConfigurationSingleton
 from .models.repository_creation_rest import RepositoryCreationRest
-from .models.repository_creation_result_rest import RepositoryCreationResultRest
 from .models.repository_creation_url_auto_rest import RepositoryCreationUrlAutoRest
 from .models.singleton import Singleton
 from .models.ssh_credentials import SshCredentials
@@ -97,7 +96,6 @@ from .apis.products_api import ProductsApi
 from .apis.productversions_api import ProductversionsApi
 from .apis.projects_api import ProjectsApi
 from .apis.repositoryconfigurations_api import RepositoryconfigurationsApi
-from .apis.repositorycreation_api import RepositorycreationApi
 from .apis.runningbuildrecords_api import RunningbuildrecordsApi
 from .apis.test_api import TestApi
 from .apis.users_api import UsersApi
