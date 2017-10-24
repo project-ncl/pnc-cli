@@ -111,6 +111,10 @@ def make_mead(config=None, run_build=False, environment=1, sufix="", product_nam
                 art_params['options']['properties'] = {}
             art_params['options']['properties']['exec_folder'] = folder
 
+        # If scm_repo_url starts with git+https protocol, use https protocol instead
+        # recent versions of git don't seem to understand 'git+https' anymore
+        scm_repo_url = _git_url_use_https_only(scm_repo_url)
+
         #Lookup or create a Project
         try:
             project = projects.get_project_raw(name=project_name)
@@ -242,7 +246,10 @@ def update_build_configuration(environment, product_version_id, art_params, scm_
     build_config = buildconfigurations.get_build_configuration_by_name(name=artifact_name)
     internal_url = build_config.repository_configuration.internal_url
     external_url = build_config.repository_configuration.external_url
-    if internal_url != scm_repo_url and external_url != scm_repo_url:
+
+    scm_repo_url_no_git_ext = _remove_git_ext(scm_repo_url)
+
+    if _remove_git_ext(internal_url) != scm_repo_url_no_git_ext and _remove_git_ext(external_url) != scm_repo_url_no_git_ext:
         logging.error("SCM URL of existing Build Configuration '%s' cannot be changed" % artifact_name)
         return None
 
@@ -260,11 +267,15 @@ def update_build_configuration(environment, product_version_id, art_params, scm_
 
 def create_build_configuration(environment, bc_set, product_version_id, art_params, scm_repo_url,
                                scm_revision, artifact_name, project):
+
+    scm_repo_url_no_git_ext = _remove_git_ext(scm_repo_url)
+
     repos = repositoryconfigurations.search_repository_configuration_raw(scm_repo_url)
     repo = None
     if repos is not None:
         for r in repos:
-            if r.internal_url == scm_repo_url or r.external_url == scm_repo_url:
+            if (_remove_git_ext(r.internal_url) == scm_repo_url_no_git_ext or
+                _remove_git_ext(r.external_url) == scm_repo_url_no_git_ext):
                 if repo is None:
                     repo = r
                 else:
@@ -360,5 +371,8 @@ def contains_event_type(events, types):
     return False
 
 
+def _git_url_use_https_only(git_url):
+    return re.sub(r'^git\+https', 'https', git_url)
 
-
+def _remove_git_ext(git_url):
+    return re.sub(r'\.git$', '', git_url)
