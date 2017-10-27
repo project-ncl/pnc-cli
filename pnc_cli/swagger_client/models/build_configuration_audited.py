@@ -38,7 +38,7 @@ class BuildConfigurationAudited(object):
                                   and the value is json key in definition.
         """
         self.swagger_types = {
-            'id': 'IdRev',
+            'id': 'int',
             'rev': 'int',
             'id_rev': 'IdRev',
             'name': 'str',
@@ -49,6 +49,7 @@ class BuildConfigurationAudited(object):
             'project': 'Project',
             'build_environment': 'BuildEnvironment',
             'build_records': 'list[BuildRecord]',
+            'build_configuration': 'BuildConfiguration',
             'generic_parameters': 'dict(str, str)',
             'field_handler': 'FieldHandler'
         }
@@ -65,6 +66,7 @@ class BuildConfigurationAudited(object):
             'project': 'project',
             'build_environment': 'buildEnvironment',
             'build_records': 'buildRecords',
+            'build_configuration': 'buildConfiguration',
             'generic_parameters': 'genericParameters',
             'field_handler': 'fieldHandler'
         }
@@ -80,6 +82,7 @@ class BuildConfigurationAudited(object):
         self._project = None
         self._build_environment = None
         self._build_records = None
+        self._build_configuration = None
         self._generic_parameters = None
         self._field_handler = None
 
@@ -90,7 +93,7 @@ class BuildConfigurationAudited(object):
 
 
         :return: The id of this BuildConfigurationAudited.
-        :rtype: IdRev
+        :rtype: int
         """
         return self._id
 
@@ -101,7 +104,7 @@ class BuildConfigurationAudited(object):
 
 
         :param id: The id of this BuildConfigurationAudited.
-        :type: IdRev
+        :type: int
         """
         self._id = id
 
@@ -324,6 +327,28 @@ class BuildConfigurationAudited(object):
         :type: list[BuildRecord]
         """
         self._build_records = build_records
+
+    @property
+    def build_configuration(self):
+        """
+        Gets the build_configuration of this BuildConfigurationAudited.
+
+
+        :return: The build_configuration of this BuildConfigurationAudited.
+        :rtype: BuildConfiguration
+        """
+        return self._build_configuration
+
+    @build_configuration.setter
+    def build_configuration(self, build_configuration):
+        """
+        Sets the build_configuration of this BuildConfigurationAudited.
+
+
+        :param build_configuration: The build_configuration of this BuildConfigurationAudited.
+        :type: BuildConfiguration
+        """
+        self._build_configuration = build_configuration
 
     @property
     def generic_parameters(self):

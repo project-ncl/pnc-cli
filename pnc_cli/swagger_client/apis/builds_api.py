@@ -142,12 +142,14 @@ class BuildsApi(object):
         :param int page_size: Pagination size
         :param str sort: Sorting RSQL
         :param str q: RSQL Query
+        :param str or_find_by_build_configuration_name: Find by BuildConfigurationName (query is combined with other criteria using OR.).
+        :param str and_find_by_build_configuration_name: Find by BuildConfigurationName (query is combined with other criteria using AND.).
         :return: BuildRecordPage
                  If the method is called asynchronously,
                  returns the request thread.
         """
 
-        all_params = ['page_index', 'page_size', 'sort', 'q']
+        all_params = ['page_index', 'page_size', 'sort', 'q', 'or_find_by_build_configuration_name', 'and_find_by_build_configuration_name']
         all_params.append('callback')
 
         params = locals()
@@ -174,6 +176,10 @@ class BuildsApi(object):
             query_params['sort'] = params['sort']
         if 'q' in params:
             query_params['q'] = params['q']
+        if 'or_find_by_build_configuration_name' in params:
+            query_params['orFindByBuildConfigurationName'] = params['or_find_by_build_configuration_name']
+        if 'and_find_by_build_configuration_name' in params:
+            query_params['andFindByBuildConfigurationName'] = params['and_find_by_build_configuration_name']
 
         header_params = {}
 

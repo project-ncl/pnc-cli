@@ -47,7 +47,6 @@ class BuildConfiguration(object):
             'product_version': 'ProductVersion',
             'project': 'Project',
             'build_environment': 'BuildEnvironment',
-            'build_records': 'list[BuildRecord]',
             'build_configuration_sets': 'list[BuildConfigurationSet]',
             'creation_time': 'datetime',
             'last_modification_time': 'datetime',
@@ -57,9 +56,8 @@ class BuildConfiguration(object):
             'all_dependencies': 'list[BuildConfiguration]',
             'indirect_dependencies': 'list[BuildConfiguration]',
             'archived': 'bool',
-            'current_product_milestone': 'ProductMilestone',
-            'latest_succesful_build_record': 'BuildRecord',
-            'field_handler': 'FieldHandler'
+            'field_handler': 'FieldHandler',
+            'current_product_milestone': 'ProductMilestone'
         }
 
         self.attribute_map = {
@@ -72,7 +70,6 @@ class BuildConfiguration(object):
             'product_version': 'productVersion',
             'project': 'project',
             'build_environment': 'buildEnvironment',
-            'build_records': 'buildRecords',
             'build_configuration_sets': 'buildConfigurationSets',
             'creation_time': 'creationTime',
             'last_modification_time': 'lastModificationTime',
@@ -82,9 +79,8 @@ class BuildConfiguration(object):
             'all_dependencies': 'allDependencies',
             'indirect_dependencies': 'indirectDependencies',
             'archived': 'archived',
-            'current_product_milestone': 'currentProductMilestone',
-            'latest_succesful_build_record': 'latestSuccesfulBuildRecord',
-            'field_handler': 'fieldHandler'
+            'field_handler': 'fieldHandler',
+            'current_product_milestone': 'currentProductMilestone'
         }
 
         self._id = None
@@ -96,7 +92,6 @@ class BuildConfiguration(object):
         self._product_version = None
         self._project = None
         self._build_environment = None
-        self._build_records = None
         self._build_configuration_sets = None
         self._creation_time = None
         self._last_modification_time = None
@@ -106,9 +101,8 @@ class BuildConfiguration(object):
         self._all_dependencies = None
         self._indirect_dependencies = None
         self._archived = None
-        self._current_product_milestone = None
-        self._latest_succesful_build_record = None
         self._field_handler = None
+        self._current_product_milestone = None
 
     @property
     def id(self):
@@ -309,28 +303,6 @@ class BuildConfiguration(object):
         self._build_environment = build_environment
 
     @property
-    def build_records(self):
-        """
-        Gets the build_records of this BuildConfiguration.
-
-
-        :return: The build_records of this BuildConfiguration.
-        :rtype: list[BuildRecord]
-        """
-        return self._build_records
-
-    @build_records.setter
-    def build_records(self, build_records):
-        """
-        Sets the build_records of this BuildConfiguration.
-
-
-        :param build_records: The build_records of this BuildConfiguration.
-        :type: list[BuildRecord]
-        """
-        self._build_records = build_records
-
-    @property
     def build_configuration_sets(self):
         """
         Gets the build_configuration_sets of this BuildConfiguration.
@@ -529,50 +501,6 @@ class BuildConfiguration(object):
         self._archived = archived
 
     @property
-    def current_product_milestone(self):
-        """
-        Gets the current_product_milestone of this BuildConfiguration.
-
-
-        :return: The current_product_milestone of this BuildConfiguration.
-        :rtype: ProductMilestone
-        """
-        return self._current_product_milestone
-
-    @current_product_milestone.setter
-    def current_product_milestone(self, current_product_milestone):
-        """
-        Sets the current_product_milestone of this BuildConfiguration.
-
-
-        :param current_product_milestone: The current_product_milestone of this BuildConfiguration.
-        :type: ProductMilestone
-        """
-        self._current_product_milestone = current_product_milestone
-
-    @property
-    def latest_succesful_build_record(self):
-        """
-        Gets the latest_succesful_build_record of this BuildConfiguration.
-
-
-        :return: The latest_succesful_build_record of this BuildConfiguration.
-        :rtype: BuildRecord
-        """
-        return self._latest_succesful_build_record
-
-    @latest_succesful_build_record.setter
-    def latest_succesful_build_record(self, latest_succesful_build_record):
-        """
-        Sets the latest_succesful_build_record of this BuildConfiguration.
-
-
-        :param latest_succesful_build_record: The latest_succesful_build_record of this BuildConfiguration.
-        :type: BuildRecord
-        """
-        self._latest_succesful_build_record = latest_succesful_build_record
-
-    @property
     def field_handler(self):
         """
         Gets the field_handler of this BuildConfiguration.
@@ -593,6 +521,28 @@ class BuildConfiguration(object):
         :type: FieldHandler
         """
         self._field_handler = field_handler
+
+    @property
+    def current_product_milestone(self):
+        """
+        Gets the current_product_milestone of this BuildConfiguration.
+
+
+        :return: The current_product_milestone of this BuildConfiguration.
+        :rtype: ProductMilestone
+        """
+        return self._current_product_milestone
+
+    @current_product_milestone.setter
+    def current_product_milestone(self, current_product_milestone):
+        """
+        Sets the current_product_milestone of this BuildConfiguration.
+
+
+        :param current_product_milestone: The current_product_milestone of this BuildConfiguration.
+        :type: ProductMilestone
+        """
+        self._current_product_milestone = current_product_milestone
 
     def to_dict(self):
         """
