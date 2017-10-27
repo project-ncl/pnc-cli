@@ -274,84 +274,6 @@ class BpmApi(object):
                                             body=body_params,
                                             post_params=form_params,
                                             files=files,
-                                            response_type=None,
-                                            auth_settings=auth_settings,
-                                            callback=params.get('callback'))
-        return response
-
-    def start_r_creation_task(self, body, **kwargs):
-        """
-        Start Repository Creation (RC) task (which stores the RC) and store the BC on success task completion.
-        
-
-        This method makes a synchronous HTTP request by default. To make an
-        asynchronous HTTP request, please define a `callback` function
-        to be invoked when receiving the response.
-        >>> def callback_function(response):
-        >>>     pprint(response)
-        >>>
-        >>> thread = api.start_r_creation_task(body, callback=callback_function)
-
-        :param callback function: The callback function
-            for asynchronous request. (optional)
-        :param RepositoryCreationRest body: Task parameters. (required)
-        :return: None
-                 If the method is called asynchronously,
-                 returns the request thread.
-        """
-        # verify the required parameter 'body' is set
-        if body is None:
-            raise ValueError("Missing the required parameter `body` when calling `start_r_creation_task`")
-
-        all_params = ['body']
-        all_params.append('callback')
-
-        params = locals()
-        for key, val in iteritems(params['kwargs']):
-            if key not in all_params:
-                raise TypeError(
-                    "Got an unexpected keyword argument '%s'"
-                    " to method start_r_creation_task" % key
-                )
-            params[key] = val
-        del params['kwargs']
-
-        resource_path = '/bpm/tasks/start-repository-configuration-creation'.replace('{format}', 'json')
-        method = 'POST'
-
-        path_params = {}
-
-        query_params = {}
-
-        header_params = {}
-
-        form_params = {}
-        files = {}
-
-        body_params = None
-        if 'body' in params:
-            body_params = params['body']
-
-        # HTTP header `Accept`
-        header_params['Accept'] = self.api_client.\
-            select_header_accept(['application/json'])
-        if not header_params['Accept']:
-            del header_params['Accept']
-
-        # HTTP header `Content-Type`
-        header_params['Content-Type'] = self.api_client.\
-            select_header_content_type(['application/json'])
-
-        # Authentication setting
-        auth_settings = []
-
-        response = self.api_client.call_api(resource_path, method,
-                                            path_params,
-                                            query_params,
-                                            header_params,
-                                            body=body_params,
-                                            post_params=form_params,
-                                            files=files,
                                             response_type=int,
                                             auth_settings=auth_settings,
                                             callback=params.get('callback'))
@@ -373,7 +295,7 @@ class BpmApi(object):
         :param callback function: The callback function
             for asynchronous request. (optional)
         :param RepositoryCreationUrlAutoRest body: Task parameters. (required)
-        :return: None
+        :return: int
                  If the method is called asynchronously,
                  returns the request thread.
         """
@@ -430,7 +352,7 @@ class BpmApi(object):
                                             body=body_params,
                                             post_params=form_params,
                                             files=files,
-                                            response_type=int,
+                                            response_type='int',
                                             auth_settings=auth_settings,
                                             callback=params.get('callback'))
         return response

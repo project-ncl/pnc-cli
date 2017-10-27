@@ -219,7 +219,97 @@ class BuildrecordsApi(object):
                                             callback=params.get('callback'))
         return response
 
-    def get_all_for_project(self, project_id, **kwargs):
+    def get_all_for_project(self, name, **kwargs):
+        """
+        Gets the Build Records produced from the BuildConfiguration by name.
+        
+
+        This method makes a synchronous HTTP request by default. To make an
+        asynchronous HTTP request, please define a `callback` function
+        to be invoked when receiving the response.
+        >>> def callback_function(response):
+        >>>     pprint(response)
+        >>>
+        >>> thread = api.get_all_for_project(name, callback=callback_function)
+
+        :param callback function: The callback function
+            for asynchronous request. (optional)
+        :param str name: BuildConfiguration name (required)
+        :param int page_index: Page index
+        :param int page_size: Pagination size
+        :param str sort: Sorting RSQL
+        :param str q: RSQL query
+        :return: BuildRecordPage
+                 If the method is called asynchronously,
+                 returns the request thread.
+        """
+        # verify the required parameter 'name' is set
+        if name is None:
+            raise ValueError("Missing the required parameter `name` when calling `get_all_for_project`")
+
+        all_params = ['name', 'page_index', 'page_size', 'sort', 'q']
+        all_params.append('callback')
+
+        params = locals()
+        for key, val in iteritems(params['kwargs']):
+            if key not in all_params:
+                raise TypeError(
+                    "Got an unexpected keyword argument '%s'"
+                    " to method get_all_for_project" % key
+                )
+            params[key] = val
+        del params['kwargs']
+
+        resource_path = '/build-records/build-configuration-or-project-name/{name}'.replace('{format}', 'json')
+        method = 'GET'
+
+        path_params = {}
+        if 'name' in params:
+            path_params['name'] = params['name']
+
+        query_params = {}
+        if 'page_index' in params:
+            query_params['pageIndex'] = params['page_index']
+        if 'page_size' in params:
+            query_params['pageSize'] = params['page_size']
+        if 'sort' in params:
+            query_params['sort'] = params['sort']
+        if 'q' in params:
+            query_params['q'] = params['q']
+
+        header_params = {}
+
+        form_params = {}
+        files = {}
+
+        body_params = None
+
+        # HTTP header `Accept`
+        header_params['Accept'] = self.api_client.\
+            select_header_accept(['application/json'])
+        if not header_params['Accept']:
+            del header_params['Accept']
+
+        # HTTP header `Content-Type`
+        header_params['Content-Type'] = self.api_client.\
+            select_header_content_type(['application/json'])
+
+        # Authentication setting
+        auth_settings = []
+
+        response = self.api_client.call_api(resource_path, method,
+                                            path_params,
+                                            query_params,
+                                            header_params,
+                                            body=body_params,
+                                            post_params=form_params,
+                                            files=files,
+                                            response_type='BuildRecordPage',
+                                            auth_settings=auth_settings,
+                                            callback=params.get('callback'))
+        return response
+
+    def get_all_for_project_1(self, project_id, **kwargs):
         """
         Gets the Build Records linked to a specific Project
         
@@ -230,7 +320,7 @@ class BuildrecordsApi(object):
         >>> def callback_function(response):
         >>>     pprint(response)
         >>>
-        >>> thread = api.get_all_for_project(project_id, callback=callback_function)
+        >>> thread = api.get_all_for_project_1(project_id, callback=callback_function)
 
         :param callback function: The callback function
             for asynchronous request. (optional)
@@ -245,7 +335,7 @@ class BuildrecordsApi(object):
         """
         # verify the required parameter 'project_id' is set
         if project_id is None:
-            raise ValueError("Missing the required parameter `project_id` when calling `get_all_for_project`")
+            raise ValueError("Missing the required parameter `project_id` when calling `get_all_for_project_1`")
 
         all_params = ['project_id', 'page_index', 'page_size', 'sort', 'q']
         all_params.append('callback')
@@ -255,7 +345,7 @@ class BuildrecordsApi(object):
             if key not in all_params:
                 raise TypeError(
                     "Got an unexpected keyword argument '%s'"
-                    " to method get_all_for_project" % key
+                    " to method get_all_for_project_1" % key
                 )
             params[key] = val
         del params['kwargs']

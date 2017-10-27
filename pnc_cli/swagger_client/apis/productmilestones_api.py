@@ -734,7 +734,7 @@ class ProductmilestonesApi(object):
         :param int page_size: Pagination size
         :param str sort: Sorting RSQL
         :param str q: RSQL Query
-        :return: ProductMilestoneSingleton
+        :return: BuildRecordPage
                  If the method is called asynchronously,
                  returns the request thread.
         """
@@ -799,7 +799,7 @@ class ProductmilestonesApi(object):
                                             body=body_params,
                                             post_params=form_params,
                                             files=files,
-                                            response_type='ProductMilestoneSingleton',
+                                            response_type='BuildRecordPage',
                                             auth_settings=auth_settings,
                                             callback=params.get('callback'))
         return response

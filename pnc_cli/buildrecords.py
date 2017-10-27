@@ -51,7 +51,7 @@ def list_records_for_project(id=None, name=None, page_size=200, sort="", q=""):
     List all BuildRecords for a given Project
     """
     project_id = common.set_id(projects_api, id, name)
-    response = utils.checked_api_call(records_api, 'get_all_for_project', project_id=project_id, page_size=page_size,
+    response = utils.checked_api_call(records_api, 'get_all_for_project_1', project_id=project_id, page_size=page_size,
                                       sort=sort, q=q)
     if response:
         return utils.format_json_list(response.content)

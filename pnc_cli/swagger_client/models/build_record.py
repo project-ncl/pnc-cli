@@ -39,8 +39,9 @@ class BuildRecord(object):
         """
         self.swagger_types = {
             'id': 'int',
-            'latest_build_configuration': 'BuildConfiguration',
             'build_configuration_audited': 'BuildConfigurationAudited',
+            'build_configuration_id': 'int',
+            'build_configuration_rev': 'int',
             'build_content_id': 'str',
             'submit_time': 'datetime',
             'start_time': 'datetime',
@@ -61,13 +62,15 @@ class BuildRecord(object):
             'build_config_set_record': 'BuildConfigSetRecord',
             'attributes': 'dict(str, str)',
             'repour_log': 'str',
-            'field_handler': 'FieldHandler'
+            'field_handler': 'FieldHandler',
+            'build_configuration_audited_id_rev': 'IdRev'
         }
 
         self.attribute_map = {
             'id': 'id',
-            'latest_build_configuration': 'latestBuildConfiguration',
             'build_configuration_audited': 'buildConfigurationAudited',
+            'build_configuration_id': 'buildConfigurationId',
+            'build_configuration_rev': 'buildConfigurationRev',
             'build_content_id': 'buildContentId',
             'submit_time': 'submitTime',
             'start_time': 'startTime',
@@ -88,12 +91,14 @@ class BuildRecord(object):
             'build_config_set_record': 'buildConfigSetRecord',
             'attributes': 'attributes',
             'repour_log': 'repourLog',
-            'field_handler': 'fieldHandler'
+            'field_handler': 'fieldHandler',
+            'build_configuration_audited_id_rev': 'buildConfigurationAuditedIdRev'
         }
 
         self._id = None
-        self._latest_build_configuration = None
         self._build_configuration_audited = None
+        self._build_configuration_id = None
+        self._build_configuration_rev = None
         self._build_content_id = None
         self._submit_time = None
         self._start_time = None
@@ -115,6 +120,7 @@ class BuildRecord(object):
         self._attributes = None
         self._repour_log = None
         self._field_handler = None
+        self._build_configuration_audited_id_rev = None
 
     @property
     def id(self):
@@ -139,28 +145,6 @@ class BuildRecord(object):
         self._id = id
 
     @property
-    def latest_build_configuration(self):
-        """
-        Gets the latest_build_configuration of this BuildRecord.
-
-
-        :return: The latest_build_configuration of this BuildRecord.
-        :rtype: BuildConfiguration
-        """
-        return self._latest_build_configuration
-
-    @latest_build_configuration.setter
-    def latest_build_configuration(self, latest_build_configuration):
-        """
-        Sets the latest_build_configuration of this BuildRecord.
-
-
-        :param latest_build_configuration: The latest_build_configuration of this BuildRecord.
-        :type: BuildConfiguration
-        """
-        self._latest_build_configuration = latest_build_configuration
-
-    @property
     def build_configuration_audited(self):
         """
         Gets the build_configuration_audited of this BuildRecord.
@@ -181,6 +165,50 @@ class BuildRecord(object):
         :type: BuildConfigurationAudited
         """
         self._build_configuration_audited = build_configuration_audited
+
+    @property
+    def build_configuration_id(self):
+        """
+        Gets the build_configuration_id of this BuildRecord.
+
+
+        :return: The build_configuration_id of this BuildRecord.
+        :rtype: int
+        """
+        return self._build_configuration_id
+
+    @build_configuration_id.setter
+    def build_configuration_id(self, build_configuration_id):
+        """
+        Sets the build_configuration_id of this BuildRecord.
+
+
+        :param build_configuration_id: The build_configuration_id of this BuildRecord.
+        :type: int
+        """
+        self._build_configuration_id = build_configuration_id
+
+    @property
+    def build_configuration_rev(self):
+        """
+        Gets the build_configuration_rev of this BuildRecord.
+
+
+        :return: The build_configuration_rev of this BuildRecord.
+        :rtype: int
+        """
+        return self._build_configuration_rev
+
+    @build_configuration_rev.setter
+    def build_configuration_rev(self, build_configuration_rev):
+        """
+        Sets the build_configuration_rev of this BuildRecord.
+
+
+        :param build_configuration_rev: The build_configuration_rev of this BuildRecord.
+        :type: int
+        """
+        self._build_configuration_rev = build_configuration_rev
 
     @property
     def build_content_id(self):
@@ -649,6 +677,28 @@ class BuildRecord(object):
         :type: FieldHandler
         """
         self._field_handler = field_handler
+
+    @property
+    def build_configuration_audited_id_rev(self):
+        """
+        Gets the build_configuration_audited_id_rev of this BuildRecord.
+
+
+        :return: The build_configuration_audited_id_rev of this BuildRecord.
+        :rtype: IdRev
+        """
+        return self._build_configuration_audited_id_rev
+
+    @build_configuration_audited_id_rev.setter
+    def build_configuration_audited_id_rev(self, build_configuration_audited_id_rev):
+        """
+        Sets the build_configuration_audited_id_rev of this BuildRecord.
+
+
+        :param build_configuration_audited_id_rev: The build_configuration_audited_id_rev of this BuildRecord.
+        :type: IdRev
+        """
+        self._build_configuration_audited_id_rev = build_configuration_audited_id_rev
 
     def to_dict(self):
         """

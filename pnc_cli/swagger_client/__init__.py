@@ -69,7 +69,6 @@ from .models.repository_configuration import RepositoryConfiguration
 from .models.repository_configuration_page import RepositoryConfigurationPage
 from .models.repository_configuration_rest import RepositoryConfigurationRest
 from .models.repository_configuration_singleton import RepositoryConfigurationSingleton
-from .models.repository_creation_rest import RepositoryCreationRest
 from .models.repository_creation_url_auto_rest import RepositoryCreationUrlAutoRest
 from .models.singleton import Singleton
 from .models.ssh_credentials import SshCredentials
