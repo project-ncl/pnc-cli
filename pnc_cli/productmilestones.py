@@ -39,13 +39,14 @@ def unique_version_value(parent_product_version_id, version):
 
 
 @arg("-p", "--page-size", help="Limit the amount of ProductReleases returned", type=int)
+@arg("--page-index", help="Select the index of page", type=int)
 @arg("-s", "--sort", help="Sorting RSQL")
 @arg("-q", help="RSQL query")
-def list_milestones(page_size=200, q="", sort=""):
+def list_milestones(page_size=200, page_index=0, q="", sort=""):
     """
     List all ProductMilestones
     """
-    response = utils.checked_api_call(milestones_api, 'get_all', page_size=page_size, q=q, sort=sort)
+    response = utils.checked_api_call(milestones_api, 'get_all', page_size=page_size, page_index=page_index, q=q, sort=sort)
     if response:
         return utils.format_json_list(response.content)
 
@@ -168,10 +169,11 @@ def close_milestone(id, **kwargs):
 
 @arg("id", help="ID of the ProductMilestone to list distributed artifacts for.", type=types.existing_product_milestone)
 @arg("-p", "--page-size", help="Limit the amount of distributed artifacts returned", type=int)
+@arg("--page-index", help="Select the index of page", type=int)
 @arg("-s", "--sort", help="Sorting RSQL")
 @arg("-q", help="RSQL query")
-def list_distributed_artifacts(id, page_size=200, sort="", q=""):
-    response = utils.checked_api_call(milestones_api, 'get_distributed_artifacts', id=id, page_size=page_size, sort=sort, q=q)
+def list_distributed_artifacts(id, page_size=200, page_index=0, sort="", q=""):
+    response = utils.checked_api_call(milestones_api, 'get_distributed_artifacts', id=id, page_size=page_size, page_index=page_index, sort=sort, q=q)
     if response:
         return utils.format_json_list(response.content)
 
@@ -192,9 +194,10 @@ def remove_distributed_artifact():
 
 @arg("id", help="ID of the ProductMilestone to list distributed builds for.", type=types.existing_product_milestone)
 @arg("-p", "--page-size", help="Limit the amount of distributed builds returned", type=int)
+@arg("--page-index", help="Select the index of page", type=int)
 @arg("-s", "--sort", help="Sorting RSQL")
 @arg("-q", help="RSQL query")
-def list_distributed_builds(id, page_size=200, sort='', q=''):
-    response = utils.checked_api_call(milestones_api, 'get_distributed_builds', id=id, page_size=page_size, sort=sort, q=q)
+def list_distributed_builds(id, page_size=200, page_index=0, sort='', q=''):
+    response = utils.checked_api_call(milestones_api, 'get_distributed_builds', id=id, page_size=page_size, page_index=page_index, sort=sort, q=q)
     if response:
         return utils.format_json_list(response.content)
