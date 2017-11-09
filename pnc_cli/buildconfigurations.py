@@ -202,14 +202,15 @@ def create_build_configuration(**kwargs):
 @arg("-i", "--id", help="ID of the Product to list BuildConfigurations for.", type=types.existing_product_id)
 @arg("-n", "--name", help="Name of the Product to list BuildConfigurations for.", type=types.existing_bc_name)
 @arg("-p", "--page-size", help="Limit the amount of build records returned", type=int)
+@arg("--page-index", help="Select the index of page", type=int)
 @arg("-s", "--sort", help="Sorting RSQL")
 @arg("-q", help="RSQL query")
-def list_build_configurations_for_product(id=None, name=None, page_size=200, sort="", q=""):
+def list_build_configurations_for_product(id=None, name=None, page_size=200, page_index=0, sort="", q=""):
     """
     List all BuildConfigurations associated with the given Product.
     """
     found_id = common.set_id(products_api, id, name)
-    response = utils.checked_api_call(configs_api, 'get_all_by_product_id', product_id=found_id, page_size=page_size,
+    response = utils.checked_api_call(configs_api, 'get_all_by_product_id', product_id=found_id, page_size=page_size, page_index=page_index,
                                       sort=sort, q=q)
     if response:
         return utils.format_json_list(response.content)
@@ -218,14 +219,15 @@ def list_build_configurations_for_product(id=None, name=None, page_size=200, sor
 @arg("-i", "--id", help="ID of the Project to list BuildConfigurations for.", type=int)
 @arg("-n", "--name", help="Name of the Project to list BuildConfigurations for.", type=types.valid_bc_name)
 @arg("-p", "--page-size", help="Limit the amount of build records returned", type=int)
+@arg("--page-index", help="Select the index of page", type=int)
 @arg("-s", "--sort", help="Sorting RSQL")
 @arg("-q", help="RSQL query")
-def list_build_configurations_for_project(id=None, name=None, page_size=200, sort="", q=""):
+def list_build_configurations_for_project(id=None, name=None, page_size=200, page_index=0, sort="", q=""):
     """
     List all BuildConfigurations associated with the given Project.
     """
     found_id = common.set_id(projects_api, id, name)
-    response = utils.checked_api_call(configs_api, 'get_all_by_project_id', project_id=found_id, page_size=page_size,
+    response = utils.checked_api_call(configs_api, 'get_all_by_project_id', project_id=found_id, page_size=page_size, page_index=page_index,
                                       sort=sort, q=q)
     if response:
         return utils.format_json_list(response.content)
@@ -236,15 +238,16 @@ def list_build_configurations_for_project(id=None, name=None, page_size=200, sor
 @arg("version_id", help="ID of the ProductVersion to list BuildConfigurations for.",
      type=types.existing_product_version)
 @arg("-p", "--page-size", help="Limit the amount of build records returned")
+@arg("--page-index", help="Select the index of page", type=int)
 @arg("-s", "--sort", help="Sorting RSQL")
 @arg("-q", help="RSQL query")
-def list_build_configurations_for_product_version(product_id, version_id, page_size=200, sort="", q=""):
+def list_build_configurations_for_product_version(product_id, version_id, page_size=200, page_index=0, sort="", q=""):
     """
     List all BuildConfigurations associated with the given ProductVersion
     """
     found_product_id = common.set_id(products_api, product_id, None)
     response = utils.checked_api_call(configs_api, 'get_all_by_product_version_id', product_id=found_product_id,
-                                      version_id=version_id, page_size=page_size, sort=sort, q=q)
+                                      version_id=version_id, page_size=page_size, page_index=page_index, sort=sort, q=q)
     if response:
         return utils.format_json_list(response.content)
 
@@ -252,11 +255,12 @@ def list_build_configurations_for_product_version(product_id, version_id, page_s
 @arg("-i", "--id", help="ID of the BuildConfiguration to list dependencies for.", type=types.existing_bc_id)
 @arg("-n", "--name", help="Name of the BuildConfiguration to list dependencies for.", type=types.valid_bc_name)
 @arg("-p", "--page-size", help="Limit the amount of build records returned")
+@arg("--page-index", help="Select the index of page", type=int)
 @arg("-s", "--sort", help="Sorting RSQL")
 @arg("-q", help="RSQL query")
-def list_dependencies(id=None, name=None, page_size=200, sort="", q=""):
+def list_dependencies(id=None, name=None, page_size=200, page_index=0, sort="", q=""):
     found_id = common.set_id(configs_api, id, name)
-    response = utils.checked_api_call(configs_api, 'get_dependencies', id=found_id, page_size=page_size, sort=sort, q=q)
+    response = utils.checked_api_call(configs_api, 'get_dependencies', id=found_id, page_size=page_size, page_index=page_index, sort=sort, q=q)
     if response:
         return utils.format_json_list(response.content)
 
@@ -301,14 +305,15 @@ def remove_dependency(id=None, name=None, dependency_id=None, dependency_name=No
 @arg("-i", "--id", help="ID of the BuildConfiguration to list ProductVersions for.", type=types.existing_bc_id)
 @arg("-n", "--name", help="Name of the BuildConfiguration to list ProductVersions for.", type=types.existing_bc_name)
 @arg("-p", "--page-size", help="Limit the amount of build records returned", type=int)
+@arg("--page-index", help="Select the index of page", type=int)
 @arg("-s", "--sort", help="Sorting RSQL")
 @arg("-q", help="RSQL query")
-def list_product_versions_for_build_configuration(id=None, name=None, page_size=200, sort="", q=""):
+def list_product_versions_for_build_configuration(id=None, name=None, page_size=200, page_index=0, sort="", q=""):
     """
     List all ProductVersions associated with a BuildConfiguration
     """
     found_id = common.set_id(configs_api, id, name)
-    response = utils.checked_api_call(configs_api, 'get_product_versions', id=found_id, page_size=page_size, sort=sort,
+    response = utils.checked_api_call(configs_api, 'get_product_versions', id=found_id, page_size=page_size, page_index=page_index, sort=sort,
                                       q=q)
     if response:
         return utils.format_json_list(response.content)
@@ -347,14 +352,15 @@ def remove_product_version_from_build_configuration(id=None, name=None, product_
 @arg("-i", "--id", help="ID of the BuildConfiguration to list audited revisions for.", type=types.existing_bc_id)
 @arg("-n", "--name", help="Name of the BuildConfiguration to list audited revisions for.", type=types.existing_bc_name)
 @arg("-p", "--page-size", help="Limit the amount of build records returned", type=int)
+@arg("--page-index", help="Select the index of page", type=int)
 @arg("-s", "--sort", help="Sorting RSQL")
 # TODO: PNC return BuildConfigurationAuditedPage instead of BuildConfigurationPage?
-def list_revisions_of_build_configuration(id=None, name=None, page_size=200, sort=""):
+def list_revisions_of_build_configuration(id=None, name=None, page_size=200, page_index=0, sort=""):
     """
     List audited revisions of a BuildConfiguration
     """
     found_id = common.set_id(configs_api, id, name)
-    response = utils.checked_api_call(configs_api, 'get_revisions', id=found_id, page_size=page_size, sort=sort)
+    response = utils.checked_api_call(configs_api, 'get_revisions', id=found_id, page_size=page_size, page_index=page_index, sort=sort)
     if response:
         return utils.format_json_list(response.content)
 
@@ -373,12 +379,13 @@ def get_revision_of_build_configuration(id=None, name=None, revision_id=None):
 
 
 @arg("-p", "--page-size", help="Limit the amount of build records returned", type=int)
+@arg("--page-index", help="Select the index of page", type=int)
 @arg("-s", "--sort", help="Sorting RSQL")
 @arg("-q", help="RSQL query")
-def list_build_configurations(page_size=200, sort="", q=""):
+def list_build_configurations(page_size=200, page_index=0, sort="", q=""):
     """
     List all BuildConfigurations
     """
-    response = utils.checked_api_call(configs_api, 'get_all', page_size=page_size, sort=sort, q=q)
+    response = utils.checked_api_call(configs_api, 'get_all', page_size=page_size, page_index=page_index, sort=sort, q=q)
     if response:
         return utils.format_json_list(response.content)

@@ -77,51 +77,54 @@ def create_repository_configuration(repository, external_repository=None, prebui
         return utils.format_json(response.content)
 
 @arg("-p", "--page-size", help="Limit the amount of repository configurations returned", type=int)
+@arg("--page-index", help="Select the index of page", type=int)
 @arg("-s", "--sort", help="Sorting RSQL")
 @arg("-q", help="RSQL query")
-def list_repository_configurations(page_size=200, sort="", q=""):
+def list_repository_configurations(page_size=200, page_index=0, sort="", q=""):
     """
     List all RepositoryConfigurations
     """
-    response = utils.checked_api_call(repos_api, 'get_all', page_size=page_size, sort=sort, q=q)
+    response = utils.checked_api_call(repos_api, 'get_all', page_size=page_size, page_index=page_index, sort=sort, q=q)
     if response:
         return utils.format_json_list(response.content)
 
 @arg("url", help="Url part to search for.")
 @arg("-p", "--page-size", help="Limit the amount of repository configurations returned", type=int)
+@arg("--page-index", help="Select the index of page", type=int)
 @arg("-s", "--sort", help="Sorting RSQL")
-def search_repository_configuration(url, page_size=10, sort=""):
+def search_repository_configuration(url, page_size=10, page_index=0, sort=""):
     """
     Search for Repository Configurations based on internal or external url
     """
-    content = search_repository_configuration_raw(url, page_size, sort)
+    content = search_repository_configuration_raw(url, page_size, page_index, sort)
     if content:
         return utils.format_json_list(content)
 
-def search_repository_configuration_raw(url, page_size=10, sort=""):
+def search_repository_configuration_raw(url, page_size=10, page_index=0, sort=""):
     """
     Search for Repository Configurations based on internal or external url
     """
-    response = utils.checked_api_call(repos_api, 'search', page_size=page_size, sort=sort, search=url)
+    response = utils.checked_api_call(repos_api, 'search', page_size=page_size, page_index=page_index, sort=sort, search=url)
     if response:
         return response.content
 
 @arg("url", help="Url to search for.")
 @arg("-p", "--page-size", help="Limit the amount of repository configurations returned", type=int)
+@arg("--page-index", help="Select the index of page", type=int)
 @arg("-s", "--sort", help="Sorting RSQL")
-def match_repository_configuration(url, page_size=10, sort=""):
+def match_repository_configuration(url, page_size=10, page_index=0, sort=""):
     """
     Search for Repository Configurations based on internal or external url with exact match
     """
-    content = match_repository_configuration_raw(url, page_size, sort)
+    content = match_repository_configuration_raw(url, page_size, page_index, sort)
     if content:
         return utils.format_json_list(content)
 
 
-def match_repository_configuration_raw(url, page_size=10, sort=""):
+def match_repository_configuration_raw(url, page_size=10, page_index=0, sort=""):
     """
     Search for Repository Configurations based on internal or external url with exact match
     """
-    response = utils.checked_api_call(repos_api, 'match', page_size=page_size, sort=sort, search=url)
+    response = utils.checked_api_call(repos_api, 'match', page_size=page_size, page_index=page_index, sort=sort, search=url)
     if response:
         return response.content

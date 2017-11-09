@@ -11,12 +11,13 @@ running_api = RunningbuildrecordsApi(uc.user.get_api_client())
 
 
 @arg("-p", "--page-size", help="Limit the amount of BuildRecords returned")
+@arg("--page-index", help="Select the index of page", type=int)
 @arg("-s", "--sort", help="Sorting RSQL")
-def list_running_builds(page_size=200, sort=""):
+def list_running_builds(page_size=200, page_index=0, sort=""):
     """
     List all RunningBuilds
     """
-    response = utils.checked_api_call(running_api, 'get_all', page_size=page_size, sort=sort)
+    response = utils.checked_api_call(running_api, 'get_all', page_size=page_size, page_index=page_index, sort=sort)
     if response:
         return utils.format_json_list(response.content)
 

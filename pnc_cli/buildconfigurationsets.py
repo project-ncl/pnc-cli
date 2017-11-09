@@ -23,13 +23,14 @@ def _create_build_config_set_object(**kwargs):
 
 
 @arg("-p", "--page-size", help="Limit the amount of build records returned", type=int)
+@arg("--page-index", help="Select the index of page", type=int)
 @arg("-s", "--sort", help="Sorting RSQL")
 @arg("-q", help="RSQL query")
-def list_build_configuration_sets(page_size=200, sort="", q=""):
+def list_build_configuration_sets(page_size=200, page_index=0, sort="", q=""):
     """
     List all build configurtion sets
     """
-    response = utils.checked_api_call(sets_api, 'get_all', page_size=page_size, sort=sort, q=q)
+    response = utils.checked_api_call(sets_api, 'get_all', page_size=page_size, page_index=page_index, sort=sort, q=q)
     if response:
         return utils.format_json_list(response.content)
 
@@ -132,14 +133,15 @@ def build_set(id=None, name=None, force=False):
 @arg("-i", "--id", help="ID of the BuildConfigurationSet to build.", type=types.existing_bc_set_id)
 @arg("-n", "--name", help="Name of the BuildConfigurationSet to build.", type=types.existing_bc_set_name)
 @arg("-p", "--page-size", help="Limit the amount of build records returned", type=int)
+@arg("--page-index", help="Select the index of page", type=int)
 @arg("-s", "--sort", help="Sorting RSQL")
 @arg("-q", help="RSQL query")
-def list_build_configurations_for_set(id=None, name=None, page_size=200, sort="", q=""):
+def list_build_configurations_for_set(id=None, name=None, page_size=200, page_index=0, sort="", q=""):
     """
     List all build configurations in a given BuildConfigurationSet.
     """
     found_id = common.set_id(sets_api, id, name)
-    response = utils.checked_api_call(sets_api, 'get_configurations', id=found_id, page_size=page_size, sort=sort, q=q)
+    response = utils.checked_api_call(sets_api, 'get_configurations', id=found_id, page_size=page_size, page_index=page_index, sort=sort, q=q)
     if response:
         return utils.format_json_list(response.content)
 
@@ -188,14 +190,15 @@ def remove_build_configuration_from_set(set_id=None, set_name=None, config_id=No
 @arg("-i", "--id", help="ID of the BuildConfigurationSet", type=types.existing_bc_set_id)
 @arg("-n", "--name", help="Name of the BuildConfigurationSet", type=types.existing_bc_set_name)
 @arg("-p", "--page-size", help="Limit the amount of build records returned", type=int)
+@arg("--page-index", help="Select the index of page", type=int)
 @arg("-s", "--sort", help="Sorting RSQL")
 @arg("-q", help="RSQL query")
-def list_build_records_for_set(id=None, name=None, page_size=200, sort="", q=""):
+def list_build_records_for_set(id=None, name=None, page_size=200, page_index=0, sort="", q=""):
     """
     List all build records for a BuildConfigurationSet
     """
     found_id = common.set_id(sets_api, id, name)
-    response = utils.checked_api_call(sets_api, 'get_build_records', id=found_id, page_size=page_size, sort=sort, q=q)
+    response = utils.checked_api_call(sets_api, 'get_build_records', id=found_id, page_size=page_size, page_index=page_index, sort=sort, q=q)
     if response:
         return utils.format_json_list(response.content)
 
@@ -203,14 +206,15 @@ def list_build_records_for_set(id=None, name=None, page_size=200, sort="", q="")
 @arg("-i", "--id", help="ID of the BuildConfigurationSet", type=types.existing_bc_set_id)
 @arg("-n", "--name", help="Name of the BuildConfigurationSet", type=types.existing_bc_set_name)
 @arg("-p", "--page-size", help="Limit the amount of build records returned", type=int)
+@arg("--page-index", help="Select the index of page", type=int)
 @arg("-s", "--sort", help="Sorting RSQL")
 @arg("-q", help="RSQL query")
-def list_build_set_records(id=None, name=None, page_size=200, sort="", q=""):
+def list_build_set_records(id=None, name=None, page_size=200, page_index=0, sort="", q=""):
     """
     List all build set records for a BuildConfigurationSet
     """
     found_id = common.set_id(sets_api, id, name)
-    response = utils.checked_api_call(sets_api, 'get_all_build_config_set_records', id=found_id, page_size=page_size, sort=sort, q=q)
+    response = utils.checked_api_call(sets_api, 'get_all_build_config_set_records', id=found_id, page_size=page_size, page_index=page_index, sort=sort, q=q)
     if response:
         return utils.format_json_list(response.content)
 

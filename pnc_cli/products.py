@@ -73,37 +73,39 @@ def get_product(id=None, name=None):
         return utils.format_json(response.content)
 
 
-def list_versions_for_product_raw(id=None, name=None, page_size=200, sort='', q=''):
+def list_versions_for_product_raw(id=None, name=None, page_size=200, page_index=0, sort='', q=''):
     """
     List all ProductVersions for a given Product
     """
     prod_id = common.set_id(products_api, id, name)
     response = utils.checked_api_call(
-        products_api, 'get_product_versions', id=prod_id, page_size=page_size, sort=sort, q=q)
+        products_api, 'get_product_versions', id=prod_id, page_size=page_size, page_index=page_index, sort=sort, q=q)
     if response:
         return response.content
 
 @arg("-i", "--id", help="ID of the Product to retrieve versions from", type=types.existing_product_id)
 @arg("-n", "--name", help="Name of the Product to retrieve versions from", type=types.existing_product_name)
 @arg("-p", "--page-size", help="Limit the amount of Product Versions returned", type=int)
+@arg("--page-index", help="Select the index of page", type=int)
 @arg("-s", "--sort", help="Sorting RSQL")
 @arg("-q", help="RSQL query")
-def list_versions_for_product(id=None, name=None, page_size=200, sort='', q=''):
+def list_versions_for_product(id=None, name=None, page_size=200, page_index=0, sort='', q=''):
     """
     List all ProductVersions for a given Product
     """
-    content = list_versions_for_product_raw(id, name, page_size, sort, q)
+    content = list_versions_for_product_raw(id, name, page_size, page_index, sort, q)
     if content:
         return utils.format_json_list(content)
 
 
 @arg("-p", "--page-size", help="Limit the amount of Products returned", type=int)
+@arg("--page-index", help="Select the index of page", type=int)
 @arg("-s", "--sort", help="Sorting RSQL")
 @arg("-q", help="RSQL query")
-def list_products(page_size=200, sort="", q=""):
+def list_products(page_size=200, page_index=0, sort="", q=""):
     """
     List all Products
     """
-    response = utils.checked_api_call(products_api, 'get_all', page_size=page_size, q=q, sort=sort)
+    response = utils.checked_api_call(products_api, 'get_all', page_size=page_size, page_index=page_index, q=q, sort=sort)
     if response:
         return utils.format_json_list(response.content)

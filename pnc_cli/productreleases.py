@@ -21,13 +21,14 @@ def create_product_release_object(**kwargs):
 
 
 @arg("-p", "--page-size", help="Limit the amount of ProductReleases returned", type=int)
+@arg("--page-index", help="Select the index of page", type=int)
 @arg("-s", "--sort", help="Sorting RSQL")
 @arg("-q", help="RSQL query")
-def list_product_releases(page_size=200, sort="", q=""):
+def list_product_releases(page_size=200, page_index=0, sort="", q=""):
     """
     List all ProductReleases
     """
-    response = utils.checked_api_call(releases_api, 'get_all', page_size=page_size, sort=sort, q=q)
+    response = utils.checked_api_call(releases_api, 'get_all', page_size=page_size, page_index=page_index, sort=sort, q=q)
     if response:
         return utils.format_json_list(response.content)
 
