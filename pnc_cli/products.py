@@ -28,13 +28,18 @@ def create_product_object(**kwargs):
 @arg("-pvids", "--product-version-ids", type=types.existing_product_version, nargs='+',
      help="Space separated list of associated ProductVersion ids.")
 def create_product(name, abbreviation, **kwargs):
+    data = create_product_raw(name, abbreviation, **kwargs)
+    if data:
+        return utils.format_json(data)
+
+def create_product_raw(name, abbreviation, **kwargs):
     """
     Create a new Product
     """
     product = create_product_object(name=name, abbreviation=abbreviation, **kwargs)
     response = utils.checked_api_call(products_api, 'create_new', body=product)
     if response:
-        return utils.format_json(response.content)
+        return response.content
 
 
 @arg("product-id", help="ID of the Product to update", type=types.existing_product_id)
