@@ -17,7 +17,7 @@ from test import testutils
 @pytest.fixture(scope='module')
 def new_product():
     randname = testutils.gen_random_name()
-    product = products.create_product(randname + "-product",
+    product = products.create_product_raw(randname + "-product",
                                       randname,
                                       description="PNC CLI: test product")
     return product
@@ -25,7 +25,7 @@ def new_product():
 
 @pytest.fixture(scope='module')
 def new_project(request):
-    project = projects.create_project(name=testutils.gen_random_name() + '-project',
+    project = projects.create_project_raw(name=testutils.gen_random_name() + '-project',
                                       description="PNC CLI: test project")
 
     def teardown():
@@ -75,7 +75,7 @@ def create_config(request, new_project, new_version, project_number):
         repo_url = 'git+ssh://user-pnc-gerrit@pnc-gerrit.pnc.dev.eng.bos.redhat.com:29418/productization/github.com/pnc-simple-test-project'+ending+'.git'
 
     # detect an appropriate environment
-    available_environments = environments.list_environments()
+    available_environments = environments.list_environments_raw()
 
     for x in available_environments:
         # set the env_id to one of the environments. This allows us to set
@@ -89,14 +89,15 @@ def create_config(request, new_project, new_version, project_number):
 
 
     bc_name = testutils.gen_random_name() + '-config'
-    created_bc = buildconfigurations.create_build_configuration(
+    created_bc = buildconfigurations.create_build_configuration_raw(
         name=bc_name,
         project=new_project.id,
         environment=env_id,
         build_script='mvn deploy',
         product_version_id=new_version.id,
         scm_repo_url=repo_url,
-        scm_revision='master')
+        scm_revision='master',
+        repository_configuration=1)
 
     def teardown():
         buildconfigurations.delete_build_configuration(id=created_bc.id)
@@ -106,7 +107,7 @@ def create_config(request, new_project, new_version, project_number):
 
 @pytest.fixture(scope='module')
 def new_version(new_product):
-    version = productversions.create_product_version(
+    version = productversions.create_product_version_raw(
         product_id=new_product.id,
         version=get_unique_version(new_product.id))
     return version
