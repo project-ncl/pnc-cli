@@ -86,6 +86,7 @@ def delete_environment(id=None, name=None):
     response = utils.checked_api_call(envs_api, 'delete', id=found_id)
     return response
 
+
 def get_environment_raw(id=None, name=None):
     """
     Get a specific Environment by name or ID
@@ -93,6 +94,7 @@ def get_environment_raw(id=None, name=None):
     search_id = common.set_id(envs_api, id, name)
     response = utils.checked_api_call(envs_api, 'get_specific', id=search_id)
     return response.content
+
 
 @arg("-i", "--id", help="ID of the BuildEnvironment to retrieve.", type=types.existing_environment_id)
 @arg("-n", "--name", help="Name of the BuildEnvironment to retrieve.", type=types.existing_environment_name)
@@ -110,10 +112,16 @@ def get_environment(id=None, name=None):
 @arg("-s", "--sort", help="Sorting RSQL")
 @arg("-q", help="RSQL query")
 def list_environments(page_size=200, page_index=0, sort="", q=""):
+    data = list_environments_raw(page_size, page_index, sort, q)
+    if data:
+        return utils.format_json_list(data)
+
+
+def list_environments_raw(page_size=200, page_index=0, sort="", q=""):
     """
     List all Environments
     """
     response = utils.checked_api_call(envs_api, 'get_all', page_size=page_size, page_index=page_index, sort=sort, q=q)
     if response:
-        return utils.format_json_list(response.content)
+        return response.content
 
