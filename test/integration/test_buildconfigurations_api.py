@@ -161,7 +161,7 @@ def test_get_build_records_invalid_param():
 
 
 def test_get_build_records():
-    bcs = buildconfigurations.list_build_configurations()
+    bcs = buildconfigurations.list_build_configurations_raw()
     response = configs_api.get_build_records(id=bcs[1].id, page_index=0, page_size=1000000, sort='', q='').content
     assert response is not None
 
@@ -175,7 +175,7 @@ def test_get_latest_build_record_invalid_param():
 
 
 def test_get_latest_build_record():
-    bcs = buildconfigurations.list_build_configurations()
+    bcs = buildconfigurations.list_build_configurations_raw()
     response = configs_api.get_latest_build_record(id=bcs[1].id).content
     assert response is not None
 
@@ -245,9 +245,10 @@ def test_dependency_operations(new_config):
         repo_url = 'git+ssh://user-pnc-gerrit@pnc-gerrit.pnc.dev.eng.bos.redhat.com:29418/productization/github.com/pnc-simple-test-project.git'
 
     depname = testutils.gen_random_name()
-    dep = buildconfigurations.create_build_configuration(name=depname, project=new_config.project.id, environment=new_config.environment.id,
+    dep = buildconfigurations.create_build_configuration_raw(name=depname, project=new_config.project.id, environment=new_config.environment.id,
                                                          scm_repo_url=repo_url,
-                                                         scm_revision='master')
+                                                         scm_revision='master',
+                                                         repository_configuration=1)
     configs_api.add_dependency(id=new_config.id, body=dep)
     dependency_ids = [dep.id for dep in
                       configs_api.get_dependencies(id=new_config.id, page_index=0, page_size=1000000, sort='',
@@ -293,7 +294,7 @@ def test_product_version_operations(new_product, new_config):
     randversion = testutils.gen_random_version()
 
     # create a test ProductVersion
-    version_rest = productversions.create_product_version(product_id=new_product.id, version=randversion)
+    version_rest = productversions.create_product_version_raw(product_id=new_product.id, version=randversion)
 
     # add_product_version
     configs_api.add_product_version(id=new_config.id, body=version_rest)

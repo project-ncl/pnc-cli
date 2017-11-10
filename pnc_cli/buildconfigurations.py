@@ -39,6 +39,7 @@ def get_build_configuration_id_by_name(name):
         return None
     return response[0].id
 
+
 def get_build_configuration_by_name(name):
     """
     Returns the build configuration matching the name
@@ -153,7 +154,7 @@ def delete_build_configuration(id=None, name=None):
     # ensure that this build configuration is not a dependency of any other build configuration.
     # list_build_configurations is an insufficient check because eventually there will be too many entities to check them all.
     # a better REST method for dependency checking is needed
-    for config in list_build_configurations(page_size=1000000000):
+    for config in list_build_configurations_raw(page_size=1000000000):
         dep_ids = [str(val) for val in config.dependency_ids]
         if dep_ids is not None and str(to_delete_id) in dep_ids:
             raise CommandError(
@@ -178,6 +179,12 @@ def delete_build_configuration(id=None, name=None):
      help="List of BuildConfiguration IDs that are dependencies of this BuildConfiguration.")
 # @arg("-bcsid", "--")
 def create_build_configuration(**kwargs):
+    data = create_build_configuration_raw(**kwargs)
+    if data:
+        return utils.format_json(data)
+
+
+def create_build_configuration_raw(**kwargs):
     """
     Create a new BuildConfiguration. BuildConfigurations represent the settings and configuration required to run a build of a specific version of the associated Project's source code.
     If a ProductVersion ID is provided, the BuildConfiguration will have access to artifacts which were produced for that version, but may not have been released yet.
@@ -196,7 +203,7 @@ def create_build_configuration(**kwargs):
     response = utils.checked_api_call(
         configs_api, 'create_new', body=build_configuration)
     if response:
-        return utils.format_json(response.content)
+        return response.content
 
 
 @arg("-i", "--id", help="ID of the Product to list BuildConfigurations for.", type=types.existing_product_id)
@@ -210,7 +217,8 @@ def list_build_configurations_for_product(id=None, name=None, page_size=200, pag
     List all BuildConfigurations associated with the given Product.
     """
     found_id = common.set_id(products_api, id, name)
-    response = utils.checked_api_call(configs_api, 'get_all_by_product_id', product_id=found_id, page_size=page_size, page_index=page_index,
+    response = utils.checked_api_call(configs_api, 'get_all_by_product_id', product_id=found_id, page_size=page_size,
+                                      page_index=page_index,
                                       sort=sort, q=q)
     if response:
         return utils.format_json_list(response.content)
@@ -227,7 +235,8 @@ def list_build_configurations_for_project(id=None, name=None, page_size=200, pag
     List all BuildConfigurations associated with the given Project.
     """
     found_id = common.set_id(projects_api, id, name)
-    response = utils.checked_api_call(configs_api, 'get_all_by_project_id', project_id=found_id, page_size=page_size, page_index=page_index,
+    response = utils.checked_api_call(configs_api, 'get_all_by_project_id', project_id=found_id, page_size=page_size,
+                                      page_index=page_index,
                                       sort=sort, q=q)
     if response:
         return utils.format_json_list(response.content)
@@ -260,7 +269,8 @@ def list_build_configurations_for_product_version(product_id, version_id, page_s
 @arg("-q", help="RSQL query")
 def list_dependencies(id=None, name=None, page_size=200, page_index=0, sort="", q=""):
     found_id = common.set_id(configs_api, id, name)
-    response = utils.checked_api_call(configs_api, 'get_dependencies', id=found_id, page_size=page_size, page_index=page_index, sort=sort, q=q)
+    response = utils.checked_api_call(configs_api, 'get_dependencies', id=found_id, page_size=page_size,
+                                      page_index=page_index, sort=sort, q=q)
     if response:
         return utils.format_json_list(response.content)
 
@@ -313,7 +323,8 @@ def list_product_versions_for_build_configuration(id=None, name=None, page_size=
     List all ProductVersions associated with a BuildConfiguration
     """
     found_id = common.set_id(configs_api, id, name)
-    response = utils.checked_api_call(configs_api, 'get_product_versions', id=found_id, page_size=page_size, page_index=page_index, sort=sort,
+    response = utils.checked_api_call(configs_api, 'get_product_versions', id=found_id, page_size=page_size,
+                                      page_index=page_index, sort=sort,
                                       q=q)
     if response:
         return utils.format_json_list(response.content)
@@ -360,7 +371,8 @@ def list_revisions_of_build_configuration(id=None, name=None, page_size=200, pag
     List audited revisions of a BuildConfiguration
     """
     found_id = common.set_id(configs_api, id, name)
-    response = utils.checked_api_call(configs_api, 'get_revisions', id=found_id, page_size=page_size, page_index=page_index, sort=sort)
+    response = utils.checked_api_call(configs_api, 'get_revisions', id=found_id, page_size=page_size,
+                                      page_index=page_index, sort=sort)
     if response:
         return utils.format_json_list(response.content)
 
@@ -383,9 +395,16 @@ def get_revision_of_build_configuration(id=None, name=None, revision_id=None):
 @arg("-s", "--sort", help="Sorting RSQL")
 @arg("-q", help="RSQL query")
 def list_build_configurations(page_size=200, page_index=0, sort="", q=""):
+    data = list_build_configurations_raw(page_size, page_index, sort, q)
+    if data:
+        return utils.format_json_list(data)
+
+
+def list_build_configurations_raw(page_size=200, page_index=0, sort="", q=""):
     """
     List all BuildConfigurations
     """
-    response = utils.checked_api_call(configs_api, 'get_all', page_size=page_size, page_index=page_index, sort=sort, q=q)
+    response = utils.checked_api_call(configs_api, 'get_all', page_size=page_size, page_index=page_index, sort=sort,
+                                      q=q)
     if response:
-        return utils.format_json_list(response.content)
+        return response.content
