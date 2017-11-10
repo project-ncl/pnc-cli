@@ -87,7 +87,7 @@ def test_get_configurations_invalid_param():
 
 def test_get_configurations(new_config, new_set):
     sets_api.add_configuration(id=new_set.id, body=new_config)
-    set_configs = sets_api.get_configurations(id=new_set.id)
+    set_configs = sets_api.get_configurations(id=new_set.id).content
     assert set_configs is not None
 
 
