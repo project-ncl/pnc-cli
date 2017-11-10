@@ -39,7 +39,8 @@ def list_product_versions(page_size=200, page_index=0, sort="", q=""):
     """
     List all ProductVersions
     """
-    response = utils.checked_api_call(versions_api, 'get_all', page_size=page_size, page_index=page_index, sort=sort, q=q)
+    response = utils.checked_api_call(versions_api, 'get_all', page_size=page_size, page_index=page_index, sort=sort,
+                                      q=q)
     if response:
         return utils.format_json_list(response.content)
 
@@ -55,6 +56,12 @@ def list_product_versions(page_size=200, page_index=0, sort="", q=""):
 @arg("-bc", "--build-configuration-set-ids", type=types.existing_bc_set_id, nargs="+",
      help="List of build configuration set IDs to associate with the new version")
 def create_product_version(product_id, version, **kwargs):
+    data = create_product_version_raw(product_id, version, kwargs)
+    if data:
+        return utils.format_json(data)
+
+
+def create_product_version_raw(product_id, version, **kwargs):
     """
     Create a new ProductVersion.
     Each ProductVersion represents a supported product release stream, which includes milestones and releases typically associated with a single major.minor version of a Product.
@@ -74,7 +81,7 @@ def create_product_version(product_id, version, **kwargs):
     response = utils.checked_api_call(versions_api, 'create_new_product_version',
                                       body=product_version)
     if response:
-        return utils.format_json(response.content)
+        return response.content
 
 
 @arg("id", help="ID of the ProductVersion to retrieve", type=types.existing_product_version)
@@ -86,11 +93,11 @@ def get_product_version(id):
     if content:
         return utils.format_json(content)
 
+
 def get_product_version_raw(id):
     response = utils.checked_api_call(versions_api, 'get_specific', id=id)
     if response:
         return response.content
-
 
 
 # TODO: how should constraints be defined? Can a new productId be specified?
