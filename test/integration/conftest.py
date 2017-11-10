@@ -37,11 +37,11 @@ def new_project(request):
 
 @pytest.fixture(scope='function')
 def new_set(request):
-    set = buildconfigurationsets.create_build_configuration_set(name=testutils.gen_random_name() + "-set",
+    set = buildconfigurationsets.create_build_configuration_set_raw(name=testutils.gen_random_name() + "-set",
                                                                 product_version_id=1)
 
     def teardown():
-        buildconfigurationsets.delete_build_configuration_set(id=set.id)
+        buildconfigurationsets.delete_build_configuration_set_raw(id=set.id)
 
     request.addfinalizer(teardown)
     return set
