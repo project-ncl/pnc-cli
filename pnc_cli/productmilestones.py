@@ -27,7 +27,7 @@ def check_date_order(start_date, end_date):
 
 
 def get_product_version_from_milestone(milestone_id):
-    return get_milestone(milestone_id).product_version_id
+    return get_milestone_raw(milestone_id).product_version_id
 
 
 def unique_version_value(parent_product_version_id, version):
@@ -62,6 +62,11 @@ def create_milestone(**kwargs):
     """
     Create a new ProductMilestone
     """
+    data = create_milestone_raw(**kwargs)
+    if data:
+        return utils.format_json(data)
+
+def create_milestone_raw(**kwargs):
     check_date_order(kwargs.get('starting_date'), kwargs.get('planned_end_date'))
 
     base_version = str(productversions_api.get_specific(
@@ -76,7 +81,7 @@ def create_milestone(**kwargs):
         'create_new',
         body=created_milestone)
     if response:
-        return utils.format_json(response.content)
+        return response.content
 
 
 @arg("id", help="ProductVersion ID to retrieve milestones for.", type=types.existing_product_version)
@@ -94,8 +99,13 @@ def list_milestones_for_version(id):
 
 @arg("id", help="ProductMilestone ID to retrieve.", type=types.existing_product_milestone)
 def get_milestone(id):
+    data = get_milestone_raw(id)
+    if data:
+        return utils.format_json(data)
+
+def get_milestone_raw(id):
     response = utils.checked_api_call(milestones_api, 'get_specific', id=id)
-    return utils.format_json(response.content)
+    return response.content
 
 
 @arg("id", help="ProductMilestone ID to update.", type=types.existing_product_milestone)

@@ -59,7 +59,12 @@ def create_release(**kwargs):
     ProductMilestone: 1.0.0.CR2
     ProductRelease: 1.0.0.GA
     """
-    # gotta find a way to avoid this situation
+    data = create_release_raw(**kwargs)
+    if data:
+        return utils.format_json(data)
+
+
+def create_release_raw(**kwargs):
     product_version = str(productmilestones.get_product_version_from_milestone(kwargs.get('product_milestone_id')))
     base_version = productversions_api.get_specific(
         id=product_version).content.version
@@ -68,7 +73,7 @@ def create_release(**kwargs):
     response = utils.checked_api_call(
         releases_api, 'create_new', body=created_release)
     if response:
-        return utils.format_json(response.content)
+        return response.content
 
 
 @arg("id", help="ProductVersion ID to retrieve releases for.", type=types.existing_product_version)

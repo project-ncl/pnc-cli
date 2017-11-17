@@ -115,7 +115,7 @@ def new_version(new_product):
 
 def get_unique_version(product_id):
     rand_version = testutils.gen_random_version()
-    existing = products.list_versions_for_product(id=product_id, page_size=100000)
+    existing = products.list_versions_for_product_raw(id=product_id, page_size=100000)
     while existing is not None and rand_version in [x.version for x in existing]:
         rand_version = testutils.gen_random_version()
     return rand_version
@@ -125,7 +125,7 @@ def get_unique_version(product_id):
 def new_milestone(new_version):
     starting = '2015-01-01'
     ending = '2016-01-01'
-    milestone = productmilestones.create_milestone(
+    milestone = productmilestones.create_milestone_raw(
         version='1.build3',
         starting_date=starting,
         planned_end_date=ending,
@@ -137,7 +137,7 @@ def new_milestone(new_version):
 @pytest.fixture(scope='module')
 def new_release(new_milestone):
     release_time = '2016-01-01'
-    release = productreleases.create_release(
+    release = productreleases.create_release_raw(
         version="1.DR1",
         release_date=release_time,
         download_url="pnc-cli-test-url",
