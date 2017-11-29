@@ -1,6 +1,7 @@
 from argh import arg
 from argh.exceptions import CommandError
 
+import ast
 import pnc_cli.common as common
 import pnc_cli.cli_types as types
 from pnc_cli import swagger_client
@@ -101,6 +102,7 @@ def get_build_configuration(id=None, name=None):
 @arg("-pvi", "--product-version-id", help="Associated ProductVersion ID.")
 @arg("-srev", "--scm-revision", help="Revision of the sources in scm-url for this BuildConfiguration.")
 @arg("-bs", "--build-script", help="Script to execute for the BuildConfiguration.")
+@arg("-gp", "--generic-parameters", help="Set of arbitrary additional key=value pairs, such as CUSTOM_PME_PARAMETERS")
 def update_build_configuration(id, **kwargs):
     """
     Update an existing BuildConfiguration with new information
@@ -130,6 +132,9 @@ def update_build_configuration(id, **kwargs):
         env_rest = common.get_entity(envs_api, env_id)
         update_env = {'environment': env_rest}
         kwargs.update(update_env)
+
+    if kwargs.get("generic_parameters"):
+        kwargs["generic_parameters"] = ast.literal_eval(kwargs.get("generic_parameters"))
 
     for key, value in kwargs.items():
         if value is not None:
