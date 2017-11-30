@@ -41,7 +41,7 @@ class BuildConfigurationSetRecordPage(object):
             'page_index': 'int',
             'page_size': 'int',
             'total_pages': 'int',
-            'content': 'list[BuildConfigSetRecord]'
+            'content': 'list[BuildConfigSetRecordRest]'
         }
 
         self.attribute_map = {
@@ -129,7 +129,7 @@ class BuildConfigurationSetRecordPage(object):
 
 
         :return: The content of this BuildConfigurationSetRecordPage.
-        :rtype: list[BuildConfigSetRecord]
+        :rtype: list[BuildConfigSetRecordRest]
         """
         return self._content
 
@@ -140,7 +140,7 @@ class BuildConfigurationSetRecordPage(object):
 
 
         :param content: The content of this BuildConfigurationSetRecordPage.
-        :type: list[BuildConfigSetRecord]
+        :type: list[BuildConfigSetRecordRest]
         """
         self._content = content
 
