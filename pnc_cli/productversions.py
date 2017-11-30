@@ -56,7 +56,7 @@ def list_product_versions(page_size=200, page_index=0, sort="", q=""):
 @arg("-bc", "--build-configuration-set-ids", type=types.existing_bc_set_id, nargs="+",
      help="List of build configuration set IDs to associate with the new version")
 def create_product_version(product_id, version, **kwargs):
-    data = create_product_version_raw(product_id, version, kwargs)
+    data = create_product_version_raw(product_id, version, **kwargs)
     if data:
         return utils.format_json(data)
 
