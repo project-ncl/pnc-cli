@@ -25,7 +25,7 @@ def create_build_conf_object(**kwargs):
 @arg("build_environment_id", help="ID of the Environment for the new BuildConfiguration.",
      type=types.existing_environment_id)
 @arg("build_script", help="Script to execute for the BuildConfiguration.")
-@arg("repository", type=types.valid_url, help="Repository URL to the sources of the BuildConfiguration.")
+@arg("repository", help="Repository URL to the sources of the BuildConfiguration.")
 @arg("revision", help="Revision of the repository sources for this BuildConfiguration.")
 @arg("-d", "--description", help="Description of the new build configuration.")
 @arg("-pvi", "--product-version-id", type=types.existing_product_version, help="Associated ProductVersion ID.")

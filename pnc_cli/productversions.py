@@ -55,6 +55,12 @@ def list_product_versions(page_size=200, page_index=0, sort="", q=""):
 @arg("-bc", "--build-configuration-set-ids", type=types.existing_bc_set_id, nargs="+",
      help="List of build configuration set IDs to associate with the new version")
 def create_product_version(product_id, version, **kwargs):
+    data = create_product_version_raw(product_id, version, **kwargs)
+    if data:
+        return utils.format_json(data)
+
+
+def create_product_version_raw(product_id, version, **kwargs):
     """
     Create a new ProductVersion.
     Each ProductVersion represents a supported product release stream, which includes milestones and releases typically associated with a single major.minor version of a Product.
@@ -85,6 +91,7 @@ def get_product_version(id):
     content = get_product_version_raw(id)
     if content:
         return utils.format_json(content)
+
 
 def get_product_version_raw(id):
     response = utils.checked_api_call(versions_api, 'get_specific', id=id)
