@@ -22,7 +22,7 @@ def get_repository_configuration(id):
         return response.content
 
 
-@arg("id", help="ID of the RepositoryConfiguration to update.", type=types.existing_rc_id)
+@arg("id", help="ID of the RepositoryConfiguration to update.")
 @arg("-e", "--external-repository", help="URL to the external sources repository.", type=types.valid_url)
 @arg("-s", "--prebuild-sync", help="Pre-build source synchronization.", type=types.t_or_f)
 def update_repository_configuration(id, external_repository=None, prebuild_sync=None):
@@ -44,19 +44,20 @@ def update_repository_configuration(id, external_repository=None, prebuild_sync=
         logging.error("You cannot enable prebuild sync without external repository")
         return
 
-    response = utils.checked_api_call(repos_api, 'update', id=to_update_id, body=bc_to_update)
+    rc_to_update.pre_build_sync_enabled = new_sync
+    rc_to_update.external_url = new_external
+
+    response = utils.checked_api_call(repos_api, 'update', id=to_update_id, body=rc_to_update)
     if response:
         return response.content
 
-@arg("repository", help="URL to the internal sources repository.", type=types.valid_url)
+@arg("repository", help="URL to the internal sources repository.")
 @arg("-e", "--external-repository", help="URL to the external sources repository.", type=types.valid_url)
 @arg("-s", "--prebuild-sync", help="Pre-build source synchronization.", type=types.t_or_f)
 def create_repository_configuration(repository, external_repository=None, prebuild_sync=None):
     """
     Create a new RepositoryConfiguration.
     """
-
-    print("s: %s", prebuild_sync)
 
     if external_repository is None and prebuild_sync:
         logging.error("You cannot enable prebuild sync without external repository")
