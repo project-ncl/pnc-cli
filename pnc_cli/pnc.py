@@ -20,6 +20,7 @@ from pnc_cli import users
 from pnc_cli import archives
 import pnc_cli.user_config as uc
 from pnc_cli import makemead
+from pnc_cli import generate_repo
 
 
 
@@ -116,6 +117,7 @@ parser.add_commands([uc.login,
                      buildconfigsetrecords.list_records_for_build_config_set,
                      users.get_logged_user,
                      makemead.make_mead,
+                     generate_repo.generate_repo_list,
                      archives.generate_sources_zip])
 parser.autocomplete()
 
