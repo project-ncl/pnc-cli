@@ -11,6 +11,8 @@ from pnc_cli.swagger_client.apis.buildconfigurations_api import Buildconfigurati
 from pnc_cli.swagger_client.apis.buildconfigurationsets_api import BuildconfigurationsetsApi
 import pnc_cli.user_config as uc
 
+import sys
+
 sets_api = BuildconfigurationsetsApi(uc.user.get_api_client())
 configs_api = BuildconfigurationsApi(uc.user.get_api_client())
 
@@ -132,25 +134,42 @@ def delete_build_configuration_set(id=None, name=None):
         return utils.format_json(data)
 
 
-def build_set_raw(id=None, name=None, force = False):
+def build_set_raw(id=None, name=None,
+                  tempbuild=False, timestamp_alignment=False,
+                  force=False):
     """
     Start a build of the given BuildConfigurationSet
     """
+    print("temp_build: " + str(tempbuild))
+    print("timestamp_alignment: " + str(timestamp_alignment))
+    print("force: " + str(force))
+    if tempbuild is False and timestamp_alignment is True:
+        print("Error: You can only activate timestamp alignment with the temporary build flag!")
+        sys.exit(1)
+
     found_id = common.set_id(sets_api, id, name)
-    response = utils.checked_api_call(sets_api, 'build', id=found_id, force_rebuild=force)
+    response = utils.checked_api_call(sets_api, 'build', id=found_id,
+                                      temporary_build=tempbuild,
+                                      timestamp_alignment=timestamp_alignment,
+                                      force_rebuild=force)
     if response:
         return response.content
 
 
 @arg("-i", "--id", help="ID of the BuildConfigurationSet to build.", type=types.existing_bc_set_id)
 @arg("-n", "--name", help="Name of the BuildConfigurationSet to build.", type=types.existing_bc_set_name)
+@arg("--temporary-build", help="Temporary builds")
+@arg("--timestamp-alignment", help="Enable timestamp alignment for the temporary builds")
 @arg("-f", "--force", help="Force rebuild of all configurations")
-def build_set(id=None, name=None, force=False):
+def build_set(id=None, name=None,
+              temporary_build=False, timestamp_alignment=False,
+              force=False):
     """
     Start a build of the given BuildConfigurationSet
     """
-    content = build_set_raw(id, name, force)
-    if common:
+    content = build_set_raw(id, name,
+                            temporary_build, timestamp_alignment, force)
+    if content:
         return utils.format_json_list(content)
 
 

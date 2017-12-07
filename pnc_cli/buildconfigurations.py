@@ -14,6 +14,8 @@ from pnc_cli.swagger_client import ProductversionsApi
 from pnc_cli.swagger_client import ProjectsApi
 import pnc_cli.user_config as uc
 
+import sys
+
 projects_api = ProjectsApi(uc.user.get_api_client())
 configs_api = BuildconfigurationsApi(uc.user.get_api_client())
 repos_api = RepositoryconfigurationsApi(uc.user.get_api_client())
@@ -67,13 +69,33 @@ def config_id_exists(search_id):
 
 @arg("-i", "--id", help="ID of the BuildConfiguration to trigger.", type=types.existing_bc_id)
 @arg("-n", "--name", help="Name of the BuildConfiguration to trigger.", type=types.existing_bc_name)
-def build(id=None, name=None):
+@arg("--temporary-build", help="Temporary build")
+@arg("--timestamp-alignment", help="Enable timestamp alignment for temporary build")
+@arg("--no-build-dependencies", help="Don't build dependencies of this build configuration")
+@arg("--keep-pod-on-failure", help="Keep pod on failure")
+@arg("-f", "--force-rebuild", help="Force Rebuild")
+def build(id=None, name=None,
+          temporary_build=False, timestamp_alignment=False,
+          no_build_dependencies=False,
+          keep_pod_on_failure=False,
+          force_rebuild=False):
     """
     Trigger a BuildConfiguration by name or ID
     """
+    if temporary_build is False and timestamp_alignment is True:
+        print("Error: You can only activate timestamp alignment with the temporary build flag!")
+        sys.exit(1)
+
     trigger_id = common.set_id(configs_api, id, name)
 
-    response = utils.checked_api_call(configs_api, 'trigger', id=trigger_id)
+
+    response = utils.checked_api_call(configs_api, 'trigger',
+                                      id=trigger_id,
+                                      temporary_build=temporary_build,
+                                      timestamp_alignment=timestamp_alignment,
+                                      build_dependencies=not no_build_dependencies,
+                                      keep_pod_on_failure=keep_pod_on_failure,
+                                      force_rebuild=force_rebuild)
     if response:
         return response.content
 
