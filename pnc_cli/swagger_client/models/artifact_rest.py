@@ -41,7 +41,7 @@ class ArtifactRest(object):
             'id': 'int',
             'identifier': 'str',
             'artifact_quality': 'str',
-            'repo_type': 'str',
+            'target_repository': 'TargetRepositoryRest',
             'md5': 'str',
             'sha1': 'str',
             'sha256': 'str',
@@ -60,7 +60,7 @@ class ArtifactRest(object):
             'id': 'id',
             'identifier': 'identifier',
             'artifact_quality': 'artifactQuality',
-            'repo_type': 'repoType',
+            'target_repository': 'targetRepository',
             'md5': 'md5',
             'sha1': 'sha1',
             'sha256': 'sha256',
@@ -78,7 +78,7 @@ class ArtifactRest(object):
         self._id = None
         self._identifier = None
         self._artifact_quality = None
-        self._repo_type = None
+        self._target_repository = None
         self._md5 = None
         self._sha1 = None
         self._sha256 = None
@@ -156,7 +156,7 @@ class ArtifactRest(object):
         :param artifact_quality: The artifact_quality of this ArtifactRest.
         :type: str
         """
-        allowed_values = ["NEW", "VERIFIED", "TESTED", "DEPRECATED", "BLACKLISTED"]
+        allowed_values = ["NEW", "VERIFIED", "TESTED", "DEPRECATED", "BLACKLISTED", "TEMPORARY"]
         if artifact_quality not in allowed_values:
             raise ValueError(
                 "Invalid value for `artifact_quality`, must be one of {0}"
@@ -165,32 +165,26 @@ class ArtifactRest(object):
         self._artifact_quality = artifact_quality
 
     @property
-    def repo_type(self):
+    def target_repository(self):
         """
-        Gets the repo_type of this ArtifactRest.
+        Gets the target_repository of this ArtifactRest.
 
 
-        :return: The repo_type of this ArtifactRest.
-        :rtype: str
+        :return: The target_repository of this ArtifactRest.
+        :rtype: TargetRepositoryRest
         """
-        return self._repo_type
+        return self._target_repository
 
-    @repo_type.setter
-    def repo_type(self, repo_type):
+    @target_repository.setter
+    def target_repository(self, target_repository):
         """
-        Sets the repo_type of this ArtifactRest.
+        Sets the target_repository of this ArtifactRest.
 
 
-        :param repo_type: The repo_type of this ArtifactRest.
-        :type: str
+        :param target_repository: The target_repository of this ArtifactRest.
+        :type: TargetRepositoryRest
         """
-        allowed_values = ["MAVEN", "NPM", "COCOA_POD", "GENERIC_PROXY"]
-        if repo_type not in allowed_values:
-            raise ValueError(
-                "Invalid value for `repo_type`, must be one of {0}"
-                .format(allowed_values)
-            )
-        self._repo_type = repo_type
+        self._target_repository = target_repository
 
     @property
     def md5(self):

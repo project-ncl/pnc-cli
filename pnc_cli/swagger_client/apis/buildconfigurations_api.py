@@ -1832,9 +1832,11 @@ class BuildconfigurationsApi(object):
             for asynchronous request. (optional)
         :param int id: Build Configuration id (required)
         :param str callback_url: Optional Callback URL
-        :param str scope: Build scope: SINGLE, WITH_DEPENDENCIES, REBUILD.
-        :param bool keep_pod_alive_on_failure: Keep pod alive when the build fails
-        :param bool build_dependencies: Build the unbuilt dependencies
+        :param bool temporary_build: Is it a temporary build or a standard build?
+        :param bool force_rebuild: Should we force the rebuild?
+        :param bool build_dependencies: Should we build also dependencies of this BuildConfiguration?
+        :param bool keep_pod_on_failure: Should we keep the build container running, if the build fails?
+        :param bool timestamp_alignment: Should we add a timestamp during the alignment? Valid only for temporary builds.
         :return: BuildRecordSingleton
                  If the method is called asynchronously,
                  returns the request thread.
@@ -1843,7 +1845,7 @@ class BuildconfigurationsApi(object):
         if id is None:
             raise ValueError("Missing the required parameter `id` when calling `trigger`")
 
-        all_params = ['id', 'callback_url', 'scope', 'keep_pod_alive_on_failure', 'build_dependencies']
+        all_params = ['id', 'callback_url', 'temporary_build', 'force_rebuild', 'build_dependencies', 'keep_pod_on_failure', 'timestamp_alignment']
         all_params.append('callback')
 
         params = locals()
@@ -1866,12 +1868,16 @@ class BuildconfigurationsApi(object):
         query_params = {}
         if 'callback_url' in params:
             query_params['callbackUrl'] = params['callback_url']
-        if 'scope' in params:
-            query_params['scope'] = params['scope']
-        if 'keep_pod_alive_on_failure' in params:
-            query_params['keepPodAliveOnFailure'] = params['keep_pod_alive_on_failure']
+        if 'temporary_build' in params:
+            query_params['temporaryBuild'] = params['temporary_build']
+        if 'force_rebuild' in params:
+            query_params['forceRebuild'] = params['force_rebuild']
         if 'build_dependencies' in params:
             query_params['buildDependencies'] = params['build_dependencies']
+        if 'keep_pod_on_failure' in params:
+            query_params['keepPodOnFailure'] = params['keep_pod_on_failure']
+        if 'timestamp_alignment' in params:
+            query_params['timestampAlignment'] = params['timestamp_alignment']
 
         header_params = {}
 

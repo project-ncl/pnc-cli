@@ -47,7 +47,8 @@ class BuildConfigSetRecordRest(object):
             'user_id': 'int',
             'username': 'str',
             'product_version_id': 'int',
-            'build_record_ids': 'list[int]'
+            'build_record_ids': 'list[int]',
+            'temporary_build': 'bool'
         }
 
         self.attribute_map = {
@@ -60,7 +61,8 @@ class BuildConfigSetRecordRest(object):
             'user_id': 'userId',
             'username': 'username',
             'product_version_id': 'productVersionId',
-            'build_record_ids': 'buildRecordIds'
+            'build_record_ids': 'buildRecordIds',
+            'temporary_build': 'temporaryBuild'
         }
 
         self._id = None
@@ -73,6 +75,7 @@ class BuildConfigSetRecordRest(object):
         self._username = None
         self._product_version_id = None
         self._build_record_ids = None
+        self._temporary_build = None
 
     @property
     def id(self):
@@ -299,6 +302,28 @@ class BuildConfigSetRecordRest(object):
         :type: list[int]
         """
         self._build_record_ids = build_record_ids
+
+    @property
+    def temporary_build(self):
+        """
+        Gets the temporary_build of this BuildConfigSetRecordRest.
+
+
+        :return: The temporary_build of this BuildConfigSetRecordRest.
+        :rtype: bool
+        """
+        return self._temporary_build
+
+    @temporary_build.setter
+    def temporary_build(self, temporary_build):
+        """
+        Sets the temporary_build of this BuildConfigSetRecordRest.
+
+
+        :param temporary_build: The temporary_build of this BuildConfigSetRecordRest.
+        :type: bool
+        """
+        self._temporary_build = temporary_build
 
     def to_dict(self):
         """

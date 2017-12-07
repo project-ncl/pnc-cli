@@ -5,6 +5,7 @@ from .bpm_api import BpmApi
 from .buildconfigsetrecords_api import BuildconfigsetrecordsApi
 from .buildconfigurations_api import BuildconfigurationsApi
 from .buildconfigurationsets_api import BuildconfigurationsetsApi
+from .buildrecordpush_api import BuildrecordpushApi
 from .buildrecords_api import BuildrecordsApi
 from .builds_api import BuildsApi
 from .buildtasks_api import BuildtasksApi

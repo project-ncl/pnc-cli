@@ -143,7 +143,9 @@ class BuildconfigurationsetsApi(object):
             for asynchronous request. (optional)
         :param int id: Build Configuration Set id (required)
         :param str callback_url: Optional Callback URL
-        :param bool rebuild_all: Rebuild all dependencies
+        :param bool temporary_build: Is it a temporary build or a standard build?
+        :param bool force_rebuild: Should we force the rebuild of all build configurations?
+        :param bool timestamp_alignment: Should we add a timestamp during the alignment? Valid only for temporary builds.
         :return: BuildRecordPage
                  If the method is called asynchronously,
                  returns the request thread.
@@ -152,7 +154,7 @@ class BuildconfigurationsetsApi(object):
         if id is None:
             raise ValueError("Missing the required parameter `id` when calling `build`")
 
-        all_params = ['id', 'callback_url', 'rebuild_all']
+        all_params = ['id', 'callback_url', 'temporary_build', 'force_rebuild', 'timestamp_alignment']
         all_params.append('callback')
 
         params = locals()
@@ -175,8 +177,12 @@ class BuildconfigurationsetsApi(object):
         query_params = {}
         if 'callback_url' in params:
             query_params['callbackUrl'] = params['callback_url']
-        if 'rebuild_all' in params:
-            query_params['rebuildAll'] = params['rebuild_all']
+        if 'temporary_build' in params:
+            query_params['temporaryBuild'] = params['temporary_build']
+        if 'force_rebuild' in params:
+            query_params['forceRebuild'] = params['force_rebuild']
+        if 'timestamp_alignment' in params:
+            query_params['timestampAlignment'] = params['timestamp_alignment']
 
         header_params = {}
 

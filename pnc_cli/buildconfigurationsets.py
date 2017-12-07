@@ -137,7 +137,7 @@ def build_set_raw(id=None, name=None, force = False):
     Start a build of the given BuildConfigurationSet
     """
     found_id = common.set_id(sets_api, id, name)
-    response = utils.checked_api_call(sets_api, 'build', id=found_id, rebuild_all=force)
+    response = utils.checked_api_call(sets_api, 'build', id=found_id, force_rebuild=force)
     if response:
         return response.content
 

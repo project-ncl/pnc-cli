@@ -43,6 +43,7 @@ class BuildStatusChangedEventRest(object):
             'build_task_id': 'int',
             'user_id': 'int',
             'build_configuration_id': 'int',
+            'build_configuration_revision': 'int',
             'build_configuration_name': 'str',
             'build_start_time': 'datetime',
             'build_end_time': 'datetime'
@@ -54,6 +55,7 @@ class BuildStatusChangedEventRest(object):
             'build_task_id': 'buildTaskId',
             'user_id': 'userId',
             'build_configuration_id': 'buildConfigurationId',
+            'build_configuration_revision': 'buildConfigurationRevision',
             'build_configuration_name': 'buildConfigurationName',
             'build_start_time': 'buildStartTime',
             'build_end_time': 'buildEndTime'
@@ -64,6 +66,7 @@ class BuildStatusChangedEventRest(object):
         self._build_task_id = None
         self._user_id = None
         self._build_configuration_id = None
+        self._build_configuration_revision = None
         self._build_configuration_name = None
         self._build_start_time = None
         self._build_end_time = None
@@ -189,6 +192,28 @@ class BuildStatusChangedEventRest(object):
         :type: int
         """
         self._build_configuration_id = build_configuration_id
+
+    @property
+    def build_configuration_revision(self):
+        """
+        Gets the build_configuration_revision of this BuildStatusChangedEventRest.
+
+
+        :return: The build_configuration_revision of this BuildStatusChangedEventRest.
+        :rtype: int
+        """
+        return self._build_configuration_revision
+
+    @build_configuration_revision.setter
+    def build_configuration_revision(self, build_configuration_revision):
+        """
+        Sets the build_configuration_revision of this BuildStatusChangedEventRest.
+
+
+        :param build_configuration_revision: The build_configuration_revision of this BuildStatusChangedEventRest.
+        :type: int
+        """
+        self._build_configuration_revision = build_configuration_revision
 
     @property
     def build_configuration_name(self):

@@ -57,6 +57,7 @@ class BuildRecordRest(object):
             'live_logs_uri': 'str',
             'build_config_set_record_id': 'int',
             'build_content_id': 'str',
+            'temporary_build': 'bool',
             'product_milestone_id': 'int',
             'user': 'UserRest',
             'build_configuration_audited': 'BuildConfigurationAuditedRest',
@@ -84,6 +85,7 @@ class BuildRecordRest(object):
             'live_logs_uri': 'liveLogsUri',
             'build_config_set_record_id': 'buildConfigSetRecordId',
             'build_content_id': 'buildContentId',
+            'temporary_build': 'temporaryBuild',
             'product_milestone_id': 'productMilestoneId',
             'user': 'user',
             'build_configuration_audited': 'buildConfigurationAudited',
@@ -110,6 +112,7 @@ class BuildRecordRest(object):
         self._live_logs_uri = None
         self._build_config_set_record_id = None
         self._build_content_id = None
+        self._temporary_build = None
         self._product_milestone_id = None
         self._user = None
         self._build_configuration_audited = None
@@ -539,6 +542,28 @@ class BuildRecordRest(object):
         :type: str
         """
         self._build_content_id = build_content_id
+
+    @property
+    def temporary_build(self):
+        """
+        Gets the temporary_build of this BuildRecordRest.
+
+
+        :return: The temporary_build of this BuildRecordRest.
+        :rtype: bool
+        """
+        return self._temporary_build
+
+    @temporary_build.setter
+    def temporary_build(self, temporary_build):
+        """
+        Sets the temporary_build of this BuildRecordRest.
+
+
+        :param temporary_build: The temporary_build of this BuildRecordRest.
+        :type: bool
+        """
+        self._temporary_build = temporary_build
 
     @property
     def product_milestone_id(self):
