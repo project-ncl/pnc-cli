@@ -1,6 +1,7 @@
 import logging
 import os
 import re
+import sys
 import time
 from ConfigParser import Error
 from ConfigParser import NoSectionError
@@ -38,6 +39,11 @@ def make_mead(config=None, run_build=False, environment=1, sufix="", product_nam
     :param config: Make Mead config name
     :return:
     """
+    ret=make_mead_impl(config, run_build, environment, sufix, product_name, product_version, look_up_only)
+    if ret != 0:
+        sys.exit(ret)
+
+def make_mead_impl(config, run_build, environment, sufix, product_name, product_version, look_up_only):
     if not validate_input_parameters(config, product_name, product_version):
         return 1
 
