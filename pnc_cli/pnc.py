@@ -21,12 +21,27 @@ from pnc_cli import archives
 import pnc_cli.user_config as uc
 from pnc_cli import makemead
 from pnc_cli import generate_repo
+import argparse
+import logging
 
 
+class LoggerAction(argparse.Action):
+    def __init__(self, option_strings, dest, nargs=0, **kwargs):
+        super(LoggerAction, self).__init__(option_strings, dest, nargs=nargs, **kwargs)
 
+    def __call__(self, parser, namespace, values, option_string):
+        if option_string == "-v" or option_string == "--verbose":
+            logging.getLogger().setLevel(logging.INFO)
+        elif option_string == "--debug":
+            logging.getLogger().setLevel(0)
+        elif option_string == "-q" or option_string == "--quiet":
+            logging.getLogger().setLevel(logging.ERROR)
 
 
 parser = argh.ArghParser()
+parser.add_argument("--debug", action=LoggerAction, help="Print debug messages.")
+parser.add_argument("-v","--verbose", action=LoggerAction, help="Print info messages.")
+parser.add_argument("-q","--quiet", action=LoggerAction, help="Print only error messages.")
 parser.add_commands([uc.login,
                      products.create_product,
                      products.get_product,
