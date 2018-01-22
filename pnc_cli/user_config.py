@@ -1,3 +1,5 @@
+import logging
+
 from argh import arg
 import ConfigParser
 import atexit
@@ -122,9 +124,9 @@ class UserConfig():
                 reply = json.loads(r.content.decode('utf-8'))
                 return str(reply.get('access_token'))
             else:
-                print("Failed to retrieve client token:")
-                print(r)
-                print(r.content)
+                logging.error("Failed to retrieve client token:")
+                logging.error(r)
+                logging.error(r.content)
                 exit(1)
         else:
             if self.username and self.password:
@@ -139,19 +141,19 @@ class UserConfig():
                     reply = json.loads(r.content.decode('utf-8'))
                     return str(reply.get('access_token'))
                 else:
-                    print("Failed to retrieve token:")
-                    print(r)
-                    print(r.content)
+                    logging.error("Failed to retrieve token:")
+                    logging.error(r)
+                    logging.error(r.content)
                     exit(1)
             else:
-                print("No credentials. Authentication is not possible.")
+                logging.error("No credentials. Authentication is not possible.")
 
     def create_api_client(self):
         if self.token:
             return swagger_client.ApiClient(self.pnc_config.url, header_name='Authorization',
                                             header_value='Bearer ' + self.token)
         else:
-            print("No Keycloak token is present. Commands requiring authentication will fail.")
+            logging.error("No Keycloak token is present. Commands requiring authentication will fail.")
             return swagger_client.ApiClient(self.pnc_config.url)
 
     def get_api_client(self):

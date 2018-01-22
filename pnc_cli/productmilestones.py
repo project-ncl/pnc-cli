@@ -1,5 +1,6 @@
 import argparse
 import datetime
+import logging
 import time
 
 from argh import arg
@@ -157,11 +158,11 @@ def close_milestone(id, **kwargs):
 
     if kwargs.get('wait') == True:
         while latest_release.status == 'IN_PROGRESS':
-            print("Latest release for milestone is in progress, waiting till it finishes...")
+            logging.info("Latest release for milestone is in progress, waiting till it finishes...")
             time.sleep(60)
             latest_release = utils.checked_api_call(milestones_api, 'get_latest_release', id=id).content
 
-        print("Status of release for milestone: " + latest_release.status)
+        logging.error("Status of release for milestone: " + latest_release.status)
 
     if response:
         return utils.format_json(response.content)

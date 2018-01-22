@@ -5,7 +5,6 @@ import sys
 import time
 from ConfigParser import Error
 from ConfigParser import NoSectionError
-from pprint import pprint
 
 from argh import arg
 
@@ -51,17 +50,15 @@ def make_mead_impl(config, run_build, environment, sufix, product_name, product_
         config_reader = ConfigReader(config)
     except NoSectionError as e:
         logging.error('Missing config in %s (%r)', config, e)
-        print '-c false'
         return 1
     except Error, err:
         logging.error(err)
-        print '-c false'
         return 1
 
     ids = dict()
     (subarts, deps_dict) = config_reader.get_dependency_structure()
     packages = config_reader.get_packages_and_dependencies()
-    pprint(packages)
+    logging.debug(packages)
     logging.debug(subarts)
     logging.debug(deps_dict)
 
@@ -134,7 +131,7 @@ def make_mead_impl(config, run_build, environment, sufix, product_name, product_
         build_config = get_build_configuration_by_name(artifact_name)
         if subartifact in look_up_only_list:
             if build_config == None:
-                pprint("Look up of an existing Build Configuration failed. No build configuration with name " + artifact_name + " found.")
+                logging.warn("Look up of an existing Build Configuration failed. No build configuration with name " + artifact_name + " found.")
         else:
             if build_config == None:
                 logging.debug('No build config with name ' + artifact_name)
@@ -166,9 +163,10 @@ def make_mead_impl(config, run_build, environment, sufix, product_name, product_
     #Run build if requested
     if run_build:
         build_record = buildconfigurationsets.build_set_raw(id=bc_set.id)
-        pprint(build_record)
+        logging.info("Build started with id %d",build_record.id)
 
     return utils.format_json(bc_set)
+
 
 def lookup_product_version(product_name, product_version):
     try:
@@ -310,10 +308,10 @@ def create_build_configuration_with_repo(environment, bc_set, product_version_id
                                                    generic_parameters=get_generic_parameters(art_params))
     build_config = get_build_configuration_by_name(artifact_name)
     if build_config == None:
-        pprint("Creation of Build Configuration failed.")
+        logging.error("Creation of Build Configuration failed.")
         return None
 
-    pprint("Build Configuration " + artifact_name + " is created.")
+    logging.info("Build Configuration " + artifact_name + " is created.")
     return build_config
 
 def create_build_configuration_and_repo(environment, bc_set, product_version_id, art_params,
@@ -349,11 +347,11 @@ def create_build_configuration_and_repo(environment, bc_set, product_version_id,
             break
 
         if contains_event_type(bpm_task.content.events, error_event_types):
-            pprint("Creation of Build Configuration failed")
-            pprint(bpm_task.content)
+            logging.error("Creation of Build Configuration failed")
+            logging.error(bpm_task.content)
             return None
 
-        pprint("Waiting until Build Configuration " + artifact_name + " is created.")
+        logging.info("Waiting until Build Configuration " + artifact_name + " is created.")
         time.sleep(10)
 
 
@@ -362,10 +360,10 @@ def create_build_configuration_and_repo(environment, bc_set, product_version_id,
     #Success -> add BC to BCSet and return BC
     build_config = get_build_configuration_by_name(artifact_name)
     if build_config == None:
-        pprint("Creation of Build Configuration failed. Unfortunately the details were garbage collected on PNC side.")
+        logging.error("Creation of Build Configuration failed. Unfortunately the details were garbage collected on PNC side.")
         return None
 
-    pprint("Build Configuration " + artifact_name + " is created.")
+    logging.info("Build Configuration " + artifact_name + " is created.")
     return build_config
 
 

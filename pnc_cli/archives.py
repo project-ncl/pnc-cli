@@ -21,7 +21,7 @@ def generate_sources_zip(milestone_id=None, output=None):
     Generate a sources archive for given milestone id. 
     """
     if not is_input_valid(milestone_id, output):
-        print("invalid input")
+        logging.error("invalid input")
         return 1
     create_work_dir(output)
     download_sources_artifacts(milestone_id, output)
@@ -30,14 +30,14 @@ def generate_sources_zip(milestone_id=None, output=None):
 def create_zip(directory_name):
     archive_name = target + directory_name
     shutil.make_archive(archive_name, 'zip', target + directory_name)
-    print("Successfully created sources archive: " + archive_name + ".zip")
+    logging.info("Successfully created sources archive: " + archive_name + ".zip")
 
 # TODO: validate call results
 def download_sources_artifacts(milestone_id, directory_name):
     milestone = json.loads(productmilestones.get_milestone(milestone_id))
     build_record_ids = milestone['performed_builds']
     for record_id in build_record_ids:
-        print("downloading build record["+str(record_id)+"]")
+        logging.info("downloading build record["+str(record_id)+"]")
         record = json.loads(buildrecords.get_build_record(record_id))
         if (str(record['status']) == "DONE"):
             built_artifacts = utils.checked_api_call(buildrecords.records_api, 'get_built_artifacts', id=record_id, page_size=100000)

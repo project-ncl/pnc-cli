@@ -1,3 +1,5 @@
+import logging
+
 from argh import arg
 from six import iteritems
 
@@ -140,11 +142,11 @@ def build_set_raw(id=None, name=None,
     """
     Start a build of the given BuildConfigurationSet
     """
-    print("temp_build: " + str(tempbuild))
-    print("timestamp_alignment: " + str(timestamp_alignment))
-    print("force: " + str(force))
+    logging.debug("temp_build: " + str(tempbuild))
+    logging.debug("timestamp_alignment: " + str(timestamp_alignment))
+    logging.debug("force: " + str(force))
     if tempbuild is False and timestamp_alignment is True:
-        print("Error: You can only activate timestamp alignment with the temporary build flag!")
+        logging.error("You can only activate timestamp alignment with the temporary build flag!")
         sys.exit(1)
 
     found_id = common.set_id(sets_api, id, name)
