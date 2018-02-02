@@ -21,8 +21,8 @@ setup(
 	"six >= 1.9.0",
         "validators >=0.10",
         "tzlocal >= 1.0",
-        "pytest >= 2.0"
     ],
+    tests_require=["pytest >= 2.0"],
     classifiers=[
 	'Development Status :: 3 - Alpha',
 	'Programming Language :: Python :: 2.7',
