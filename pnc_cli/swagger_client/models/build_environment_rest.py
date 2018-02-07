@@ -45,6 +45,7 @@ class BuildEnvironmentRest(object):
             'system_image_id': 'str',
             'attributes': 'dict(str, str)',
             'system_image_type': 'str',
+            'deprecated': 'bool',
             'image_repository_url': 'str'
         }
 
@@ -56,6 +57,7 @@ class BuildEnvironmentRest(object):
             'system_image_id': 'systemImageId',
             'attributes': 'attributes',
             'system_image_type': 'systemImageType',
+            'deprecated': 'deprecated',
             'image_repository_url': 'imageRepositoryUrl'
         }
 
@@ -66,6 +68,7 @@ class BuildEnvironmentRest(object):
         self._system_image_id = None
         self._attributes = None
         self._system_image_type = None
+        self._deprecated = None
         self._image_repository_url = None
 
     @property
@@ -227,6 +230,28 @@ class BuildEnvironmentRest(object):
                 .format(allowed_values)
             )
         self._system_image_type = system_image_type
+
+    @property
+    def deprecated(self):
+        """
+        Gets the deprecated of this BuildEnvironmentRest.
+
+
+        :return: The deprecated of this BuildEnvironmentRest.
+        :rtype: bool
+        """
+        return self._deprecated
+
+    @deprecated.setter
+    def deprecated(self, deprecated):
+        """
+        Sets the deprecated of this BuildEnvironmentRest.
+
+
+        :param deprecated: The deprecated of this BuildEnvironmentRest.
+        :type: bool
+        """
+        self._deprecated = deprecated
 
     @property
     def image_repository_url(self):

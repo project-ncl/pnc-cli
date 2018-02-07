@@ -39,6 +39,7 @@ class TargetRepositoryRest(object):
         """
         self.swagger_types = {
             'id': 'int',
+            'temporary_repo': 'bool',
             'identifier': 'str',
             'repository_type': 'str',
             'repository_path': 'str',
@@ -47,6 +48,7 @@ class TargetRepositoryRest(object):
 
         self.attribute_map = {
             'id': 'id',
+            'temporary_repo': 'temporaryRepo',
             'identifier': 'identifier',
             'repository_type': 'repositoryType',
             'repository_path': 'repositoryPath',
@@ -54,6 +56,7 @@ class TargetRepositoryRest(object):
         }
 
         self._id = None
+        self._temporary_repo = None
         self._identifier = None
         self._repository_type = None
         self._repository_path = None
@@ -80,6 +83,28 @@ class TargetRepositoryRest(object):
         :type: int
         """
         self._id = id
+
+    @property
+    def temporary_repo(self):
+        """
+        Gets the temporary_repo of this TargetRepositoryRest.
+
+
+        :return: The temporary_repo of this TargetRepositoryRest.
+        :rtype: bool
+        """
+        return self._temporary_repo
+
+    @temporary_repo.setter
+    def temporary_repo(self, temporary_repo):
+        """
+        Sets the temporary_repo of this TargetRepositoryRest.
+
+
+        :param temporary_repo: The temporary_repo of this TargetRepositoryRest.
+        :type: bool
+        """
+        self._temporary_repo = temporary_repo
 
     @property
     def identifier(self):
@@ -123,7 +148,7 @@ class TargetRepositoryRest(object):
         :param repository_type: The repository_type of this TargetRepositoryRest.
         :type: str
         """
-        allowed_values = ["MAVEN", "MAVEN_TEMPORARY", "NPM", "COCOA_POD", "GENERIC_PROXY"]
+        allowed_values = ["MAVEN", "NPM", "COCOA_POD", "GENERIC_PROXY"]
         if repository_type not in allowed_values:
             raise ValueError(
                 "Invalid value for `repository_type`, must be one of {0}"

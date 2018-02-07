@@ -38,6 +38,7 @@ class BuildSetStatusChangedEvent(object):
                                   and the value is json key in definition.
         """
         self.swagger_types = {
+            'description': 'str',
             'user_id': 'int',
             'new_status': 'str',
             'old_status': 'str',
@@ -49,6 +50,7 @@ class BuildSetStatusChangedEvent(object):
         }
 
         self.attribute_map = {
+            'description': 'description',
             'user_id': 'userId',
             'new_status': 'newStatus',
             'old_status': 'oldStatus',
@@ -59,6 +61,7 @@ class BuildSetStatusChangedEvent(object):
             'build_set_configuration_id': 'buildSetConfigurationId'
         }
 
+        self._description = None
         self._user_id = None
         self._new_status = None
         self._old_status = None
@@ -67,6 +70,28 @@ class BuildSetStatusChangedEvent(object):
         self._build_set_start_time = None
         self._build_set_end_time = None
         self._build_set_configuration_id = None
+
+    @property
+    def description(self):
+        """
+        Gets the description of this BuildSetStatusChangedEvent.
+
+
+        :return: The description of this BuildSetStatusChangedEvent.
+        :rtype: str
+        """
+        return self._description
+
+    @description.setter
+    def description(self, description):
+        """
+        Sets the description of this BuildSetStatusChangedEvent.
+
+
+        :param description: The description of this BuildSetStatusChangedEvent.
+        :type: str
+        """
+        self._description = description
 
     @property
     def user_id(self):
