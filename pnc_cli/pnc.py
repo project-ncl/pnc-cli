@@ -7,6 +7,7 @@ from pnc_cli import buildconfigsetrecords
 from pnc_cli import buildconfigurations
 from pnc_cli import buildconfigurationsets
 from pnc_cli import buildrecords
+from pnc_cli import brewpush
 from pnc_cli import environments
 from pnc_cli import licenses
 from pnc_cli import productmilestones
@@ -134,6 +135,10 @@ parser.add_commands([uc.login,
                      makemead.make_mead,
                      generate_repo.generate_repo_list,
                      archives.generate_sources_zip])
+parser.add_commands([brewpush.push_build,
+                     brewpush.push_build_set,
+                     brewpush.push_build_status],
+                     namespace="brew-push", namespace_kwargs=brewpush.namespace_kwargs)
 parser.autocomplete()
 
 

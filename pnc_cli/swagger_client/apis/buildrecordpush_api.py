@@ -274,7 +274,7 @@ class BuildrecordpushApi(object):
                                             body=body_params,
                                             post_params=form_params,
                                             files=files,
-                                            response_type='dict(str, object)',
+                                            response_type='dict(str, bool)',
                                             auth_settings=auth_settings,
                                             callback=params.get('callback'))
         return response
@@ -430,7 +430,7 @@ class BuildrecordpushApi(object):
                                             body=body_params,
                                             post_params=form_params,
                                             files=files,
-                                            response_type='dict(str, object)',
+                                            response_type='dict(str, bool)',
                                             auth_settings=auth_settings,
                                             callback=params.get('callback'))
         return response

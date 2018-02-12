@@ -64,6 +64,10 @@ def format_json_list(page_model):
 def format_json(rest_model):
     return json.dumps(rest_model.to_dict(), sort_keys=True, indent=4, separators=(',', ': '))
 
+def format_dict(rest_model):
+    return json.dumps(rest_model, sort_keys=True, indent=4, separators=(',', ': '))
+
+
 
 epoch = datetime.datetime.utcfromtimestamp(0)
 
