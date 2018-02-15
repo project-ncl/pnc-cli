@@ -282,5 +282,5 @@ def valid_url(urlInput):
 
 # validation is different depnding on the PNC url.
 def valid_internal_url(urlInput):
-    valid_url(urlInput)
+    # TODO: figure out some test or remove completely
     return urlInput
