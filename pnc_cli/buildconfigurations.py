@@ -1,4 +1,5 @@
 from argh import arg
+from argh import named
 from argh.exceptions import CommandError
 
 import pnc_cli.common as common
@@ -160,16 +161,17 @@ def delete_build_configuration(id=None, name=None):
 @arg("project", help="ID of the Project to associate the BuildConfiguration with.", type=types.existing_project_id)
 @arg("environment", help="ID of the Environment for the new BuildConfiguration.",
      type=types.existing_environment_id)
+@arg("build_script", help="Script to execute for the BuildConfiguration.")
 @arg("scm_repo_url", help="URL to the sources of the BuildConfiguration.")
 @arg("scm_revision", help="Revision of the sources in scm-url for this BuildConfiguration.")
-@arg("build_script", help="Script to execute for the BuildConfiguration.")
 @arg("-d", "--description", help="Description of the new build configuration.")
 @arg("-pvi", "--product-version-id", help="Associated ProductVersion ID.")
 @arg("-dids", "--dependency-ids", type=int, nargs="+",
      help="List of BuildConfiguration IDs that are dependencies of this BuildConfiguration.")
-# @arg("-bcsid", "--")
+@named("create-build-configuration-direct")
 def create_build_configuration(**kwargs):
     """
+    Deprecated! Use create-build-configuration instead!
     Create a new BuildConfiguration. BuildConfigurations represent the settings and configuration required to run a build of a specific version of the associated Project's source code.
     If a ProductVersion ID is provided, the BuildConfiguration will have access to artifacts which were produced for that version, but may not have been released yet.
     """
