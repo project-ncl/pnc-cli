@@ -282,10 +282,5 @@ def valid_url(urlInput):
 
 # validation is different depnding on the PNC url.
 def valid_internal_url(urlInput):
-    repo_start = utils.get_internal_repo_start(uc.user.pnc_config.url)
-    if not urlInput.startswith(repo_start):
-        raise argparse.ArgumentTypeError("An internal SCM repository URL must start with: " + repo_start)
-    if urlInput == repo_start:
-        raise argparse.ArgumentTypeError("No specific internal repository specified.")
     valid_url(urlInput)
     return urlInput

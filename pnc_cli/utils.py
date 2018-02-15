@@ -109,16 +109,3 @@ def get_config():
             "New config file written to ~/.config/pnc-cli/pnc-cli.conf. Configure pncUrl and keycloakUrl values.")
         exit(1)
     return config
-
-
-def get_internal_repo_start(environment):
-    ### Devel urls ###
-    # http://pnc-orch-master-autodeploy.cloud.pnc.devel.engineering.redhat.com/
-    # http://pnc-orch-branch-autodeploy.cloud.pnc.devel.engineering.redhat.com/
-    ### Stage URLS ###
-    # http://pnc-orch-branch-nightly.cloud.pnc.stage.engineering.redhat.com/
-    # http://pnc-orch-branch-autodeploy.cloud.pnc.stage.engineering.redhat.com/
-    if "stage" in environment:
-        return 'git+ssh://pnc-gerrit-stage@code-stage.eng.nay.redhat.com:29418/'
-    elif "devel" in environment:
-        return 'git+ssh://user-pnc-gerrit@pnc-gerrit.pnc.dev.eng.bos.redhat.com:29418/'
