@@ -47,7 +47,7 @@ class BuildconfigsetrecordsApi(object):
 
     def delete(self, id, **kwargs):
         """
-        Delete specific Build Config Set Record (it must be from a temporary build).
+        Delete specific Build Config Set Record (it must be from a temporary build). Operation is async, for the result subscribe to 'build-config-set-records#delete' events with optional qualifier buildRecord.id.
         
 
         This method makes a synchronous HTTP request by default. To make an

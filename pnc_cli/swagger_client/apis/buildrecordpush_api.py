@@ -220,7 +220,7 @@ class BuildrecordpushApi(object):
         :param callback function: The callback function
             for asynchronous request. (optional)
         :param BuildRecordPushRequestRest body: 
-        :return: dict(str, object)
+        :return: list[ResultRest]
                  If the method is called asynchronously,
                  returns the request thread.
         """
@@ -274,7 +274,7 @@ class BuildrecordpushApi(object):
                                             body=body_params,
                                             post_params=form_params,
                                             files=files,
-                                            response_type='dict(str, bool)',
+                                            response_type='list[ResultRest]',
                                             auth_settings=auth_settings,
                                             callback=params.get('callback'))
         return response
@@ -376,7 +376,7 @@ class BuildrecordpushApi(object):
         :param callback function: The callback function
             for asynchronous request. (optional)
         :param BuildConfigSetRecordPushRequestRest body: 
-        :return: dict(str, object)
+        :return: list[ResultRest]
                  If the method is called asynchronously,
                  returns the request thread.
         """
@@ -430,7 +430,7 @@ class BuildrecordpushApi(object):
                                             body=body_params,
                                             post_params=form_params,
                                             files=files,
-                                            response_type='dict(str, bool)',
+                                            response_type='list[ResultRest]',
                                             auth_settings=auth_settings,
                                             callback=params.get('callback'))
         return response

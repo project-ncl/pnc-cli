@@ -34,7 +34,6 @@ from .build_record_singleton import BuildRecordSingleton
 from .build_set_status_changed_event import BuildSetStatusChangedEvent
 from .build_status_changed_event_rest import BuildStatusChangedEventRest
 from .error_response_rest import ErrorResponseRest
-from .field_handler import FieldHandler
 from .id_rev import IdRev
 from .license_page import LicensePage
 from .license_rest import LicenseRest
@@ -61,6 +60,7 @@ from .repository_configuration_page import RepositoryConfigurationPage
 from .repository_configuration_rest import RepositoryConfigurationRest
 from .repository_configuration_singleton import RepositoryConfigurationSingleton
 from .repository_creation_url_auto_rest import RepositoryCreationUrlAutoRest
+from .result_rest import ResultRest
 from .singleton import Singleton
 from .ssh_credentials import SshCredentials
 from .ssh_credentials_singleton import SshCredentialsSingleton

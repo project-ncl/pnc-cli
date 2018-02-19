@@ -285,7 +285,7 @@ class RepositoryconfigurationsApi(object):
     def match(self, search, **kwargs):
         """
         Searches for Repository Configurations based on internal or external url, ignoring the protocol and \".git\" suffix. Only exact matches are returned.
-
+        
 
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please define a `callback` function

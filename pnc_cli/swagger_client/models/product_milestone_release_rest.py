@@ -101,7 +101,7 @@ class ProductMilestoneReleaseRest(object):
         :param status: The status of this ProductMilestoneReleaseRest.
         :type: str
         """
-        allowed_values = ["IN_PROGRESS", "FAILED", "SUCCEEDED", "SYSTEM_ERROR"]
+        allowed_values = ["IN_PROGRESS", "FAILED", "SUCCEEDED", "CANCELED", "SYSTEM_ERROR"]
         if status not in allowed_values:
             raise ValueError(
                 "Invalid value for `status`, must be one of {0}"
