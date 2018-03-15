@@ -49,6 +49,9 @@ def create_build_configuration_process(repository, revision, **kwargs):
     if not kwargs.get("generic_parameters"):
         kwargs["generic_parameters"] = {}
 
+    kwargs["project"] = projects_api.get_specific(kwargs.get("project_id")).content
+    kwargs["environment"] = envs_api.get_specific(kwargs.get("build_environment_id")).content
+
     build_configuration = create_build_conf_object(scm_revision=revision, **kwargs)
     repo_creation = swagger_client.RepositoryCreationUrlAutoRest()
     repo_creation.scm_url = repository
