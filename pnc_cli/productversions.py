@@ -80,7 +80,7 @@ def create_product_version_raw(product_id, version, **kwargs):
     response = utils.checked_api_call(versions_api, 'create_new_product_version',
                                       body=product_version)
     if response:
-        return utils.format_json(response.content)
+        return response.content
 
 
 @arg("id", help="ID of the ProductVersion to retrieve", type=types.existing_product_version)
