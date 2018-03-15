@@ -116,6 +116,9 @@ class RESTClientObject(object):
         if 'Content-Type' not in headers:
             headers['Content-Type'] = 'application/json'
 
+        if body:
+            logger.debug("request body: %s" % body)
+
         try:
             # For `POST`, `PUT`, `PATCH`
             if method in ['POST', 'PUT', 'PATCH']:
