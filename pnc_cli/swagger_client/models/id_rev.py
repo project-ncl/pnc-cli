@@ -39,19 +39,16 @@ class IdRev(object):
         """
         self.swagger_types = {
             'id': 'int',
-            'rev': 'int',
-            'field_handler': 'FieldHandler'
+            'rev': 'int'
         }
 
         self.attribute_map = {
             'id': 'id',
-            'rev': 'rev',
-            'field_handler': 'fieldHandler'
+            'rev': 'rev'
         }
 
         self._id = None
         self._rev = None
-        self._field_handler = None
 
     @property
     def id(self):
@@ -96,28 +93,6 @@ class IdRev(object):
         :type: int
         """
         self._rev = rev
-
-    @property
-    def field_handler(self):
-        """
-        Gets the field_handler of this IdRev.
-
-
-        :return: The field_handler of this IdRev.
-        :rtype: FieldHandler
-        """
-        return self._field_handler
-
-    @field_handler.setter
-    def field_handler(self, field_handler):
-        """
-        Sets the field_handler of this IdRev.
-
-
-        :param field_handler: The field_handler of this IdRev.
-        :type: FieldHandler
-        """
-        self._field_handler = field_handler
 
     def to_dict(self):
         """

@@ -45,7 +45,7 @@ class ProductRest(object):
             'product_code': 'str',
             'pgm_system_name': 'str',
             'product_version_ids': 'list[int]',
-            'product_versions': 'list[ProductVersionRest]'
+            'product_version_refs': 'list[ProductVersionRefRest]'
         }
 
         self.attribute_map = {
@@ -56,7 +56,7 @@ class ProductRest(object):
             'product_code': 'productCode',
             'pgm_system_name': 'pgmSystemName',
             'product_version_ids': 'productVersionIds',
-            'product_versions': 'productVersions'
+            'product_version_refs': 'productVersionRefs'
         }
 
         self._id = None
@@ -66,7 +66,7 @@ class ProductRest(object):
         self._product_code = None
         self._pgm_system_name = None
         self._product_version_ids = None
-        self._product_versions = None
+        self._product_version_refs = None
 
     @property
     def id(self):
@@ -223,26 +223,26 @@ class ProductRest(object):
         self._product_version_ids = product_version_ids
 
     @property
-    def product_versions(self):
+    def product_version_refs(self):
         """
-        Gets the product_versions of this ProductRest.
+        Gets the product_version_refs of this ProductRest.
 
 
-        :return: The product_versions of this ProductRest.
-        :rtype: list[ProductVersionRest]
+        :return: The product_version_refs of this ProductRest.
+        :rtype: list[ProductVersionRefRest]
         """
-        return self._product_versions
+        return self._product_version_refs
 
-    @product_versions.setter
-    def product_versions(self, product_versions):
+    @product_version_refs.setter
+    def product_version_refs(self, product_version_refs):
         """
-        Sets the product_versions of this ProductRest.
+        Sets the product_version_refs of this ProductRest.
 
 
-        :param product_versions: The product_versions of this ProductRest.
-        :type: list[ProductVersionRest]
+        :param product_version_refs: The product_version_refs of this ProductRest.
+        :type: list[ProductVersionRefRest]
         """
-        self._product_versions = product_versions
+        self._product_version_refs = product_version_refs
 
     def to_dict(self):
         """

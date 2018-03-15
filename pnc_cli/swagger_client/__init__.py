@@ -51,6 +51,7 @@ from .models.product_release_singleton import ProductReleaseSingleton
 from .models.product_rest import ProductRest
 from .models.product_singleton import ProductSingleton
 from .models.product_version_page import ProductVersionPage
+from .models.product_version_ref_rest import ProductVersionRefRest
 from .models.product_version_rest import ProductVersionRest
 from .models.product_version_singleton import ProductVersionSingleton
 from .models.project_page import ProjectPage
