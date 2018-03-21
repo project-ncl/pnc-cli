@@ -50,8 +50,16 @@ class UserConfig():
         # to be changed much once it's in place
         newtoken = False
         config = utils.get_config()
-        saved_kc_config, self.username, self.token, self.token_time = state
+        saved_kc_config, saved_username, self.token, self.token_time = state
         self.pnc_config = psc.PncServerConfig(config)
+
+        # check for changes in keycloak usrname; if so, we'll need to get a new token regardless of time
+        self.username = self.load_username_from_config(config)
+        if self.username is not None and self.username != saved_username:
+            sys.stderr.write("Keycloak username has been changed. Retrieving new token...\n")
+            newtoken = True
+        else:
+            self.username = saved_username
 
         # check for changes in keycloak configuration; if so, we'll need to get a new token regardless of time
         current_keycloak_config = kc.KeycloakConfig(config)
