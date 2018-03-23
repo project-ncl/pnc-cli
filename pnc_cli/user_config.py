@@ -56,7 +56,7 @@ class UserConfig():
         # check for changes in keycloak configuration; if so, we'll need to get a new token regardless of time
         current_keycloak_config = kc.KeycloakConfig(config)
         if not current_keycloak_config == saved_kc_config:
-            sys.stderr.write("Keycloak server has been reconfigured. Retrieving new token...\n")
+            logging.info("Keycloak server has been reconfigured. Retrieving new token...\n")
             self.keycloak_config = current_keycloak_config
             newtoken = True
         else:
@@ -66,7 +66,7 @@ class UserConfig():
         # get a new one
         if not newtoken and utils.current_time_millis() - self.token_time > 86400000:
             # input the password again since we no longer cache it
-            sys.stderr.write("Keycloak token has expired for user {}. Retrieving new token...\n".format(self.username))
+            logging.info("Keycloak token has expired for user {}. Retrieving new token...\n".format(self.username))
             newtoken = True
 
         if newtoken:
@@ -96,7 +96,7 @@ class UserConfig():
     def load_username_from_config(self, config):
         try:
             username = config.get('PNC', 'username')
-            sys.stderr.write("Loaded username from pnc-cli.conf: {}\n".format(username))
+            logging.info("Loaded username from pnc-cli.conf: {}\n".format(username))
             return username
         except ConfigParser.NoOptionError:
             return None
@@ -104,7 +104,7 @@ class UserConfig():
     def load_password_from_config(self, config):
         try:
             password = config.get('PNC', 'password')
-            sys.stderr.write("Loaded password from pnc-cli.conf\n")
+            logging.info("Loaded password from pnc-cli.conf\n")
             return password
         except ConfigParser.NoOptionError:
             return None
@@ -119,7 +119,7 @@ class UserConfig():
             }
             r = requests.post(self.keycloak_config.url, params, verify=False)
             if r.status_code == 200:
-                sys.stderr.write("Token retrieved for client from {}.\n".format(self.keycloak_config.client_id))
+                logging.info("Token retrieved for client from {}.\n".format(self.keycloak_config.client_id))
                 self.token_time = utils.current_time_millis()
                 reply = json.loads(r.content.decode('utf-8'))
                 return str(reply.get('access_token'))
@@ -136,7 +136,7 @@ class UserConfig():
                           'password': self.password}
                 r = requests.post(self.keycloak_config.url, params, verify=False)
                 if r.status_code == 200:
-                    sys.stderr.write("Token retrieved for {}.\n".format(self.username))
+                    logging.info("Token retrieved for {}.\n".format(self.username))
                     self.token_time = utils.current_time_millis()
                     reply = json.loads(r.content.decode('utf-8'))
                     return str(reply.get('access_token'))
@@ -163,9 +163,9 @@ class UserConfig():
 if os.path.exists(SAVED_USER):
     user = pickle.load(open(SAVED_USER, "rb"))
     if user.keycloak_config.client_mode in trueValues:
-        sys.stderr.write("Command performed using client authorization.\n")
+        logging.info("Command performed using client authorization.\n")
     else:
-        sys.stderr.write("Command performed with user: {}\n".format(user.username))
+        logging.info("Command performed with user: {}\n".format(user.username))
     users_api = swagger_client.UsersApi(user.get_api_client())
     utils.checked_api_call(users_api, 'get_logged_user') # inits the user if it doesn't exist in pnc's db already
 else:
