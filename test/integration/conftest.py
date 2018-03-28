@@ -100,7 +100,7 @@ def create_config(request, new_project, new_version, project_number):
         repository_configuration=1)
 
     def teardown():
-        buildconfigurations.delete_build_configuration(id=created_bc.id)
+        buildconfigurations.delete_build_configuration_raw(id=created_bc.id)
 
     request.addfinalizer(teardown)
     return created_bc
