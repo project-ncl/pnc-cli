@@ -70,6 +70,11 @@ def build(id=None, name=None):
     """
     Trigger a BuildConfiguration by name or ID
     """
+    data = build_raw(id, name)
+    if data:
+        return utils.format_json(data)
+
+def build_raw(id=None, name=None):
     trigger_id = common.set_id(configs_api, id, name)
 
     response = utils.checked_api_call(configs_api, 'trigger', id=trigger_id)
@@ -83,8 +88,12 @@ def get_build_configuration(id=None, name=None):
     """
     Retrieve a specific BuildConfiguration
     """
-    found_id = common.set_id(configs_api, id, name)
+    data = get_build_configuration_raw(id, name)
+    if data:
+        return utils.format_json(data)
 
+def get_build_configuration_raw(id=None, name=None):
+    found_id = common.set_id(configs_api, id, name)
     response = utils.checked_api_call(configs_api, 'get_specific', id=found_id)
     if response:
         return response.content
@@ -110,6 +119,11 @@ def update_build_configuration(id, **kwargs):
     :param name: Name of BuildConfiguration to update
     :return:
     """
+    data = update_build_configuration_raw(id, **kwargs)
+    if data:
+        return utils.format_json(data)
+
+def update_build_configuration_raw(id, **kwargs):
     to_update_id = id
 
     bc_to_update = configs_api.get_specific(id=to_update_id).content
@@ -153,7 +167,11 @@ def delete_build_configuration(id=None, name=None):
     :param name:
     :return:
     """
+    data = delete_build_configuration_raw(id, name)
+    if data:
+        return utils.format_json(data)
 
+def delete_build_configuration_raw(id=None, name=None):
     to_delete_id = common.set_id(configs_api, id, name)
     # ensure that this build configuration is not a dependency of any other build configuration.
     # list_build_configurations is an insufficient check because eventually there will be too many entities to check them all.

@@ -135,7 +135,7 @@ def make_mead(config=None, run_build=False, environment=1, sufix="", product_nam
                 build_config = create_build_configuration(env, bc_set, product_version_id, art_params, scm_repo_url,
                                                           scm_revision, artifact_name, project)
             else:
-                build_config = update_build_configuration(env, product_version_id, art_params, scm_repo_url,
+                build_config = update_build_configuration_raw(env, product_version_id, art_params, scm_repo_url,
                                                               scm_revision, artifact_name, project)
 
         # Make sure existing configs are added the group
@@ -253,7 +253,7 @@ def update_build_configuration(environment, product_version_id, art_params, scm_
         logging.error("SCM URL of existing Build Configuration '%s' cannot be changed" % artifact_name)
         return None
 
-    buildconfigurations.update_build_configuration(
+    buildconfigurations.update_build_configuration_raw(
                                                    id=build_config.id,
                                                    name=artifact_name,
                                                    project=project.id,
@@ -263,7 +263,7 @@ def update_build_configuration(environment, product_version_id, art_params, scm_
                                                    build_script=get_maven_options(art_params),
                                                    product_version_id=product_version_id,
                                                    generic_parameters=get_generic_parameters(art_params))
-    return buildconfigurations.get_build_configuration(id=build_config.id)
+    return buildconfigurations.get_build_configuration_raw(id=build_config.id)
 
 def create_build_configuration(environment, bc_set, product_version_id, art_params, scm_repo_url,
                                scm_revision, artifact_name, project):
