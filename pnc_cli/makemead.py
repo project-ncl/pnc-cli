@@ -135,7 +135,7 @@ def make_mead(config=None, run_build=False, environment=1, sufix="", product_nam
                 build_config = create_build_configuration(env, bc_set, product_version_id, art_params, scm_repo_url,
                                                           scm_revision, artifact_name, project)
             else:
-                build_config = update_build_configuration_raw(env, product_version_id, art_params, scm_repo_url,
+                build_config = update_build_configuration(env, product_version_id, art_params, scm_repo_url,
                                                               scm_revision, artifact_name, project)
 
         # Make sure existing configs are added the group
