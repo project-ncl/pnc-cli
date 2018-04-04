@@ -10,8 +10,8 @@ from pnc_cli.swagger_client import EnvironmentsApi
 
 
 @patch('pnc_cli.common.set_id', return_value=1)
-@patch('pnc_cli.environments.envs_api.get_specific', return_value=MagicMock(content='buildenvironment1'))
-@patch('pnc_cli.environments.envs_api', autospec=EnvironmentsApi)
+@patch('pnc_cli.environments.pnc_api.environments.get_specific', return_value=MagicMock(content='buildenvironment1'))
+@patch('pnc_cli.environments.pnc_api.environments', autospec=EnvironmentsApi)
 def test_get_environment_id(mock_envs_api, mock_get_specific, mock_set_id):
     result = environments.get_environment_raw(id=1)
     mock_set_id.assert_called_once_with(mock_envs_api, 1, None)
@@ -20,8 +20,8 @@ def test_get_environment_id(mock_envs_api, mock_get_specific, mock_set_id):
 
 
 @patch('pnc_cli.common.set_id', return_value=1)
-@patch('pnc_cli.environments.envs_api.get_specific', return_value=MagicMock(content='buildenvironment1'))
-@patch('pnc_cli.environments.envs_api', autospec=EnvironmentsApi)
+@patch('pnc_cli.environments.pnc_api.environments.get_specific', return_value=MagicMock(content='buildenvironment1'))
+@patch('pnc_cli.environments.pnc_api.environments', autospec=EnvironmentsApi)
 def test_get_environment_name(mock_envs_api, mock_get_specific, mock_set_id):
     result = environments.get_environment_raw(name='testerino')
     mock_set_id.assert_called_once_with(mock_envs_api, None, 'testerino')
@@ -29,7 +29,7 @@ def test_get_environment_name(mock_envs_api, mock_get_specific, mock_set_id):
     assert result == 'buildenvironment1'
 
 
-@patch('pnc_cli.environments.envs_api.get_all', return_value=MagicMock(content=['env1', 'env2', 'env3']))
+@patch('pnc_cli.environments.pnc_api.environments.get_all', return_value=MagicMock(content=['env1', 'env2', 'env3']))
 def test_list_environments(mock):
     result = environments.list_environments_raw()
     mock.assert_called_once_with(page_index=0, page_size=200, q="", sort="")

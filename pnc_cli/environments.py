@@ -5,12 +5,10 @@ from six import iteritems
 
 import pnc_cli.cli_types as types
 import pnc_cli.common as common
-import pnc_cli.user_config as uc
 import pnc_cli.utils as utils
 from pnc_cli.swagger_client import BuildEnvironmentRest
-from pnc_cli.swagger_client import EnvironmentsApi
+from pnc_cli.pnc_api import pnc_api
 
-envs_api = EnvironmentsApi(uc.user.get_api_client())
 
 __author__ = 'thauser'
 
@@ -26,8 +24,8 @@ def get_environment(id=None, name=None):
         return utils.format_json_list(data)
 
 def get_environment_raw(id=None, name=None):
-    search_id = common.set_id(envs_api, id, name)
-    response = utils.checked_api_call(envs_api, 'get_specific', id=search_id)
+    search_id = common.set_id(pnc_api.environments, id, name)
+    response = utils.checked_api_call(pnc_api.environments, 'get_specific', id=search_id)
     return response.content
 
 
@@ -45,7 +43,7 @@ def list_environments_raw(page_size=200, page_index=0, sort="", q=""):
     """
     List all Environments
     """
-    response = utils.checked_api_call(envs_api, 'get_all', page_size=page_size, page_index=page_index, sort=sort, q=q)
+    response = utils.checked_api_call(pnc_api.environments, 'get_all', page_size=page_size, page_index=page_index, sort=sort, q=q)
     if response:
         return response.content
 

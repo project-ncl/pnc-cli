@@ -3,16 +3,10 @@ from argh import arg
 
 import pnc_cli.cli_types as types
 from pnc_cli import utils
-from pnc_cli.swagger_client.apis import BuildconfigurationsetsApi
-from pnc_cli.swagger_client.apis import BuildconfigsetrecordsApi
-import pnc_cli.user_config as uc
-
-sets_api = BuildconfigurationsetsApi(uc.user.get_api_client())
-bcsr_api = BuildconfigsetrecordsApi(uc.user.get_api_client())
-
+from pnc_cli.pnc_api import pnc_api
 
 def list_build_configuration_set_records_raw(page_size=200, page_index=0, sort="", q=""):
-    response = utils.checked_api_call(bcsr_api, 'get_all', page_size=page_size,
+    response = utils.checked_api_call(pnc_api.build_groups, 'get_all', page_size=page_size,
                                       page_index=page_index, sort=sort, q=q)
 
     if response:
@@ -35,7 +29,7 @@ def list_build_configuration_set_records(page_size=200, page_index=0, sort="", q
 
 
 def get_build_configuration_set_record_raw(id):
-    response = utils.checked_api_call(bcsr_api, 'get_specific', id=id)
+    response = utils.checked_api_call(pnc_api.build_groups, 'get_specific', id=id)
     if response:
         return response.content
     else:
@@ -53,7 +47,7 @@ def get_build_configuration_set_record(id):
 
 
 def list_records_for_build_config_set_raw(id, page_size=200, page_index=0, sort="", q=""):
-    response = utils.checked_api_call(bcsr_api, 'get_build_records', id=id, page_size=page_size, page_index=page_index, sort=sort, q=q)
+    response = utils.checked_api_call(pnc_api.build_groups, 'get_build_records', id=id, page_size=page_size, page_index=page_index, sort=sort, q=q)
     if response:
         return response.content
     else:

@@ -17,7 +17,7 @@ def test_create_license_object():
 
 @pytest.mark.skip(reason="Not used now")
 @patch('pnc_cli.licenses.create_license_object', return_value='test-license')
-@patch('pnc_cli.licenses.licenses_api.create_new', return_value=MagicMock(content='SUCCESS'))
+@patch('pnc_cli.licenses.pnc_api.licenses.create_new', return_value=MagicMock(content='SUCCESS'))
 def test_create_license(mock_create_new, mock_license_object):
     result = licenses.create_license(full_name='license', full_content='anothertest')
     mock_license_object.assert_called_once_with(full_name='license', full_content='anothertest')
@@ -25,7 +25,7 @@ def test_create_license(mock_create_new, mock_license_object):
     assert result == 'SUCCESS'
 
 @pytest.mark.skip(reason="Not used now")
-@patch('pnc_cli.licenses.licenses_api.get_specific', return_value=MagicMock(content='SUCCESS'))
+@patch('pnc_cli.licenses.pnc_api.licenses.get_specific', return_value=MagicMock(content='SUCCESS'))
 def test_get_license_id(mock):
     result = licenses.get_license(id=1)
     mock.assert_called_once_with(id=1)
@@ -33,7 +33,7 @@ def test_get_license_id(mock):
 
 
 @pytest.mark.skip(reason="Not used now")
-@patch('pnc_cli.licenses.licenses_api.delete', return_value=MagicMock(content='SUCCESS'))
+@patch('pnc_cli.licenses.pnc_api.licenses.delete', return_value=MagicMock(content='SUCCESS'))
 def test_delete_license(mock):
     result = licenses.delete_license(1)
     mock.assert_called_once_with(id=1)
@@ -41,7 +41,7 @@ def test_delete_license(mock):
 
 
 @pytest.mark.skip(reason="Not used now")
-@patch('pnc_cli.licenses.licenses_api.get_all', return_value=MagicMock(content='SUCCESS'))
+@patch('pnc_cli.licenses.pnc_api.licenses.get_all', return_value=MagicMock(content='SUCCESS'))
 def test_list_licenses(mock):
     result = licenses.list_licenses()
     mock.assert_called_once_with(page_size=200, q="", sort="")
@@ -49,8 +49,8 @@ def test_list_licenses(mock):
 
 
 @pytest.mark.skip(reason="Not used now")
-@patch('pnc_cli.licenses.licenses_api.get_specific')
-@patch('pnc_cli.licenses.licenses_api.update', return_value=MagicMock(content='SUCCESS'))
+@patch('pnc_cli.licenses.pnc_api.licenses.get_specific')
+@patch('pnc_cli.licenses.pnc_api.licenses.update', return_value=MagicMock(content='SUCCESS'))
 def test_update_license(mock_update, mock_get_specific):
     license = LicenseRest()
     response = MagicMock(content=license)

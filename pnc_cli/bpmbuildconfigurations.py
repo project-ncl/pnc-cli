@@ -5,14 +5,7 @@ import logging
 import pnc_cli.cli_types as types
 from pnc_cli import swagger_client
 from pnc_cli import utils
-from pnc_cli.swagger_client import BpmApi
-from pnc_cli.swagger_client import EnvironmentsApi
-from pnc_cli.swagger_client import ProjectsApi
-import pnc_cli.user_config as uc
-
-projects_api = ProjectsApi(uc.user.get_api_client())
-bpm_api = BpmApi(uc.user.get_api_client())
-envs_api = EnvironmentsApi(uc.user.get_api_client())
+from pnc_cli.pnc_api import pnc_api
 
 def create_build_conf_object(**kwargs):
     created_build_configuration = swagger_client.BuildConfigurationRest()
@@ -52,9 +45,9 @@ def create_build_configuration_process(repository, revision, **kwargs):
 
 
     if not kwargs.get("project"):
-        kwargs["project"] = projects_api.get_specific(kwargs.get("project_id")).content
+        kwargs["project"] = pnc_api.projects.get_specific(kwargs.get("project_id")).content
     if not kwargs.get("environment"):
-        kwargs["environment"] = envs_api.get_specific(kwargs.get("build_environment_id")).content
+        kwargs["environment"] = pnc_api.environments.get_specific(kwargs.get("build_environment_id")).content
 
     build_configuration = create_build_conf_object(scm_revision=revision, **kwargs)
     repo_creation = swagger_client.RepositoryCreationUrlAutoRest()
@@ -62,10 +55,10 @@ def create_build_configuration_process(repository, revision, **kwargs):
     repo_creation.build_configuration_rest = build_configuration
 
     response = utils.checked_api_call(
-        bpm_api, 'start_r_creation_task_with_single_url', body=repo_creation)
+        pnc_api.bpm, 'start_r_creation_task_with_single_url', body=repo_creation)
     if response:
         return response
 
 def get_bpm_task_by_id(bpm_task_id):
-    return utils.checked_api_call(bpm_api, "get_bpm_task_by_id", task_id=bpm_task_id)
+    return utils.checked_api_call(pnc_api.bpm, "get_bpm_task_by_id", task_id=bpm_task_id)
 

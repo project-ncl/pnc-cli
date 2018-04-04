@@ -2,12 +2,9 @@ import logging
 from argh import arg
 
 from pnc_cli import utils
-from pnc_cli.swagger_client import RunningbuildrecordsApi
+from pnc_cli.pnc_api import pnc_api
 
 import cli_types
-import pnc_cli.user_config as uc
-
-running_api = RunningbuildrecordsApi(uc.user.get_api_client())
 
 
 @arg("-p", "--page-size", help="Limit the amount of BuildRecords returned")
@@ -23,7 +20,7 @@ def list_running_builds(page_size=200, page_index=0, sort=""):
 
 
 def list_running_builds_raw(page_size=200, page_index=0, sort=""):
-    response = utils.checked_api_call(running_api, 'get_all', page_size=page_size, page_index=page_index, sort=sort)
+    response = utils.checked_api_call(pnc_api.running_builds, 'get_all', page_size=page_size, page_index=page_index, sort=sort)
     if response:
         return response.content
 
@@ -39,6 +36,6 @@ def get_running_build(id):
 
 
 def get_running_build_raw(id):
-    response = utils.checked_api_call(running_api, 'get_specific', id=id)
+    response = utils.checked_api_call(pnc_api.running_builds, 'get_specific', id=id)
     if response:
         return response.content

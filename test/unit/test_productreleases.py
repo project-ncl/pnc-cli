@@ -12,7 +12,7 @@ def test_create_product_release_object():
     assert result.to_dict() == compare.to_dict()
 
 
-@patch('pnc_cli.productreleases.releases_api.get_all', return_value=MagicMock(content='list of all releases'))
+@patch('pnc_cli.productreleases.pnc_api.product_releases.get_all', return_value=MagicMock(content='list of all releases'))
 def test_list_product_releases(mock):
     result = productreleases.list_product_releases_raw()
     mock.assert_called_once_with(page_index=0, page_size=200, sort='', q='')
@@ -20,8 +20,8 @@ def test_list_product_releases(mock):
 
 
 @patch('pnc_cli.productreleases.create_product_release_object', return_value='created release')
-@patch('pnc_cli.productreleases.releases_api.create_new', return_value=MagicMock(content='created release'))
-@patch('pnc_cli.productreleases.productversions_api.get_specific',
+@patch('pnc_cli.productreleases.pnc_api.product_releases.create_new', return_value=MagicMock(content='created release'))
+@patch('pnc_cli.productreleases.pnc_api.product_versions.get_specific',
        return_value=MagicMock(content=MagicMock(version='1.0')))
 @patch('pnc_cli.productmilestones.get_product_version_from_milestone', return_value=1)
 def test_create_release(mock_get_milestone_version, mock_get_specific, mock_create_new, mock_create_object):
@@ -43,7 +43,7 @@ def test_create_release(mock_get_milestone_version, mock_get_specific, mock_crea
     assert result == 'created release'
 
 
-@patch('pnc_cli.productreleases.releases_api.get_all_by_product_version_id',
+@patch('pnc_cli.productreleases.pnc_api.product_releases.get_all_by_product_version_id',
        return_value=MagicMock(content='list of releases for version'))
 def test_list_releases_for_version(mock):
     result = productreleases.list_releases_for_version_raw(1)
@@ -51,15 +51,15 @@ def test_list_releases_for_version(mock):
     assert result == 'list of releases for version'
 
 
-@patch('pnc_cli.productreleases.releases_api.get_specific', return_value=MagicMock(content='single release'))
+@patch('pnc_cli.productreleases.pnc_api.product_releases.get_specific', return_value=MagicMock(content='single release'))
 def test_get_release(mock):
     result = productreleases.get_release_raw(1)
     mock.assert_called_once_with(id=1)
     assert result == 'single release'
 
 
-@patch('pnc_cli.productreleases.releases_api.get_specific')
-@patch('pnc_cli.productreleases.releases_api.update', return_value=MagicMock(content='updated release'))
+@patch('pnc_cli.productreleases.pnc_api.product_releases.get_specific')
+@patch('pnc_cli.productreleases.pnc_api.product_releases.update', return_value=MagicMock(content='updated release'))
 def test_update_release(mock_update, mock_get_specific):
     mock = MagicMock()
     mockcontent = MagicMock(content=mock)

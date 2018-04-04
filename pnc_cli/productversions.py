@@ -6,12 +6,8 @@ from six import iteritems
 import pnc_cli.utils as utils
 import pnc_cli.cli_types as types
 from pnc_cli import swagger_client
-from pnc_cli.swagger_client.apis.products_api import ProductsApi
-from pnc_cli.swagger_client.apis.productversions_api import ProductversionsApi
-import pnc_cli.user_config as uc
+from pnc_cli.pnc_api import pnc_api
 
-versions_api = ProductversionsApi(uc.user.get_api_client())
-products_api = ProductsApi(uc.user.get_api_client())
 
 __author__ = 'thauser'
 
@@ -24,7 +20,7 @@ def create_product_version_object(**kwargs):
 
 
 def version_exists_for_product(id, version):
-    existing_products = products_api.get_product_versions(id=id).content
+    existing_products = pnc_api.products.get_product_versions(id=id).content
     if existing_products:
         return version in [x.version for x in existing_products]
     else:
@@ -45,7 +41,7 @@ def list_product_versions(page_size=200, page_index=0, sort="", q=""):
 
 
 def list_product_versions_raw(page_size=200, page_index=0, sort="", q=""):
-    response = utils.checked_api_call(versions_api, 'get_all', page_size=page_size, page_index=page_index, sort=sort,
+    response = utils.checked_api_call(pnc_api.product_versions, 'get_all', page_size=page_size, page_index=page_index, sort=sort,
                                       q=q)
     if response:
         return response.content
@@ -79,12 +75,12 @@ def create_product_version(product_id, version, **kwargs):
 def create_product_version_raw(product_id, version, **kwargs):
     if version_exists_for_product(product_id, version):
         raise argparse.ArgumentTypeError("Version {} already exists for product: {}".format(
-            version, products_api.get_specific(id=product_id).content.name))
+            version, pnc_api.products.get_specific(id=product_id).content.name))
 
     kwargs['product_id'] = product_id
     kwargs['version'] = version
     product_version = create_product_version_object(**kwargs)
-    response = utils.checked_api_call(versions_api, 'create_new_product_version',
+    response = utils.checked_api_call(pnc_api.product_versions, 'create_new_product_version',
                                       body=product_version)
     if response:
         return response.content
@@ -101,7 +97,7 @@ def get_product_version(id):
 
 
 def get_product_version_raw(id):
-    response = utils.checked_api_call(versions_api, 'get_specific', id=id)
+    response = utils.checked_api_call(pnc_api.product_versions, 'get_specific', id=id)
     if response:
         return response.content
 
@@ -136,13 +132,13 @@ def update_product_version_raw(id, **kwargs):
     if version is not None:
         if version_exists_for_product(product_id, version):
             raise argparse.ArgumentTypeError("Version {} already exists for product: {}".format(
-                version, products_api.get_specific(id=product_id).content.name))
+                version, pnc_api.products.get_specific(id=product_id).content.name))
 
-    to_update = versions_api.get_specific(id=id).content
+    to_update = pnc_api.product_versions.get_specific(id=id).content
     for key, value in kwargs.items():
         if value is not None:
             setattr(to_update, key, value)
-    response = utils.checked_api_call(versions_api, 'update',
+    response = utils.checked_api_call(pnc_api.product_versions, 'update',
                                       id=id,
                                       body=to_update)
     if response:

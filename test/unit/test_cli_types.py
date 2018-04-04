@@ -67,7 +67,7 @@ def test_valid_bc_name_exception():
 
 
 @patch('pnc_cli.common.get_id_by_name', return_value=None)
-@patch('pnc_cli.cli_types.configs_api', autospec=BuildconfigurationsApi)
+@patch('pnc_cli.cli_types.pnc_api.build_configs', autospec=BuildconfigurationsApi)
 def test_unique_bc_name(mock_configs_api, mock_get_id_by_name):
     result = cli_types.unique_bc_name('test')
     mock_get_id_by_name.assert_called_once_with(mock_configs_api, 'test')
@@ -75,7 +75,7 @@ def test_unique_bc_name(mock_configs_api, mock_get_id_by_name):
 
 
 @patch('pnc_cli.common.get_id_by_name', return_value=1)
-@patch('pnc_cli.cli_types.configs_api', autospec=BuildconfigurationsApi)
+@patch('pnc_cli.cli_types.pnc_api.build_configs', autospec=BuildconfigurationsApi)
 def test_unique_bc_name_exception(mock_configs_api, mock_get_id_by_name):
     with pytest.raises(argparse.ArgumentTypeError):
         cli_types.unique_bc_name('non-unique')
@@ -98,7 +98,7 @@ def test_valid_unique_bc_name_exception():
 
 @patch('pnc_cli.cli_types.valid_bc_name')
 @patch('pnc_cli.common.get_id_by_name', return_value=1)
-@patch('pnc_cli.cli_types.configs_api', autospec=BuildconfigurationsApi)
+@patch('pnc_cli.cli_types.pnc_api.build_configs', autospec=BuildconfigurationsApi)
 def test_existing_bc_name(mock_configs_api, mock_get_id_by_name, mock_valid_bc_name):
     result = cli_types.existing_bc_name('test')
     mock_valid_bc_name.assert_called_once_with('test')
@@ -108,7 +108,7 @@ def test_existing_bc_name(mock_configs_api, mock_get_id_by_name, mock_valid_bc_n
 
 @patch('pnc_cli.cli_types.valid_bc_name')
 @patch('pnc_cli.common.get_id_by_name', return_value=None)
-@patch('pnc_cli.cli_types.configs_api', autospec=BuildconfigurationsApi)
+@patch('pnc_cli.cli_types.pnc_api.build_configs', autospec=BuildconfigurationsApi)
 def test_existing_bc_name_exception(mock_configs_api, mock_get_id_by_name, mock_valid_bc_name):
     with pytest.raises(argparse.ArgumentTypeError):
         cli_types.existing_bc_name('test')
@@ -118,7 +118,7 @@ def test_existing_bc_name_exception(mock_configs_api, mock_get_id_by_name, mock_
 
 @patch('pnc_cli.cli_types.valid_id')
 @patch('pnc_cli.common.id_exists', return_value=True)
-@patch('pnc_cli.cli_types.configs_api', autospec=BuildconfigurationsApi)
+@patch('pnc_cli.cli_types.pnc_api.build_configs', autospec=BuildconfigurationsApi)
 def test_existing_bc_id(mock_configs_api, mock_id_exists, mock_valid_id):
     result = cli_types.existing_bc_id('1')
     mock_valid_id.assert_called_once_with('1')
@@ -128,7 +128,7 @@ def test_existing_bc_id(mock_configs_api, mock_id_exists, mock_valid_id):
 
 @patch('pnc_cli.cli_types.valid_id')
 @patch('pnc_cli.common.id_exists', return_value=False)
-@patch('pnc_cli.cli_types.configs_api', autospec=BuildconfigurationsApi)
+@patch('pnc_cli.cli_types.pnc_api.build_configs', autospec=BuildconfigurationsApi)
 def test_existing_bc_id_exception(mock_configs_api, mock_id_exists, mock_valid_id):
     with pytest.raises(argparse.ArgumentTypeError):
         cli_types.existing_bc_id('1')
@@ -138,7 +138,7 @@ def test_existing_bc_id_exception(mock_configs_api, mock_id_exists, mock_valid_i
 
 # Buildconfiguration set tests
 @patch('pnc_cli.common.get_id_by_name', return_value=None)
-@patch('pnc_cli.cli_types.sets_api', autospec=BuildconfigurationsApi)
+@patch('pnc_cli.cli_types.pnc_api.build_group_configs', autospec=BuildconfigurationsApi)
 def test_unique_bc_set_name(mock_sets_api, mock_get_id_by_name):
     result = cli_types.unique_bc_set_name('test')
     mock_get_id_by_name.assert_called_once_with(mock_sets_api, 'test')
@@ -146,7 +146,7 @@ def test_unique_bc_set_name(mock_sets_api, mock_get_id_by_name):
 
 
 @patch('pnc_cli.common.get_id_by_name', return_value=1)
-@patch('pnc_cli.cli_types.sets_api', autospec=BuildconfigurationsApi)
+@patch('pnc_cli.cli_types.pnc_api.build_group_configs', autospec=BuildconfigurationsApi)
 def test_unique_bc_set_name_exception(mock_sets_api, mock_get_id_by_name):
     with pytest.raises(argparse.ArgumentTypeError):
         cli_types.unique_bc_set_name('test')
@@ -154,7 +154,7 @@ def test_unique_bc_set_name_exception(mock_sets_api, mock_get_id_by_name):
 
 
 @patch('pnc_cli.common.get_id_by_name', return_value=1)
-@patch('pnc_cli.cli_types.sets_api', autospec=BuildconfigurationsApi)
+@patch('pnc_cli.cli_types.pnc_api.build_group_configs', autospec=BuildconfigurationsApi)
 def test_existing_bc_set_name(mock_sets_api, mock_get_id_by_name):
     result = cli_types.existing_bc_set_name('test')
     mock_get_id_by_name.assert_called_once_with(mock_sets_api, 'test')
@@ -162,7 +162,7 @@ def test_existing_bc_set_name(mock_sets_api, mock_get_id_by_name):
 
 
 @patch('pnc_cli.common.get_id_by_name', return_value=None)
-@patch('pnc_cli.cli_types.sets_api', autospec=BuildconfigurationsApi)
+@patch('pnc_cli.cli_types.pnc_api.build_group_configs', autospec=BuildconfigurationsApi)
 def test_existing_bc_set_name_exception(mock_sets_api, mock_get_id_by_name):
     with pytest.raises(argparse.ArgumentTypeError):
         cli_types.existing_bc_set_name('test')
@@ -171,7 +171,7 @@ def test_existing_bc_set_name_exception(mock_sets_api, mock_get_id_by_name):
 
 @patch('pnc_cli.common.id_exists', return_value=True)
 @patch('pnc_cli.cli_types.valid_id', return_value=1)
-@patch('pnc_cli.cli_types.sets_api', autospec=BuildconfigurationsApi)
+@patch('pnc_cli.cli_types.pnc_api.build_group_configs', autospec=BuildconfigurationsApi)
 def test_existing_bc_set_id(mock_sets_api, mock_valid_id, mock_id_exists):
     result = cli_types.existing_bc_set_id(1)
     mock_valid_id.assert_called_once_with(1)
@@ -181,7 +181,7 @@ def test_existing_bc_set_id(mock_sets_api, mock_valid_id, mock_id_exists):
 
 @patch('pnc_cli.common.id_exists', return_value=False)
 @patch('pnc_cli.cli_types.valid_id', return_value=1)
-@patch('pnc_cli.cli_types.sets_api', autospec=BuildconfigurationsApi)
+@patch('pnc_cli.cli_types.pnc_api.build_group_configs', autospec=BuildconfigurationsApi)
 def test_existing_bc_set_id_exception(mock_sets_api, mock_valid_id, mock_id_exists):
     with pytest.raises(argparse.ArgumentTypeError):
         cli_types.existing_bc_set_id(1)
@@ -192,7 +192,7 @@ def test_existing_bc_set_id_exception(mock_sets_api, mock_valid_id, mock_id_exis
 # Product type tests
 @patch('pnc_cli.cli_types.valid_id')
 @patch('pnc_cli.common.id_exists', return_value=True)
-@patch('pnc_cli.cli_types.products_api', autospec=ProductsApi)
+@patch('pnc_cli.cli_types.pnc_api.products', autospec=ProductsApi)
 def test_existing_product_id(mock_products_api, mock_id_exists, mock_valid_id):
     result = cli_types.existing_product_id('1')
     mock_valid_id.assert_called_once_with('1')
@@ -202,7 +202,7 @@ def test_existing_product_id(mock_products_api, mock_id_exists, mock_valid_id):
 
 @patch('pnc_cli.cli_types.valid_id')
 @patch('pnc_cli.common.id_exists', return_value=False)
-@patch('pnc_cli.cli_types.products_api', autospec=ProductsApi)
+@patch('pnc_cli.cli_types.pnc_api.products', autospec=ProductsApi)
 def test_existing_product_id_exception(mock_products_api, mock_id_exists, mock_valid_id):
     with pytest.raises(argparse.ArgumentTypeError):
         cli_types.existing_product_id('1')
@@ -211,7 +211,7 @@ def test_existing_product_id_exception(mock_products_api, mock_id_exists, mock_v
 
 
 @patch('pnc_cli.common.get_id_by_name', return_value=1)
-@patch('pnc_cli.cli_types.products_api', autospec=ProductsApi)
+@patch('pnc_cli.cli_types.pnc_api.products', autospec=ProductsApi)
 def test_existing_product_name(mock_products_api, mock_get_id_by_name):
     result = cli_types.existing_product_name('test')
     mock_get_id_by_name.assert_called_once_with(mock_products_api, 'test')
@@ -219,7 +219,7 @@ def test_existing_product_name(mock_products_api, mock_get_id_by_name):
 
 
 @patch('pnc_cli.common.get_id_by_name', return_value=None)
-@patch('pnc_cli.cli_types.products_api', autospec=ProductsApi)
+@patch('pnc_cli.cli_types.pnc_api.products', autospec=ProductsApi)
 def test_existing_product_name_exception(mock_products_api, mock_get_id_by_name):
     with pytest.raises(argparse.ArgumentTypeError):
         cli_types.existing_product_name('test')
@@ -227,7 +227,7 @@ def test_existing_product_name_exception(mock_products_api, mock_get_id_by_name)
 
 
 @patch('pnc_cli.common.get_id_by_name', return_value=None)
-@patch('pnc_cli.cli_types.products_api', autospec=ProductsApi)
+@patch('pnc_cli.cli_types.pnc_api.products', autospec=ProductsApi)
 def test_unique_product_name(mock_products_api, mock_get_id_by_name):
     result = cli_types.unique_product_name('test')
     mock_get_id_by_name.assert_called_once_with(mock_products_api, 'test')
@@ -235,7 +235,7 @@ def test_unique_product_name(mock_products_api, mock_get_id_by_name):
 
 
 @patch('pnc_cli.common.get_id_by_name', return_value='1')
-@patch('pnc_cli.cli_types.products_api', autospec=ProductsApi)
+@patch('pnc_cli.cli_types.pnc_api.products', autospec=ProductsApi)
 def test_unique_product_name_exception(mock_products_api, mock_get_id_by_name):
     with pytest.raises(argparse.ArgumentTypeError):
         cli_types.unique_product_name('existing')
@@ -245,7 +245,7 @@ def test_unique_product_name_exception(mock_products_api, mock_get_id_by_name):
 # ProductVersion type tests
 @patch('pnc_cli.cli_types.valid_id')
 @patch('pnc_cli.common.id_exists', return_value=True)
-@patch('pnc_cli.cli_types.versions_api', autospec=ProductversionsApi)
+@patch('pnc_cli.cli_types.pnc_api.product_versions', autospec=ProductversionsApi)
 def test_existing_product_version(mock_versions_api, mock_id_exists, mock_valid_id):
     result = cli_types.existing_product_version('1')
     mock_valid_id.assert_called_once_with('1')
@@ -255,7 +255,7 @@ def test_existing_product_version(mock_versions_api, mock_id_exists, mock_valid_
 
 @patch('pnc_cli.cli_types.valid_id')
 @patch('pnc_cli.common.id_exists', return_value=False)
-@patch('pnc_cli.cli_types.versions_api', autospec=ProductversionsApi)
+@patch('pnc_cli.cli_types.pnc_api.product_versions', autospec=ProductversionsApi)
 def test_existing_product_version_exception(mock_versions_api, mock_id_exists, mock_valid_id):
     with pytest.raises(argparse.ArgumentTypeError):
         cli_types.existing_product_version('1')
@@ -280,7 +280,7 @@ def test_valid_version_two_digits_exception(mock):
 # ProductMilestone type tests
 @patch('pnc_cli.cli_types.valid_id', return_value=True)
 @patch('pnc_cli.common.id_exists', return_value=True)
-@patch('pnc_cli.cli_types.milestones_api', autospec=ProductmilestonesApi)
+@patch('pnc_cli.cli_types.pnc_api.product_milestones', autospec=ProductmilestonesApi)
 def test_existing_product_milestone(mock_milestones_api, mock_id_exists, mock_valid_id):
     result = cli_types.existing_product_milestone('1')
     mock_valid_id.assert_called_once_with('1')
@@ -290,7 +290,7 @@ def test_existing_product_milestone(mock_milestones_api, mock_id_exists, mock_va
 
 @patch('pnc_cli.cli_types.valid_id', return_value=True)
 @patch('pnc_cli.common.id_exists', return_value=False)
-@patch('pnc_cli.cli_types.milestones_api', autospec=ProductmilestonesApi)
+@patch('pnc_cli.cli_types.pnc_api.product_milestones', autospec=ProductmilestonesApi)
 def test_existing_product_milestone_exception(mock_milestones_api, mock_id_exists, mock_valid_id):
     with pytest.raises(argparse.ArgumentTypeError):
         cli_types.existing_product_milestone('1')
@@ -329,7 +329,7 @@ def test_valid_version_update_exception(mock):
 # ProductRelease type tests
 @patch('pnc_cli.cli_types.valid_id')
 @patch('pnc_cli.common.id_exists', return_value=True)
-@patch('pnc_cli.cli_types.releases_api', autospec=ProductreleasesApi)
+@patch('pnc_cli.cli_types.pnc_api.product_releases', autospec=ProductreleasesApi)
 def test_existing_product_release(mock_releases_api, mock_id_exists, mock_valid_id):
     result = cli_types.existing_product_release('1')
     mock_valid_id.assert_called_once_with('1')
@@ -339,7 +339,7 @@ def test_existing_product_release(mock_releases_api, mock_id_exists, mock_valid_
 
 @patch('pnc_cli.cli_types.valid_id')
 @patch('pnc_cli.common.id_exists', return_value=False)
-@patch('pnc_cli.cli_types.releases_api', autospec=ProductreleasesApi)
+@patch('pnc_cli.cli_types.pnc_api.product_releases', autospec=ProductreleasesApi)
 def test_existing_product_release_exception(mock_releases_api, mock_id_exists, mock_valid_id):
     with pytest.raises(argparse.ArgumentTypeError):
         cli_types.existing_product_release('1')
@@ -349,7 +349,7 @@ def test_existing_product_release_exception(mock_releases_api, mock_id_exists, m
 
 @patch('pnc_cli.cli_types.valid_id')
 @patch('pnc_cli.common.id_exists', return_value=True)
-@patch('pnc_cli.cli_types.envs_api', autospec=EnvironmentsApi)
+@patch('pnc_cli.cli_types.pnc_api.environments', autospec=EnvironmentsApi)
 def test_existing_environment_id(mock_envs_api, mock_id_exists, mock_valid_id):
     result = cli_types.existing_environment_id('1')
     mock_valid_id.assert_called_once_with('1')
@@ -359,7 +359,7 @@ def test_existing_environment_id(mock_envs_api, mock_id_exists, mock_valid_id):
 
 @patch('pnc_cli.cli_types.valid_id')
 @patch('pnc_cli.common.id_exists', return_value=False)
-@patch('pnc_cli.cli_types.envs_api', autospec=EnvironmentsApi)
+@patch('pnc_cli.cli_types.pnc_api.environments', autospec=EnvironmentsApi)
 def test_existing_environment_id_exception(mock_envs_api, mock_id_exists, mock_valid_id):
     with pytest.raises(argparse.ArgumentTypeError):
         cli_types.existing_environment_id('1')
@@ -368,7 +368,7 @@ def test_existing_environment_id_exception(mock_envs_api, mock_id_exists, mock_v
 
 
 @patch('pnc_cli.common.get_id_by_name', return_value='1')
-@patch('pnc_cli.cli_types.envs_api', autospec=EnvironmentsApi)
+@patch('pnc_cli.cli_types.pnc_api.environments', autospec=EnvironmentsApi)
 def test_existing_environment_name(mock_envs_api, mock_get_id_by_name):
     result = cli_types.existing_environment_name('test')
     mock_get_id_by_name.assert_called_once_with(mock_envs_api, 'test')
@@ -376,7 +376,7 @@ def test_existing_environment_name(mock_envs_api, mock_get_id_by_name):
 
 
 @patch('pnc_cli.common.get_id_by_name', return_value=None)
-@patch('pnc_cli.cli_types.envs_api', autospec=EnvironmentsApi)
+@patch('pnc_cli.cli_types.pnc_api.environments', autospec=EnvironmentsApi)
 def test_existing_environment_name_exception(mock_envs_api, mock_get_id_by_name):
     with pytest.raises(argparse.ArgumentTypeError):
         cli_types.existing_environment_name('test')
@@ -384,7 +384,7 @@ def test_existing_environment_name_exception(mock_envs_api, mock_get_id_by_name)
 
 
 @patch('pnc_cli.common.get_id_by_name', return_value=None)
-@patch('pnc_cli.cli_types.envs_api', autospec=EnvironmentsApi)
+@patch('pnc_cli.cli_types.pnc_api.environments', autospec=EnvironmentsApi)
 def test_unique_environment_name(mock_envs_api, mock_get_id_by_name):
     result = cli_types.unique_environment_name('testerino')
     mock_get_id_by_name.assert_called_once_with(mock_envs_api, 'testerino')
@@ -392,7 +392,7 @@ def test_unique_environment_name(mock_envs_api, mock_get_id_by_name):
 
 
 @patch('pnc_cli.common.get_id_by_name', return_value=1)
-@patch('pnc_cli.cli_types.envs_api', autospec=EnvironmentsApi)
+@patch('pnc_cli.cli_types.pnc_api.environments', autospec=EnvironmentsApi)
 def test_unique_environment_name_exception(mock_envs_api, mock_get_id_by_name):
     with pytest.raises(argparse.ArgumentTypeError):
         cli_types.unique_environment_name('testerino')
@@ -402,7 +402,7 @@ def test_unique_environment_name_exception(mock_envs_api, mock_get_id_by_name):
 # Project type tests
 @patch('pnc_cli.cli_types.valid_id')
 @patch('pnc_cli.common.id_exists', return_value=True)
-@patch('pnc_cli.cli_types.projects_api', autospec=ProjectsApi)
+@patch('pnc_cli.cli_types.pnc_api.projects', autospec=ProjectsApi)
 def test_existing_project_id(mock_projects_api, mock_id_exists, mock_valid_id):
     result = cli_types.existing_project_id('1')
     mock_valid_id.assert_called_once_with('1')
@@ -412,7 +412,7 @@ def test_existing_project_id(mock_projects_api, mock_id_exists, mock_valid_id):
 
 @patch('pnc_cli.cli_types.valid_id')
 @patch('pnc_cli.common.id_exists', return_value=False)
-@patch('pnc_cli.cli_types.projects_api', autospec=ProjectsApi)
+@patch('pnc_cli.cli_types.pnc_api.projects', autospec=ProjectsApi)
 def test_existing_project_id_exception(mock_projects_api, mock_id_exists, mock_valid_id):
     with pytest.raises(argparse.ArgumentTypeError):
         cli_types.existing_project_id('1')
@@ -421,7 +421,7 @@ def test_existing_project_id_exception(mock_projects_api, mock_id_exists, mock_v
 
 
 @patch('pnc_cli.common.get_id_by_name', return_value='1')
-@patch('pnc_cli.cli_types.projects_api', autospec=ProjectsApi)
+@patch('pnc_cli.cli_types.pnc_api.projects', autospec=ProjectsApi)
 def test_existing_project_name(mock_projects_api, mock_get_id_by_name):
     result = cli_types.existing_project_name('testerino')
     mock_get_id_by_name.assert_called_once_with(mock_projects_api, 'testerino')
@@ -429,7 +429,7 @@ def test_existing_project_name(mock_projects_api, mock_get_id_by_name):
 
 
 @patch('pnc_cli.common.get_id_by_name', return_value=None)
-@patch('pnc_cli.cli_types.projects_api', autospec=ProjectsApi)
+@patch('pnc_cli.cli_types.pnc_api.projects', autospec=ProjectsApi)
 def test_existing_project_name_exception(mock_projects_api, mock_get_id_by_name):
     with pytest.raises(argparse.ArgumentTypeError):
         cli_types.existing_project_name('testerino')
@@ -437,7 +437,7 @@ def test_existing_project_name_exception(mock_projects_api, mock_get_id_by_name)
 
 
 @patch('pnc_cli.common.get_id_by_name', return_value=None)
-@patch('pnc_cli.cli_types.projects_api', autospec=ProjectsApi)
+@patch('pnc_cli.cli_types.pnc_api.projects', autospec=ProjectsApi)
 def test_unique_project_name(mock_projects_api, mock_get_id_by_name):
     result = cli_types.unique_project_name('testerino')
     mock_get_id_by_name.assert_called_once_with(mock_projects_api, 'testerino')
@@ -445,7 +445,7 @@ def test_unique_project_name(mock_projects_api, mock_get_id_by_name):
 
 
 @patch('pnc_cli.common.get_id_by_name', return_value='1')
-@patch('pnc_cli.cli_types.projects_api', autospec=ProjectsApi)
+@patch('pnc_cli.cli_types.pnc_api.projects', autospec=ProjectsApi)
 def test_unique_project_name_exception(mock_projects_api, mock_get_id_by_name):
     with pytest.raises(argparse.ArgumentTypeError):
         cli_types.unique_project_name('testerino')
@@ -455,7 +455,7 @@ def test_unique_project_name_exception(mock_projects_api, mock_get_id_by_name):
 # BuildConfigurationSetRecord type tests
 @patch('pnc_cli.cli_types.valid_id')
 @patch('pnc_cli.common.id_exists', return_value=True)
-@patch('pnc_cli.cli_types.bcsr_api', autospec=BuildconfigsetrecordsApi)
+@patch('pnc_cli.cli_types.pnc_api.build_groups', autospec=BuildconfigsetrecordsApi)
 def test_existing_bc_set_record(mock_bcsr_api, mock_id_exists, mock_valid_id):
     result = cli_types.existing_bc_set_record('1')
     mock_valid_id.assert_called_once_with('1')
@@ -465,7 +465,7 @@ def test_existing_bc_set_record(mock_bcsr_api, mock_id_exists, mock_valid_id):
 
 @patch('pnc_cli.cli_types.valid_id')
 @patch('pnc_cli.common.id_exists', return_value=False)
-@patch('pnc_cli.cli_types.bcsr_api', autospec=BuildconfigsetrecordsApi)
+@patch('pnc_cli.cli_types.pnc_api.build_groups', autospec=BuildconfigsetrecordsApi)
 def test_existing_bc_set_record_exception(mock_bcsr_api, mock_id_exists, mock_valid_id):
     with pytest.raises(argparse.ArgumentTypeError):
         cli_types.existing_bc_set_record('1')
@@ -476,7 +476,7 @@ def test_existing_bc_set_record_exception(mock_bcsr_api, mock_id_exists, mock_va
 # BuildRecord type tests
 @patch('pnc_cli.cli_types.valid_id')
 @patch('pnc_cli.common.id_exists', return_value=True)
-@patch('pnc_cli.cli_types.records_api', autospec=BuildrecordsApi)
+@patch('pnc_cli.cli_types.pnc_api.builds', autospec=BuildrecordsApi)
 def test_existing_build_record(mock_records_api, mock_id_exists, mock_valid_id):
     result = cli_types.existing_build_record('1')
     mock_valid_id.assert_called_once_with('1')
@@ -486,7 +486,7 @@ def test_existing_build_record(mock_records_api, mock_id_exists, mock_valid_id):
 
 @patch('pnc_cli.cli_types.valid_id')
 @patch('pnc_cli.common.id_exists', return_value=False)
-@patch('pnc_cli.cli_types.records_api', autospec=BuildrecordsApi)
+@patch('pnc_cli.cli_types.pnc_api.builds', autospec=BuildrecordsApi)
 def test_existing_build_record_exception(mock_records_api, mock_id_exists, mock_valid_id):
     with pytest.raises(argparse.ArgumentTypeError):
         cli_types.existing_build_record('1')
@@ -497,7 +497,7 @@ def test_existing_build_record_exception(mock_records_api, mock_id_exists, mock_
 # License type tests
 @patch('pnc_cli.cli_types.valid_id')
 @patch('pnc_cli.common.id_exists', return_value=True)
-@patch('pnc_cli.cli_types.licenses_api', autospec=LicensesApi)
+@patch('pnc_cli.cli_types.pnc_api.licenses', autospec=LicensesApi)
 def test_existing_license(mock_licenses_api, mock_id_exists, mock_valid_id):
     result = cli_types.existing_license('1')
     mock_valid_id.assert_called_once_with('1')
@@ -507,7 +507,7 @@ def test_existing_license(mock_licenses_api, mock_id_exists, mock_valid_id):
 
 @patch('pnc_cli.cli_types.valid_id')
 @patch('pnc_cli.common.id_exists', return_value=False)
-@patch('pnc_cli.cli_types.licenses_api', autospec=LicensesApi)
+@patch('pnc_cli.cli_types.pnc_api.licenses', autospec=LicensesApi)
 def test_existing_license_exception(mock_licenses_api, mock_id_exists, mock_valid_id):
     with pytest.raises(argparse.ArgumentTypeError):
         cli_types.existing_license('1')
@@ -517,7 +517,7 @@ def test_existing_license_exception(mock_licenses_api, mock_id_exists, mock_vali
 
 @patch('pnc_cli.cli_types.valid_id')
 @patch('pnc_cli.common.id_exists', return_value=True)
-@patch('pnc_cli.cli_types.running_api', autospec=RunningbuildrecordsApi)
+@patch('pnc_cli.cli_types.pnc_api.running_builds', autospec=RunningbuildrecordsApi)
 def test_existing_running_build(mock_running_api, mock_id_exists, mock_valid_id):
     result = cli_types.existing_running_build(1)
     mock_valid_id.assert_called_once_with(1)
@@ -527,7 +527,7 @@ def test_existing_running_build(mock_running_api, mock_id_exists, mock_valid_id)
 
 @patch('pnc_cli.cli_types.valid_id')
 @patch('pnc_cli.common.id_exists', return_value=False)
-@patch('pnc_cli.cli_types.running_api', autospec=RunningbuildrecordsApi)
+@patch('pnc_cli.cli_types.pnc_api.running_builds', autospec=RunningbuildrecordsApi)
 def test_existing_running_build_exception(mock_running_api, mock_id_exists, mock_valid_id):
     with pytest.raises(argparse.ArgumentTypeError):
         cli_types.existing_running_build(1)

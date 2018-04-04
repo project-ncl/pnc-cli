@@ -6,10 +6,8 @@ import pnc_cli.common as common
 import pnc_cli.cli_types as types
 from pnc_cli import swagger_client
 from pnc_cli import utils
-from pnc_cli.swagger_client import RepositoryconfigurationsApi
-import pnc_cli.user_config as uc
+from pnc_cli.pnc_api import pnc_api
 
-repos_api = RepositoryconfigurationsApi(uc.user.get_api_client())
 
 @arg("id", help="ID of the RepositoryConfiguration to retrieve.", type=types.existing_bc_id)
 def get_repository_configuration(id):
@@ -17,7 +15,7 @@ def get_repository_configuration(id):
     Retrieve a specific RepositoryConfiguration
     """
 
-    response = utils.checked_api_call(repos_api, 'get_specific', id=id)
+    response = utils.checked_api_call(pnc_api.repositories, 'get_specific', id=id)
     if response:
         return response.content
 
@@ -31,7 +29,7 @@ def update_repository_configuration(id, external_repository=None, prebuild_sync=
     """
     to_update_id = id
 
-    rc_to_update = repos_api.get_specific(id=to_update_id).content
+    rc_to_update = pnc_api.repositories.get_specific(id=to_update_id).content
 
     new_external = rc_to_update.external_url
     if external_repository is not None:
@@ -44,7 +42,7 @@ def update_repository_configuration(id, external_repository=None, prebuild_sync=
         logging.error("You cannot enable prebuild sync without external repository")
         return
 
-    response = utils.checked_api_call(repos_api, 'update', id=to_update_id, body=bc_to_update)
+    response = utils.checked_api_call(pnc_api.repositories, 'update', id=to_update_id, body=bc_to_update)
     if response:
         return response.content
 
@@ -72,7 +70,7 @@ def create_repository_configuration(repository, external_repository=None, prebui
         repository_configuration.pre_build_sync_enabled = prebuild_sync
 
     response = utils.checked_api_call(
-        repos_api, 'create_new', body=repository_configuration)
+        pnc_api.repositories, 'create_new', body=repository_configuration)
     if response:
         return utils.format_json(response.content)
 
@@ -84,7 +82,7 @@ def list_repository_configurations(page_size=200, page_index=0, sort="", q=""):
     """
     List all RepositoryConfigurations
     """
-    response = utils.checked_api_call(repos_api, 'get_all', page_size=page_size, page_index=page_index, sort=sort, q=q)
+    response = utils.checked_api_call(pnc_api.repositories, 'get_all', page_size=page_size, page_index=page_index, sort=sort, q=q)
     if response:
         return utils.format_json_list(response.content)
 
@@ -104,7 +102,7 @@ def search_repository_configuration_raw(url, page_size=10, page_index=0, sort=""
     """
     Search for Repository Configurations based on internal or external url
     """
-    response = utils.checked_api_call(repos_api, 'search', page_size=page_size, page_index=page_index, sort=sort, search=url)
+    response = utils.checked_api_call(pnc_api.repositories, 'search', page_size=page_size, page_index=page_index, sort=sort, search=url)
     if response:
         return response.content
 
@@ -125,6 +123,6 @@ def match_repository_configuration_raw(url, page_size=10, page_index=0, sort="")
     """
     Search for Repository Configurations based on internal or external url with exact match
     """
-    response = utils.checked_api_call(repos_api, 'match', page_size=page_size, page_index=page_index, sort=sort, search=url)
+    response = utils.checked_api_call(pnc_api.repositories, 'match', page_size=page_size, page_index=page_index, sort=sort, search=url)
     if response:
         return response.content

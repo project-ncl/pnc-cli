@@ -5,10 +5,8 @@ import pnc_cli.common as common
 import pnc_cli.cli_types as types
 import pnc_cli.utils as utils
 from pnc_cli.swagger_client import ProductRest
-from pnc_cli.swagger_client import ProductsApi
-import pnc_cli.user_config as uc
+from pnc_cli.pnc_api import pnc_api
 
-products_api = ProductsApi(uc.user.get_api_client())
 
 __author__ = 'thauser'
 
@@ -37,7 +35,7 @@ def create_product(name, abbreviation, **kwargs):
 
 def create_product_raw(name, abbreviation, **kwargs):
     product = create_product_object(name=name, abbreviation=abbreviation, **kwargs)
-    response = utils.checked_api_call(products_api, 'create_new', body=product)
+    response = utils.checked_api_call(pnc_api.products, 'create_new', body=product)
     if response:
         return response.content
 
@@ -59,14 +57,14 @@ def update_product(product_id, **kwargs):
         return utils.format_json(content)
 
 def update_product_raw(product_id, **kwargs):
-    to_update = products_api.get_specific(id=product_id).content
+    to_update = pnc_api.products.get_specific(id=product_id).content
 
     for key, value in iteritems(kwargs):
         if value is not None:
             setattr(to_update, key, value)
 
     response = utils.checked_api_call(
-        products_api, 'update', id=product_id, body=to_update)
+        pnc_api.products, 'update', id=product_id, body=to_update)
     if response:
         return response.content
 
@@ -82,8 +80,8 @@ def get_product(id=None, name=None):
         return utils.format_json(content)
 
 def get_product_raw(id=None, name=None):
-    prod_id = common.set_id(products_api, id, name)
-    response = utils.checked_api_call(products_api, 'get_specific', id=prod_id)
+    prod_id = common.set_id(pnc_api.products, id, name)
+    response = utils.checked_api_call(pnc_api.products, 'get_specific', id=prod_id)
     if response:
         return response.content
 
@@ -103,9 +101,9 @@ def list_versions_for_product(id=None, name=None, page_size=200, page_index=0, s
         return utils.format_json_list(content)
 
 def list_versions_for_product_raw(id=None, name=None, page_size=200, page_index=0, sort='', q=''):
-    prod_id = common.set_id(products_api, id, name)
+    prod_id = common.set_id(pnc_api.products, id, name)
     response = utils.checked_api_call(
-        products_api, 'get_product_versions', id=prod_id, page_size=page_size, page_index=page_index, sort=sort, q=q)
+        pnc_api.products, 'get_product_versions', id=prod_id, page_size=page_size, page_index=page_index, sort=sort, q=q)
     if response:
         return response.content
 
@@ -122,6 +120,6 @@ def list_products(page_size=200, page_index=0, sort="", q=""):
         return utils.format_json_list(content)
 
 def list_products_raw(page_size=200, page_index=0, sort='', q=''):
-    response = utils.checked_api_call(products_api, 'get_all', page_size=page_size, page_index=page_index, q=q, sort=sort)
+    response = utils.checked_api_call(pnc_api.products, 'get_all', page_size=page_size, page_index=page_index, q=q, sort=sort)
     if response:
         return response.content

@@ -31,7 +31,7 @@ def test_get_product_version_from_milestone(mock):
     assert result == 1
 
 
-@patch('pnc_cli.productmilestones.productversions_api.get_specific',
+@patch('pnc_cli.productmilestones.pnc_api.product_versions.get_specific',
        return_value=MagicMock(content=MagicMock(product_milestones=[])))
 def test_unique_version_value(mock):
     result = productmilestones.unique_version_value(1, '1.0.0')
@@ -39,7 +39,7 @@ def test_unique_version_value(mock):
     assert not result
 
 
-@patch('pnc_cli.productmilestones.productversions_api.get_specific',
+@patch('pnc_cli.productmilestones.pnc_api.product_versions.get_specific',
        return_value=MagicMock(content=MagicMock(product_milestones=[MagicMock(version='1.0.0')])))
 def test_unique_version_value_existing(mock):
     with pytest.raises(argparse.ArgumentTypeError):
@@ -47,7 +47,7 @@ def test_unique_version_value_existing(mock):
     mock.assert_called_once_with(id=1)
 
 
-@patch('pnc_cli.productmilestones.milestones_api.get_all', return_value=MagicMock(content=[1, 2, 3]))
+@patch('pnc_cli.productmilestones.pnc_api.product_milestones.get_all', return_value=MagicMock(content=[1, 2, 3]))
 def test_list_milestones(mock):
     result = productmilestones.list_milestones_raw()
     mock.assert_called_once_with(page_index=0, page_size=200, q="", sort="")
@@ -55,8 +55,8 @@ def test_list_milestones(mock):
 
 
 @patch('pnc_cli.productmilestones.create_milestone_object', return_value='created milestone')
-@patch('pnc_cli.productmilestones.milestones_api.create_new', return_value=MagicMock(content='created milestone'))
-@patch('pnc_cli.productmilestones.productversions_api.get_specific',
+@patch('pnc_cli.productmilestones.pnc_api.product_milestones.create_new', return_value=MagicMock(content='created milestone'))
+@patch('pnc_cli.productmilestones.pnc_api.product_versions.get_specific',
        return_value=MagicMock(content=MagicMock(version=1.0)))
 def test_create_milestone(mock_get_specific, mock_create_new, mock_create_milestone_object):
     result = productmilestones.create_milestone_raw(product_version_id=1, version='1.GA', starting_date='2015-01-01',
@@ -71,7 +71,7 @@ def test_create_milestone(mock_get_specific, mock_create_new, mock_create_milest
     assert result == 'created milestone'
 
 
-@patch('pnc_cli.productmilestones.milestones_api.get_all_by_product_version_id', return_value=MagicMock(
+@patch('pnc_cli.productmilestones.pnc_api.product_milestones.get_all_by_product_version_id', return_value=MagicMock(
     content=[MagicMock(version_id=1, ver_name='mock1'), MagicMock(version_id=1, ver_name='mock2')]))
 def test_list_milestones_for_version(mock):
     result = [x.ver_name for x in productmilestones.list_milestones_for_version_raw(1)]
@@ -79,15 +79,15 @@ def test_list_milestones_for_version(mock):
     assert result == ['mock1', 'mock2']
 
 
-@patch('pnc_cli.productmilestones.milestones_api.get_specific', return_value=MagicMock(content='target milestone'))
+@patch('pnc_cli.productmilestones.pnc_api.product_milestones.get_specific', return_value=MagicMock(content='target milestone'))
 def test_get_milestone(mock):
     result = productmilestones.get_milestone_raw(1)
     mock.assert_called_once_with(id=1)
     assert result == 'target milestone'
 
 
-@patch('pnc_cli.productmilestones.milestones_api.get_specific')
-@patch('pnc_cli.productmilestones.milestones_api.update', return_value=MagicMock(content='updated milestone'))
+@patch('pnc_cli.productmilestones.pnc_api.product_milestones.get_specific')
+@patch('pnc_cli.productmilestones.pnc_api.product_milestones.update', return_value=MagicMock(content='updated milestone'))
 @patch('pnc_cli.productmilestones.unique_version_value')
 @patch('pnc_cli.productmilestones.get_product_version_from_milestone', return_value=1)
 def test_update_milestone_new_start_date(mock_get_version, mock_unique, mock_update, mock_get_specific):
@@ -108,8 +108,8 @@ def test_update_milestone_new_start_date(mock_get_version, mock_unique, mock_upd
     assert result == 'updated milestone'
 
 
-@patch('pnc_cli.productmilestones.milestones_api.get_specific')
-@patch('pnc_cli.productmilestones.milestones_api.update', return_value=MagicMock(content='updated milestone'))
+@patch('pnc_cli.productmilestones.pnc_api.product_milestones.get_specific')
+@patch('pnc_cli.productmilestones.pnc_api.product_milestones.update', return_value=MagicMock(content='updated milestone'))
 @patch('pnc_cli.productmilestones.unique_version_value')
 @patch('pnc_cli.productmilestones.get_product_version_from_milestone', return_value=1)
 def test_update_milestone_new_start_end_date(mock_get_version, mock_unique, mock_update, mock_get_specific):
@@ -132,8 +132,8 @@ def test_update_milestone_new_start_end_date(mock_get_version, mock_unique, mock
     assert result == 'updated milestone'
 
 
-@patch('pnc_cli.productmilestones.milestones_api.get_specific')
-@patch('pnc_cli.productmilestones.milestones_api.update', return_value=MagicMock(content='updated milestone'))
+@patch('pnc_cli.productmilestones.pnc_api.product_milestones.get_specific')
+@patch('pnc_cli.productmilestones.pnc_api.product_milestones.update', return_value=MagicMock(content='updated milestone'))
 @patch('pnc_cli.productmilestones.unique_version_value')
 @patch('pnc_cli.productmilestones.get_product_version_from_milestone', return_value=1)
 def test_update_milestone_new_end_date(mock_get_version, mock_unique, mock_update, mock_get_specific):
@@ -154,14 +154,14 @@ def test_update_milestone_new_end_date(mock_get_version, mock_unique, mock_updat
     assert result == 'updated milestone'
 
 
-@patch('pnc_cli.productmilestones.milestones_api.get_distributed_artifacts', return_value=MagicMock(content=[1, 2, 3]))
+@patch('pnc_cli.productmilestones.pnc_api.product_milestones.get_distributed_artifacts', return_value=MagicMock(content=[1, 2, 3]))
 def test_list_distributed_artifacts(mock):
     result = productmilestones.list_distributed_artifacts_raw(1)
     mock.assert_called_once_with(id=1, page_index=0, page_size=200, sort="", q="")
     assert result == [1, 2, 3]
 
 
-@patch('pnc_cli.productmilestones.milestones_api.get_distributed_builds', return_value=MagicMock(content=[1, 2, 3]))
+@patch('pnc_cli.productmilestones.pnc_api.product_milestones.get_distributed_builds', return_value=MagicMock(content=[1, 2, 3]))
 def test_list_distributed_builds(mock):
     result = productmilestones.list_distributed_builds_raw(1)
     mock.assert_called_once_with(id=1, page_index=0, page_size=200, sort='', q='')

@@ -3,14 +3,8 @@ import sys
 
 from argh import arg
 
-from pnc_cli.swagger_client import ProductversionsApi
-from pnc_cli.swagger_client import ProductmilestonesApi
-from pnc_cli.swagger_client import BuildrecordsApi
-import pnc_cli.user_config as uc
+from pnc_cli.pnc_api import pnc_api
 
-productversions_api = ProductversionsApi(uc.user.get_api_client())
-productmilestones_api = ProductmilestonesApi(uc.user.get_api_client())
-buildrecords_api = BuildrecordsApi(uc.user.get_api_client())
 
 @arg('-p', '--product_name', help='Product name')
 @arg('-v', '--product_version', help='Product version')
@@ -21,12 +15,12 @@ def generate_repo_list(product_name=None, product_version=None, product_mileston
     """
     if not validate_input_parameters(product_name, product_version, product_milestone):
         sys.exit(1)
-    product_version = productversions_api.get_all(q="version=='"+ product_version + "';product.name=='"+product_name+"'")
+    product_version = pnc_api.product_versions.get_all(q="version=='"+ product_version + "';product.name=='"+product_name+"'")
     if not product_version.content:
         logging.error('Specified product version not found.')
         sys.exit(1)
     product_version_id = product_version.content[0].id
-    milestone = productmilestones_api.get_all(q="version=='"+ product_milestone + "';productVersion.id=='"+str(product_version_id)+"'")
+    milestone = pnc_api.product_milestones.get_all(q="version=='"+ product_milestone + "';productVersion.id=='"+str(product_version_id)+"'")
     if not milestone.content:
         logging.error('Specified milestone not found.')
         sys.exit(1)
@@ -43,26 +37,26 @@ def generate_repo_list(product_name=None, product_version=None, product_mileston
 def get_all_artifacts(build_id):
     artifacts = []
     page = 0
-    ba = buildrecords_api.get_built_artifacts(build_id, page_index=page, page_size=50)
+    ba = pnc_api.builds.get_built_artifacts(build_id, page_index=page, page_size=50)
     if not ba.content:
         return []
     pages = ba.total_pages
     artifacts.extend(ba.content)
     for page in range(1,pages):
-        ba = buildrecords_api.get_built_artifacts(build_id, page_index=page, page_size=50)
+        ba = pnc_api.builds.get_built_artifacts(build_id, page_index=page, page_size=50)
         artifacts.extend(ba.content)
     return artifacts
 
 def get_all_successful_builds(milestone_id):
     builds = []
     page = 0
-    pb = productmilestones_api.get_performed_builds(milestone_id, page_index=page, page_size=2, q="status=='SUCCESS'")
+    pb = pnc_api.product_milestones.get_performed_builds(milestone_id, page_index=page, page_size=2, q="status=='SUCCESS'")
     if not pb.content:
         return []
     pages = pb.total_pages
     builds.extend(pb.content)
     for page in range(1,pages):
-        pb = productmilestones_api.get_performed_builds(milestone_id, page_index=page, page_size=2, q="status=='SUCCESS'")
+        pb = pnc_api.product_milestones.get_performed_builds(milestone_id, page_index=page, page_size=2, q="status=='SUCCESS'")
         builds.extend(pb.content)
     return builds
 

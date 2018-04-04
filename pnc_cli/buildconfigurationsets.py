@@ -9,14 +9,9 @@ import pnc_cli.common as common
 import pnc_cli.cli_types as types
 import pnc_cli.utils as utils
 from pnc_cli import swagger_client
-from pnc_cli.swagger_client.apis.buildconfigurations_api import BuildconfigurationsApi
-from pnc_cli.swagger_client.apis.buildconfigurationsets_api import BuildconfigurationsetsApi
-import pnc_cli.user_config as uc
+from pnc_cli.pnc_api import pnc_api
 
 import sys
-
-sets_api = BuildconfigurationsetsApi(uc.user.get_api_client())
-configs_api = BuildconfigurationsApi(uc.user.get_api_client())
 
 
 def _create_build_config_set_object(**kwargs):
@@ -27,7 +22,7 @@ def _create_build_config_set_object(**kwargs):
 
 
 def list_build_configuration_sets_raw(page_size=200, page_index=0, sort="", q=""):
-    response = utils.checked_api_call(sets_api, 'get_all', page_size=page_size,
+    response = utils.checked_api_call(pnc_api.build_group_configs, 'get_all', page_size=page_size,
             page_index=page_index, sort=sort, q=q)
 
     if response:
@@ -51,7 +46,7 @@ def create_build_configuration_set_raw(**kwargs):
     Create a new BuildConfigurationSet.
     """
     config_set = _create_build_config_set_object(**kwargs)
-    response = utils.checked_api_call(sets_api, 'create_new', body=config_set)
+    response = utils.checked_api_call(pnc_api.build_group_configs, 'create_new', body=config_set)
     if response:
         return response.content
 
@@ -75,8 +70,8 @@ def get_build_configuration_set_raw(id=None, name=None):
     """
     Get a specific BuildConfigurationSet by name or ID
     """
-    found_id = common.set_id(sets_api, id, name)
-    response = utils.checked_api_call(sets_api, 'get_specific', id=found_id)
+    found_id = common.set_id(pnc_api.build_group_configs, id, name)
+    response = utils.checked_api_call(pnc_api.build_group_configs, 'get_specific', id=found_id)
     if response:
         return response.content
 
@@ -92,13 +87,13 @@ def get_build_configuration_set(id=None, name=None):
 
 
 def update_build_configuration_set_raw(id, **kwargs):
-    set_to_update = utils.checked_api_call(sets_api, 'get_specific', id=id).content
+    set_to_update = utils.checked_api_call(pnc_api.build_group_configs, 'get_specific', id=id).content
 
     for key, value in kwargs.items():
         if value is not None:
             setattr(set_to_update, key, value)
 
-    response = utils.checked_api_call(sets_api, 'update', id=id, body=set_to_update)
+    response = utils.checked_api_call(pnc_api.build_group_configs, 'update', id=id, body=set_to_update)
     if response:
         return response.content
 
@@ -119,8 +114,8 @@ def update_build_configuration_set(id, **kwargs):
 
 
 def delete_build_configuration_set_raw(id=None, name=None):
-    set_id = common.set_id(sets_api, id, name)
-    response = utils.checked_api_call(sets_api, 'delete_specific', id=set_id)
+    set_id = common.set_id(pnc_api.build_group_configs, id, name)
+    response = utils.checked_api_call(pnc_api.build_group_configs, 'delete_specific', id=set_id)
     if response:
         return response.content
 
@@ -149,8 +144,8 @@ def build_set_raw(id=None, name=None,
         logging.error("You can only activate timestamp alignment with the temporary build flag!")
         sys.exit(1)
 
-    found_id = common.set_id(sets_api, id, name)
-    response = utils.checked_api_call(sets_api, 'build', id=found_id,
+    found_id = common.set_id(pnc_api.build_group_configs, id, name)
+    response = utils.checked_api_call(pnc_api.build_group_configs, 'build', id=found_id,
                                       temporary_build=tempbuild,
                                       timestamp_alignment=timestamp_alignment,
                                       force_rebuild=force)
@@ -176,8 +171,8 @@ def build_set(id=None, name=None,
 
 
 def list_build_configurations_for_set_raw(id=None, name=None, page_size=200, page_index=0, sort="", q=""):
-    found_id = common.set_id(sets_api, id, name)
-    response = utils.checked_api_call(sets_api, 'get_configurations', id=found_id, page_size=page_size, page_index=page_index, sort=sort, q=q)
+    found_id = common.set_id(pnc_api.build_group_configs, id, name)
+    response = utils.checked_api_call(pnc_api.build_group_configs, 'get_configurations', id=found_id, page_size=page_size, page_index=page_index, sort=sort, q=q)
     if response:
         return response.content
 
@@ -199,11 +194,11 @@ def list_build_configurations_for_set(id=None, name=None, page_size=200, page_in
 
 def add_build_configuration_to_set_raw(
         set_id=None, set_name=None, config_id=None, config_name=None):
-    config_set_id = common.set_id(sets_api, set_id, set_name)
-    bc_id = common.set_id(configs_api, config_id, config_name)
-    bc = common.get_entity(configs_api, bc_id)
+    config_set_id = common.set_id(pnc_api.build_group_configs, set_id, set_name)
+    bc_id = common.set_id(pnc_api.build_configs, config_id, config_name)
+    bc = common.get_entity(pnc_api.build_configs, bc_id)
     response = utils.checked_api_call(
-        sets_api,
+        pnc_api.build_group_configs,
         'add_configuration',
         id=config_set_id,
         body=bc)
@@ -228,10 +223,10 @@ def add_build_configuration_to_set(
 
 
 def remove_build_configuration_from_set_raw(set_id=None, set_name=None, config_id=None, config_name=None):
-    config_set_id = common.set_id(sets_api, set_id, set_name)
-    bc_id = common.set_id(configs_api, config_id, config_name)
+    config_set_id = common.set_id(pnc_api.build_group_configs, set_id, set_name)
+    bc_id = common.set_id(pnc_api.build_configs, config_id, config_name)
     response = utils.checked_api_call(
-        sets_api,
+        pnc_api.build_group_configs,
         'remove_configuration',
         id=config_set_id,
         config_id=bc_id)
@@ -252,8 +247,8 @@ def remove_build_configuration_from_set(set_id=None, set_name=None, config_id=No
 
 
 def list_build_records_for_set_raw(id=None, name=None, page_size=200, page_index=0, sort="", q=""):
-    found_id = common.set_id(sets_api, id, name)
-    response = utils.checked_api_call(sets_api, 'get_build_records', id=found_id, page_size=page_size, page_index=page_index, sort=sort, q=q)
+    found_id = common.set_id(pnc_api.build_group_configs, id, name)
+    response = utils.checked_api_call(pnc_api.build_group_configs, 'get_build_records', id=found_id, page_size=page_size, page_index=page_index, sort=sort, q=q)
     if response:
         return response.content
 
@@ -274,8 +269,8 @@ def list_build_records_for_set(id=None, name=None, page_size=200, page_index=0, 
 
 
 def list_build_set_records_raw(id=None, name=None, page_size=200, page_index=0, sort="", q=""):
-    found_id = common.set_id(sets_api, id, name)
-    response = utils.checked_api_call(sets_api, 'get_all_build_config_set_records', id=found_id, page_size=page_size, page_index=page_index, sort=sort, q=q)
+    found_id = common.set_id(pnc_api.build_group_configs, id, name)
+    response = utils.checked_api_call(pnc_api.build_group_configs, 'get_all_build_config_set_records', id=found_id, page_size=page_size, page_index=page_index, sort=sort, q=q)
     if response:
         return response.content
 

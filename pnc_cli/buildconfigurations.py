@@ -6,22 +6,9 @@ import pnc_cli.common as common
 import pnc_cli.cli_types as types
 from pnc_cli import swagger_client
 from pnc_cli import utils
-from pnc_cli.swagger_client import BuildconfigurationsApi
-from pnc_cli.swagger_client import RepositoryconfigurationsApi
-from pnc_cli.swagger_client import EnvironmentsApi
-from pnc_cli.swagger_client import ProductsApi
-from pnc_cli.swagger_client import ProductversionsApi
-from pnc_cli.swagger_client import ProjectsApi
-import pnc_cli.user_config as uc
+from pnc_cli.pnc_api import pnc_api
 
 import sys
-
-projects_api = ProjectsApi(uc.user.get_api_client())
-configs_api = BuildconfigurationsApi(uc.user.get_api_client())
-repos_api = RepositoryconfigurationsApi(uc.user.get_api_client())
-envs_api = EnvironmentsApi(uc.user.get_api_client())
-versions_api = ProductversionsApi(uc.user.get_api_client())
-products_api = ProductsApi(uc.user.get_api_client())
 
 
 def create_build_conf_object(**kwargs):
@@ -37,7 +24,7 @@ def get_build_configuration_id_by_name(name):
     :param name: name of build configuration
     :return: id of the matching build configuration, or None if no match found
     """
-    response = utils.checked_api_call(configs_api, 'get_all', q='name==' + name).content
+    response = utils.checked_api_call(pnc_api.build_configs, 'get_all', q='name==' + name).content
     if not response:
         return None
     return response[0].id
@@ -49,7 +36,7 @@ def get_build_configuration_by_name(name):
     :param name: name of build configuration
     :return: The matching build configuration, or None if no match found
     """
-    response = utils.checked_api_call(configs_api, 'get_all', q='name==' + name).content
+    response = utils.checked_api_call(pnc_api.build_configs, 'get_all', q='name==' + name).content
     if not response:
         return None
     return response[0]
@@ -61,7 +48,7 @@ def config_id_exists(search_id):
     :param search_id: id to test for
     :return: True if a build configuration with search_id exists, False otherwise
     """
-    response = utils.checked_api_call(configs_api, 'get_specific', id=search_id)
+    response = utils.checked_api_call(pnc_api.build_configs, 'get_specific', id=search_id)
     if not response:
         return False
     return True
@@ -96,10 +83,10 @@ def build_raw(id=None, name=None,
         print("Error: You can only activate timestamp alignment with the temporary build flag!")
         sys.exit(1)
 
-    trigger_id = common.set_id(configs_api, id, name)
+    trigger_id = common.set_id(pnc_api.build_configs, id, name)
 
 
-    response = utils.checked_api_call(configs_api, 'trigger',
+    response = utils.checked_api_call(pnc_api.build_configs, 'trigger',
                                       id=trigger_id,
                                       temporary_build=temporary_build,
                                       timestamp_alignment=timestamp_alignment,
@@ -121,8 +108,8 @@ def get_build_configuration(id=None, name=None):
         return utils.format_json(data)
 
 def get_build_configuration_raw(id=None, name=None):
-    found_id = common.set_id(configs_api, id, name)
-    response = utils.checked_api_call(configs_api, 'get_specific', id=found_id)
+    found_id = common.set_id(pnc_api.build_configs, id, name)
+    response = utils.checked_api_call(pnc_api.build_configs, 'get_specific', id=found_id)
     if response:
         return response.content
 
@@ -154,23 +141,23 @@ def update_build_configuration(id, **kwargs):
 def update_build_configuration_raw(id, **kwargs):
     to_update_id = id
 
-    bc_to_update = configs_api.get_specific(id=to_update_id).content
+    bc_to_update = pnc_api.build_configs.get_specific(id=to_update_id).content
 
     project_id = kwargs.get('project')
     if project_id:
-        project_rest = common.get_entity(projects_api, project_id)
+        project_rest = common.get_entity(pnc_api.projects, project_id)
         update_project = {'project': project_rest}
         kwargs.update(update_project)
 
     repository_id = kwargs.get('repository_configuration')
     if repository_id:
-        repository_rest = common.get_entity(repos_api, repository_id)
+        repository_rest = common.get_entity(pnc_cli.repositories, repository_id)
         update_repository = {'repository_configuration': repository_rest}
         kwargs.update(update_repository)
 
     env_id = kwargs.get('environment')
     if env_id:
-        env_rest = common.get_entity(envs_api, env_id)
+        env_rest = common.get_entity(pnc_api.environments, env_id)
         update_env = {'environment': env_rest}
         kwargs.update(update_env)
 
@@ -181,7 +168,7 @@ def update_build_configuration_raw(id, **kwargs):
         if value is not None:
             setattr(bc_to_update, key, value)
 
-    response = utils.checked_api_call(configs_api, 'update', id=to_update_id, body=bc_to_update)
+    response = utils.checked_api_call(pnc_api.build_configs, 'update', id=to_update_id, body=bc_to_update)
     if response:
         return response.content
 
@@ -200,7 +187,7 @@ def delete_build_configuration(id=None, name=None):
         return utils.format_json(data)
 
 def delete_build_configuration_raw(id=None, name=None):
-    to_delete_id = common.set_id(configs_api, id, name)
+    to_delete_id = common.set_id(pnc_api.build_configs, id, name)
     # ensure that this build configuration is not a dependency of any other build configuration.
     # list_build_configurations is an insufficient check because eventually there will be too many entities to check them all.
     # a better REST method for dependency checking is needed
@@ -210,7 +197,7 @@ def delete_build_configuration_raw(id=None, name=None):
             raise CommandError(
                 "BuildConfiguration ID {} is a dependency of BuildConfiguration {}.".format(to_delete_id, config.name))
 
-    response = utils.checked_api_call(configs_api, 'delete_specific', id=to_delete_id)
+    response = utils.checked_api_call(pnc_api.build_configs, 'delete_specific', id=to_delete_id)
     if response:
         return response.content
 
@@ -241,13 +228,13 @@ def create_build_configuration(**kwargs):
 
 def create_build_configuration_raw(**kwargs):
     project_id = kwargs.get('project')
-    project_rest = common.get_entity(projects_api, project_id)
+    project_rest = common.get_entity(pnc_api.projects, project_id)
     kwargs['project'] = project_rest
     repository_id = kwargs.get('repository_configuration')
-    repository_rest = common.get_entity(repos_api, repository_id)
+    repository_rest = common.get_entity(pnc_api.repositories, repository_id)
     kwargs['repository_configuration'] = repository_rest
     env_id = kwargs.get('environment')
-    env_rest = common.get_entity(envs_api, env_id)
+    env_rest = common.get_entity(pnc_api.environments, env_id)
     kwargs['environment'] = env_rest
 
     if kwargs.get("generic_parameters"):
@@ -255,7 +242,7 @@ def create_build_configuration_raw(**kwargs):
 
     build_configuration = create_build_conf_object(**kwargs)
     response = utils.checked_api_call(
-        configs_api, 'create_new', body=build_configuration)
+        pnc_api.build_configs, 'create_new', body=build_configuration)
     if response:
         return response.content
 
@@ -275,8 +262,8 @@ def list_build_configurations_for_product(id=None, name=None, page_size=200, pag
         return utils.format_json(data)
 
 def list_build_configurations_for_product_raw(id=None, name=None, page_size=200, page_index=0, sort="", q=""):
-    found_id = common.set_id(products_api, id, name)
-    response = utils.checked_api_call(configs_api, 'get_all_by_product_id', product_id=found_id, page_size=page_size,
+    found_id = common.set_id(pnc_api.products, id, name)
+    response = utils.checked_api_call(pnc_api.build_configs, 'get_all_by_product_id', product_id=found_id, page_size=page_size,
                                       page_index=page_index,
                                       sort=sort, q=q)
     if response:
@@ -298,8 +285,8 @@ def list_build_configurations_for_project(id=None, name=None, page_size=200, pag
         return utils.format_json_list(data)
 
 def list_build_configurations_for_project_raw(id=None, name=None, page_size=200, page_index=0, sort="", q=""):
-    found_id = common.set_id(projects_api, id, name)
-    response = utils.checked_api_call(configs_api, 'get_all_by_project_id', project_id=found_id, page_size=page_size,
+    found_id = common.set_id(pnc_api.projects, id, name)
+    response = utils.checked_api_call(pnc_api.build_configs, 'get_all_by_project_id', project_id=found_id, page_size=page_size,
                                       page_index=page_index,
                                       sort=sort, q=q)
     if response:
@@ -323,8 +310,8 @@ def list_build_configurations_for_product_version(product_id, version_id, page_s
         return utils.format_json_list(data)
 
 def list_build_configurations_for_product_version_raw(product_id, version_id, page_size=200, page_index=0, sort="", q=""):
-    found_product_id = common.set_id(products_api, product_id, None)
-    response = utils.checked_api_call(configs_api, 'get_all_by_product_version_id', product_id=found_product_id,
+    found_product_id = common.set_id(pnc_api.products, product_id, None)
+    response = utils.checked_api_call(pnc_api.build_configs, 'get_all_by_product_version_id', product_id=found_product_id,
                                       version_id=version_id, page_size=page_size, page_index=page_index, sort=sort, q=q)
     if response:
         return response.content
@@ -342,8 +329,8 @@ def list_dependencies(id=None, name=None, page_size=200, page_index=0, sort="", 
         return utils.format_json_list(data)
 
 def list_dependencies_raw(id=None, name=None, page_size=200, page_index=0, sort="", q=""):
-    found_id = common.set_id(configs_api, id, name)
-    response = utils.checked_api_call(configs_api, 'get_dependencies', id=found_id, page_size=page_size,
+    found_id = common.set_id(pnc_api.build_configs, id, name)
+    response = utils.checked_api_call(pnc_api.build_configs, 'get_dependencies', id=found_id, page_size=page_size,
                                       page_index=page_index, sort=sort, q=q)
     if response:
         return response.content
@@ -364,11 +351,11 @@ def add_dependency(id=None, name=None, dependency_id=None, dependency_name=None)
         return utils.format_json_list(data)
 
 def add_dependency_raw(id=None, name=None, dependency_id=None, dependency_name=None):
-    add_to = common.set_id(configs_api, id, name)
-    to_add = common.set_id(configs_api, dependency_id, dependency_name)
+    add_to = common.set_id(pnc_api.build_configs, id, name)
+    to_add = common.set_id(pnc_api.build_configs, dependency_id, dependency_name)
 
-    dependency = configs_api.get_specific(id=to_add).content
-    response = utils.checked_api_call(configs_api, 'add_dependency', id=add_to, body=dependency)
+    dependency = pnc_api.build_configs.get_specific(id=to_add).content
+    response = utils.checked_api_call(pnc_api.build_configs, 'add_dependency', id=add_to, body=dependency)
     if response:
         return response.content
 
@@ -387,10 +374,10 @@ def remove_dependency(id=None, name=None, dependency_id=None, dependency_name=No
         return utils.format_json_list(data)
 
 def remove_dependency_raw(id=None, name=None, dependency_id=None, dependency_name=None):
-    found_id = common.set_id(configs_api, id, name)
-    found_dep_id = common.set_id(configs_api, dependency_id, dependency_name)
+    found_id = common.set_id(pnc_api.build_configs, id, name)
+    found_dep_id = common.set_id(pnc_api.build_configs, dependency_id, dependency_name)
 
-    response = utils.checked_api_call(configs_api, 'remove_dependency', id=found_id, dependency_id=found_dep_id)
+    response = utils.checked_api_call(pnc_api.build_configs, 'remove_dependency', id=found_id, dependency_id=found_dep_id)
     if response:
         return response.content
 
@@ -409,8 +396,8 @@ def list_product_versions_for_build_configuration(id=None, name=None, page_size=
         return utils.format_json_list(data)
 
 def list_product_versions_for_build_configuration_raw(id=None, name=None, page_size=200, page_index=0, sort="", q=""):
-    found_id = common.set_id(configs_api, id, name)
-    response = utils.checked_api_call(configs_api, 'get_product_versions', id=found_id, page_size=page_size,
+    found_id = common.set_id(pnc_api.build_configs, id, name)
+    response = utils.checked_api_call(pnc_api.build_configs, 'get_product_versions', id=found_id, page_size=page_size,
                                       page_index=page_index, sort=sort,
                                       q=q)
     if response:
@@ -429,10 +416,10 @@ def add_product_version_to_build_configuration(id=None, name=None, product_versi
         return utils.format_json_list(data)
 
 def add_product_version_to_build_configuration_raw(id=None, name=None, product_version_id=None):
-    found_id = common.set_id(configs_api, id, name)
+    found_id = common.set_id(pnc_api.build_configs, id, name)
 
-    to_add = common.get_entity(versions_api, product_version_id)
-    response = utils.checked_api_call(configs_api, 'add_product_version', id=found_id, body=to_add)
+    to_add = common.get_entity(pnc_api.product_versions, product_version_id)
+    response = utils.checked_api_call(pnc_api.build_configs, 'add_product_version', id=found_id, body=to_add)
     if response:
         return response.content
 
@@ -450,8 +437,8 @@ def remove_product_version_from_build_configuration(id=None, name=None, product_
         return utils.format_json_list(data)
 
 def remove_product_version_from_build_configuration_raw(id=None, name=None, product_version_id=None):
-    found_id = common.set_id(configs_api, id, name)
-    response = utils.checked_api_call(configs_api, 'remove_product_version', id=found_id,
+    found_id = common.set_id(pnc_api.build_configs, id, name)
+    response = utils.checked_api_call(pnc_api.build_configs, 'remove_product_version', id=found_id,
                                       product_version_id=product_version_id)
     if response:
         return response.content
@@ -472,8 +459,8 @@ def list_revisions_of_build_configuration(id=None, name=None, page_size=200, pag
         return utils.format_json_list(data)
 
 def list_revisions_of_build_configuration_raw(id=None, name=None, page_size=200, page_index=0, sort=""):
-    found_id = common.set_id(configs_api, id, name)
-    response = utils.checked_api_call(configs_api, 'get_revisions', id=found_id, page_size=page_size,
+    found_id = common.set_id(pnc_api.build_configs, id, name)
+    response = utils.checked_api_call(pnc_api.build_configs, 'get_revisions', id=found_id, page_size=page_size,
                                       page_index=page_index, sort=sort)
     if response:
         return response.content
@@ -491,8 +478,8 @@ def get_revision_of_build_configuration(id=None, name=None, revision_id=None):
         return utils.format_json_list(data)
 
 def get_revision_of_build_configuration_raw(id=None, name=None, revision_id=None):
-    found_id = common.set_id(configs_api, id, name)
-    response = utils.checked_api_call(configs_api, 'get_revision', id=found_id, rev=revision_id)
+    found_id = common.set_id(pnc_api.build_configs, id, name)
+    response = utils.checked_api_call(pnc_api.build_configs, 'get_revision', id=found_id, rev=revision_id)
     if response:
         return response.content
 
@@ -511,7 +498,7 @@ def list_build_configurations(page_size=200, page_index=0, sort="", q=""):
 
 
 def list_build_configurations_raw(page_size=200, page_index=0, sort="", q=""):
-    response = utils.checked_api_call(configs_api, 'get_all', page_size=page_size, page_index=page_index, sort=sort,
+    response = utils.checked_api_call(pnc_api.build_configs, 'get_all', page_size=page_size, page_index=page_index, sort=sort,
                                       q=q)
     if response:
         return response.content

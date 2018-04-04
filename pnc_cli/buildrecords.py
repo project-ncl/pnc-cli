@@ -3,14 +3,7 @@ from argh import arg
 import pnc_cli.common as common
 import pnc_cli.cli_types as types
 import pnc_cli.utils as utils
-from pnc_cli.swagger_client import BuildrecordsApi
-from pnc_cli.swagger_client import BuildconfigurationsApi
-from pnc_cli.swagger_client import ProjectsApi
-import pnc_cli.user_config as uc
-
-records_api = BuildrecordsApi(uc.user.get_api_client())
-configs_api = BuildconfigurationsApi(uc.user.get_api_client())
-projects_api = ProjectsApi(uc.user.get_api_client())
+from pnc_cli.pnc_api import pnc_api
 
 
 @arg("-p", "--page-size", help="Limit the amount of BuildRecords returned", type=int)
@@ -26,7 +19,7 @@ def list_build_records(page_size=200, page_index=0, sort="", q=""):
         return utils.format_json_list(data)
 
 def list_build_records_raw(page_size=200, page_index=0, sort="", q=""):
-    response = utils.checked_api_call(records_api, 'get_all', page_size=page_size, page_index=page_index, sort=sort, q=q)
+    response = utils.checked_api_call(pnc_api.builds, 'get_all', page_size=page_size, page_index=page_index, sort=sort, q=q)
     if response:
         return response.content
 
@@ -46,8 +39,8 @@ def list_records_for_build_configuration(id=None, name=None, page_size=200, page
         return utils.format_json_list(data)
 
 def list_records_for_build_configuration_raw(id=None, name=None, page_size=200, page_index=0, sort="", q=""):
-    config_id = common.set_id(configs_api, id, name)
-    response = utils.checked_api_call(records_api, 'get_all_for_build_configuration', configuration_id=config_id,
+    config_id = common.set_id(pnc_api.build_configs, id, name)
+    response = utils.checked_api_call(pnc_api.builds, 'get_all_for_build_configuration', configuration_id=config_id,
                                       page_size=page_size, page_index=page_index, sort=sort, q=q)
     if response:
         return response.content
@@ -68,8 +61,8 @@ def list_records_for_project(id=None, name=None, page_size=200, page_index=0, so
         return utils.format_json_list(data)
 
 def list_records_for_project_raw(id=None, name=None, page_size=200, page_index=0, sort="", q=""):
-    project_id = common.set_id(projects_api, id, name)
-    response = utils.checked_api_call(records_api, 'get_all_for_project_1', project_id=project_id, page_size=page_size, page_index=page_index,
+    project_id = common.set_id(pnc_api.projects, id, name)
+    response = utils.checked_api_call(pnc_api.builds, 'get_all_for_project_1', project_id=project_id, page_size=page_size, page_index=page_index,
                                       sort=sort, q=q)
     if response:
         return response.content
@@ -85,7 +78,7 @@ def get_build_record(id):
         return utils.format_json(data)
 
 def get_build_record_raw(id):
-    response = utils.checked_api_call(records_api, 'get_specific', id=id)
+    response = utils.checked_api_call(pnc_api.builds, 'get_specific', id=id)
     if response:
         return response.content
 
@@ -104,7 +97,7 @@ def list_built_artifacts(id, page_size=200, page_index=0, sort="", q=""):
         return utils.format_json_list(data)
 
 def list_built_artifacts_raw(id, page_size=200, page_index=0, sort="", q=""):
-    response = utils.checked_api_call(records_api, 'get_built_artifacts', id=id,
+    response = utils.checked_api_call(pnc_api.builds, 'get_built_artifacts', id=id,
             page_size=page_size, page_index=page_index, sort=sort, q=q)
     if response:
         return response.content
@@ -124,7 +117,7 @@ def list_dependency_artifacts(id, page_size=200, page_index=0, sort="", q=""):
         return utils.format_json_list(data)
 
 def list_dependency_artifacts_raw(id, page_size=200, page_index=0, sort="", q=""):
-    response = utils.checked_api_call(records_api, 'get_dependency_artifacts', id=id, page_size=page_size, page_index=page_index, sort=sort,
+    response = utils.checked_api_call(pnc_api.builds, 'get_dependency_artifacts', id=id, page_size=page_size, page_index=page_index, sort=sort,
                                       q=q)
     if response:
         return response.content
@@ -140,7 +133,7 @@ def get_audited_configuration_for_record(id):
         return utils.format_json(data)
 
 def get_audited_configuration_for_record_raw(id):
-    response = utils.checked_api_call(records_api, 'get_build_configuration_audited', id=id)
+    response = utils.checked_api_call(pnc_api.builds, 'get_build_configuration_audited', id=id)
     if response:
         return response.content
 
@@ -155,7 +148,7 @@ def get_log_for_record(id):
         return utils.format_json(data)
 
 def get_log_for_record_raw(id):
-    response = utils.checked_api_call(records_api, 'get_logs', id=id)
+    response = utils.checked_api_call(pnc_api.builds, 'get_logs', id=id)
     if response:
         return response
 
@@ -171,7 +164,7 @@ def list_artifacts(id, page_size=200, page_index=0, sort="", q=""):
         return utils.format_json_list(data)
 
 def list_artifacts_raw(id, page_size=200, page_index=0, sort="", q=""):
-    response = utils.checked_api_call(records_api, 'get_artifacts', id=id, page_size=page_size, page_index=page_index, sort=sort, q=q)
+    response = utils.checked_api_call(pnc_api.builds, 'get_artifacts', id=id, page_size=page_size, page_index=page_index, sort=sort, q=q)
     if response:
         return response.content
 
@@ -180,13 +173,13 @@ def list_artifacts_raw(id, page_size=200, page_index=0, sort="", q=""):
 @arg("key", help="Key for the Attribute.")
 @arg("value", help="Value for the Attribute.")
 def put_attribute(id, key, value):
-    utils.checked_api_call(records_api, 'put_attribute', id=id, key=key, value=value)
+    utils.checked_api_call(pnc_api.builds, 'put_attribute', id=id, key=key, value=value)
 
 
 @arg("id", help="BuildRecord ID to remove an Attribute from.", type=types.existing_build_record)
 @arg("key", help="Key of the Attribute to remove.")
 def remove_attribute(id, key):
-    utils.checked_api_call(records_api, 'remove_attribute', id=id, key=key)
+    utils.checked_api_call(pnc_api.builds, 'remove_attribute', id=id, key=key)
 
 
 @arg("key", help="Key of the Attribute to query BuildRecords for.")
@@ -197,7 +190,7 @@ def query_by_attribute(key, value):
         return utils.format_json(data)
 
 def query_by_attribute_raw(key, value):
-    response = utils.checked_api_call(records_api, "query_by_attribute", key=key, value=value)
+    response = utils.checked_api_call(pnc_api.builds, "query_by_attribute", key=key, value=value)
     if response:
         return response
 
@@ -209,6 +202,6 @@ def list_attributes(id):
         return utils.format_json_list(data)
 
 def list_attributes_raw(id,):
-    response = utils.checked_api_call(records_api, 'get_attributes', id=id)
+    response = utils.checked_api_call(pnc_api.builds, 'get_attributes', id=id)
     if response:
         return response.content

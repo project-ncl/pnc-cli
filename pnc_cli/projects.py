@@ -6,10 +6,7 @@ import pnc_cli.common as common
 import pnc_cli.cli_types as types
 import pnc_cli.utils as utils
 from pnc_cli.swagger_client import ProjectRest
-from pnc_cli.swagger_client import ProjectsApi
-import pnc_cli.user_config as uc
-
-projects_api = ProjectsApi(uc.user.get_api_client())
+from pnc_cli.pnc_api import pnc_api
 
 
 def _create_project_object(**kwargs):
@@ -34,7 +31,7 @@ def create_project(**kwargs):
 
 def create_project_raw(**kwargs):
     project = _create_project_object(**kwargs)
-    response = utils.checked_api_call(projects_api, 'create_new', body=project)
+    response = utils.checked_api_call(pnc_api.projects, 'create_new', body=project)
     if response:
         return response.content
 
@@ -56,15 +53,15 @@ def update_project_raw(id, **kwargs):
     if utils.contains_only_none_values(kwargs):
         raise argh.exceptions.CommandError("Updating a Project requires at least one modified field.")
 
-    to_update = utils.checked_api_call(projects_api, 'get_specific', id=id).content
+    to_update = utils.checked_api_call(pnc_api.projects, 'get_specific', id=id).content
     for key, value in iteritems(kwargs):
         if value is not None:
             setattr(to_update, key, value)
-    response = utils.checked_api_call(projects_api, 'update', id=id, body=to_update)
+    response = utils.checked_api_call(pnc_api.projects, 'update', id=id, body=to_update)
     if response:
         return response.content
     else:
-        return utils.checked_api_call(projects_api, 'get_specific', id=id).content
+        return utils.checked_api_call(pnc_api.projects, 'get_specific', id=id).content
 
 
 @arg("-id", "--id", help="ID of the Project to retrieve", type=types.existing_project_id)
@@ -78,8 +75,8 @@ def get_project(id=None, name=None):
         return utils.format_json(content)
 
 def get_project_raw(id=None, name=None):
-    proj_id = common.set_id(projects_api, id, name)
-    response = utils.checked_api_call(projects_api, 'get_specific', id=proj_id)
+    proj_id = common.set_id(pnc_api.projects, id, name)
+    response = utils.checked_api_call(pnc_api.projects, 'get_specific', id=proj_id)
     if response:
         return response.content
 
@@ -94,8 +91,8 @@ def delete_project(id=None, name=None):
         return utils.format_json(content)
 
 def delete_project_raw(id=None, name=None):
-    proj_id = common.set_id(projects_api, id, name)
-    response = utils.checked_api_call(projects_api, 'delete_specific', id=proj_id)
+    proj_id = common.set_id(pnc_api.projects, id, name)
+    response = utils.checked_api_call(pnc_api.projects, 'delete_specific', id=proj_id)
     if response:
         return response.content
 
@@ -113,6 +110,6 @@ def list_projects(page_size=200, page_index=0, sort="", q=""):
         return utils.format_json_list(content)
 
 def list_projects_raw(page_size=200, page_index=0, sort="", q=""):
-    response = utils.checked_api_call(projects_api, 'get_all', page_size=page_size, page_index=page_index, sort=sort, q=q)
+    response = utils.checked_api_call(pnc_api.projects, 'get_all', page_size=page_size, page_index=page_index, sort=sort, q=q)
     if response:
         return response.content

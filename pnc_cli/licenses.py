@@ -5,10 +5,7 @@ import pnc_cli.cli_types as types
 import pnc_cli.utils as utils
 
 from pnc_cli.swagger_client import LicenseRest
-from pnc_cli.swagger_client import LicensesApi
-import pnc_cli.user_config as uc
-
-licenses_api = LicensesApi(uc.user.get_api_client())
+from pnc_cli.pnc_api import pnc_api
 
 
 def create_license_object(**kwargs):
@@ -27,7 +24,7 @@ def create_license(**kwargs):
     Create a new License
     """
     License = create_license_object(**kwargs)
-    response = utils.checked_api_call(licenses_api, 'create_new', body=License)
+    response = utils.checked_api_call(pnc_api.licenses, 'create_new', body=License)
     if response:
         return utils.format_json(response.content)
 
@@ -38,7 +35,7 @@ def get_license(id):
     Get a specific License by either ID or fullname
     """
     response = utils.checked_api_call(
-        licenses_api, 'get_specific', id= id)
+        pnc_api.licenses, 'get_specific', id= id)
     if response:
         return utils.format_json(response.content)
 
@@ -50,7 +47,7 @@ def delete_license(license_id):
     Delete a License by ID
     """
 
-    response = utils.checked_api_call(licenses_api, 'delete', id=license_id)
+    response = utils.checked_api_call(pnc_api.licenses, 'delete', id=license_id)
     if response:
         return utils.format_json(response.content)
 
@@ -64,14 +61,14 @@ def update_license(license_id, **kwargs):
     """
     Replace the License with given ID with a new License
     """
-    updated_license = licenses_api.get_specific(id=license_id).content
+    updated_license = pnc_api.licenses.get_specific(id=license_id).content
 
     for key, value in iteritems(kwargs):
         if value:
             setattr(updated_license, key, value)
 
     response = utils.checked_api_call(
-        licenses_api,
+        pnc_api.licenses,
         'update',
         id=int(license_id),
         body=updated_license)
@@ -87,6 +84,6 @@ def list_licenses(page_size=200, page_index=0, sort="", q=""):
     """
     List all Licenses
     """
-    response = utils.checked_api_call(licenses_api, 'get_all', page_size=page_size, page_index=page_index, sort=sort, q=q)
+    response = utils.checked_api_call(pnc_api.licenses, 'get_all', page_size=page_size, page_index=page_index, sort=sort, q=q)
     if response:
         return utils.format_json_list(response.content)

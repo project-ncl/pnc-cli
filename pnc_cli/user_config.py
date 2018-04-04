@@ -167,21 +167,26 @@ class UserConfig():
     def get_api_client(self):
         return self.apiclient
 
+user = None
 
-if os.path.exists(SAVED_USER):
-    user = pickle.load(open(SAVED_USER, "rb"))
-    if user.keycloak_config.client_mode in trueValues:
-        logging.info("Command performed using client authorization.\n")
-    else:
-        logging.info("Command performed with user: {}\n".format(user.username))
-    users_api = swagger_client.UsersApi(user.get_api_client())
-    utils.checked_api_call(users_api, 'get_logged_user') # inits the user if it doesn't exist in pnc's db already
-else:
-    user = UserConfig()
+def get_user():
+    global user
+    if user is None:
+        if os.path.exists(SAVED_USER):
+            user = pickle.load(open(SAVED_USER, "rb"))
+            if user.keycloak_config.client_mode in trueValues:
+                logging.info("Command performed using client authorization.\n")
+            else:
+                logging.info("Command performed with user: {}\n".format(user.username))
+            users_api = swagger_client.UsersApi(user.get_api_client())
+            utils.checked_api_call(users_api, 'get_logged_user') # inits the user if it doesn't exist in pnc's db already
+        else:
+            user = UserConfig()
+    return user
 
 
 def save():
-    if user.token:
+    if user is not None and user.token:
         pickle.dump(user, open(SAVED_USER, "wb"), protocol=pickle.HIGHEST_PROTOCOL)
 
 
@@ -196,6 +201,8 @@ def login(username=None, password=None):
     be saved for all subsequent pnc-cli operations until login is called again
     :return:
     """
+    global user
+    user = UserConfig()
     if username:
         user.username = username
     else:

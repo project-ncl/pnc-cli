@@ -19,7 +19,7 @@ def test_create_build_config_set_object(**kwargs):
     assert result.to_dict() == compare.to_dict()
 
 
-@patch('pnc_cli.buildconfigurationsets.sets_api.get_all', return_value=MagicMock(content=[1, 2, 3]))
+@patch('pnc_cli.buildconfigurationsets.pnc_api.build_group_configs.get_all', return_value=MagicMock(content=[1, 2, 3]))
 def test_list_build_configuration_sets(mock):
     result = buildconfigurationsets.list_build_configuration_sets_raw()
     mock.assert_called_once_with(page_index=0, page_size=200, q="", sort="")
@@ -27,7 +27,7 @@ def test_list_build_configuration_sets(mock):
 
 
 @patch('pnc_cli.buildconfigurationsets._create_build_config_set_object', return_value='test-config-set')
-@patch('pnc_cli.buildconfigurationsets.sets_api.create_new', return_value=MagicMock(content='SUCCESS'))
+@patch('pnc_cli.buildconfigurationsets.pnc_api.build_group_configs.create_new', return_value=MagicMock(content='SUCCESS'))
 def test_create_build_configuration_set(mock_create_new, mock_create_object):
     result = buildconfigurationsets.create_build_configuration_set_raw(name='newname', product_version_id=1,
                                                                    build_configuration_ids=[1, 2, 3])
@@ -38,8 +38,8 @@ def test_create_build_configuration_set(mock_create_new, mock_create_object):
 
 
 @patch('pnc_cli.common.set_id', return_value=1)
-@patch('pnc_cli.buildconfigurationsets.sets_api.get_specific', return_value=MagicMock(content='SUCCESS'))
-@patch('pnc_cli.buildconfigurationsets.sets_api', autospec=BuildconfigurationsetsApi)
+@patch('pnc_cli.buildconfigurationsets.pnc_api.build_group_configs.get_specific', return_value=MagicMock(content='SUCCESS'))
+@patch('pnc_cli.buildconfigurationsets.pnc_api.build_group_configs', autospec=BuildconfigurationsetsApi)
 def test_get_build_configuration_set_id(mock_sets_api, mock_get_specific, mock_set_id):
     result = buildconfigurationsets.get_build_configuration_set_raw(id=1)
     mock_set_id.assert_called_once_with(mock_sets_api, 1, None)
@@ -48,8 +48,8 @@ def test_get_build_configuration_set_id(mock_sets_api, mock_get_specific, mock_s
 
 
 @patch('pnc_cli.common.set_id', return_value=1)
-@patch('pnc_cli.buildconfigurationsets.sets_api.get_specific', return_value=MagicMock(content='SUCCESS'))
-@patch('pnc_cli.buildconfigurationsets.sets_api', autospec=BuildconfigurationsetsApi)
+@patch('pnc_cli.buildconfigurationsets.pnc_api.build_group_configs.get_specific', return_value=MagicMock(content='SUCCESS'))
+@patch('pnc_cli.buildconfigurationsets.pnc_api.build_group_configs', autospec=BuildconfigurationsetsApi)
 def test_get_build_configuration_set_name(mock_sets_api, mock_get_specific, mock_set_id):
     result = buildconfigurationsets.get_build_configuration_set_raw(name='testerino')
     mock_set_id.assert_called_once_with(mock_sets_api, None, 'testerino')
@@ -57,8 +57,8 @@ def test_get_build_configuration_set_name(mock_sets_api, mock_get_specific, mock
     assert result == 'SUCCESS'
 
 
-@patch('pnc_cli.buildconfigurationsets.sets_api.get_specific')
-@patch('pnc_cli.buildconfigurationsets.sets_api.update', return_value=MagicMock(content='SUCCESS'))
+@patch('pnc_cli.buildconfigurationsets.pnc_api.build_group_configs.get_specific')
+@patch('pnc_cli.buildconfigurationsets.pnc_api.build_group_configs.update', return_value=MagicMock(content='SUCCESS'))
 def test_update_build_configuration_set(mock_update, mock_get_specific):
     mock = MagicMock()
     mockcontent = MagicMock(content=mock)
@@ -70,8 +70,8 @@ def test_update_build_configuration_set(mock_update, mock_get_specific):
 
 
 @patch('pnc_cli.common.set_id', return_value=1)
-@patch('pnc_cli.buildconfigurationsets.sets_api.delete_specific', return_value=MagicMock(content='SUCCESS'))
-@patch('pnc_cli.buildconfigurationsets.sets_api', autospec=BuildconfigurationsetsApi)
+@patch('pnc_cli.buildconfigurationsets.pnc_api.build_group_configs.delete_specific', return_value=MagicMock(content='SUCCESS'))
+@patch('pnc_cli.buildconfigurationsets.pnc_api.build_group_configs', autospec=BuildconfigurationsetsApi)
 def test_delete_build_config_set(mock_sets_api, mock_delete, mock_set_id):
     result = buildconfigurationsets.delete_build_configuration_set_raw(id=1)
     mock_set_id.assert_called_once_with(mock_sets_api, 1, None)
@@ -80,8 +80,8 @@ def test_delete_build_config_set(mock_sets_api, mock_delete, mock_set_id):
 
 
 @patch('pnc_cli.common.set_id', return_value=1)
-@patch('pnc_cli.buildconfigurationsets.sets_api.delete_specific', return_value=MagicMock(content='SUCCESS'))
-@patch('pnc_cli.buildconfigurationsets.sets_api', autospec=BuildconfigurationsetsApi)
+@patch('pnc_cli.buildconfigurationsets.pnc_api.build_group_configs.delete_specific', return_value=MagicMock(content='SUCCESS'))
+@patch('pnc_cli.buildconfigurationsets.pnc_api.build_group_configs', autospec=BuildconfigurationsetsApi)
 def test_delete_build_config_set_name(mock_sets_api, mock_delete, mock_set_id):
     result = buildconfigurationsets.delete_build_configuration_set_raw(name='testerino')
     mock_set_id.assert_called_once_with(mock_sets_api, None, 'testerino')
@@ -90,8 +90,8 @@ def test_delete_build_config_set_name(mock_sets_api, mock_delete, mock_set_id):
 
 
 @patch('pnc_cli.common.set_id', return_value=1)
-@patch('pnc_cli.buildconfigurationsets.sets_api.build', return_value=MagicMock(content='SUCCESS'))
-@patch('pnc_cli.buildconfigurationsets.sets_api', autospec=BuildconfigurationsetsApi)
+@patch('pnc_cli.buildconfigurationsets.pnc_api.build_group_configs.build', return_value=MagicMock(content='SUCCESS'))
+@patch('pnc_cli.buildconfigurationsets.pnc_api.build_group_configs', autospec=BuildconfigurationsetsApi)
 def test_build_set_id(mock_sets_api, mock_build, mock_set_id):
     result = buildconfigurationsets.build_set_raw(id=1)
     mock_set_id.assert_called_once_with(mock_sets_api, 1, None)
@@ -100,8 +100,8 @@ def test_build_set_id(mock_sets_api, mock_build, mock_set_id):
 
 
 @patch('pnc_cli.common.set_id', return_value=1)
-@patch('pnc_cli.buildconfigurationsets.sets_api.build', return_value=MagicMock(content='SUCCESS'))
-@patch('pnc_cli.buildconfigurationsets.sets_api', autospec=BuildconfigurationsetsApi)
+@patch('pnc_cli.buildconfigurationsets.pnc_api.build_group_configs.build', return_value=MagicMock(content='SUCCESS'))
+@patch('pnc_cli.buildconfigurationsets.pnc_api.build_group_configs', autospec=BuildconfigurationsetsApi)
 def test_build_set_name(mock_sets_api, mock_build, mock_set_id):
     result = buildconfigurationsets.build_set_raw(name='testerino')
     mock_set_id.assert_called_once_with(mock_sets_api, None, 'testerino')
@@ -110,8 +110,8 @@ def test_build_set_name(mock_sets_api, mock_build, mock_set_id):
 
 
 @patch('pnc_cli.common.set_id', return_value=1)
-@patch('pnc_cli.buildconfigurationsets.sets_api.get_configurations', return_value=MagicMock(content='SUCCESS'))
-@patch('pnc_cli.buildconfigurationsets.sets_api', autospec=BuildconfigurationsetsApi)
+@patch('pnc_cli.buildconfigurationsets.pnc_api.build_group_configs.get_configurations', return_value=MagicMock(content='SUCCESS'))
+@patch('pnc_cli.buildconfigurationsets.pnc_api.build_group_configs', autospec=BuildconfigurationsetsApi)
 def test_list_build_configurations_for_set_id(mock_sets_api, mock_get_configurations, mock_set_id):
     result = buildconfigurationsets.list_build_configurations_for_set_raw(id=1)
     mock_set_id.assert_called_once_with(mock_sets_api, 1, None)
@@ -120,8 +120,8 @@ def test_list_build_configurations_for_set_id(mock_sets_api, mock_get_configurat
 
 
 @patch('pnc_cli.common.set_id', return_value=1)
-@patch('pnc_cli.buildconfigurationsets.sets_api.get_configurations', return_value=MagicMock(content='SUCCESS'))
-@patch('pnc_cli.buildconfigurationsets.sets_api', autospec=BuildconfigurationsetsApi)
+@patch('pnc_cli.buildconfigurationsets.pnc_api.build_group_configs.get_configurations', return_value=MagicMock(content='SUCCESS'))
+@patch('pnc_cli.buildconfigurationsets.pnc_api.build_group_configs', autospec=BuildconfigurationsetsApi)
 def test_list_build_configurations_for_set_name(mock_sets_api, mock_get_configurations, mock_set_id):
     result = buildconfigurationsets.list_build_configurations_for_set_raw(name='testerino')
     mock_set_id.assert_called_once_with(mock_sets_api, None, 'testerino')
@@ -131,9 +131,9 @@ def test_list_build_configurations_for_set_name(mock_sets_api, mock_get_configur
 
 @patch('pnc_cli.common.set_id', return_value=1)
 @patch('pnc_cli.common.get_entity', return_value='BuildConfiguration')
-@patch('pnc_cli.buildconfigurationsets.sets_api.add_configuration', return_value=MagicMock(content='SUCCESS'))
-@patch('pnc_cli.buildconfigurationsets.sets_api', autospec=BuildconfigurationsetsApi)
-@patch('pnc_cli.buildconfigurationsets.configs_api', autospec=BuildconfigurationsApi)
+@patch('pnc_cli.buildconfigurationsets.pnc_api.build_group_configs.add_configuration', return_value=MagicMock(content='SUCCESS'))
+@patch('pnc_cli.buildconfigurationsets.pnc_api.build_group_configs', autospec=BuildconfigurationsetsApi)
+@patch('pnc_cli.buildconfigurationsets.pnc_api.build_configs', autospec=BuildconfigurationsApi)
 def test_add_build_configuration_to_set_id(mock_configs_api, mock_sets_api, mock_add_config, mock_get_entity, mock_set_id):
     result = buildconfigurationsets.add_build_configuration_to_set_raw(set_id=1, config_id=1)
     set_id_calls = [call(mock_sets_api, 1, None), call(mock_configs_api, 1, None)]
@@ -145,9 +145,9 @@ def test_add_build_configuration_to_set_id(mock_configs_api, mock_sets_api, mock
 
 @patch('pnc_cli.common.set_id', return_value=1)
 @patch('pnc_cli.common.get_entity', return_value='BuildConfiguration')
-@patch('pnc_cli.buildconfigurationsets.sets_api.add_configuration', return_value=MagicMock(content='SUCCESS'))
-@patch('pnc_cli.buildconfigurationsets.sets_api', autospec=BuildconfigurationsetsApi)
-@patch('pnc_cli.buildconfigurationsets.configs_api', autospec=BuildconfigurationsApi)
+@patch('pnc_cli.buildconfigurationsets.pnc_api.build_group_configs.add_configuration', return_value=MagicMock(content='SUCCESS'))
+@patch('pnc_cli.buildconfigurationsets.pnc_api.build_group_configs', autospec=BuildconfigurationsetsApi)
+@patch('pnc_cli.buildconfigurationsets.pnc_api.build_configs', autospec=BuildconfigurationsApi)
 def test_add_build_configuration_to_set_name(mock_configs_api, mock_sets_api, mock_add_config, mock_get_entity, mock_set_id):
     result = buildconfigurationsets.add_build_configuration_to_set_raw(set_name='testerino', config_id=1)
     set_id_calls = [call(mock_sets_api, None, 'testerino'), call(mock_configs_api, 1, None)]
@@ -158,9 +158,9 @@ def test_add_build_configuration_to_set_name(mock_configs_api, mock_sets_api, mo
 
 
 @patch('pnc_cli.common.set_id', return_value=1)
-@patch('pnc_cli.buildconfigurationsets.sets_api.remove_configuration', return_value=MagicMock(content="removed"))
-@patch('pnc_cli.buildconfigurationsets.sets_api', autospec=BuildconfigurationsetsApi)
-@patch('pnc_cli.buildconfigurationsets.configs_api', autospec=BuildconfigurationsApi)
+@patch('pnc_cli.buildconfigurationsets.pnc_api.build_group_configs.remove_configuration', return_value=MagicMock(content="removed"))
+@patch('pnc_cli.buildconfigurationsets.pnc_api.build_group_configs', autospec=BuildconfigurationsetsApi)
+@patch('pnc_cli.buildconfigurationsets.pnc_api.build_configs', autospec=BuildconfigurationsApi)
 def test_remove_build_configuration_from_set_id(mock_configs_api, mock_sets_api, mock_remove_configuration, mock_set_id):
     response = buildconfigurationsets.remove_build_configuration_from_set_raw(set_id=1, config_id=100)
     set_id_calls = [call(mock_sets_api, 1, None), call(mock_configs_api, 100, None)]
@@ -170,9 +170,9 @@ def test_remove_build_configuration_from_set_id(mock_configs_api, mock_sets_api,
 
 
 @patch('pnc_cli.common.set_id', return_value=1)
-@patch('pnc_cli.buildconfigurationsets.sets_api.remove_configuration', return_value=MagicMock(content="removed"))
-@patch('pnc_cli.buildconfigurationsets.sets_api', autospec=BuildconfigurationsetsApi)
-@patch('pnc_cli.buildconfigurationsets.configs_api', autospec=BuildconfigurationsApi)
+@patch('pnc_cli.buildconfigurationsets.pnc_api.build_group_configs.remove_configuration', return_value=MagicMock(content="removed"))
+@patch('pnc_cli.buildconfigurationsets.pnc_api.build_group_configs', autospec=BuildconfigurationsetsApi)
+@patch('pnc_cli.buildconfigurationsets.pnc_api.build_configs', autospec=BuildconfigurationsApi)
 def test_remove_build_configuration_from_set_name(mock_configs_api, mock_sets_api, mock_remove_configuration, mock_set_id):
     response = buildconfigurationsets.remove_build_configuration_from_set_raw(set_name='test', config_name='test_conf')
     set_id_calls = [call(mock_sets_api, None, 'test'), call(mock_configs_api, None, 'test_conf')]
@@ -182,8 +182,8 @@ def test_remove_build_configuration_from_set_name(mock_configs_api, mock_sets_ap
 
 
 @patch('pnc_cli.common.set_id', return_value=1)
-@patch('pnc_cli.buildconfigurationsets.sets_api.get_build_records', return_value=MagicMock(content='SUCCESS'))
-@patch('pnc_cli.buildconfigurationsets.sets_api', autospec=BuildconfigurationsetsApi)
+@patch('pnc_cli.buildconfigurationsets.pnc_api.build_group_configs.get_build_records', return_value=MagicMock(content='SUCCESS'))
+@patch('pnc_cli.buildconfigurationsets.pnc_api.build_group_configs', autospec=BuildconfigurationsetsApi)
 def test_list_build_records_for_set_id(mock_sets_api, mock_get_records, mock_set_id):
     result = buildconfigurationsets.list_build_records_for_set_raw(id=1)
     mock_set_id.assert_called_once_with(mock_sets_api, 1, None)
@@ -192,8 +192,8 @@ def test_list_build_records_for_set_id(mock_sets_api, mock_get_records, mock_set
 
 
 @patch('pnc_cli.common.set_id', return_value=1)
-@patch('pnc_cli.buildconfigurationsets.sets_api.get_build_records', return_value=MagicMock(content='SUCCESS'))
-@patch('pnc_cli.buildconfigurationsets.sets_api', autospec=BuildconfigurationsetsApi)
+@patch('pnc_cli.buildconfigurationsets.pnc_api.build_group_configs.get_build_records', return_value=MagicMock(content='SUCCESS'))
+@patch('pnc_cli.buildconfigurationsets.pnc_api.build_group_configs', autospec=BuildconfigurationsetsApi)
 def test_list_build_records_for_set_name(mock_sets_api, mock_get_records, mock_set_id):
     result = buildconfigurationsets.list_build_records_for_set_raw(name='testerino')
     mock_set_id.assert_called_once_with(mock_sets_api, None, 'testerino')
