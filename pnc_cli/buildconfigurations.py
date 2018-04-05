@@ -174,7 +174,7 @@ def update_build_configuration_raw(id, **kwargs):
         update_env = {'environment': env_rest}
         kwargs.update(update_env)
 
-    if kwargs.get("generic_parameters"):
+    if isinstance(kwargs.get("generic_parameters"), str):
         kwargs["generic_parameters"] = ast.literal_eval(kwargs.get("generic_parameters"))
 
     for key, value in kwargs.items():

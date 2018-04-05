@@ -140,7 +140,7 @@ def make_mead_impl(config, run_build, environment, sufix, product_name, product_
                                                           scm_revision, artifact_name, project)
             else:
                 build_config = update_build_configuration(env, product_version_id, art_params, scm_repo_url,
-                                                              scm_revision, artifact_name, project)
+                                                          scm_revision, artifact_name, project)
 
         # Make sure existing configs are added the group
         if build_config is not None and build_config.id not in bc_set.build_configuration_ids:
@@ -254,7 +254,7 @@ def update_build_configuration(environment, product_version_id, art_params, scm_
 
     scm_repo_url_no_git_ext = _remove_git_ext(scm_repo_url)
 
-    if _remove_git_ext(internal_url) != scm_repo_url_no_git_ext and _remove_git_ext(external_url) != scm_repo_url_no_git_ext:
+    if _remove_git_ext(internal_url) != scm_repo_url_no_git_ext and (external_url is not None and _remove_git_ext(external_url) != scm_repo_url_no_git_ext):
         logging.error("SCM URL of existing Build Configuration '%s' cannot be changed" % artifact_name)
         return None
 
