@@ -239,7 +239,7 @@ def get_generic_parameters(params):
     if pme_properties == "":
         return dict()
     else:
-        return {'CUSTOM_PME_PARAMETERS': pme_properties}
+        return str({'CUSTOM_PME_PARAMETERS': pme_properties})
 
 
 def update_build_configuration(environment, product_version_id, art_params, scm_repo_url, scm_revision, artifact_name, project):
