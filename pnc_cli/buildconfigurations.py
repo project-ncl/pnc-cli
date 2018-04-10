@@ -197,6 +197,7 @@ def delete_build_configuration_raw(id=None, name=None):
 @arg("build_script", help="Script to execute for the BuildConfiguration.")
 @arg("-d", "--description", help="Description of the new build configuration.")
 @arg("-pvi", "--product-version-id", help="Associated ProductVersion ID.")
+@arg("-gp", "--generic-parameters", help="Set of arbitrary additional key=value pairs, such as CUSTOM_PME_PARAMETERS")
 @arg("-dids", "--dependency-ids", type=int, nargs="+",
      help="List of BuildConfiguration IDs that are dependencies of this BuildConfiguration.")
 # @arg("-bcsid", "--")
@@ -214,6 +215,9 @@ def create_build_configuration(**kwargs):
     env_id = kwargs.get('environment')
     env_rest = common.get_entity(envs_api, env_id)
     kwargs['environment'] = env_rest
+
+    if kwargs.get("generic_parameters"):
+        kwargs["generic_parameters"] = ast.literal_eval(kwargs.get("generic_parameters"))
 
     build_configuration = create_build_conf_object(**kwargs)
     response = utils.checked_api_call(

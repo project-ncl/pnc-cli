@@ -46,8 +46,9 @@ def create_build_configuration_process(repository, revision, **kwargs):
     if not kwargs.get("build_configuration_set_ids"):
         kwargs["build_configuration_set_ids"] = []
 
-    if not kwargs.get("generic_parameters"):
-        kwargs["generic_parameters"] = {}
+    if kwargs.get("generic_parameters"):
+        kwargs["generic_parameters"] = ast.literal_eval(kwargs.get("generic_parameters"))
+
 
     if not kwargs.get("project"):
         kwargs["project"] = projects_api.get_specific(kwargs.get("project_id")).content
