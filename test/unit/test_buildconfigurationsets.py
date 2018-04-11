@@ -22,7 +22,7 @@ def test_create_build_config_set_object(**kwargs):
 @patch('pnc_cli.buildconfigurationsets.sets_api.get_all', return_value=MagicMock(content=[1, 2, 3]))
 def test_list_build_configuration_sets(mock):
     result = buildconfigurationsets.list_build_configuration_sets_raw()
-    mock.assert_called_once_with(page_size=200, q="", sort="")
+    mock.assert_called_once_with(page_index=0, page_size=200, q="", sort="")
     assert result == [1, 2, 3]
 
 
@@ -95,7 +95,7 @@ def test_delete_build_config_set_name(mock_sets_api, mock_delete, mock_set_id):
 def test_build_set_id(mock_sets_api, mock_build, mock_set_id):
     result = buildconfigurationsets.build_set_raw(id=1)
     mock_set_id.assert_called_once_with(mock_sets_api, 1, None)
-    mock_build.assert_called_once_with(id=1)
+    mock_build.assert_called_once_with(id=1, force_rebuild=False, temporary_build=False, timestamp_alignment=False)
     assert result == 'SUCCESS'
 
 
@@ -105,7 +105,7 @@ def test_build_set_id(mock_sets_api, mock_build, mock_set_id):
 def test_build_set_name(mock_sets_api, mock_build, mock_set_id):
     result = buildconfigurationsets.build_set_raw(name='testerino')
     mock_set_id.assert_called_once_with(mock_sets_api, None, 'testerino')
-    mock_build.assert_called_once_with(id=1)
+    mock_build.assert_called_once_with(id=1, force_rebuild=False, temporary_build=False, timestamp_alignment=False)
     assert result == 'SUCCESS'
 
 
@@ -115,7 +115,7 @@ def test_build_set_name(mock_sets_api, mock_build, mock_set_id):
 def test_list_build_configurations_for_set_id(mock_sets_api, mock_get_configurations, mock_set_id):
     result = buildconfigurationsets.list_build_configurations_for_set_raw(id=1)
     mock_set_id.assert_called_once_with(mock_sets_api, 1, None)
-    mock_get_configurations.assert_called_once_with(id=1, page_size=200, q="", sort="")
+    mock_get_configurations.assert_called_once_with(id=1, page_index=0, page_size=200, q="", sort="")
     assert result == 'SUCCESS'
 
 
@@ -125,7 +125,7 @@ def test_list_build_configurations_for_set_id(mock_sets_api, mock_get_configurat
 def test_list_build_configurations_for_set_name(mock_sets_api, mock_get_configurations, mock_set_id):
     result = buildconfigurationsets.list_build_configurations_for_set_raw(name='testerino')
     mock_set_id.assert_called_once_with(mock_sets_api, None, 'testerino')
-    mock_get_configurations.assert_called_once_with(id=1, page_size=200, q='', sort='')
+    mock_get_configurations.assert_called_once_with(id=1, page_index=0, page_size=200, q='', sort='')
     assert result == 'SUCCESS'
 
 
@@ -187,7 +187,7 @@ def test_remove_build_configuration_from_set_name(mock_configs_api, mock_sets_ap
 def test_list_build_records_for_set_id(mock_sets_api, mock_get_records, mock_set_id):
     result = buildconfigurationsets.list_build_records_for_set_raw(id=1)
     mock_set_id.assert_called_once_with(mock_sets_api, 1, None)
-    mock_get_records.assert_called_once_with(id=1, page_size=200, q="", sort="")
+    mock_get_records.assert_called_once_with(id=1, page_index=0, page_size=200, q="", sort="")
     assert result == 'SUCCESS'
 
 
@@ -197,5 +197,5 @@ def test_list_build_records_for_set_id(mock_sets_api, mock_get_records, mock_set
 def test_list_build_records_for_set_name(mock_sets_api, mock_get_records, mock_set_id):
     result = buildconfigurationsets.list_build_records_for_set_raw(name='testerino')
     mock_set_id.assert_called_once_with(mock_sets_api, None, 'testerino')
-    mock_get_records.assert_called_once_with(id=1, page_size=200, q='', sort='')
+    mock_get_records.assert_called_once_with(id=1, page_index=0, page_size=200, q='', sort='')
     assert result == 'SUCCESS'
