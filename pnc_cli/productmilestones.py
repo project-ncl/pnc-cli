@@ -47,9 +47,14 @@ def list_milestones(page_size=200, page_index=0, q="", sort=""):
     """
     List all ProductMilestones
     """
+    data = list_milestones_raw(page_size, page_index, sort, q)
+    if data:
+        return utils.format_json_list(data)
+
+def list_milestones_raw(page_size=200, page_index=0, sort="", q=""):
     response = utils.checked_api_call(milestones_api, 'get_all', page_size=page_size, page_index=page_index, q=q, sort=sort)
     if response:
-        return utils.format_json_list(response.content)
+        return response.content
 
 
 @arg("product_version_id", help="ID of the ProductVersion to create a ProductMilestone from.",
@@ -63,6 +68,11 @@ def create_milestone(**kwargs):
     """
     Create a new ProductMilestone
     """
+    data = create_milestone_raw(**kwargs)
+    if data:
+        return utils.format_json_list(data)
+
+def create_milestone_raw(**kwargs):
     check_date_order(kwargs.get('starting_date'), kwargs.get('planned_end_date'))
 
     base_version = str(productversions_api.get_specific(
@@ -77,7 +87,7 @@ def create_milestone(**kwargs):
         'create_new',
         body=created_milestone)
     if response:
-        return utils.format_json(response.content)
+        return response.content
 
 
 @arg("id", help="ProductVersion ID to retrieve milestones for.", type=types.existing_product_version)
@@ -85,18 +95,28 @@ def list_milestones_for_version(id):
     """
     List ProductMilestones for a specific ProductVersion
     """
+    data = list_milestones_for_version_raw(id)
+    if data:
+        return utils.format_json_list(data)
+
+def list_milestones_for_version_raw(id):
     response = utils.checked_api_call(
         milestones_api,
         'get_all_by_product_version_id',
         version_id=id)
     if response:
-        return utils.format_json_list(response.content)
+        return response.content
 
 
 @arg("id", help="ProductMilestone ID to retrieve.", type=types.existing_product_milestone)
 def get_milestone(id):
+    data = get_milestone_raw(id)
+    if data:
+        return utils.format_json_list(data)
+
+def get_milestone_raw(id):
     response = utils.checked_api_call(milestones_api, 'get_specific', id=id)
-    return utils.format_json(response.content)
+    return response.content
 
 
 @arg("id", help="ProductMilestone ID to update.", type=types.existing_product_milestone)
@@ -107,6 +127,11 @@ def update_milestone(id, **kwargs):
     """
     Update a ProductMilestone
     """
+    data = update_milestone_raw(id, **kwargs)
+    if data:
+        return utils.format_json(data)
+
+def update_milestone_raw(id, **kwargs):
     existing_milestone = utils.checked_api_call(milestones_api, 'get_specific', id=id).content
     existing_start_date = existing_milestone.starting_date
     existing_end_date = existing_milestone.planned_end_date
@@ -128,7 +153,7 @@ def update_milestone(id, **kwargs):
     response = utils.checked_api_call(
         milestones_api, 'update', id=id, body=existing_milestone)
     if response:
-        return utils.format_json(response.content)
+        return response.content
 
 
 @arg("id", help="ProductMilestone ID to update.", type=types.existing_product_milestone)
@@ -149,6 +174,11 @@ def close_milestone(id, **kwargs):
     Optional:
     - wait key: bool
     """
+    data = close_milestone_raw(id, **kwargs)
+    if data:
+        return utils.format_json(data)
+
+def close_milestone_raw(id, **kwargs):
     existing_milestone = utils.checked_api_call(milestones_api, 'get_specific', id=id).content
 
     response = utils.checked_api_call(
@@ -165,7 +195,7 @@ def close_milestone(id, **kwargs):
         logging.error("Status of release for milestone: " + latest_release.status)
 
     if response:
-        return utils.format_json(response.content)
+        return response.content
 
 
 @arg("id", help="ID of the ProductMilestone to list distributed artifacts for.", type=types.existing_product_milestone)
@@ -174,9 +204,14 @@ def close_milestone(id, **kwargs):
 @arg("-s", "--sort", help="Sorting RSQL")
 @arg("-q", help="RSQL query")
 def list_distributed_artifacts(id, page_size=200, page_index=0, sort="", q=""):
+    data = list_distributed_artifacts_raw(id, page_size, page_index, sort, q)
+    if data:
+        return utils.format_json_list(data)
+
+def list_distributed_artifacts_raw(id, page_size=200, page_index=0, sort="", q=""):
     response = utils.checked_api_call(milestones_api, 'get_distributed_artifacts', id=id, page_size=page_size, page_index=page_index, sort=sort, q=q)
     if response:
-        return utils.format_json_list(response.content)
+        return response.content
 
 
 @arg('id', help="ID of the ProductMilestone to add a distributed artifact to.", type=types.existing_product_milestone)
@@ -199,6 +234,11 @@ def remove_distributed_artifact():
 @arg("-s", "--sort", help="Sorting RSQL")
 @arg("-q", help="RSQL query")
 def list_distributed_builds(id, page_size=200, page_index=0, sort='', q=''):
+    data = list_distributed_builds_raw(id, page_size, page_index, sort, q)
+    if data:
+        return utils.format_json_list(data)
+
+def list_distributed_builds_raw(id, page_size=200, page_index=0, sort="", q=""):
     response = utils.checked_api_call(milestones_api, 'get_distributed_builds', id=id, page_size=page_size, page_index=page_index, sort=sort, q=q)
     if response:
-        return utils.format_json_list(response.content)
+        return response.content
