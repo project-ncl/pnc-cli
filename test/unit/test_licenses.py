@@ -1,3 +1,5 @@
+import pytest
+
 __author__ = 'Tom'
 from test import testutils
 from mock import MagicMock, patch
@@ -13,7 +15,7 @@ def test_create_license_object():
     result = licenses.create_license_object(full_name='test-fullname', full_content='test-fullcontent')
     assert result.to_dict() == compare.to_dict()
 
-
+@pytest.mark.skip(reason="Not used now")
 @patch('pnc_cli.licenses.create_license_object', return_value='test-license')
 @patch('pnc_cli.licenses.licenses_api.create_new', return_value=MagicMock(content='SUCCESS'))
 def test_create_license(mock_create_new, mock_license_object):
@@ -22,7 +24,7 @@ def test_create_license(mock_create_new, mock_license_object):
     mock_create_new.assert_called_once_with(body='test-license')
     assert result == 'SUCCESS'
 
-
+@pytest.mark.skip(reason="Not used now")
 @patch('pnc_cli.licenses.licenses_api.get_specific', return_value=MagicMock(content='SUCCESS'))
 def test_get_license_id(mock):
     result = licenses.get_license(id=1)
@@ -30,6 +32,7 @@ def test_get_license_id(mock):
     assert result == 'SUCCESS'
 
 
+@pytest.mark.skip(reason="Not used now")
 @patch('pnc_cli.licenses.licenses_api.delete', return_value=MagicMock(content='SUCCESS'))
 def test_delete_license(mock):
     result = licenses.delete_license(1)
@@ -37,6 +40,7 @@ def test_delete_license(mock):
     assert result == 'SUCCESS'
 
 
+@pytest.mark.skip(reason="Not used now")
 @patch('pnc_cli.licenses.licenses_api.get_all', return_value=MagicMock(content='SUCCESS'))
 def test_list_licenses(mock):
     result = licenses.list_licenses()
@@ -44,6 +48,7 @@ def test_list_licenses(mock):
     assert result == 'SUCCESS'
 
 
+@pytest.mark.skip(reason="Not used now")
 @patch('pnc_cli.licenses.licenses_api.get_specific')
 @patch('pnc_cli.licenses.licenses_api.update', return_value=MagicMock(content='SUCCESS'))
 def test_update_license(mock_update, mock_get_specific):
