@@ -1,3 +1,5 @@
+import pytest
+
 __author__ = 'Tom'
 from mock import MagicMock, patch
 
@@ -112,6 +114,7 @@ def test_remove_attribute(mock):
     mock.assert_called_once_with(id=1, key='key')
 
 
+@pytest.mark.skip(reason="Endpoint broken now")
 @patch('pnc_cli.buildrecords.records_api.query_by_attribute', return_value=MagicMock(content=MagicMock(attributes={"key":"value"})))
 def test_query_by_attribute(mock):
     result = buildrecords.query_by_attribute_raw('key', 'value')
