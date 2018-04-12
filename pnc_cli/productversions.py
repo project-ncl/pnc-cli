@@ -39,10 +39,16 @@ def list_product_versions(page_size=200, page_index=0, sort="", q=""):
     """
     List all ProductVersions
     """
+    content = list_product_versions_raw(page_size, page_index, sort, q)
+    if content:
+        return utils.format_json_list(content)
+
+
+def list_product_versions_raw(page_size=200, page_index=0, sort="", q=""):
     response = utils.checked_api_call(versions_api, 'get_all', page_size=page_size, page_index=page_index, sort=sort,
                                       q=q)
     if response:
-        return utils.format_json_list(response.content)
+        return response.content
 
 
 @arg("product_id", help="ID of product to add a version to", type=types.existing_product_id)
@@ -56,12 +62,6 @@ def list_product_versions(page_size=200, page_index=0, sort="", q=""):
 @arg("-bc", "--build-configuration-set-ids", type=types.existing_bc_set_id, nargs="+",
      help="List of build configuration set IDs to associate with the new version")
 def create_product_version(product_id, version, **kwargs):
-    data = create_product_version_raw(product_id, version, **kwargs)
-    if data:
-        return utils.format_json(data)
-
-
-def create_product_version_raw(product_id, version, **kwargs):
     """
     Create a new ProductVersion.
     Each ProductVersion represents a supported product release stream, which includes milestones and releases typically associated with a single major.minor version of a Product.
@@ -71,6 +71,12 @@ def create_product_version_raw(product_id, version, **kwargs):
     ProductVersion 1.0 includes the following releases:
     1.0.Beta1, 1.0.GA, 1.0.1, etc.
     """
+    data = create_product_version_raw(product_id, version, **kwargs)
+    if data:
+        return utils.format_json(data)
+
+
+def create_product_version_raw(product_id, version, **kwargs):
     if version_exists_for_product(product_id, version):
         raise argparse.ArgumentTypeError("Version {} already exists for product: {}".format(
             version, products_api.get_specific(id=product_id).content.name))
@@ -116,6 +122,12 @@ def update_product_version(id, **kwargs):
     """
     Update the ProductVersion with ID id with new values.
     """
+    content = update_product_version_raw(id, **kwargs)
+    if content:
+        return utils.format_json(content)
+
+
+def update_product_version_raw(id, **kwargs):
     product_id = kwargs.get('product_id')
     if product_id is None:
         product_id = get_product_version_raw(id).product_id
@@ -134,4 +146,4 @@ def update_product_version(id, **kwargs):
                                       id=id,
                                       body=to_update)
     if response:
-        return utils.format_json(response.content)
+        return response.content

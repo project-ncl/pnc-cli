@@ -36,8 +36,8 @@ def test_version_exists_for_product_notexist(mock):
 
 @patch('pnc_cli.productversions.versions_api.get_all', return_value=MagicMock(content=['1.0', '1.6', '2.0']))
 def test_list_product_versions(mock):
-    result = productversions.list_product_versions()
-    mock.assert_called_once_with(page_size=200, q="", sort="")
+    result = productversions.list_product_versions_raw()
+    mock.assert_called_once_with(page_index=0, page_size=200, q="", sort="")
     assert result == ['1.0', '1.6', '2.0']
 
 
@@ -46,7 +46,7 @@ def test_list_product_versions(mock):
 @patch('pnc_cli.productversions.versions_api.create_new_product_version', return_value=MagicMock(content='SUCCESS'))
 def test_create_product_version(mock_create_new_product_version, mock_create_product_version_object,
                                 mock_version_exists_for_product):
-    result = productversions.create_product_version(1, '1.0')
+    result = productversions.create_product_version_raw(1, '1.0')
     mock_version_exists_for_product.assert_called_once_with(1, '1.0')
     mock_create_product_version_object.assert_called_once_with(product_id=1, version='1.0')
     mock_create_new_product_version.assert_called_once_with(body='mock-product-version')
@@ -54,15 +54,17 @@ def test_create_product_version(mock_create_new_product_version, mock_create_pro
 
 
 @patch('pnc_cli.productversions.version_exists_for_product', return_value=True)
-def test_create_product_version_exception(mock):
+@patch('pnc_cli.productversions.products_api.get_specific', return_value=MagicMock(content=MagicMock(name='TestProductName')))
+def test_create_product_version_exception(mock_get_specific, mock):
     with pytest.raises(argparse.ArgumentTypeError):
-        productversions.create_product_version(1, '1.0')
+        productversions.create_product_version_raw(1, '1.0')
     mock.assert_called_once_with(1, '1.0')
+    mock_get_specific.assert_called_once_with(id=1)
 
 
 @patch('pnc_cli.productversions.versions_api.get_specific', return_value=MagicMock(content='mock-product-version'))
 def test_get_product_version(mock_get_specific):
-    result = productversions.get_product_version(1)
+    result = productversions.get_product_version_raw(1)
     mock_get_specific.assert_called_once_with(id=1)
     assert result == 'mock-product-version'
 
@@ -76,7 +78,7 @@ def test_update_product_version(mock_update, mock_get_specific, mock_version_exi
     mock = MagicMock()
     mockcontent = MagicMock(content=mock)
     mock_get_specific.return_value = mockcontent
-    result = productversions.update_product_version(1, product_id='1', version='2.0')
+    result = productversions.update_product_version_raw(1, product_id='1', version='2.0')
     mock_version_exists_for_product.assert_called_once_with('1', '2.0')
     mock_get_specific.assert_called_once_with(id=1)
     mock_update.assert_called_once_with(id=1, body=mock)
@@ -85,7 +87,7 @@ def test_update_product_version(mock_update, mock_get_specific, mock_version_exi
     assert result == 'SUCCESS'
 
 
-@patch('pnc_cli.productversions.get_product_version', return_value=MagicMock(product_id=1))
+@patch('pnc_cli.productversions.get_product_version_raw', return_value=MagicMock(product_id=1))
 @patch('pnc_cli.productversions.version_exists_for_product', return_value=False)
 @patch('pnc_cli.productversions.versions_api.get_specific')
 @patch('pnc_cli.productversions.versions_api.update', return_value=MagicMock(content='SUCCESS'))
@@ -95,7 +97,7 @@ def test_update_product_version_no_product_id(mock_update, mock_get_specific, mo
     mock = MagicMock()
     mockcontent = MagicMock(content=mock)
     mock_get_specific.return_value = mockcontent
-    result = productversions.update_product_version(1, version='2.0')
+    result = productversions.update_product_version_raw(1, version='2.0')
     mock_get_product_version.assert_called_once_with(1)
     mock_version_exists_for_product.assert_called_once_with(1, '2.0')
     mock_get_specific.assert_called_once_with(id=1)
@@ -106,7 +108,7 @@ def test_update_product_version_no_product_id(mock_update, mock_get_specific, mo
 
 
 @patch('pnc_cli.productversions.version_exists_for_product', return_value=True)
-@patch('pnc_cli.productversions.versions_api.get_specific')
+@patch('pnc_cli.productversions.products_api.get_specific', return_value=MagicMock(content=MagicMock(name='TestProductName')))
 @patch('pnc_cli.productversions.versions_api.update', return_value=MagicMock(content='SUCCESS'))
 def test_update_product_version_exception(mock_update, mock_get_specific, mock_version_exists_for_product):
     # cannot set return value in patch decorator because the comparison to particular
@@ -115,8 +117,8 @@ def test_update_product_version_exception(mock_update, mock_get_specific, mock_v
     mockcontent = MagicMock(content=mock)
     mock_get_specific.return_value = mockcontent
     with pytest.raises(argparse.ArgumentTypeError):
-        productversions.update_product_version(1, product_id='1', version='2.0')
+        productversions.update_product_version_raw(1, product_id='1', version='2.0')
     mock_version_exists_for_product.assert_called_once_with('1', '2.0')
-    mock_get_specific.assert_not_called()
+    mock_get_specific.assert_called_once_with(id='1')
     mock_update.assert_not_called()
 
