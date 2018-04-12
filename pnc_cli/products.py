@@ -28,14 +28,14 @@ def create_product_object(**kwargs):
 @arg("-pvids", "--product-version-ids", type=types.existing_product_version, nargs='+',
      help="Space separated list of associated ProductVersion ids.")
 def create_product(name, abbreviation, **kwargs):
+    """
+    Create a new Product
+    """
     data = create_product_raw(name, abbreviation, **kwargs)
     if data:
         return utils.format_json(data)
 
 def create_product_raw(name, abbreviation, **kwargs):
-    """
-    Create a new Product
-    """
     product = create_product_object(name=name, abbreviation=abbreviation, **kwargs)
     response = utils.checked_api_call(products_api, 'create_new', body=product)
     if response:
@@ -54,6 +54,11 @@ def update_product(product_id, **kwargs):
     """
     Update a Product with new information
     """
+    content = update_product_raw(product_id, **kwargs)
+    if content:
+        return utils.format_json(content)
+
+def update_product_raw(product_id, **kwargs):
     to_update = products_api.get_specific(id=product_id).content
 
     for key, value in iteritems(kwargs):
@@ -63,7 +68,7 @@ def update_product(product_id, **kwargs):
     response = utils.checked_api_call(
         products_api, 'update', id=product_id, body=to_update)
     if response:
-        return utils.format_json(response.content)
+        return response.content
 
 
 @arg("-i", "--id", help="ID of the Product to retrieve", type=types.existing_product_id)
@@ -72,21 +77,16 @@ def get_product(id=None, name=None):
     """
     Get a specific Product by name or ID
     """
+    content = get_product_raw(id, name)
+    if content:
+        return utils.format_json(content)
+
+def get_product_raw(id=None, name=None):
     prod_id = common.set_id(products_api, id, name)
     response = utils.checked_api_call(products_api, 'get_specific', id=prod_id)
     if response:
-        return utils.format_json(response.content)
-
-
-def list_versions_for_product_raw(id=None, name=None, page_size=200, page_index=0, sort='', q=''):
-    """
-    List all ProductVersions for a given Product
-    """
-    prod_id = common.set_id(products_api, id, name)
-    response = utils.checked_api_call(
-        products_api, 'get_product_versions', id=prod_id, page_size=page_size, page_index=page_index, sort=sort, q=q)
-    if response:
         return response.content
+
 
 @arg("-i", "--id", help="ID of the Product to retrieve versions from", type=types.existing_product_id)
 @arg("-n", "--name", help="Name of the Product to retrieve versions from", type=types.existing_product_name)
@@ -102,6 +102,12 @@ def list_versions_for_product(id=None, name=None, page_size=200, page_index=0, s
     if content:
         return utils.format_json_list(content)
 
+def list_versions_for_product_raw(id=None, name=None, page_size=200, page_index=0, sort='', q=''):
+    prod_id = common.set_id(products_api, id, name)
+    response = utils.checked_api_call(
+        products_api, 'get_product_versions', id=prod_id, page_size=page_size, page_index=page_index, sort=sort, q=q)
+    if response:
+        return response.content
 
 @arg("-p", "--page-size", help="Limit the amount of Products returned", type=int)
 @arg("--page-index", help="Select the index of page", type=int)
@@ -111,6 +117,11 @@ def list_products(page_size=200, page_index=0, sort="", q=""):
     """
     List all Products
     """
+    content = list_products_raw(page_size, page_index, sort, q)
+    if content:
+        return utils.format_json_list(content)
+
+def list_products_raw(page_size=200, page_index=0, sort='', q=''):
     response = utils.checked_api_call(products_api, 'get_all', page_size=page_size, page_index=page_index, q=q, sort=sort)
     if response:
-        return utils.format_json_list(response.content)
+        return response.content
