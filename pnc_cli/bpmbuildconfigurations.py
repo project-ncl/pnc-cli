@@ -1,5 +1,6 @@
 from argh import arg
 
+import ast
 import logging
 import pnc_cli.cli_types as types
 from pnc_cli import swagger_client
