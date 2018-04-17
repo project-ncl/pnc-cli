@@ -146,7 +146,7 @@ class BuildconfigurationsetsApi(object):
         :param bool temporary_build: Is it a temporary build or a standard build?
         :param bool force_rebuild: Should we force the rebuild of all build configurations?
         :param bool timestamp_alignment: Should we add a timestamp during the alignment? Valid only for temporary builds.
-        :return: BuildRecordPage
+        :return: BuildConfigSetRecordSingleton
                  If the method is called asynchronously,
                  returns the request thread.
         """
@@ -211,7 +211,7 @@ class BuildconfigurationsetsApi(object):
                                             body=body_params,
                                             post_params=form_params,
                                             files=files,
-                                            response_type='BuildRecordPage',
+                                            response_type='BuildConfigSetRecordSingleton',
                                             auth_settings=auth_settings,
                                             callback=params.get('callback'))
         return response
