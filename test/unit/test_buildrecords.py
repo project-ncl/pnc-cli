@@ -94,12 +94,6 @@ def test_get_log_for_record(mock):
     assert result == 'log here.'
 
 
-@patch('pnc_cli.buildrecords.pnc_api.builds.get_artifacts', return_value=MagicMock(content="list of artifacts"))
-def test_get_artifacts(mock):
-    result = buildrecords.list_artifacts_raw(id=100)
-    mock.assert_called_once_with(id=100, page_index=0, page_size=200, sort="", q="")
-    assert result == "list of artifacts"
-
 @patch('pnc_cli.buildrecords.pnc_api.builds.put_attribute')
 def test_put_attribute(mock):
     result = buildrecords.put_attribute(1,'key','value')

@@ -153,22 +153,6 @@ def get_log_for_record_raw(id):
         return response
 
 
-@arg("id", help="BuildRecord ID to retrieve Artifacts from.", type=types.existing_build_record)
-@arg("-p", "--page-size", help="Limit the amount of Artifacts returned", type=int)
-@arg("--page-index", help="Select the index of page", type=int)
-@arg("-s", "--sort", help="Sorting RSQL")
-@arg("-q", help="RSQL query")
-def list_artifacts(id, page_size=200, page_index=0, sort="", q=""):
-    data = list_artifacts_raw(id, page_size, page_index, sort, q)
-    if data:
-        return utils.format_json_list(data)
-
-def list_artifacts_raw(id, page_size=200, page_index=0, sort="", q=""):
-    response = utils.checked_api_call(pnc_api.builds, 'get_artifacts', id=id, page_size=page_size, page_index=page_index, sort=sort, q=q)
-    if response:
-        return response.content
-
-
 @arg("id", help="BuildRecord ID to add an Attribute to.", type=types.existing_build_record)
 @arg("key", help="Key for the Attribute.")
 @arg("value", help="Value for the Attribute.")

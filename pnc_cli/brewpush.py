@@ -22,7 +22,7 @@ def push_build(id, tag_prefix):
     req.build_record_id = id
     response = utils.checked_api_call(pnc_api.build_push, 'push', body=req)
     if response:
-        return utils.format_dict(response)
+        return utils.format_json_list(response)
 
 
 @named("build-set")
@@ -37,7 +37,7 @@ def push_build_set(id, tag_prefix):
     req.build_config_set_record_id = id
     response = utils.checked_api_call(pnc_api.build_push, 'push_record_set', body=req)
     if response:
-        return utils.format_dict(response)
+        return utils.format_json_list(response)
 
 
 @named("status")

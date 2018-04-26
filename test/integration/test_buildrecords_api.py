@@ -125,21 +125,6 @@ def test_get_build_configuration_audited():
     assert audited is not None
 
 
-def test_get_artifacts_no_id():
-    testutils.assert_raises_valueerror(builds_api, 'get_artifacts', id=None)
-
-
-def test_get_artifacts_invalid_param():
-    testutils.assert_raises_typeerror(builds_api, 'get_artifacts', id=1)
-
-
-def test_get_artifacts():
-    records = builds_api.get_all(q='(buildConfigurationAudited.name=like=%cli-test%)').content
-    record = records[len(records)-1] #should be the latest build record
-    result = builds_api.get_artifacts(id=record.id)
-    assert result is not None
-
-
 def test_get_attributes_no_id():
     testutils.assert_raises_valueerror(builds_api, 'get_attributes', id=None)
 
