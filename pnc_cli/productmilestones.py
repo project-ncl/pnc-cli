@@ -65,7 +65,7 @@ def create_milestone(**kwargs):
     """
     data = create_milestone_raw(**kwargs)
     if data:
-        return utils.format_json_list(data)
+        return utils.format_json(data)
 
 def create_milestone_raw(**kwargs):
     check_date_order(kwargs.get('starting_date'), kwargs.get('planned_end_date'))
