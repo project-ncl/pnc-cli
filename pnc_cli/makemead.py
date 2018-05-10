@@ -14,6 +14,7 @@ from pnc_cli import buildconfigurations
 from pnc_cli import buildconfigurationsets
 from pnc_cli import environments
 from pnc_cli import products
+from pnc_cli import productversions
 from pnc_cli import projects
 from pnc_cli import repositoryconfigurations
 from pnc_cli.buildconfigurations import get_build_configuration_by_name
@@ -63,7 +64,7 @@ def make_mead_impl(config, run_build, environment, sufix, product_name, product_
     logging.debug(subarts)
     logging.debug(deps_dict)
 
-    product_version_id = lookup_product_version(product_name, product_version)
+    product_version_id = get_product_version(product_name, product_version)
     if product_version_id is None:
         return 1
 
@@ -168,19 +169,26 @@ def make_mead_impl(config, run_build, environment, sufix, product_name, product_
 
     return utils.format_json(bc_set)
 
-
-def lookup_product_version(product_name, product_version):
+def get_product_version(product_name, product_version):
+    products_version = None
     try:
         products_versions = products.list_versions_for_product_raw(name=product_name)
-        if not products_versions:
-            logging.error('Product does not have any versions')
-            return None
-        for product in products_versions:
-            if product.version == product_version:
-                return product.id
+        if products_versions:
+            for product in products_versions:
+                if product.version == product_version:
+                    products_version = product.id
+        else:
+            logging.debug('Product does not have any versions')
     except ValueError:
-        logging.error('Product version not found')
-        return None
+        logging.debug('Product version not found')
+    if products_version is None:
+        p = products.get_product_raw(name=product_name)
+        if p is None:
+            logging.error('Product not found')
+            return None
+        pv = productversions.create_product_version_raw(p.id, product_version)
+        products_version = pv.id
+    return products_version
 
 def validate_input_parameters(config, product_name, product_version):
     valid = True
