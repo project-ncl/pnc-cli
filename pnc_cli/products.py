@@ -81,6 +81,8 @@ def get_product(id=None, name=None):
 
 def get_product_raw(id=None, name=None):
     prod_id = common.set_id(pnc_api.products, id, name)
+    if prod_id is None:
+        return None
     response = utils.checked_api_call(pnc_api.products, 'get_specific', id=prod_id)
     if response:
         return response.content
