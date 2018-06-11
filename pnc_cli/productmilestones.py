@@ -107,7 +107,7 @@ def list_milestones_for_version_raw(id):
 def get_milestone(id):
     data = get_milestone_raw(id)
     if data:
-        return utils.format_json_list(data)
+        return utils.format_json(data)
 
 def get_milestone_raw(id):
     response = utils.checked_api_call(pnc_api.product_milestones, 'get_specific', id=id)
