@@ -5,12 +5,12 @@ README = open(os.path.join(os.path.dirname(__file__), 'README.md')).read()
 setup(
     name='pnc-cli',
     packages=find_packages(exclude=['test*']),
-    version='1.3.0',
+    version='1.3.1',
     description='CLI for the Project Newcastle build system',
     author = 'Tom Hauser',
     author_email = 'thauser@redhat.com',
     url = 'https://github.com/project-ncl/pnc-cli',
-    download_url='https://github.com/project-ncl/pnc-cli/tarball/pypi-1.3.0',
+    download_url='https://github.com/project-ncl/pnc-cli/tarball/pypi-1.3.1',
     keywords = ['PNC','REST'],
     long_description=README,
     install_requires=[
