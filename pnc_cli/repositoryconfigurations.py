@@ -21,7 +21,7 @@ def get_repository_configuration(id):
 
 
 @arg("id", help="ID of the RepositoryConfiguration to update.", type=types.existing_rc_id)
-@arg("-e", "--external-repository", help="URL to the external sources repository.", type=types.valid_url)
+@arg("-e", "--external-repository", help="URL to the external sources repository.", type=types.valid_git_url)
 @arg("-s", "--prebuild-sync", help="Pre-build source synchronization.", type=types.t_or_f)
 def update_repository_configuration(id, external_repository=None, prebuild_sync=None):
     """
@@ -46,8 +46,8 @@ def update_repository_configuration(id, external_repository=None, prebuild_sync=
     if response:
         return response.content
 
-@arg("repository", help="URL to the internal sources repository.", type=types.valid_url)
-@arg("-e", "--external-repository", help="URL to the external sources repository.", type=types.valid_url)
+@arg("repository", help="URL to the internal sources repository.", type=types.valid_git_url)
+@arg("-e", "--external-repository", help="URL to the external sources repository.", type=types.valid_git_url)
 @arg("-s", "--prebuild-sync", help="Pre-build source synchronization.", type=types.t_or_f)
 def create_repository_configuration(repository, external_repository=None, prebuild_sync=None):
     """

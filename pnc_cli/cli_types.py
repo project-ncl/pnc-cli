@@ -244,6 +244,10 @@ def valid_url(urlInput):
         raise argparse.ArgumentTypeError("Invalid url")
     return urlInput
 
+def valid_git_url(urlInput):
+    # replace git protocol with http so we can validate it as url
+    return valid_url(re.sub(r'^(git\+ssh|ssh|git)','http',urlInput))
+
 def t_or_f(arg):
     ua = str(arg).upper()
     if 'TRUE'.startswith(ua):
