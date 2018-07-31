@@ -27,6 +27,7 @@ import os
 import re
 import urllib
 import json
+import sys
 import mimetypes
 import random
 import tempfile
@@ -187,9 +188,12 @@ class ApiClient(object):
         :param obj: The data to serialize.
         :return: The serialized form of data.
         """
+        types = (str, int, float, bool, tuple)
+        if sys.version_info < (3,0):
+            types = types + (unicode,)
         if isinstance(obj, type(None)):
             return None
-        elif isinstance(obj, (str, int, float, bool, tuple)):
+        elif isinstance(obj, types):
             return obj
         elif isinstance(obj, list):
             return [self.sanitize_for_serialization(sub_obj)
