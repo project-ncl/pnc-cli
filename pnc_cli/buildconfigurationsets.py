@@ -167,7 +167,7 @@ def build_set(id=None, name=None,
     content = build_set_raw(id, name,
                             temporary_build, timestamp_alignment, force)
     if content:
-        return utils.format_json_list(content)
+        return utils.format_json(content)
 
 
 def list_build_configurations_for_set_raw(id=None, name=None, page_size=200, page_index=0, sort="", q=""):
