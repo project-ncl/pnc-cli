@@ -6,7 +6,7 @@ import time
 from ConfigParser import Error
 from ConfigParser import NoSectionError
 
-from argh import arg
+from argh import arg, aliases
 
 import pnc_cli.utils as utils
 from pnc_cli import bpmbuildconfigurations
@@ -32,19 +32,20 @@ from pnc_cli.tools.config_utils import ConfigReader
  Example: --look-up-only jdg-infinispan
  Will look up jdg-infinispan section and process a look up of BC by name (jdg-infinispan-${version_field}.
 """)
+@arg('--clean-group', help='Clean target BuildGroup config from old configurations before adding new ones.')
 def make_mead(config=None, run_build=False, environment=1, sufix="", product_name=None, product_version=None,
-              look_up_only=""):
+              look_up_only="",clean_group=False):
     """
     Create Build group based on Make-Mead configuration file
     :param config: Make Mead config name
     :return:
     """
-    ret=make_mead_impl(config, run_build, environment, sufix, product_name, product_version, look_up_only)
+    ret=make_mead_impl(config, run_build, environment, sufix, product_name, product_version, look_up_only, clean_group)
     if type(ret) == int and ret != 0:
         sys.exit(ret)
     return ret
 
-def make_mead_impl(config, run_build, environment, sufix, product_name, product_version, look_up_only):
+def make_mead_impl(config, run_build, environment, sufix, product_name, product_version, look_up_only, clean_group):
     if not validate_input_parameters(config, product_name, product_version):
         return 1
 
@@ -81,6 +82,9 @@ def make_mead_impl(config, run_build, environment, sufix, product_name, product_
     target_name = product_name + "-" + product_version + "-all" + sufix
     try:
         bc_set = buildconfigurationsets.get_build_configuration_set_raw(name=target_name)
+        if clean_group:
+            for bc_id in bc_set.build_configuration_ids:
+                buildconfigurationsets.remove_build_configuration_from_set_raw(set_id=bc_set.id, config_id=bc_id)
     except ValueError:
         bc_set = buildconfigurationsets.create_build_configuration_set_raw(name=target_name, product_version_id=product_version_id)
     logging.debug(target_name + ":")
