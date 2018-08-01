@@ -38,7 +38,7 @@ def test_list_records_for_build_configuration_name(mock_configs_api, mock_record
 
 
 @patch('pnc_cli.common.set_id', autospec=True, return_value='1')
-@patch('pnc_cli.buildrecords.pnc_api.builds.get_all_for_project_1', return_value=MagicMock(content=[1]))
+@patch('pnc_cli.buildrecords.pnc_api.builds.get_all_for_project_0', return_value=MagicMock(content=[1]))
 @patch('pnc_cli.buildrecords.pnc_api.projects', autospec=ProjectsApi)
 def test_list_records_for_project_id(mock_projects_api, mock_records_api, mock_set_id):
     result = buildrecords.list_records_for_project_raw(id='1')
@@ -48,7 +48,7 @@ def test_list_records_for_project_id(mock_projects_api, mock_records_api, mock_s
 
 
 @patch('pnc_cli.common.set_id', autospec=True, return_value='2')
-@patch('pnc_cli.buildrecords.pnc_api.builds.get_all_for_project_1', return_value=MagicMock(content=[2]))
+@patch('pnc_cli.buildrecords.pnc_api.builds.get_all_for_project_0', return_value=MagicMock(content=[2]))
 @patch('pnc_cli.buildrecords.pnc_api.projects', autospec=ProjectsApi)
 def test_list_records_for_project_name(mock_projects_api, mock_records_api, mock_set_id):
     result = buildrecords.list_records_for_project_raw(name='Tom')

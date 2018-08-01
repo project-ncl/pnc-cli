@@ -62,7 +62,7 @@ def list_records_for_project(id=None, name=None, page_size=200, page_index=0, so
 
 def list_records_for_project_raw(id=None, name=None, page_size=200, page_index=0, sort="", q=""):
     project_id = common.set_id(pnc_api.projects, id, name)
-    response = utils.checked_api_call(pnc_api.builds, 'get_all_for_project_1', project_id=project_id, page_size=page_size, page_index=page_index,
+    response = utils.checked_api_call(pnc_api.builds, 'get_all_for_project_0', project_id=project_id, page_size=page_size, page_index=page_index,
                                       sort=sort, q=q)
     if response:
         return response.content
