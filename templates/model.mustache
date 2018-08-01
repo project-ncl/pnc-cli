@@ -52,13 +52,8 @@ class {{classname}}(object):
 {{/vars}}
 
 {{#vars}}
-{{#required}}
-        self.{{name}} = {{name}}
-{{/required}}
-{{^required}}
         if {{name}} is not None:
           self.{{name}} = {{name}}
-{{/required}}
 {{/vars}}
 
 {{#vars}}
@@ -86,10 +81,6 @@ class {{classname}}(object):
         :param {{name}}: The {{name}} of this {{classname}}.
         :type: {{datatype}}
         """
-{{#required}}
-        if {{name}} is None:
-            raise ValueError("Invalid value for `{{name}}`, must not be `None`")
-{{/required}}
 {{#isEnum}}
 {{#isContainer}}
         allowed_values = [{{#allowableValues}}{{#values}}{{#items.isString}}"{{/items.isString}}{{{this}}}{{#items.isString}}"{{/items.isString}}{{^-last}}, {{/-last}}{{/values}}{{/allowableValues}}]
