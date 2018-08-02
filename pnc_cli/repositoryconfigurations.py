@@ -46,34 +46,6 @@ def update_repository_configuration(id, external_repository=None, prebuild_sync=
     if response:
         return response.content
 
-@arg("repository", help="URL to the internal sources repository.", type=types.valid_git_url)
-@arg("-e", "--external-repository", help="URL to the external sources repository.", type=types.valid_git_url)
-@arg("-s", "--prebuild-sync", help="Pre-build source synchronization.", type=types.t_or_f)
-def create_repository_configuration(repository, external_repository=None, prebuild_sync=None):
-    """
-    Create a new RepositoryConfiguration.
-    """
-
-    print("s: %s", prebuild_sync)
-
-    if external_repository is None and prebuild_sync:
-        logging.error("You cannot enable prebuild sync without external repository")
-        return
-
-    repository_configuration = swagger_client.RepositoryConfigurationRest()
-    repository_configuration.internal_url = repository
-
-    if external_repository is not None:
-        repository_configuration.external_url = external_repository
-    
-    if prebuild_sync is not None:
-        repository_configuration.pre_build_sync_enabled = prebuild_sync
-
-    response = utils.checked_api_call(
-        pnc_api.repositories, 'create_new', body=repository_configuration)
-    if response:
-        return utils.format_json(response.content)
-
 @arg("-p", "--page-size", help="Limit the amount of repository configurations returned", type=int)
 @arg("--page-index", help="Select the index of page", type=int)
 @arg("-s", "--sort", help="Sorting RSQL")

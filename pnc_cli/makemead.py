@@ -2,7 +2,6 @@ import logging
 import os
 import re
 import sys
-import time
 from ConfigParser import Error
 from ConfigParser import NoSectionError
 
@@ -346,27 +345,8 @@ def create_build_configuration_and_repo(environment, bc_set, product_version_id,
                                              build_configuration_set_ids = [],
                                              generic_parameters=get_generic_parameters(art_params))
 
-
-    #Using polling every 30s check this endpoint: get /bpm/tasks/{bpm_task_id}
-    #until eventType is:
-    # BCC_CONFIG_SET_ADDITION_ERROR BCC_CREATION_ERROR BCC_REPO_CLONE_ERROR BCC_REPO_CREATION_ERROR -> ERROR -> end with error
-    # BCC_CREATION_SUCCESS  -> SUCCESS
-    error_event_types = ("RC_REPO_CREATION_ERROR", "RC_REPO_CLONE_ERROR", "RC_CREATION_ERROR")
-    time.sleep(2)
-    while True:
-        bpm_task = bpmbuildconfigurations.get_bpm_task_by_id(bpm_task_id)
-
-        if contains_event_type(bpm_task.content.events, ("RC_CREATION_SUCCESS", )):
-            break
-
-        if contains_event_type(bpm_task.content.events, error_event_types):
-            logging.error("Creation of Build Configuration failed")
-            logging.error(bpm_task.content)
-            return None
-
-        logging.info("Waiting until Build Configuration " + artifact_name + " is created.")
-        time.sleep(10)
-
+    if not bpmbuildconfigurations.wait_for_repo_creation(bpm_task_id):
+        return None
 
     #Get BC - GET build-configurations?q='$NAME'
     #Not found-> BC creation failed and the task was garbage collected -> fail
@@ -378,14 +358,6 @@ def create_build_configuration_and_repo(environment, bc_set, product_version_id,
 
     logging.info("Build Configuration " + artifact_name + " is created.")
     return build_config
-
-
-def contains_event_type(events, types):
-    for event in events:
-        if(event.event_type in types):
-            return True
-
-    return False
 
 
 def _git_url_use_https_only(git_url):

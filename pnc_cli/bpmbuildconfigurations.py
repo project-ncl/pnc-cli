@@ -2,9 +2,11 @@ from argh import arg
 
 import ast
 import logging
+import time
 import pnc_cli.cli_types as types
 from pnc_cli import swagger_client
 from pnc_cli import utils
+from pnc_cli import repositoryconfigurations
 from pnc_cli.pnc_api import pnc_api
 
 def create_build_conf_object(**kwargs):
@@ -58,6 +60,64 @@ def create_build_configuration_process(repository, revision, **kwargs):
         pnc_api.bpm, 'start_r_creation_task_with_single_url', body=repo_creation)
     if response:
         return response
+
+@arg("repository", help="URL to the repository with the sources.", type=types.valid_git_url)
+@arg("--no-sync", help="Disable pre-build synchronization of the external repository into the internal.",
+        default=False, action='store_true')
+def create_repository_configuration(repository, no_sync=False):
+    """
+    Create a new RepositoryConfiguration. If the provided repository URL is for external repository, it is cloned into internal one.
+    :return BPM Task ID of the new RepositoryConfiguration creation
+    """
+    repo = create_repository_configuration_raw(repository, no_sync)
+    if repo:
+        return repo
+
+def create_repository_configuration_raw(repository, no_sync=False):
+    repo_creation = swagger_client.RepositoryCreationUrlAutoRest()
+    repo_creation.scm_url = repository
+    repo_creation.pre_build_sync_enabled = not no_sync
+    repo_creation.build_configuration_rest = None
+
+    task_id = utils.checked_api_call(
+        pnc_api.bpm, 'start_r_creation_task_with_single_url', body=repo_creation)
+
+    if task_id and  wait_for_repo_creation(task_id):
+        repo = repositoryconfigurations.match_repository_configuration_raw(repository)
+        if repo:
+            return repo
+
+
+def wait_for_repo_creation(task_id, retry=30):
+    """
+    Using polling check if the task finished 
+    """
+    success_event_types = ("RC_CREATION_SUCCESS", )
+    error_event_types = ("RC_REPO_CREATION_ERROR", "RC_REPO_CLONE_ERROR", "RC_CREATION_ERROR")
+    while retry > 0:
+        bpm_task = get_bpm_task_by_id(task_id)
+
+        if contains_event_type(bpm_task.content.events, success_event_types):
+            break
+
+        if contains_event_type(bpm_task.content.events, error_event_types):
+            logging.error("Creation of Repository Configuration failed")
+            logging.error(bpm_task.content)
+            return False
+
+        logging.info("Waiting until Repository Configuration creation task "+str(task_id)+" finishes.")
+        time.sleep(10)
+        retry -= 1
+    return retry > 0
+
+
+def contains_event_type(events, types):
+    for event in events:
+        if(event.event_type in types):
+            return True
+
+    return False
+
 
 def get_bpm_task_by_id(bpm_task_id):
     return utils.checked_api_call(pnc_api.bpm, "get_bpm_task_by_id", task_id=bpm_task_id)
