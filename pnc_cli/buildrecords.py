@@ -145,10 +145,11 @@ def get_log_for_record(id):
     """
     data = get_log_for_record_raw(id)
     if data:
-        return utils.format_json(data)
+        return data
 
 def get_log_for_record_raw(id):
     response = utils.checked_api_call(pnc_api.builds, 'get_logs', id=id)
+    print(response)
     if response:
         return response
 
