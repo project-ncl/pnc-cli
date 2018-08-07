@@ -259,7 +259,7 @@ def list_build_configurations_for_product(id=None, name=None, page_size=200, pag
     """
     data = list_build_configurations_for_product_raw(id, name, page_size, page_index, sort, q)
     if data:
-        return utils.format_json(data)
+        return utils.format_json_list(data)
 
 def list_build_configurations_for_product_raw(id=None, name=None, page_size=200, page_index=0, sort="", q=""):
     found_id = common.set_id(pnc_api.products, id, name)
