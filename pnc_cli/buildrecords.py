@@ -168,13 +168,17 @@ def remove_attribute(id, key):
 
 @arg("key", help="Key of the Attribute to query BuildRecords for.")
 @arg("value", help="Value of the Attribute to query BuildRecords for.")
-def query_by_attribute(key, value):
-    data = query_by_attribute_raw(key, value)
+@arg("-p", "--page-size", help="Limit the amount of BuildRecords returned", type=int)
+@arg("--page-index", help="Select the index of page", type=int)
+@arg("-s", "--sort", help="Sorting RSQL")
+@arg("-q", help="RSQL query")
+def query_by_attribute(key, value, page_size=200, page_index=0, sort="", q=""):
+    data = query_by_attribute_raw(key, value, page_size, page_index, sort, q)
     if data:
         return utils.format_json(data)
 
-def query_by_attribute_raw(key, value):
-    response = utils.checked_api_call(pnc_api.builds, "query_by_attribute", key=key, value=value)
+def query_by_attribute_raw(key, value, page_size=200, page_index=0, sort="", q=""):
+    response = utils.checked_api_call(pnc_api.builds, "query_by_attribute", key=key, value=value, page_size=page_size, page_index=page_index, sort=sort, q=q)
     if response:
         return response
 
