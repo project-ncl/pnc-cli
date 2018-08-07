@@ -1,0 +1,310 @@
+diff --git a/pnc_cli/swagger_client/apis/buildrecords_api.py b/pnc_cli/swagger_client/apis/buildrecords_api.py
+index 3eaf990..9edcdd2 100644
+--- a/pnc_cli/swagger_client/apis/buildrecords_api.py
++++ b/pnc_cli/swagger_client/apis/buildrecords_api.py
+@@ -92,13 +92,13 @@ class BuildrecordsApi(object):
+         all_params.append('_request_timeout')
+ 
+         params = locals()
+-        for key, val in iteritems(params['kwargs']):
+-            if key not in all_params:
++        for k, v in iteritems(params['kwargs']):
++            if k not in all_params:
+                 raise TypeError(
+                     "Got an unexpected keyword argument '%s'"
+-                    " to method delete" % key
++                    " to method delete" % k
+                 )
+-            params[key] = val
++            params[k] = v
+         del params['kwargs']
+         # verify the required parameter 'id' is set
+         if ('id' not in params) or (params['id'] is None):
+@@ -204,13 +204,13 @@ class BuildrecordsApi(object):
+         all_params.append('_request_timeout')
+ 
+         params = locals()
+-        for key, val in iteritems(params['kwargs']):
+-            if key not in all_params:
++        for k, v in iteritems(params['kwargs']):
++            if k not in all_params:
+                 raise TypeError(
+                     "Got an unexpected keyword argument '%s'"
+-                    " to method get_all" % key
++                    " to method get_all" % k
+                 )
+-            params[key] = val
++            params[k] = v
+         del params['kwargs']
+ 
+ 
+@@ -321,13 +321,13 @@ class BuildrecordsApi(object):
+         all_params.append('_request_timeout')
+ 
+         params = locals()
+-        for key, val in iteritems(params['kwargs']):
+-            if key not in all_params:
++        for k, v in iteritems(params['kwargs']):
++            if k not in all_params:
+                 raise TypeError(
+                     "Got an unexpected keyword argument '%s'"
+-                    " to method get_all_for_build_configuration" % key
++                    " to method get_all_for_build_configuration" % k
+                 )
+-            params[key] = val
++            params[k] = v
+         del params['kwargs']
+         # verify the required parameter 'configuration_id' is set
+         if ('configuration_id' not in params) or (params['configuration_id'] is None):
+@@ -443,13 +443,13 @@ class BuildrecordsApi(object):
+         all_params.append('_request_timeout')
+ 
+         params = locals()
+-        for key, val in iteritems(params['kwargs']):
+-            if key not in all_params:
++        for k, v in iteritems(params['kwargs']):
++            if k not in all_params:
+                 raise TypeError(
+                     "Got an unexpected keyword argument '%s'"
+-                    " to method get_all_for_project" % key
++                    " to method get_all_for_project" % k
+                 )
+-            params[key] = val
++            params[k] = v
+         del params['kwargs']
+         # verify the required parameter 'name' is set
+         if ('name' not in params) or (params['name'] is None):
+@@ -565,13 +565,13 @@ class BuildrecordsApi(object):
+         all_params.append('_request_timeout')
+ 
+         params = locals()
+-        for key, val in iteritems(params['kwargs']):
+-            if key not in all_params:
++        for k, v in iteritems(params['kwargs']):
++            if k not in all_params:
+                 raise TypeError(
+                     "Got an unexpected keyword argument '%s'"
+-                    " to method get_all_for_project_0" % key
++                    " to method get_all_for_project_0" % k
+                 )
+-            params[key] = val
++            params[k] = v
+         del params['kwargs']
+         # verify the required parameter 'project_id' is set
+         if ('project_id' not in params) or (params['project_id'] is None):
+@@ -679,13 +679,13 @@ class BuildrecordsApi(object):
+         all_params.append('_request_timeout')
+ 
+         params = locals()
+-        for key, val in iteritems(params['kwargs']):
+-            if key not in all_params:
++        for k, v in iteritems(params['kwargs']):
++            if k not in all_params:
+                 raise TypeError(
+                     "Got an unexpected keyword argument '%s'"
+-                    " to method get_attributes" % key
++                    " to method get_attributes" % k
+                 )
+-            params[key] = val
++            params[k] = v
+         del params['kwargs']
+         # verify the required parameter 'id' is set
+         if ('id' not in params) or (params['id'] is None):
+@@ -785,13 +785,13 @@ class BuildrecordsApi(object):
+         all_params.append('_request_timeout')
+ 
+         params = locals()
+-        for key, val in iteritems(params['kwargs']):
+-            if key not in all_params:
++        for k, v in iteritems(params['kwargs']):
++            if k not in all_params:
+                 raise TypeError(
+                     "Got an unexpected keyword argument '%s'"
+-                    " to method get_build_configuration_audited" % key
++                    " to method get_build_configuration_audited" % k
+                 )
+-            params[key] = val
++            params[k] = v
+         del params['kwargs']
+         # verify the required parameter 'id' is set
+         if ('id' not in params) or (params['id'] is None):
+@@ -899,13 +899,13 @@ class BuildrecordsApi(object):
+         all_params.append('_request_timeout')
+ 
+         params = locals()
+-        for key, val in iteritems(params['kwargs']):
+-            if key not in all_params:
++        for k, v in iteritems(params['kwargs']):
++            if k not in all_params:
+                 raise TypeError(
+                     "Got an unexpected keyword argument '%s'"
+-                    " to method get_built_artifacts" % key
++                    " to method get_built_artifacts" % k
+                 )
+-            params[key] = val
++            params[k] = v
+         del params['kwargs']
+         # verify the required parameter 'id' is set
+         if ('id' not in params) or (params['id'] is None):
+@@ -1013,13 +1013,13 @@ class BuildrecordsApi(object):
+         all_params.append('_request_timeout')
+ 
+         params = locals()
+-        for key, val in iteritems(params['kwargs']):
+-            if key not in all_params:
++        for k, v in iteritems(params['kwargs']):
++            if k not in all_params:
+                 raise TypeError(
+                     "Got an unexpected keyword argument '%s'"
+-                    " to method get_completed_or_runnning" % key
++                    " to method get_completed_or_runnning" % k
+                 )
+-            params[key] = val
++            params[k] = v
+         del params['kwargs']
+         # verify the required parameter 'id' is set
+         if ('id' not in params) or (params['id'] is None):
+@@ -1127,13 +1127,13 @@ class BuildrecordsApi(object):
+         all_params.append('_request_timeout')
+ 
+         params = locals()
+-        for key, val in iteritems(params['kwargs']):
+-            if key not in all_params:
++        for k, v in iteritems(params['kwargs']):
++            if k not in all_params:
+                 raise TypeError(
+                     "Got an unexpected keyword argument '%s'"
+-                    " to method get_dependency_artifacts" % key
++                    " to method get_dependency_artifacts" % k
+                 )
+-            params[key] = val
++            params[k] = v
+         del params['kwargs']
+         # verify the required parameter 'id' is set
+         if ('id' not in params) or (params['id'] is None):
+@@ -1241,13 +1241,13 @@ class BuildrecordsApi(object):
+         all_params.append('_request_timeout')
+ 
+         params = locals()
+-        for key, val in iteritems(params['kwargs']):
+-            if key not in all_params:
++        for k, v in iteritems(params['kwargs']):
++            if k not in all_params:
+                 raise TypeError(
+                     "Got an unexpected keyword argument '%s'"
+-                    " to method get_dependency_graph" % key
++                    " to method get_dependency_graph" % k
+                 )
+-            params[key] = val
++            params[k] = v
+         del params['kwargs']
+         # verify the required parameter 'id' is set
+         if ('id' not in params) or (params['id'] is None):
+@@ -1347,13 +1347,13 @@ class BuildrecordsApi(object):
+         all_params.append('_request_timeout')
+ 
+         params = locals()
+-        for key, val in iteritems(params['kwargs']):
+-            if key not in all_params:
++        for k, v in iteritems(params['kwargs']):
++            if k not in all_params:
+                 raise TypeError(
+                     "Got an unexpected keyword argument '%s'"
+-                    " to method get_logs" % key
++                    " to method get_logs" % k
+                 )
+-            params[key] = val
++            params[k] = v
+         del params['kwargs']
+         # verify the required parameter 'id' is set
+         if ('id' not in params) or (params['id'] is None):
+@@ -1453,13 +1453,13 @@ class BuildrecordsApi(object):
+         all_params.append('_request_timeout')
+ 
+         params = locals()
+-        for key, val in iteritems(params['kwargs']):
+-            if key not in all_params:
++        for k, v in iteritems(params['kwargs']):
++            if k not in all_params:
+                 raise TypeError(
+                     "Got an unexpected keyword argument '%s'"
+-                    " to method get_repour_logs" % key
++                    " to method get_repour_logs" % k
+                 )
+-            params[key] = val
++            params[k] = v
+         del params['kwargs']
+         # verify the required parameter 'id' is set
+         if ('id' not in params) or (params['id'] is None):
+@@ -1559,13 +1559,13 @@ class BuildrecordsApi(object):
+         all_params.append('_request_timeout')
+ 
+         params = locals()
+-        for key, val in iteritems(params['kwargs']):
+-            if key not in all_params:
++        for k, v in iteritems(params['kwargs']):
++            if k not in all_params:
+                 raise TypeError(
+                     "Got an unexpected keyword argument '%s'"
+-                    " to method get_specific" % key
++                    " to method get_specific" % k
+                 )
+-            params[key] = val
++            params[k] = v
+         del params['kwargs']
+         # verify the required parameter 'id' is set
+         if ('id' not in params) or (params['id'] is None):
+@@ -1669,13 +1669,13 @@ class BuildrecordsApi(object):
+         all_params.append('_request_timeout')
+ 
+         params = locals()
+-        for key, val in iteritems(params['kwargs']):
+-            if key not in all_params:
++        for k, v in iteritems(params['kwargs']):
++            if k not in all_params:
+                 raise TypeError(
+                     "Got an unexpected keyword argument '%s'"
+-                    " to method put_attribute" % key
++                    " to method put_attribute" % k
+                 )
+-            params[key] = val
++            params[k] = v
+         del params['kwargs']
+         # verify the required parameter 'id' is set
+         if ('id' not in params) or (params['id'] is None):
+@@ -1795,13 +1795,13 @@ class BuildrecordsApi(object):
+         all_params.append('_request_timeout')
+ 
+         params = locals()
+-        for key, val in iteritems(params['kwargs']):
+-            if key not in all_params:
++        for k, v in iteritems(params['kwargs']):
++            if k not in all_params:
+                 raise TypeError(
+                     "Got an unexpected keyword argument '%s'"
+-                    " to method query_by_attribute" % key
++                    " to method query_by_attribute" % k
+                 )
+-            params[key] = val
++            params[k] = v
+         del params['kwargs']
+         # verify the required parameter 'key' is set
+         if ('key' not in params) or (params['key'] is None):
+@@ -1916,13 +1916,13 @@ class BuildrecordsApi(object):
+         all_params.append('_request_timeout')
+ 
+         params = locals()
+-        for key, val in iteritems(params['kwargs']):
+-            if key not in all_params:
++        for k, v in iteritems(params['kwargs']):
++            if k not in all_params:
+                 raise TypeError(
+                     "Got an unexpected keyword argument '%s'"
+-                    " to method remove_attribute" % key
++                    " to method remove_attribute" % k
+                 )
+-            params[key] = val
++            params[k] = v
+         del params['kwargs']
+         # verify the required parameter 'id' is set
+         if ('id' not in params) or (params['id'] is None):
