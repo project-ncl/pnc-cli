@@ -16,8 +16,7 @@ import pnc_cli.utils as utils
 import keycloak_config as kc
 import pnc_server_config as psc
 
-
-
+# make sure that input behaves as expected
 # make sure that input behaves as expected
 try:
     input = raw_input
@@ -38,22 +37,24 @@ class UserConfig():
         self.password = self.load_password_from_config(config)
         self.pnc_config = psc.PncServerConfig(config)
         self.keycloak_config = kc.KeycloakConfig(config)
+        self.refresh_token = None
         self.token = self.retrieve_keycloak_token()
         self.apiclient = self.create_api_client()
 
     def __getstate__(self):
-        return self.keycloak_config, self.username, self.token, self.token_time
+        return self.keycloak_config, self.username, self.token, self.token_time, self.refresh_token
 
     def __setstate__(self, state):
         # here we need to read the config file again, to check that values for URLs haven't changed. the way to
         # change the username / password will be a login function the user calls. ideally the config file won't need
         # to be changed much once it's in place
         newtoken = False
+        refreshtoken = False
         config = utils.get_config()
-        saved_kc_config, saved_username, self.token, self.token_time = state
+        saved_kc_config, saved_username, self.token, self.token_time, self.refresh_token = state
         self.pnc_config = psc.PncServerConfig(config)
 
-        # check for changes in keycloak usrname; if so, we'll need to get a new token regardless of time
+        # check for changes in keycloak username; if so, we'll need to get a new token regardless of time
         self.username = self.load_username_from_config(config)
         if self.username is not None and self.username != saved_username:
             sys.stderr.write("Keycloak username has been changed. Retrieving new token...\n")
@@ -70,16 +71,23 @@ class UserConfig():
         else:
             self.keycloak_config = saved_kc_config
 
+        if not newtoken and 8640000 >= utils.current_time_millis() - self.token_time > 360000:
+            logging.info("Refreshing access token for user {}. \n".format(self.username))
+            refreshtoken = True
+
         # if more than a day has passed since we saved the token, and keycloak server configuration is not modified,
         # get a new one
-        if not newtoken and utils.current_time_millis() - self.token_time > 86400000:
+        if not newtoken and utils.current_time_millis() - self.token_time > 8640000:
             # input the password again since we no longer cache it
             logging.info("Keycloak token has expired for user {}. Retrieving new token...\n".format(self.username))
             newtoken = True
 
+        if refreshtoken:
+            self.token = self.refresh_access_token()
+
         if newtoken:
             # if using client auth, we simply get a new token.
-            if (self.keycloak_config.client_mode in ['True', 'true', '1']):
+            if self.keycloak_config.client_mode in trueValues:
                 self.token = self.retrieve_keycloak_token()
             else:
                 # enter password to get new token, but only if the user has not entered a password in pnc-cli.conf
@@ -117,7 +125,21 @@ class UserConfig():
         except ConfigParser.NoOptionError:
             return None
 
-
+    def refresh_access_token(self):
+        params = {'grant_type': 'refresh_token',
+                  'client_id': self.keycloak_config.client_id,
+                  'refresh_token': self.refresh_token
+                  }
+        r = requests.post(self.keycloak_config.url,params,verify=False)
+        if r.status_code == 200:
+            if self.username:
+                logging.info("Token refreshed for user {}. \n".format(self.username))
+            else:
+                logging.info("Token refreshed for client from {}. \n".format(self.keycloak_config.client_id))
+            self.token_time = utils.current_time_millis()
+            reply = json.loads(r.content.decode('utf-8'))
+            self.refresh_token = reply.get('refresh_token')
+            return str(reply.get('access_token'))
     # retrieves a token from the keycloak server using the configured username / password / keycloak server
     def retrieve_keycloak_token(self):
         if self.keycloak_config.client_mode in trueValues:
@@ -130,6 +152,7 @@ class UserConfig():
                 logging.info("Token retrieved for client from {}.\n".format(self.keycloak_config.client_id))
                 self.token_time = utils.current_time_millis()
                 reply = json.loads(r.content.decode('utf-8'))
+                self.refresh_token = str(reply.get('refresh_token'))
                 return str(reply.get('access_token'))
             else:
                 logging.error("Failed to retrieve client token:")
@@ -147,6 +170,7 @@ class UserConfig():
                     logging.info("Token retrieved for {}.\n".format(self.username))
                     self.token_time = utils.current_time_millis()
                     reply = json.loads(r.content.decode('utf-8'))
+                    self.refresh_token = str(reply.get('refresh_token'))
                     return str(reply.get('access_token'))
                 else:
                     logging.error("Failed to retrieve token:")
