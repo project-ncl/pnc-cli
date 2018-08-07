@@ -41,7 +41,7 @@ class RepositoryconfigurationsApi(object):
 
     def create_new(self, **kwargs):
         """
-        Creates a new Repository Configuration.
+        Creates a new Repository Configuration. NOTE: it does not create the repository in the scm server, it only creates an entry in PNC database. Useful when you already have internal and external scm repositories created.
         
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please define a `callback` function
@@ -67,7 +67,7 @@ class RepositoryconfigurationsApi(object):
 
     def create_new_with_http_info(self, **kwargs):
         """
-        Creates a new Repository Configuration.
+        Creates a new Repository Configuration. NOTE: it does not create the repository in the scm server, it only creates an entry in PNC database. Useful when you already have internal and external scm repositories created.
         
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please define a `callback` function

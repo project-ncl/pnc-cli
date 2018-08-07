@@ -76,6 +76,7 @@ Class | Method | HTTP request | Description
 *BuildconfigsetrecordsApi* | [**delete**](docs/BuildconfigsetrecordsApi.md#delete) | **DELETE** /build-config-set-records/{id} | Delete specific Build Config Set Record (it must be from a temporary build). Operation is async, for the result subscribe to &#39;build-config-set-records#delete&#39; events with optional qualifier buildRecord.id.
 *BuildconfigsetrecordsApi* | [**get_all**](docs/BuildconfigsetrecordsApi.md#get_all) | **GET** /build-config-set-records | Gets all build config set execution records
 *BuildconfigsetrecordsApi* | [**get_build_records**](docs/BuildconfigsetrecordsApi.md#get_build_records) | **GET** /build-config-set-records/{id}/build-records | Gets the build records associated with this set
+*BuildconfigsetrecordsApi* | [**get_dependency_graph_for_set**](docs/BuildconfigsetrecordsApi.md#get_dependency_graph_for_set) | **GET** /build-config-set-records/{id}/dependency-graph | Gets dependency graph for a Build Group Record (running and completed).
 *BuildconfigsetrecordsApi* | [**get_specific**](docs/BuildconfigsetrecordsApi.md#get_specific) | **GET** /build-config-set-records/{id} | Gets specific build config set execution record
 *BuildconfigurationsApi* | [**add_dependency**](docs/BuildconfigurationsApi.md#add_dependency) | **POST** /build-configurations/{id}/dependencies | Adds a dependency to the specified config
 *BuildconfigurationsApi* | [**add_product_version**](docs/BuildconfigurationsApi.md#add_product_version) | **POST** /build-configurations/{id}/product-versions | Associates a product version to the specified config
@@ -128,6 +129,7 @@ Class | Method | HTTP request | Description
 *BuildrecordsApi* | [**get_built_artifacts**](docs/BuildrecordsApi.md#get_built_artifacts) | **GET** /build-records/{id}/built-artifacts | Gets artifacts built for specific Build Record
 *BuildrecordsApi* | [**get_completed_or_runnning**](docs/BuildrecordsApi.md#get_completed_or_runnning) | **GET** /build-records/{id}/completed-or-running | Deprecated, use /builds/{id}
 *BuildrecordsApi* | [**get_dependency_artifacts**](docs/BuildrecordsApi.md#get_dependency_artifacts) | **GET** /build-records/{id}/dependency-artifacts | Gets dependency artifacts for specific Build Record
+*BuildrecordsApi* | [**get_dependency_graph**](docs/BuildrecordsApi.md#get_dependency_graph) | **GET** /build-records/{id}/dependency-graph | Gets dependency graph for a Build Record (running or completed).
 *BuildrecordsApi* | [**get_logs**](docs/BuildrecordsApi.md#get_logs) | **GET** /build-records/{id}/log | Gets logs for specific Build Record
 *BuildrecordsApi* | [**get_repour_logs**](docs/BuildrecordsApi.md#get_repour_logs) | **GET** /build-records/{id}/repour-log | Gets repour logs for specific Build Record
 *BuildrecordsApi* | [**get_specific**](docs/BuildrecordsApi.md#get_specific) | **GET** /build-records/{id} | Gets specific Build Record
@@ -185,12 +187,13 @@ Class | Method | HTTP request | Description
 *ProjectsApi* | [**get_build_configurations**](docs/ProjectsApi.md#get_build_configurations) | **GET** /projects/{id}/build-configurations | Gets all BuildConfigurations associated with the specified Project Id
 *ProjectsApi* | [**get_specific**](docs/ProjectsApi.md#get_specific) | **GET** /projects/{id} | Gets specific Project
 *ProjectsApi* | [**update**](docs/ProjectsApi.md#update) | **PUT** /projects/{id} | Updates an existing Project
-*RepositoryconfigurationsApi* | [**create_new**](docs/RepositoryconfigurationsApi.md#create_new) | **POST** /repository-configurations | Creates a new Repository Configuration.
+*RepositoryconfigurationsApi* | [**create_new**](docs/RepositoryconfigurationsApi.md#create_new) | **POST** /repository-configurations | Creates a new Repository Configuration. NOTE: it does not create the repository in the scm server, it only creates an entry in PNC database. Useful when you already have internal and external scm repositories created.
 *RepositoryconfigurationsApi* | [**get_all**](docs/RepositoryconfigurationsApi.md#get_all) | **GET** /repository-configurations | Gets all Repository Configurations
 *RepositoryconfigurationsApi* | [**get_specific**](docs/RepositoryconfigurationsApi.md#get_specific) | **GET** /repository-configurations/{id} | Gets a specific Repository Configuration
 *RepositoryconfigurationsApi* | [**match**](docs/RepositoryconfigurationsApi.md#match) | **GET** /repository-configurations/match-by-scm-url | Searches for Repository Configurations based on internal or external url, ignoring the protocol and \&quot;.git\&quot; suffix. Only exact matches are returned.
 *RepositoryconfigurationsApi* | [**search**](docs/RepositoryconfigurationsApi.md#search) | **GET** /repository-configurations/search-by-scm-url | Search for Repository Configurations based on internal or external url, ignoring the protocol and \&quot;.git\&quot; suffix. The matching is done using LIKE.
 *RepositoryconfigurationsApi* | [**update**](docs/RepositoryconfigurationsApi.md#update) | **PUT** /repository-configurations/{id} | Updates an existing Repository Configuration
+*RunningbuildrecordsApi* | [**cancel_all_builds_in_group**](docs/RunningbuildrecordsApi.md#cancel_all_builds_in_group) | **POST** /running-build-records/build-config-set-records/{id}/cancel | Cancel all builds running in the build group
 *RunningbuildrecordsApi* | [**get_all**](docs/RunningbuildrecordsApi.md#get_all) | **GET** /running-build-records | Gets all running Build Records
 *RunningbuildrecordsApi* | [**get_all_for_bc**](docs/RunningbuildrecordsApi.md#get_all_for_bc) | **GET** /running-build-records/build-configurations/{id} | Gets running Build Records for a specific Build Configuration.
 *RunningbuildrecordsApi* | [**get_all_for_bc_set_record**](docs/RunningbuildrecordsApi.md#get_all_for_bc_set_record) | **GET** /running-build-records/build-config-set-records/{id} | Gets running Build Records for a specific Build Configuration Set Record.

@@ -5,43 +5,43 @@
   },
   "basePath" : "/pnc-rest/rest",
   "tags" : [ {
-    "name" : "build-configuration-sets"
+    "name" : "product-releases"
   }, {
-    "name" : "build-records"
+    "name" : "build-tasks"
   }, {
     "name" : "product-versions"
   }, {
+    "name" : "test"
+  }, {
     "name" : "licenses"
   }, {
-    "name" : "users"
+    "name" : "build-configuration-sets"
+  }, {
+    "name" : "projects"
   }, {
     "name" : "repository-configurations"
   }, {
-    "name" : "build-record-push"
-  }, {
-    "name" : "running-build-records"
+    "name" : "users"
   }, {
     "name" : "bpm"
   }, {
+    "name" : "build-configurations"
+  }, {
+    "name" : "running-build-records"
+  }, {
     "name" : "build-config-set-records"
+  }, {
+    "name" : "build-records"
+  }, {
+    "name" : "environments"
   }, {
     "name" : "products"
   }, {
     "name" : "builds"
   }, {
+    "name" : "build-record-push"
+  }, {
     "name" : "product-milestones"
-  }, {
-    "name" : "environments"
-  }, {
-    "name" : "build-tasks"
-  }, {
-    "name" : "test"
-  }, {
-    "name" : "product-releases"
-  }, {
-    "name" : "build-configurations"
-  }, {
-    "name" : "projects"
   } ],
   "paths" : {
     "/bpm/tasks" : {
@@ -390,6 +390,50 @@
           },
           "204" : {
             "description" : "Success but no content provided",
+            "schema" : {
+              "$ref" : "#/definitions/BuildRecordPage"
+            }
+          }
+        }
+      }
+    },
+    "/build-config-set-records/{id}/dependency-graph" : {
+      "get" : {
+        "tags" : [ "build-config-set-records" ],
+        "summary" : "Gets dependency graph for a Build Group Record (running and completed).",
+        "description" : "",
+        "operationId" : "getDependencyGraphForSet",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "description" : "Build record set id.",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int32"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Success with results",
+            "schema" : {
+              "$ref" : "#/definitions/BuildRecordPage"
+            }
+          },
+          "400" : {
+            "description" : "Invalid input parameters or validation error",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorResponseRest"
+            }
+          },
+          "500" : {
+            "description" : "Server error",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorResponseRest"
+            }
+          },
+          "404" : {
+            "description" : "Can not find specified result",
             "schema" : {
               "$ref" : "#/definitions/BuildRecordPage"
             }
@@ -2811,6 +2855,34 @@
         "consumes" : [ "application/json" ],
         "produces" : [ "application/json" ],
         "parameters" : [ {
+          "name" : "pageIndex",
+          "in" : "query",
+          "description" : "Page Index",
+          "required" : false,
+          "type" : "integer",
+          "default" : "0",
+          "format" : "int32"
+        }, {
+          "name" : "pageSize",
+          "in" : "query",
+          "description" : "Pagination size",
+          "required" : false,
+          "type" : "integer",
+          "default" : "50",
+          "format" : "int32"
+        }, {
+          "name" : "sort",
+          "in" : "query",
+          "description" : "Sorting RSQL",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "q",
+          "in" : "query",
+          "description" : "RSQL Query",
+          "required" : false,
+          "type" : "string"
+        }, {
           "name" : "key",
           "in" : "query",
           "description" : "Attribute key",
@@ -2827,7 +2899,7 @@
           "200" : {
             "description" : "Success with results",
             "schema" : {
-              "$ref" : "#/definitions/BuildRecordRest"
+              "$ref" : "#/definitions/BuildRecordPage"
             }
           },
           "400" : {
@@ -2845,7 +2917,7 @@
           "404" : {
             "description" : "Can not find specified result",
             "schema" : {
-              "$ref" : "#/definitions/BuildRecordRest"
+              "$ref" : "#/definitions/BuildRecordPage"
             }
           }
         }
@@ -3230,6 +3302,50 @@
             "description" : "Success but no content provided",
             "schema" : {
               "$ref" : "#/definitions/ArtifactPage"
+            }
+          }
+        }
+      }
+    },
+    "/build-records/{id}/dependency-graph" : {
+      "get" : {
+        "tags" : [ "build-records" ],
+        "summary" : "Gets dependency graph for a Build Record (running or completed).",
+        "description" : "",
+        "operationId" : "getDependencyGraph",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "description" : "Build id.",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int32"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Success with results",
+            "schema" : {
+              "$ref" : "#/definitions/Singleton"
+            }
+          },
+          "400" : {
+            "description" : "Invalid input parameters or validation error",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorResponseRest"
+            }
+          },
+          "500" : {
+            "description" : "Server error",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorResponseRest"
+            }
+          },
+          "404" : {
+            "description" : "Can not find specified result",
+            "schema" : {
+              "$ref" : "#/definitions/Singleton"
             }
           }
         }
@@ -3748,28 +3864,13 @@
         } ],
         "responses" : {
           "200" : {
-            "description" : "Success with results",
-            "schema" : {
-              "$ref" : "#/definitions/BuildRecordSingleton"
-            }
-          },
-          "400" : {
-            "description" : "Invalid input parameters or validation error",
-            "schema" : {
-              "$ref" : "#/definitions/ErrorResponseRest"
-            }
+            "description" : "Success with results"
           },
           "500" : {
-            "description" : "Server error",
-            "schema" : {
-              "$ref" : "#/definitions/ErrorResponseRest"
-            }
+            "description" : "Server error"
           },
           "404" : {
-            "description" : "Can not find specified result",
-            "schema" : {
-              "$ref" : "#/definitions/BuildRecordSingleton"
-            }
+            "description" : "Can not find specified result"
           }
         }
       }
@@ -6119,7 +6220,7 @@
       },
       "post" : {
         "tags" : [ "repository-configurations" ],
-        "summary" : "Creates a new Repository Configuration.",
+        "summary" : "Creates a new Repository Configuration. NOTE: it does not create the repository in the scm server, it only creates an entry in PNC database. Useful when you already have internal and external scm repositories created.",
         "description" : "",
         "operationId" : "createNew",
         "consumes" : [ "application/json" ],
@@ -6507,6 +6608,35 @@
             "schema" : {
               "$ref" : "#/definitions/BuildRecordPage"
             }
+          }
+        }
+      }
+    },
+    "/running-build-records/build-config-set-records/{id}/cancel" : {
+      "post" : {
+        "tags" : [ "running-build-records" ],
+        "summary" : "Cancel all builds running in the build group",
+        "description" : "",
+        "operationId" : "cancelAllBuildsInGroup",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "description" : "Build Configuration Set id",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int32"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Since this endpoint does not support queries, fulltext search is hard-coded for some predefined fields (record id, configuration name) and performed using this argument. Empty string leaves all data unfiltered."
+          },
+          "500" : {
+            "description" : "Server error"
+          },
+          "404" : {
+            "description" : "Can not find specified result"
           }
         }
       }
@@ -7556,6 +7686,20 @@
         },
         "executionRootVersion" : {
           "type" : "string"
+        },
+        "dependentBuildRecordIds" : {
+          "type" : "array",
+          "items" : {
+            "type" : "integer",
+            "format" : "int32"
+          }
+        },
+        "dependencyBuildRecordIds" : {
+          "type" : "array",
+          "items" : {
+            "type" : "integer",
+            "format" : "int32"
+          }
         }
       },
       "xml" : {
@@ -7711,14 +7855,6 @@
         }
       }
     },
-    "BuildConfigSetRecordSingleton" : {
-      "type" : "object",
-      "properties" : {
-        "content" : {
-          "$ref" : "#/definitions/BuildConfigSetRecordRest"
-        }
-      }
-    },
     "ProductReleasePage" : {
       "type" : "object",
       "properties" : {
@@ -7739,6 +7875,14 @@
           "items" : {
             "$ref" : "#/definitions/ProductReleaseRest"
           }
+        }
+      }
+    },
+    "BuildConfigSetRecordSingleton" : {
+      "type" : "object",
+      "properties" : {
+        "content" : {
+          "$ref" : "#/definitions/BuildConfigSetRecordRest"
         }
       }
     },
@@ -8037,7 +8181,7 @@
     },
     "BuildConfigurationRest" : {
       "type" : "object",
-      "required" : [ "environment", "id", "name", "project", "repositoryConfiguration" ],
+      "required" : [ "buildType", "environment", "id", "name", "project", "repositoryConfiguration" ],
       "properties" : {
         "id" : {
           "type" : "integer",
@@ -8072,6 +8216,10 @@
         },
         "project" : {
           "$ref" : "#/definitions/ProjectRest"
+        },
+        "buildType" : {
+          "type" : "string",
+          "enum" : [ "MVN", "NPM" ]
         },
         "environment" : {
           "$ref" : "#/definitions/BuildEnvironmentRest"
@@ -8133,12 +8281,13 @@
     "BuildSetStatusChangedEvent" : {
       "type" : "object",
       "properties" : {
-        "description" : {
-          "type" : "string"
-        },
         "userId" : {
           "type" : "integer",
           "format" : "int32"
+        },
+        "oldStatus" : {
+          "type" : "string",
+          "enum" : [ "NEW", "DONE", "REJECTED" ]
         },
         "buildSetTaskId" : {
           "type" : "integer",
@@ -8154,10 +8303,6 @@
         "buildSetEndTime" : {
           "type" : "string",
           "format" : "date-time"
-        },
-        "oldStatus" : {
-          "type" : "string",
-          "enum" : [ "NEW", "DONE", "REJECTED" ]
         },
         "newStatus" : {
           "type" : "string",
@@ -8483,6 +8628,14 @@
         "name" : "BuildConfigurationSet"
       }
     },
+    "ProjectSingleton" : {
+      "type" : "object",
+      "properties" : {
+        "content" : {
+          "$ref" : "#/definitions/ProjectRest"
+        }
+      }
+    },
     "BuildRecordPushResultRest" : {
       "type" : "object",
       "required" : [ "buildRecordId", "id", "log", "status" ],
@@ -8514,14 +8667,6 @@
         },
         "brewBuildUrl" : {
           "type" : "string"
-        }
-      }
-    },
-    "ProjectSingleton" : {
-      "type" : "object",
-      "properties" : {
-        "content" : {
-          "$ref" : "#/definitions/ProjectRest"
         }
       }
     },
@@ -8612,19 +8757,19 @@
         }
       }
     },
-    "BuildRecordSingleton" : {
-      "type" : "object",
-      "properties" : {
-        "content" : {
-          "$ref" : "#/definitions/BuildRecordRest"
-        }
-      }
-    },
     "ProductVersionSingleton" : {
       "type" : "object",
       "properties" : {
         "content" : {
           "$ref" : "#/definitions/ProductVersionRest"
+        }
+      }
+    },
+    "BuildRecordSingleton" : {
+      "type" : "object",
+      "properties" : {
+        "content" : {
+          "$ref" : "#/definitions/BuildRecordRest"
         }
       }
     },

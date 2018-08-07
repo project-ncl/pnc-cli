@@ -54,7 +54,7 @@ class BuildsApi(object):
         :param callback function: The callback function
             for asynchronous request. (optional)
         :param int id: BuildRecord id (required)
-        :return: BuildRecordSingleton
+        :return: None
                  If the method is called asynchronously,
                  returns the request thread.
         """
@@ -80,7 +80,7 @@ class BuildsApi(object):
         :param callback function: The callback function
             for asynchronous request. (optional)
         :param int id: BuildRecord id (required)
-        :return: BuildRecordSingleton
+        :return: None
                  If the method is called asynchronously,
                  returns the request thread.
         """
@@ -137,7 +137,7 @@ class BuildsApi(object):
                                         body=body_params,
                                         post_params=form_params,
                                         files=local_var_files,
-                                        response_type='BuildRecordSingleton',
+                                        response_type=None,
                                         auth_settings=auth_settings,
                                         callback=params.get('callback'),
                                         _return_http_data_only=params.get('_return_http_data_only'),

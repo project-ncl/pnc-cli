@@ -55,7 +55,9 @@ class BuildRecordRest(object):
         'user': 'UserRest',
         'build_configuration_audited': 'BuildConfigurationAuditedRest',
         'execution_root_name': 'str',
-        'execution_root_version': 'str'
+        'execution_root_version': 'str',
+        'dependent_build_record_ids': 'list[int]',
+        'dependency_build_record_ids': 'list[int]'
     }
 
     attribute_map = {
@@ -83,10 +85,12 @@ class BuildRecordRest(object):
         'user': 'user',
         'build_configuration_audited': 'buildConfigurationAudited',
         'execution_root_name': 'executionRootName',
-        'execution_root_version': 'executionRootVersion'
+        'execution_root_version': 'executionRootVersion',
+        'dependent_build_record_ids': 'dependentBuildRecordIds',
+        'dependency_build_record_ids': 'dependencyBuildRecordIds'
     }
 
-    def __init__(self, id=None, submit_time=None, start_time=None, end_time=None, status=None, build_configuration_id=None, build_configuration_name=None, build_configuration_rev=None, project_id=None, project_name=None, user_id=None, username=None, scm_repo_url=None, scm_revision=None, build_environment_id=None, attributes=None, live_logs_uri=None, build_config_set_record_id=None, build_content_id=None, temporary_build=False, product_milestone_id=None, user=None, build_configuration_audited=None, execution_root_name=None, execution_root_version=None):
+    def __init__(self, id=None, submit_time=None, start_time=None, end_time=None, status=None, build_configuration_id=None, build_configuration_name=None, build_configuration_rev=None, project_id=None, project_name=None, user_id=None, username=None, scm_repo_url=None, scm_revision=None, build_environment_id=None, attributes=None, live_logs_uri=None, build_config_set_record_id=None, build_content_id=None, temporary_build=False, product_milestone_id=None, user=None, build_configuration_audited=None, execution_root_name=None, execution_root_version=None, dependent_build_record_ids=None, dependency_build_record_ids=None):
         """
         BuildRecordRest - a model defined in Swagger
         """
@@ -116,6 +120,8 @@ class BuildRecordRest(object):
         self._build_configuration_audited = None
         self._execution_root_name = None
         self._execution_root_version = None
+        self._dependent_build_record_ids = None
+        self._dependency_build_record_ids = None
 
         if id is not None:
           self.id = id
@@ -167,6 +173,10 @@ class BuildRecordRest(object):
           self.execution_root_name = execution_root_name
         if execution_root_version is not None:
           self.execution_root_version = execution_root_version
+        if dependent_build_record_ids is not None:
+          self.dependent_build_record_ids = dependent_build_record_ids
+        if dependency_build_record_ids is not None:
+          self.dependency_build_record_ids = dependency_build_record_ids
 
     @property
     def id(self):
@@ -698,6 +708,48 @@ class BuildRecordRest(object):
         """
 
         self._execution_root_version = execution_root_version
+
+    @property
+    def dependent_build_record_ids(self):
+        """
+        Gets the dependent_build_record_ids of this BuildRecordRest.
+
+        :return: The dependent_build_record_ids of this BuildRecordRest.
+        :rtype: list[int]
+        """
+        return self._dependent_build_record_ids
+
+    @dependent_build_record_ids.setter
+    def dependent_build_record_ids(self, dependent_build_record_ids):
+        """
+        Sets the dependent_build_record_ids of this BuildRecordRest.
+
+        :param dependent_build_record_ids: The dependent_build_record_ids of this BuildRecordRest.
+        :type: list[int]
+        """
+
+        self._dependent_build_record_ids = dependent_build_record_ids
+
+    @property
+    def dependency_build_record_ids(self):
+        """
+        Gets the dependency_build_record_ids of this BuildRecordRest.
+
+        :return: The dependency_build_record_ids of this BuildRecordRest.
+        :rtype: list[int]
+        """
+        return self._dependency_build_record_ids
+
+    @dependency_build_record_ids.setter
+    def dependency_build_record_ids(self, dependency_build_record_ids):
+        """
+        Sets the dependency_build_record_ids of this BuildRecordRest.
+
+        :param dependency_build_record_ids: The dependency_build_record_ids of this BuildRecordRest.
+        :type: list[int]
+        """
+
+        self._dependency_build_record_ids = dependency_build_record_ids
 
     def to_dict(self):
         """

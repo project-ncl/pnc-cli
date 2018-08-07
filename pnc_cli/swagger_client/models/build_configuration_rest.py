@@ -41,6 +41,7 @@ class BuildConfigurationRest(object):
         'last_modification_time': 'datetime',
         'archived': 'bool',
         'project': 'ProjectRest',
+        'build_type': 'str',
         'environment': 'BuildEnvironmentRest',
         'dependency_ids': 'list[int]',
         'product_version_id': 'int',
@@ -59,6 +60,7 @@ class BuildConfigurationRest(object):
         'last_modification_time': 'lastModificationTime',
         'archived': 'archived',
         'project': 'project',
+        'build_type': 'buildType',
         'environment': 'environment',
         'dependency_ids': 'dependencyIds',
         'product_version_id': 'productVersionId',
@@ -66,7 +68,7 @@ class BuildConfigurationRest(object):
         'generic_parameters': 'genericParameters'
     }
 
-    def __init__(self, id=None, name=None, description=None, build_script=None, repository_configuration=None, scm_revision=None, creation_time=None, last_modification_time=None, archived=False, project=None, environment=None, dependency_ids=None, product_version_id=None, build_configuration_set_ids=None, generic_parameters=None):
+    def __init__(self, id=None, name=None, description=None, build_script=None, repository_configuration=None, scm_revision=None, creation_time=None, last_modification_time=None, archived=False, project=None, build_type=None, environment=None, dependency_ids=None, product_version_id=None, build_configuration_set_ids=None, generic_parameters=None):
         """
         BuildConfigurationRest - a model defined in Swagger
         """
@@ -81,6 +83,7 @@ class BuildConfigurationRest(object):
         self._last_modification_time = None
         self._archived = None
         self._project = None
+        self._build_type = None
         self._environment = None
         self._dependency_ids = None
         self._product_version_id = None
@@ -107,6 +110,8 @@ class BuildConfigurationRest(object):
           self.archived = archived
         if project is not None:
           self.project = project
+        if build_type is not None:
+          self.build_type = build_type
         if environment is not None:
           self.environment = environment
         if dependency_ids is not None:
@@ -327,6 +332,33 @@ class BuildConfigurationRest(object):
         """
 
         self._project = project
+
+    @property
+    def build_type(self):
+        """
+        Gets the build_type of this BuildConfigurationRest.
+
+        :return: The build_type of this BuildConfigurationRest.
+        :rtype: str
+        """
+        return self._build_type
+
+    @build_type.setter
+    def build_type(self, build_type):
+        """
+        Sets the build_type of this BuildConfigurationRest.
+
+        :param build_type: The build_type of this BuildConfigurationRest.
+        :type: str
+        """
+        allowed_values = ["MVN", "NPM"]
+        if build_type not in allowed_values:
+            raise ValueError(
+                "Invalid value for `build_type` ({0}), must be one of {1}"
+                .format(build_type, allowed_values)
+            )
+
+        self._build_type = build_type
 
     @property
     def environment(self):
