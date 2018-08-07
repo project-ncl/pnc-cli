@@ -54,8 +54,6 @@ def create_repository_configuration(repository, external_repository=None, prebui
     Create a new RepositoryConfiguration.
     """
 
-    print("s: %s", prebuild_sync)
-
     if external_repository is None and prebuild_sync:
         logging.error("You cannot enable prebuild sync without external repository")
         return
