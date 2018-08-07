@@ -6,7 +6,7 @@ import time
 from ConfigParser import Error
 from ConfigParser import NoSectionError
 
-from argh import arg, aliases
+from argh import arg
 
 import pnc_cli.utils as utils
 from pnc_cli import bpmbuildconfigurations
