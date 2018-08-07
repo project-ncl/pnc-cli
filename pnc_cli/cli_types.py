@@ -247,7 +247,8 @@ def valid_url(urlInput):
 
 def valid_git_url(urlInput):
     # replace git protocol with http so we can validate it as url
-    return valid_url(re.sub(r'^(git\+ssh|ssh|git)','http',urlInput))
+    valid_url(re.sub(r'^(git\+ssh|ssh|git)','http',urlInput))
+    return urlInput
 
 def t_or_f(arg):
     ua = str(arg).upper()
