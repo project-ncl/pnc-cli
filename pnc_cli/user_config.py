@@ -17,7 +17,6 @@ import keycloak_config as kc
 import pnc_server_config as psc
 
 # make sure that input behaves as expected
-# make sure that input behaves as expected
 try:
     input = raw_input
 except NameError:
@@ -32,17 +31,18 @@ trueValues = ['True', 'true', '1']
 class UserConfig():
     def __init__(self):
         config = utils.get_config()
-        self.token_time = 0
+        self.access_token_time = 0
         self.username = self.load_username_from_config(config)
         self.password = self.load_password_from_config(config)
         self.pnc_config = psc.PncServerConfig(config)
         self.keycloak_config = kc.KeycloakConfig(config)
         self.refresh_token = None
-        self.token = self.retrieve_keycloak_token()
+        self.refresh_token_time = 0
+        self.access_token = self.retrieve_keycloak_token()
         self.apiclient = self.create_api_client()
 
     def __getstate__(self):
-        return self.keycloak_config, self.username, self.token, self.token_time, self.refresh_token
+        return self.keycloak_config, self.username, self.access_token, self.access_token_time, self.refresh_token, self.refresh_token_time
 
     def __setstate__(self, state):
         # here we need to read the config file again, to check that values for URLs haven't changed. the way to
@@ -51,7 +51,7 @@ class UserConfig():
         newtoken = False
         refreshtoken = False
         config = utils.get_config()
-        saved_kc_config, saved_username, self.token, self.token_time, self.refresh_token = state
+        saved_kc_config, saved_username, self.access_token, self.access_token_time, self.refresh_token, self.refresh_token_time = state
         self.pnc_config = psc.PncServerConfig(config)
 
         # check for changes in keycloak username; if so, we'll need to get a new token regardless of time
@@ -71,24 +71,26 @@ class UserConfig():
         else:
             self.keycloak_config = saved_kc_config
 
-        if not newtoken and 8640000 >= utils.current_time_millis() - self.token_time > 360000:
-            logging.info("Refreshing access token for user {}. \n".format(self.username))
-            refreshtoken = True
 
         # if more than a day has passed since we saved the token, and keycloak server configuration is not modified,
         # get a new one
-        if not newtoken and utils.current_time_millis() - self.token_time > 8640000:
+        if not newtoken and utils.current_time_millis() - self.refresh_token_time > 8640000:
             # input the password again since we no longer cache it
             logging.info("Keycloak token has expired for user {}. Retrieving new token...\n".format(self.username))
             newtoken = True
 
+        # if access_token is more than hour old, refresh it
+        if not newtoken and 8640000 >= utils.current_time_millis() - self.access_token_time > 360000:
+            logging.info("Refreshing access token for user {}. \n".format(self.username))
+            refreshtoken = True
+
         if refreshtoken:
-            self.token = self.refresh_access_token()
+            self.access_token = self.refresh_access_token()
 
         if newtoken:
             # if using client auth, we simply get a new token.
             if self.keycloak_config.client_mode in trueValues:
-                self.token = self.retrieve_keycloak_token()
+                self.access_token = self.retrieve_keycloak_token()
             else:
                 # enter password to get new token, but only if the user has not entered a password in pnc-cli.conf
                 password = self.load_password_from_config(config)
@@ -96,7 +98,7 @@ class UserConfig():
                     self.password = password
                 else:
                     self.password = self.input_password()
-                self.token = self.retrieve_keycloak_token()
+                self.access_token = self.retrieve_keycloak_token()
         self.apiclient = self.create_api_client()
 
     # this function gets input from the user to set the username
@@ -136,9 +138,8 @@ class UserConfig():
                 logging.info("Token refreshed for user {}. \n".format(self.username))
             else:
                 logging.info("Token refreshed for client from {}. \n".format(self.keycloak_config.client_id))
-            self.token_time = utils.current_time_millis()
+            self.access_token_time = utils.current_time_millis()
             reply = json.loads(r.content.decode('utf-8'))
-            self.refresh_token = reply.get('refresh_token')
             return str(reply.get('access_token'))
     # retrieves a token from the keycloak server using the configured username / password / keycloak server
     def retrieve_keycloak_token(self):
@@ -150,7 +151,8 @@ class UserConfig():
             r = requests.post(self.keycloak_config.url, params, verify=False)
             if r.status_code == 200:
                 logging.info("Token retrieved for client from {}.\n".format(self.keycloak_config.client_id))
-                self.token_time = utils.current_time_millis()
+                self.access_token_time = utils.current_time_millis()
+                self.refresh_token_time = utils.current_time_millis()
                 reply = json.loads(r.content.decode('utf-8'))
                 self.refresh_token = str(reply.get('refresh_token'))
                 return str(reply.get('access_token'))
@@ -168,7 +170,8 @@ class UserConfig():
                 r = requests.post(self.keycloak_config.url, params, verify=False)
                 if r.status_code == 200:
                     logging.info("Token retrieved for {}.\n".format(self.username))
-                    self.token_time = utils.current_time_millis()
+                    self.access_token_time = utils.current_time_millis()
+                    self.refresh_token_time = utils.current_time_millis()
                     reply = json.loads(r.content.decode('utf-8'))
                     self.refresh_token = str(reply.get('refresh_token'))
                     return str(reply.get('access_token'))
@@ -181,9 +184,9 @@ class UserConfig():
                 logging.error("No credentials. Authentication is not possible.")
 
     def create_api_client(self):
-        if self.token:
+        if self.access_token:
             return swagger_client.ApiClient(self.pnc_config.url, header_name='Authorization',
-                                            header_value='Bearer ' + self.token)
+                                            header_value='Bearer ' + self.access_token)
         else:
             logging.error("No Keycloak token is present. Commands requiring authentication will fail.")
             return swagger_client.ApiClient(self.pnc_config.url)
@@ -237,6 +240,6 @@ def login(username=None, password=None):
     else:
         user.password = user.input_password()
 
-    user.token = user.retrieve_keycloak_token()
+    user.access_token = user.retrieve_keycloak_token()
     user.apiclient = user.create_api_client()
     save()
