@@ -86,7 +86,7 @@ class UserConfig():
             refreshtoken = True
 
         if refreshtoken:
-            self.access_token = self.refresh_access_token()
+            self.refresh_access_token()
 
         if newtoken:
             # if using client auth, we simply get a new token.
@@ -99,7 +99,7 @@ class UserConfig():
                     self.password = password
                 else:
                     self.password = self.input_password()
-                    self.access_token_time = self.retrieve_keycloak_token()
+                self.retrieve_keycloak_token()
         self.apiclient = self.create_api_client()
 
     # this function gets input from the user to set the username
