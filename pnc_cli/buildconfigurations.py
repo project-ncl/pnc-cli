@@ -324,7 +324,7 @@ def list_build_configurations_for_product_version_raw(product_id, version_id, pa
 @arg("-s", "--sort", help="Sorting RSQL")
 @arg("-q", help="RSQL query")
 def list_dependencies(id=None, name=None, page_size=200, page_index=0, sort="", q=""):
-    data = list_dependencies_raw(id, name, page_size, page_size, sort, q)
+    data = list_dependencies_raw(id, name, page_size, page_index, sort, q)
     if data:
         return utils.format_json_list(data)
 
