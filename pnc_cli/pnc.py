@@ -19,6 +19,7 @@ from pnc_cli import repositoryconfigurations
 from pnc_cli import runningbuilds
 from pnc_cli import users
 from pnc_cli import archives
+from pnc_cli import builds
 import pnc_cli.user_config as uc
 from pnc_cli import makemead
 from pnc_cli import generate_repo
@@ -100,6 +101,7 @@ parser.add_commands([uc.login,
                      buildrecords.remove_attribute,
                      buildrecords.query_by_attribute,
                      runningbuilds.get_running_build,
+                     builds.cancel_running_build,
                      runningbuilds.list_running_builds,
                      productreleases.create_release,
                      productreleases.get_release,

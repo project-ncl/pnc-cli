@@ -5,7 +5,7 @@ from six import iteritems
 import logging
 from pnc_cli import swagger_client
 from pnc_cli import utils
-
+import pnc_cli.cli_types as types
 from pnc_cli.pnc_api import pnc_api
 
 
@@ -22,5 +22,20 @@ def list_builds(page_size=200, page_index=0, sort="", q=""):
     :return:
     """
     response = utils.checked_api_call(pnc_api.builds_running, 'get_all', page_size=page_size, page_index=page_index, sort=sort, q=q)
+    if response:
+        return response.content
+
+
+@arg("id", help="Running BuildRecord ID to cancel.", type=types.existing_running_build)
+def cancel_running_build(id):
+    """
+    Cancel running build with ID
+    """
+    data = cancel_running_build_raw(id)
+    if data:
+        return utils.format_json(data)
+
+def cancel_running_build_raw(id):
+    response = utils.checked_api_call(pnc_api.builds_running, 'cancel', id=id)
     if response:
         return response.content
