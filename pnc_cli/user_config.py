@@ -214,7 +214,7 @@ def get_user():
 
 
 def save():
-    if user is not None and user.token:
+    if user is not None and user.access_token:
         pickle.dump(user, open(SAVED_USER, "wb"), protocol=pickle.HIGHEST_PROTOCOL)
 
 
