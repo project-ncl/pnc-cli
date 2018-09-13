@@ -56,6 +56,7 @@ class UserConfig():
         if len(state) == 4:
             # old version of saved user_config
             saved_kc_config, saved_username, self.access_token, self.access_token_time = state
+            self.refresh_token_time = 0
             refreshtoken = True
         else:
             saved_kc_config, saved_username, self.access_token, self.access_token_time, self.refresh_token, self.refresh_token_time = state
