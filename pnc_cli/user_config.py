@@ -52,7 +52,14 @@ class UserConfig():
         newtoken = False
         refreshtoken = False
         config = utils.get_config()
-        saved_kc_config, saved_username, self.access_token, self.access_token_time, self.refresh_token, self.refresh_token_time = state
+
+        if len(state) == 4:
+            # old version of saved user_config
+            saved_kc_config, saved_username, self.access_token, self.access_token_time = state
+            refreshtoken = True
+        else:
+            saved_kc_config, saved_username, self.access_token, self.access_token_time, self.refresh_token, self.refresh_token_time = state
+
         self.pnc_config = psc.PncServerConfig(config)
 
         # check for changes in keycloak username; if so, we'll need to get a new token regardless of time
@@ -85,7 +92,7 @@ class UserConfig():
             logging.info("Refreshing access token for user {}. \n".format(self.username))
             refreshtoken = True
 
-        if refreshtoken:
+        if not newtoken and refreshtoken:
             self.refresh_access_token()
 
         if newtoken:
