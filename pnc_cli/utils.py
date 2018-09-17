@@ -11,6 +11,7 @@ try:
 except ImportError:
     import ConfigParser as configparser
 import re
+import sys
 import errno
 import os
 import datetime
@@ -46,7 +47,8 @@ def checked_api_call(api, func, **kwargs):
     try:
         response = getattr(api, func)(**kwargs)
     except ApiException as e:
-        print(e)
+        sys.stderr.write(e)
+        sys.stderr.write("\n")
     else:
         return response
 
