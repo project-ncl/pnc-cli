@@ -50,6 +50,7 @@ def existing_rc_id(id_input):
     valid_id(id_input)
     if not common.id_exists(pnc_api.repositories, id_input):
         raise argparse.ArgumentTypeError("no RepositoryConfiguration with ID {} exists".format(id_input))
+    return id_input
 
 # Product Types
 def existing_product_id(id_input):

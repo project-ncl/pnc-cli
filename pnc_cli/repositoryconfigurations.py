@@ -9,7 +9,7 @@ from pnc_cli import utils
 from pnc_cli.pnc_api import pnc_api
 
 
-@arg("id", help="ID of the RepositoryConfiguration to retrieve.", type=types.existing_bc_id)
+@arg("id", help="ID of the RepositoryConfiguration to retrieve.", type=types.existing_rc_id)
 def get_repository_configuration(id):
     """
     Retrieve a specific RepositoryConfiguration
@@ -31,18 +31,19 @@ def update_repository_configuration(id, external_repository=None, prebuild_sync=
 
     rc_to_update = pnc_api.repositories.get_specific(id=to_update_id).content
 
-    new_external = rc_to_update.external_url
-    if external_repository is not None:
-        new_external = external_repository
-    new_sync = rc_to_update.pre_build_sync_enabled
+    if external_repository is None:
+        external_repository = rc_to_update.external_url
+    else:
+        rc_to_update.external_url = external_repository
+
     if prebuild_sync is not None:
-        new_sync = prebuild_sync
+        rc_to_update.pre_build_sync_enabled = prebuild_sync
 
     if not external_repository and prebuild_sync:
         logging.error("You cannot enable prebuild sync without external repository")
         return
 
-    response = utils.checked_api_call(pnc_api.repositories, 'update', id=to_update_id, body=bc_to_update)
+    response = utils.checked_api_call(pnc_api.repositories, 'update', id=to_update_id, body=rc_to_update)
     if response:
         return response.content
 
