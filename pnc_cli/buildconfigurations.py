@@ -56,12 +56,13 @@ def config_id_exists(search_id):
 
 @arg("-i", "--id", help="ID of the BuildConfiguration to trigger.", type=types.existing_bc_id)
 @arg("-n", "--name", help="Name of the BuildConfiguration to trigger.", type=types.existing_bc_name)
+@arg("-rev", "--revision", help="Revision of the BuildConfiguration.", type=int)
 @arg("--temporary-build", help="Temporary build")
 @arg("--timestamp-alignment", help="Enable timestamp alignment for temporary build")
 @arg("--no-build-dependencies", help="Don't build dependencies of this build configuration")
 @arg("--keep-pod-on-failure", help="Keep pod on failure")
 @arg("-f", "--force-rebuild", help="Force Rebuild")
-def build(id=None, name=None,
+def build(id=None, name=None, revision=None,
           temporary_build=False, timestamp_alignment=False,
           no_build_dependencies=False,
           keep_pod_on_failure=False,
@@ -69,12 +70,12 @@ def build(id=None, name=None,
     """
     Trigger a BuildConfiguration by name or ID
     """
-    data = build_raw(id, name, temporary_build, timestamp_alignment, no_build_dependencies,
+    data = build_raw(id, name, revision, temporary_build, timestamp_alignment, no_build_dependencies,
               keep_pod_on_failure, force_rebuild)
     if data:
         return utils.format_json(data)
 
-def build_raw(id=None, name=None,
+def build_raw(id=None, name=None, revision=None,
           temporary_build=False, timestamp_alignment=False,
           no_build_dependencies=False,
           keep_pod_on_failure=False,
@@ -85,14 +86,22 @@ def build_raw(id=None, name=None,
 
     trigger_id = common.set_id(pnc_api.build_configs, id, name)
 
-
-    response = utils.checked_api_call(pnc_api.build_configs, 'trigger',
-                                      id=trigger_id,
-                                      temporary_build=temporary_build,
-                                      timestamp_alignment=timestamp_alignment,
-                                      build_dependencies=not no_build_dependencies,
-                                      keep_pod_on_failure=keep_pod_on_failure,
-                                      force_rebuild=force_rebuild)
+    if revision:
+        response = utils.checked_api_call(pnc_api.build_configs, 'trigger_audited',
+                                          id=trigger_id, rev=revision,
+                                          temporary_build=temporary_build,
+                                          timestamp_alignment=timestamp_alignment,
+                                          build_dependencies=not no_build_dependencies,
+                                          keep_pod_on_failure=keep_pod_on_failure,
+                                          force_rebuild=force_rebuild)
+    else:
+        response = utils.checked_api_call(pnc_api.build_configs, 'trigger',
+                                          id=trigger_id,
+                                          temporary_build=temporary_build,
+                                          timestamp_alignment=timestamp_alignment,
+                                          build_dependencies=not no_build_dependencies,
+                                          keep_pod_on_failure=keep_pod_on_failure,
+                                          force_rebuild=force_rebuild)
     if response:
         return response.content
 
@@ -126,6 +135,7 @@ def get_build_configuration_raw(id=None, name=None):
 @arg("-srev", "--scm-revision", help="Revision of the sources in scm-url for this BuildConfiguration.")
 @arg("-bs", "--build-script", help="Script to execute for the BuildConfiguration.")
 @arg("-gp", "--generic-parameters", help="Set of arbitrary additional key=value pairs, such as CUSTOM_PME_PARAMETERS")
+@arg("-rev", "--get-revision", help="Updates the BC and returns its Audited version")
 def update_build_configuration(id, **kwargs):
     """
     Update an existing BuildConfiguration with new information
@@ -151,7 +161,7 @@ def update_build_configuration_raw(id, **kwargs):
 
     repository_id = kwargs.get('repository_configuration')
     if repository_id:
-        repository_rest = common.get_entity(pnc_cli.repositories, repository_id)
+        repository_rest = common.get_entity(pnc_api.repositories, repository_id)
         update_repository = {'repository_configuration': repository_rest}
         kwargs.update(update_repository)
 
@@ -168,7 +178,12 @@ def update_build_configuration_raw(id, **kwargs):
         if value is not None:
             setattr(bc_to_update, key, value)
 
-    response = utils.checked_api_call(pnc_api.build_configs, 'update', id=to_update_id, body=bc_to_update)
+    if kwargs.get('get_revision'):
+        response = utils.checked_api_call(pnc_api.build_configs, 'update_and_get_audited', id=to_update_id,
+                                          body=bc_to_update)
+    else:
+        response = utils.checked_api_call(pnc_api.build_configs, 'update', id=to_update_id, body=bc_to_update)
+
     if response:
         return response.content
 

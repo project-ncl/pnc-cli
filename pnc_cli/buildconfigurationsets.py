@@ -133,7 +133,7 @@ def delete_build_configuration_set(id=None, name=None):
 
 def build_set_raw(id=None, name=None,
                   tempbuild=False, timestamp_alignment=False,
-                  force=False):
+                  force=False, **kwargs):
     """
     Start a build of the given BuildConfigurationSet
     """
@@ -145,7 +145,22 @@ def build_set_raw(id=None, name=None,
         sys.exit(1)
 
     found_id = common.set_id(pnc_api.build_group_configs, id, name)
-    response = utils.checked_api_call(pnc_api.build_group_configs, 'build', id=found_id,
+
+    revisions = kwargs.get("id_revisions")
+    if revisions:
+        id_revs = map(__parse_revision, revisions)
+
+        bcsRest = common.get_entity(pnc_api.build_group_configs, found_id)
+        body = swagger_client.BuildConfigurationSetWithAuditedBCsRest()
+        body = __fill_BCSWithAuditedBCs_body(body, bcsRest, id_revs)
+
+        response = utils.checked_api_call(pnc_api.build_group_configs, 'build_versioned', id=found_id,
+                                          temporary_build=tempbuild,
+                                          timestamp_alignment=timestamp_alignment,
+                                          force_rebuild=force,
+                                          body=body)
+    else:
+        response = utils.checked_api_call(pnc_api.build_group_configs, 'build', id=found_id,
                                       temporary_build=tempbuild,
                                       timestamp_alignment=timestamp_alignment,
                                       force_rebuild=force)
@@ -158,14 +173,14 @@ def build_set_raw(id=None, name=None,
 @arg("--temporary-build", help="Temporary builds")
 @arg("--timestamp-alignment", help="Enable timestamp alignment for the temporary builds")
 @arg("-f", "--force", help="Force rebuild of all configurations")
-def build_set(id=None, name=None,
-              temporary_build=False, timestamp_alignment=False,
-              force=False):
+@arg("--id-revisions", nargs="+", help="Specify exact revisions of BuildConfigurations used in set.\n Format: int:int (bcID:revID)", default=None)
+def build_set(id=None, name=None, temporary_build=False, timestamp_alignment=False,
+              force=False, **kwargs):
     """
     Start a build of the given BuildConfigurationSet
     """
     content = build_set_raw(id, name,
-                            temporary_build, timestamp_alignment, force)
+                            temporary_build, timestamp_alignment, force, **kwargs)
     if content:
         return utils.format_json(content)
 
@@ -177,8 +192,8 @@ def list_build_configurations_for_set_raw(id=None, name=None, page_size=200, pag
         return response.content
 
 
-@arg("-i", "--id", help="ID of the BuildConfigurationSet to build.", type=types.existing_bc_set_id)
-@arg("-n", "--name", help="Name of the BuildConfigurationSet to build.", type=types.existing_bc_set_name)
+@arg("-i", "--id", help="ID of the BuildConfigurationSet to list.", type=types.existing_bc_set_id)
+@arg("-n", "--name", help="Name of the BuildConfigurationSet to list.", type=types.existing_bc_set_name)
 @arg("-p", "--page-size", help="Limit the amount of build records returned", type=int)
 @arg("--page-index", help="Select the index of page", type=int)
 @arg("-s", "--sort", help="Sorting RSQL")
@@ -301,3 +316,16 @@ def latest_build_set_records_status(id=None, name=None):
     if len(data_json) > 0:
         data_json.sort(key=lambda obj: obj['id'], reverse=True)
         return "Build Config Set Record #" + str(data_json[0]['id']) + ": " + data_json[0]['status']
+
+
+def __parse_revision(revision):
+    id, rev = map(int, revision.split(":", 1))
+    return pnc_api.build_configs.get_revision(id, rev).content
+
+
+def __fill_BCSWithAuditedBCs_body(body, bcsRest, auditedConfigs):
+    setattr(body, 'id', bcsRest.id)
+    setattr(body, 'product_version_id', bcsRest.product_version_id)
+    setattr(body, 'name', bcsRest.name)
+    setattr(body, 'build_configuration_auditeds', auditedConfigs)
+    return body
