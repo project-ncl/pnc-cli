@@ -21,7 +21,7 @@ def get_environment(id=None, name=None):
     """
     data = get_environment_raw(id, name)
     if data:
-        return utils.format_json_list(data)
+        return utils.format_json(data)
 
 def get_environment_raw(id=None, name=None):
     search_id = common.set_id(pnc_api.environments, id, name)
