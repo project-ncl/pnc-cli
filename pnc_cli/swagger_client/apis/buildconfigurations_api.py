@@ -2441,7 +2441,7 @@ class BuildconfigurationsApi(object):
 
     def trigger(self, id, **kwargs):
         """
-        Triggers the build of a specific Build Configuration
+        Triggers a build of a specific Build Configuration
         
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please define a `callback` function
@@ -2473,7 +2473,7 @@ class BuildconfigurationsApi(object):
 
     def trigger_with_http_info(self, id, **kwargs):
         """
-        Triggers the build of a specific Build Configuration
+        Triggers a build of a specific Build Configuration
         
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please define a `callback` function
@@ -2555,6 +2555,143 @@ class BuildconfigurationsApi(object):
         auth_settings = []
 
         return self.api_client.call_api('/build-configurations/{id}/build', 'POST',
+                                        path_params,
+                                        query_params,
+                                        header_params,
+                                        body=body_params,
+                                        post_params=form_params,
+                                        files=local_var_files,
+                                        response_type='BuildRecordSingleton',
+                                        auth_settings=auth_settings,
+                                        callback=params.get('callback'),
+                                        _return_http_data_only=params.get('_return_http_data_only'),
+                                        _preload_content=params.get('_preload_content', True),
+                                        _request_timeout=params.get('_request_timeout'),
+                                        collection_formats=collection_formats)
+
+    def trigger_audited(self, id, rev, **kwargs):
+        """
+        Triggers a build of a specific Build Configuration in a specific revision
+        
+        This method makes a synchronous HTTP request by default. To make an
+        asynchronous HTTP request, please define a `callback` function
+        to be invoked when receiving the response.
+        >>> def callback_function(response):
+        >>>     pprint(response)
+        >>>
+        >>> thread = api.trigger_audited(id, rev, callback=callback_function)
+
+        :param callback function: The callback function
+            for asynchronous request. (optional)
+        :param int id: Build Configuration id (required)
+        :param int rev: Revision of a Build Configuration (required)
+        :param str callback_url: Optional Callback URL
+        :param bool temporary_build: Is it a temporary build or a standard build?
+        :param bool force_rebuild: Should we force the rebuild?
+        :param bool build_dependencies: Should we build also dependencies of this BuildConfiguration?
+        :param bool keep_pod_on_failure: Should we keep the build container running, if the build fails?
+        :param bool timestamp_alignment: Should we add a timestamp during the alignment? Valid only for temporary builds.
+        :return: BuildRecordSingleton
+                 If the method is called asynchronously,
+                 returns the request thread.
+        """
+        kwargs['_return_http_data_only'] = True
+        if kwargs.get('callback'):
+            return self.trigger_audited_with_http_info(id, rev, **kwargs)
+        else:
+            (data) = self.trigger_audited_with_http_info(id, rev, **kwargs)
+            return data
+
+    def trigger_audited_with_http_info(self, id, rev, **kwargs):
+        """
+        Triggers a build of a specific Build Configuration in a specific revision
+        
+        This method makes a synchronous HTTP request by default. To make an
+        asynchronous HTTP request, please define a `callback` function
+        to be invoked when receiving the response.
+        >>> def callback_function(response):
+        >>>     pprint(response)
+        >>>
+        >>> thread = api.trigger_audited_with_http_info(id, rev, callback=callback_function)
+
+        :param callback function: The callback function
+            for asynchronous request. (optional)
+        :param int id: Build Configuration id (required)
+        :param int rev: Revision of a Build Configuration (required)
+        :param str callback_url: Optional Callback URL
+        :param bool temporary_build: Is it a temporary build or a standard build?
+        :param bool force_rebuild: Should we force the rebuild?
+        :param bool build_dependencies: Should we build also dependencies of this BuildConfiguration?
+        :param bool keep_pod_on_failure: Should we keep the build container running, if the build fails?
+        :param bool timestamp_alignment: Should we add a timestamp during the alignment? Valid only for temporary builds.
+        :return: BuildRecordSingleton
+                 If the method is called asynchronously,
+                 returns the request thread.
+        """
+
+        all_params = ['id', 'rev', 'callback_url', 'temporary_build', 'force_rebuild', 'build_dependencies', 'keep_pod_on_failure', 'timestamp_alignment']
+        all_params.append('callback')
+        all_params.append('_return_http_data_only')
+        all_params.append('_preload_content')
+        all_params.append('_request_timeout')
+
+        params = locals()
+        for key, val in iteritems(params['kwargs']):
+            if key not in all_params:
+                raise TypeError(
+                    "Got an unexpected keyword argument '%s'"
+                    " to method trigger_audited" % key
+                )
+            params[key] = val
+        del params['kwargs']
+        # verify the required parameter 'id' is set
+        if ('id' not in params) or (params['id'] is None):
+            raise ValueError("Missing the required parameter `id` when calling `trigger_audited`")
+        # verify the required parameter 'rev' is set
+        if ('rev' not in params) or (params['rev'] is None):
+            raise ValueError("Missing the required parameter `rev` when calling `trigger_audited`")
+
+
+        collection_formats = {}
+
+        path_params = {}
+        if 'id' in params:
+            path_params['id'] = params['id']
+        if 'rev' in params:
+            path_params['rev'] = params['rev']
+
+        query_params = []
+        if 'callback_url' in params:
+            query_params.append(('callbackUrl', params['callback_url']))
+        if 'temporary_build' in params:
+            query_params.append(('temporaryBuild', params['temporary_build']))
+        if 'force_rebuild' in params:
+            query_params.append(('forceRebuild', params['force_rebuild']))
+        if 'build_dependencies' in params:
+            query_params.append(('buildDependencies', params['build_dependencies']))
+        if 'keep_pod_on_failure' in params:
+            query_params.append(('keepPodOnFailure', params['keep_pod_on_failure']))
+        if 'timestamp_alignment' in params:
+            query_params.append(('timestampAlignment', params['timestamp_alignment']))
+
+        header_params = {}
+
+        form_params = []
+        local_var_files = {}
+
+        body_params = None
+        # HTTP header `Accept`
+        header_params['Accept'] = self.api_client.\
+            select_header_accept(['application/json'])
+
+        # HTTP header `Content-Type`
+        header_params['Content-Type'] = self.api_client.\
+            select_header_content_type(['application/json'])
+
+        # Authentication setting
+        auth_settings = []
+
+        return self.api_client.call_api('/build-configurations/{id}/revisions/{rev}/build', 'POST',
                                         path_params,
                                         query_params,
                                         header_params,
@@ -2672,6 +2809,116 @@ class BuildconfigurationsApi(object):
                                         post_params=form_params,
                                         files=local_var_files,
                                         response_type=None,
+                                        auth_settings=auth_settings,
+                                        callback=params.get('callback'),
+                                        _return_http_data_only=params.get('_return_http_data_only'),
+                                        _preload_content=params.get('_preload_content', True),
+                                        _request_timeout=params.get('_request_timeout'),
+                                        collection_formats=collection_formats)
+
+    def update_and_get_audited(self, id, **kwargs):
+        """
+        Updates an existing Build Configuration and returns BuildConfigurationAudited entity
+        
+        This method makes a synchronous HTTP request by default. To make an
+        asynchronous HTTP request, please define a `callback` function
+        to be invoked when receiving the response.
+        >>> def callback_function(response):
+        >>>     pprint(response)
+        >>>
+        >>> thread = api.update_and_get_audited(id, callback=callback_function)
+
+        :param callback function: The callback function
+            for asynchronous request. (optional)
+        :param int id: Build Configuration id (required)
+        :param BuildConfigurationRest body:
+        :return: BuildConfigurationAuditedSingleton
+                 If the method is called asynchronously,
+                 returns the request thread.
+        """
+        kwargs['_return_http_data_only'] = True
+        if kwargs.get('callback'):
+            return self.update_and_get_audited_with_http_info(id, **kwargs)
+        else:
+            (data) = self.update_and_get_audited_with_http_info(id, **kwargs)
+            return data
+
+    def update_and_get_audited_with_http_info(self, id, **kwargs):
+        """
+        Updates an existing Build Configuration and returns BuildConfigurationAudited entity
+        
+        This method makes a synchronous HTTP request by default. To make an
+        asynchronous HTTP request, please define a `callback` function
+        to be invoked when receiving the response.
+        >>> def callback_function(response):
+        >>>     pprint(response)
+        >>>
+        >>> thread = api.update_and_get_audited_with_http_info(id, callback=callback_function)
+
+        :param callback function: The callback function
+            for asynchronous request. (optional)
+        :param int id: Build Configuration id (required)
+        :param BuildConfigurationRest body:
+        :return: BuildConfigurationAuditedSingleton
+                 If the method is called asynchronously,
+                 returns the request thread.
+        """
+
+        all_params = ['id', 'body']
+        all_params.append('callback')
+        all_params.append('_return_http_data_only')
+        all_params.append('_preload_content')
+        all_params.append('_request_timeout')
+
+        params = locals()
+        for key, val in iteritems(params['kwargs']):
+            if key not in all_params:
+                raise TypeError(
+                    "Got an unexpected keyword argument '%s'"
+                    " to method update_and_get_audited" % key
+                )
+            params[key] = val
+        del params['kwargs']
+        # verify the required parameter 'id' is set
+        if ('id' not in params) or (params['id'] is None):
+            raise ValueError("Missing the required parameter `id` when calling `update_and_get_audited`")
+
+
+        collection_formats = {}
+
+        path_params = {}
+        if 'id' in params:
+            path_params['id'] = params['id']
+
+        query_params = []
+
+        header_params = {}
+
+        form_params = []
+        local_var_files = {}
+
+        body_params = None
+        if 'body' in params:
+            body_params = params['body']
+        # HTTP header `Accept`
+        header_params['Accept'] = self.api_client.\
+            select_header_accept(['application/json'])
+
+        # HTTP header `Content-Type`
+        header_params['Content-Type'] = self.api_client.\
+            select_header_content_type(['application/json'])
+
+        # Authentication setting
+        auth_settings = []
+
+        return self.api_client.call_api('/build-configurations/{id}/update-and-get-audited', 'POST',
+                                        path_params,
+                                        query_params,
+                                        header_params,
+                                        body=body_params,
+                                        post_params=form_params,
+                                        files=local_var_files,
+                                        response_type='BuildConfigurationAuditedSingleton',
                                         auth_settings=auth_settings,
                                         callback=params.get('callback'),
                                         _return_http_data_only=params.get('_return_http_data_only'),

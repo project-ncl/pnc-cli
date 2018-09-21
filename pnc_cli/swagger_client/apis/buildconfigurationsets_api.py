@@ -271,6 +271,132 @@ class BuildconfigurationsetsApi(object):
                                         _request_timeout=params.get('_request_timeout'),
                                         collection_formats=collection_formats)
 
+    def build_versioned(self, id, **kwargs):
+        """
+        Builds the configurations for the Specified Set with an option to specify exact revision of a BC
+        
+        This method makes a synchronous HTTP request by default. To make an
+        asynchronous HTTP request, please define a `callback` function
+        to be invoked when receiving the response.
+        >>> def callback_function(response):
+        >>>     pprint(response)
+        >>>
+        >>> thread = api.build_versioned(id, callback=callback_function)
+
+        :param callback function: The callback function
+            for asynchronous request. (optional)
+        :param int id: Build Configuration Set id (required)
+        :param str callback_url: Optional Callback URL
+        :param bool temporary_build: Is it a temporary build or a standard build?
+        :param bool force_rebuild: Should we force the rebuild of all build configurations?
+        :param bool timestamp_alignment: Should we add a timestamp during the alignment? Valid only for temporary builds.
+        :param BuildConfigurationSetWithAuditedBCsRest body:
+        :return: BuildConfigSetRecordSingleton
+                 If the method is called asynchronously,
+                 returns the request thread.
+        """
+        kwargs['_return_http_data_only'] = True
+        if kwargs.get('callback'):
+            return self.build_versioned_with_http_info(id, **kwargs)
+        else:
+            (data) = self.build_versioned_with_http_info(id, **kwargs)
+            return data
+
+    def build_versioned_with_http_info(self, id, **kwargs):
+        """
+        Builds the configurations for the Specified Set with an option to specify exact revision of a BC
+        
+        This method makes a synchronous HTTP request by default. To make an
+        asynchronous HTTP request, please define a `callback` function
+        to be invoked when receiving the response.
+        >>> def callback_function(response):
+        >>>     pprint(response)
+        >>>
+        >>> thread = api.build_versioned_with_http_info(id, callback=callback_function)
+
+        :param callback function: The callback function
+            for asynchronous request. (optional)
+        :param int id: Build Configuration Set id (required)
+        :param str callback_url: Optional Callback URL
+        :param bool temporary_build: Is it a temporary build or a standard build?
+        :param bool force_rebuild: Should we force the rebuild of all build configurations?
+        :param bool timestamp_alignment: Should we add a timestamp during the alignment? Valid only for temporary builds.
+        :param BuildConfigurationSetWithAuditedBCsRest body:
+        :return: BuildConfigSetRecordSingleton
+                 If the method is called asynchronously,
+                 returns the request thread.
+        """
+
+        all_params = ['id', 'callback_url', 'temporary_build', 'force_rebuild', 'timestamp_alignment', 'body']
+        all_params.append('callback')
+        all_params.append('_return_http_data_only')
+        all_params.append('_preload_content')
+        all_params.append('_request_timeout')
+
+        params = locals()
+        for key, val in iteritems(params['kwargs']):
+            if key not in all_params:
+                raise TypeError(
+                    "Got an unexpected keyword argument '%s'"
+                    " to method build_versioned" % key
+                )
+            params[key] = val
+        del params['kwargs']
+        # verify the required parameter 'id' is set
+        if ('id' not in params) or (params['id'] is None):
+            raise ValueError("Missing the required parameter `id` when calling `build_versioned`")
+
+
+        collection_formats = {}
+
+        path_params = {}
+        if 'id' in params:
+            path_params['id'] = params['id']
+
+        query_params = []
+        if 'callback_url' in params:
+            query_params.append(('callbackUrl', params['callback_url']))
+        if 'temporary_build' in params:
+            query_params.append(('temporaryBuild', params['temporary_build']))
+        if 'force_rebuild' in params:
+            query_params.append(('forceRebuild', params['force_rebuild']))
+        if 'timestamp_alignment' in params:
+            query_params.append(('timestampAlignment', params['timestamp_alignment']))
+
+        header_params = {}
+
+        form_params = []
+        local_var_files = {}
+
+        body_params = None
+        if 'body' in params:
+            body_params = params['body']
+        # HTTP header `Accept`
+        header_params['Accept'] = self.api_client.\
+            select_header_accept(['application/json'])
+
+        # HTTP header `Content-Type`
+        header_params['Content-Type'] = self.api_client.\
+            select_header_content_type(['application/json'])
+
+        # Authentication setting
+        auth_settings = []
+
+        return self.api_client.call_api('/build-configuration-sets/{id}/build-versioned', 'POST',
+                                        path_params,
+                                        query_params,
+                                        header_params,
+                                        body=body_params,
+                                        post_params=form_params,
+                                        files=local_var_files,
+                                        response_type='BuildConfigSetRecordSingleton',
+                                        auth_settings=auth_settings,
+                                        callback=params.get('callback'),
+                                        _return_http_data_only=params.get('_return_http_data_only'),
+                                        _preload_content=params.get('_preload_content', True),
+                                        _request_timeout=params.get('_request_timeout'),
+                                        collection_formats=collection_formats)
+
     def create_new(self, **kwargs):
         """
         Creates a new Build Configuration Set

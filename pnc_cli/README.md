@@ -99,10 +99,13 @@ Class | Method | HTTP request | Description
 *BuildconfigurationsApi* | [**get_supported_generic_parameters**](docs/BuildconfigurationsApi.md#get_supported_generic_parameters) | **GET** /build-configurations/supported-generic-parameters | Gets the minimal set of supported genericParameters and their description for the BuildConfiguration. There can be also other supported parameters not know by core.
 *BuildconfigurationsApi* | [**remove_dependency**](docs/BuildconfigurationsApi.md#remove_dependency) | **DELETE** /build-configurations/{id}/dependencies/{dependencyId} | Removes a configuration from the specified config set
 *BuildconfigurationsApi* | [**remove_product_version**](docs/BuildconfigurationsApi.md#remove_product_version) | **DELETE** /build-configurations/{id}/product-versions/{productVersionId} | Removes a product version from the specified config set
-*BuildconfigurationsApi* | [**trigger**](docs/BuildconfigurationsApi.md#trigger) | **POST** /build-configurations/{id}/build | Triggers the build of a specific Build Configuration
+*BuildconfigurationsApi* | [**trigger**](docs/BuildconfigurationsApi.md#trigger) | **POST** /build-configurations/{id}/build | Triggers a build of a specific Build Configuration
+*BuildconfigurationsApi* | [**trigger_audited**](docs/BuildconfigurationsApi.md#trigger_audited) | **POST** /build-configurations/{id}/revisions/{rev}/build | Triggers a build of a specific Build Configuration in a specific revision
 *BuildconfigurationsApi* | [**update**](docs/BuildconfigurationsApi.md#update) | **PUT** /build-configurations/{id} | Updates an existing Build Configuration
+*BuildconfigurationsApi* | [**update_and_get_audited**](docs/BuildconfigurationsApi.md#update_and_get_audited) | **POST** /build-configurations/{id}/update-and-get-audited | Updates an existing Build Configuration and returns BuildConfigurationAudited entity
 *BuildconfigurationsetsApi* | [**add_configuration**](docs/BuildconfigurationsetsApi.md#add_configuration) | **POST** /build-configuration-sets/{id}/build-configurations | Adds a configuration to the Specified Set
 *BuildconfigurationsetsApi* | [**build**](docs/BuildconfigurationsetsApi.md#build) | **POST** /build-configuration-sets/{id}/build | Builds the Configurations for the Specified Set
+*BuildconfigurationsetsApi* | [**build_versioned**](docs/BuildconfigurationsetsApi.md#build_versioned) | **POST** /build-configuration-sets/{id}/build-versioned | Builds the configurations for the Specified Set with an option to specify exact revision of a BC
 *BuildconfigurationsetsApi* | [**create_new**](docs/BuildconfigurationsetsApi.md#create_new) | **POST** /build-configuration-sets | Creates a new Build Configuration Set
 *BuildconfigurationsetsApi* | [**delete_specific**](docs/BuildconfigurationsetsApi.md#delete_specific) | **DELETE** /build-configuration-sets/{id} | Removes a specific Build Configuration Set
 *BuildconfigurationsetsApi* | [**get_all**](docs/BuildconfigurationsetsApi.md#get_all) | **GET** /build-configuration-sets | Gets all Build Configuration Sets
@@ -233,6 +236,7 @@ Class | Method | HTTP request | Description
  - [BuildConfigurationSetRecordPage](docs/BuildConfigurationSetRecordPage.md)
  - [BuildConfigurationSetRest](docs/BuildConfigurationSetRest.md)
  - [BuildConfigurationSetSingleton](docs/BuildConfigurationSetSingleton.md)
+ - [BuildConfigurationSetWithAuditedBCsRest](docs/BuildConfigurationSetWithAuditedBCsRest.md)
  - [BuildConfigurationSingleton](docs/BuildConfigurationSingleton.md)
  - [BuildEnvironmentPage](docs/BuildEnvironmentPage.md)
  - [BuildEnvironmentRest](docs/BuildEnvironmentRest.md)

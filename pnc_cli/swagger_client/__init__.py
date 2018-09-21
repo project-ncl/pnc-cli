@@ -33,6 +33,7 @@ from .models.build_configuration_set_page import BuildConfigurationSetPage
 from .models.build_configuration_set_record_page import BuildConfigurationSetRecordPage
 from .models.build_configuration_set_rest import BuildConfigurationSetRest
 from .models.build_configuration_set_singleton import BuildConfigurationSetSingleton
+from .models.build_configuration_set_with_audited_b_cs_rest import BuildConfigurationSetWithAuditedBCsRest
 from .models.build_configuration_singleton import BuildConfigurationSingleton
 from .models.build_environment_page import BuildEnvironmentPage
 from .models.build_environment_rest import BuildEnvironmentRest
