@@ -453,3 +453,30 @@ def test_list_build_configurations(mock):
     result = buildconfigurations.list_build_configurations_raw()
     mock.assert_called_once_with(page_index=0, page_size=200, sort="", q="")
     assert result == [1, 2, 3]
+
+
+@patch('pnc_cli.buildconfigurations.pnc_api.build_configs.trigger_audited', return_value=MagicMock(content='SUCCESS'))
+def test_build_a_revision(mock_trigger_audited):
+    result = buildconfigurations.build_raw(1, revision=2, temporary_build=True, force_rebuild=True)
+    mock_trigger_audited.assert_called_once_with(id=1, rev=2, temporary_build=True, force_rebuild=True,
+                                                 timestamp_alignment=False, build_dependencies=True,
+                                                 keep_pod_on_failure=False)
+    assert result == 'SUCCESS'
+
+
+@patch('pnc_cli.buildconfigurations.pnc_api.build_configs.get_specific')
+@patch('pnc_cli.buildconfigurations.pnc_api.build_configs.update_and_get_audited', return_value=MagicMock(content='SUCCESS'))
+@patch('pnc_cli.common.get_entity', return_value='mock-entity')
+@patch('pnc_cli.buildconfigurations.pnc_api.projects', autospec=True)
+@patch('pnc_cli.buildconfigurations.pnc_api.environments', autospec=True)
+def test_update_and_get_audited(mock_envs_api, mock_projects_api, mock_entity, mock_update, mock_get_specific):
+    mock = MagicMock()
+    mockcontent = MagicMock(content=mock)
+    mock_get_specific.return_value = mockcontent
+    result = buildconfigurations.update_build_configuration_raw(id=1, build_script='mvn install', project=1, environment=1, get_revision=True)
+    mock_entity.assert_has_calls([call(mock_projects_api, 1), call(mock_envs_api, 1)])
+    mock_get_specific.assert_called_once_with(id=1)
+    # object returned by get_specific is appropriately modified
+    assert getattr(mock, 'build_script') == 'mvn install'
+    mock_update.assert_called_once_with(id=1, body=mock)
+    assert result == 'SUCCESS'

@@ -199,3 +199,44 @@ def test_list_build_records_for_set_name(mock_sets_api, mock_get_records, mock_s
     mock_set_id.assert_called_once_with(mock_sets_api, None, 'testerino')
     mock_get_records.assert_called_once_with(id=1, page_index=0, page_size=200, q='', sort='')
     assert result == 'SUCCESS'
+
+
+@patch('pnc_cli.common.set_id', return_value=1)
+@patch('pnc_cli.common.get_entity', return_value='BuildConfiguration')
+@patch('pnc_cli.buildconfigurationsets.pnc_api.build_group_configs.build_versioned', return_value=MagicMock(content='SUCCESS'))
+@patch('pnc_cli.buildconfigurationsets.pnc_api.build_configs.get_revision', return_value=MagicMock(content='parsed_revision'))
+@patch('pnc_cli.buildconfigurationsets.__fill_BCSWithAuditedBCs_body', return_value='FilledBuildConfigSWithAuditedBody')
+@patch('pnc_cli.swagger_client.BuildConfigurationSetWithAuditedBCsRest', return_value='BuildConfigSWithAuditedBody')
+@patch('pnc_cli.buildconfigurationsets.pnc_api.build_group_configs', autospec=BuildconfigurationsetsApi)
+def test_build_versioned_for_set_id(mock_sets_api, mock_audited_rest, mock_fill_audited,
+                                    mock_get_revision, mock_build_versioned, mock_get_entity, mock_set_id):
+    result = buildconfigurationsets.build_set_raw(id=1, force=True, tempbuild=True, id_revisions=['1:1', '2:2', '3:3'])
+    mock_set_id.assert_called_once_with(mock_sets_api, 1, None)
+    mock_get_entity.assert_called_once_with(mock_sets_api, 1)
+    parsed_calls = [call(1, 1), call(2, 2), call(3, 3)]
+    mock_get_revision.assert_has_calls(parsed_calls)
+    mock_audited_rest.assert_called_once_with()
+    mock_fill_audited.assert_called_once_with('BuildConfigSWithAuditedBody', 'BuildConfiguration',
+                                              ['parsed_revision', 'parsed_revision', 'parsed_revision'])
+    mock_build_versioned.assert_called_once_with(id=1, temporary_build=True, force_rebuild=True, timestamp_alignment=False, body='FilledBuildConfigSWithAuditedBody')
+    assert result == 'SUCCESS'
+
+@patch('pnc_cli.common.set_id', return_value=1)
+@patch('pnc_cli.common.get_entity', return_value='BuildConfiguration')
+@patch('pnc_cli.buildconfigurationsets.pnc_api.build_group_configs.build_versioned', return_value=MagicMock(content='SUCCESS'))
+@patch('pnc_cli.buildconfigurationsets.pnc_api.build_configs.get_revision', return_value=MagicMock(content='parsed_revision'))
+@patch('pnc_cli.buildconfigurationsets.__fill_BCSWithAuditedBCs_body', return_value='FilledBuildConfigSWithAuditedBody')
+@patch('pnc_cli.swagger_client.BuildConfigurationSetWithAuditedBCsRest', return_value='BuildConfigSWithAuditedBody')
+@patch('pnc_cli.buildconfigurationsets.pnc_api.build_group_configs', autospec=BuildconfigurationsetsApi)
+def test_build_versioned_for_set_name(mock_sets_api, mock_audited_rest, mock_fill_audited,
+                                    mock_get_revision, mock_build_versioned, mock_get_entity, mock_set_id):
+    result = buildconfigurationsets.build_set_raw(name='hello', force=True, tempbuild=True, id_revisions=['1:1', '2:2', '3:3'])
+    mock_set_id.assert_called_once_with(mock_sets_api, None, 'hello')
+    mock_get_entity.assert_called_once_with(mock_sets_api, 1)
+    parsed_calls = [call(1, 1), call(2, 2), call(3, 3)]
+    mock_get_revision.assert_has_calls(parsed_calls)
+    mock_audited_rest.assert_called_once_with()
+    mock_fill_audited.assert_called_once_with('BuildConfigSWithAuditedBody', 'BuildConfiguration',
+                                              ['parsed_revision', 'parsed_revision', 'parsed_revision'])
+    mock_build_versioned.assert_called_once_with(id=1, temporary_build=True, force_rebuild=True, timestamp_alignment=False, body='FilledBuildConfigSWithAuditedBody')
+    assert result == 'SUCCESS'
