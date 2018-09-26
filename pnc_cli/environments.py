@@ -26,7 +26,8 @@ def get_environment(id=None, name=None):
 def get_environment_raw(id=None, name=None):
     search_id = common.set_id(pnc_api.environments, id, name)
     response = utils.checked_api_call(pnc_api.environments, 'get_specific', id=search_id)
-    return response.content
+    if response:
+        return response.content
 
 
 @arg("-p", "--page-size", help="Limit the amount of BuildEnvironments returned", type=int)
