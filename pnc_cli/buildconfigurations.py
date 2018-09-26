@@ -468,16 +468,16 @@ def list_revisions_of_build_configuration_raw(id=None, name=None, page_size=200,
 
 @arg("-i", "--id", help="ID of the BuildConfiguration to retrieve a revision from.", type=types.existing_bc_id)
 @arg("-n", "--name", help="Name of the BuildConfiguration to retrieve a revision from.", type=types.existing_bc_name)
-@arg("--revision_id", help="Number of the revision to retrieve.")
-def get_revision_of_build_configuration(id=None, name=None, revision_id=None):
+@arg("revision_id", help="Number of the revision to retrieve.")
+def get_revision_of_build_configuration(revision_id, id=None, name=None):
     """
     Get a specific audited revision of a BuildConfiguration
     """
-    data = get_revision_of_build_configuration_raw(id, name, revision_id)
+    data = get_revision_of_build_configuration_raw(revision_id, id, name)
     if data:
         return utils.format_json_list(data)
 
-def get_revision_of_build_configuration_raw(id=None, name=None, revision_id=None):
+def get_revision_of_build_configuration_raw(revision_id, id=None, name=None):
     found_id = common.set_id(pnc_api.build_configs, id, name)
     response = utils.checked_api_call(pnc_api.build_configs, 'get_revision', id=found_id, rev=revision_id)
     if response:
