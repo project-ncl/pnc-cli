@@ -47,7 +47,7 @@ def checked_api_call(api, func, **kwargs):
     try:
         response = getattr(api, func)(**kwargs)
     except ApiException as e:
-        sys.stderr.write(e)
+        sys.stderr.write(str(e))
         sys.stderr.write("\n")
     else:
         return response
