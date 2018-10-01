@@ -168,8 +168,8 @@ class BuildConfigurationSetRecordPage(object):
                     if hasattr(item[1], "to_dict") else item,
                     value.items()
                 ))
-	    elif isinstance(value, datetime):
-		result[attr] = str(value.date())
+            elif isinstance(value, datetime):
+                result[attr] = str(value.date())
             else:
                 result[attr] = value
 
