@@ -151,6 +151,7 @@ def make_mead_impl(config, run_build, environment, sufix, product_name, product_
             buildconfigurationsets.add_build_configuration_to_set(set_id=bc_set.id, config_id=build_config.id)
 
         if build_config == None:
+            logging.error("Couln't get config " + artifact_name)
             return 10
 
         ids[artifact] = build_config
@@ -344,6 +345,9 @@ def create_build_configuration_and_repo(environment, bc_set, product_version_id,
                                              dependency_ids = [],
                                              build_configuration_set_ids = [],
                                              generic_parameters=get_generic_parameters(art_params))
+
+    if bpm_task_id is None:
+        return None
 
     if not bpmbuildconfigurations.wait_for_repo_creation(bpm_task_id):
         return None
