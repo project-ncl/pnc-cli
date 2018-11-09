@@ -219,7 +219,7 @@ class Tasks:
             result.append(level)
             parts = dict([(name, deps - level) for name, deps in parts.iteritems() if name not in level])
         if parts:
-            raise ValueError, 'total ordering not possible (check for circular or missing dependencies)'
+            raise ValueError('total ordering not possible (check for circular or missing dependencies)')
         return result
 
     def get_all(self):
@@ -291,7 +291,7 @@ class TaskRunner:
         try:
             exit_status = self.run_build(task, build_config)
         except Exception:
-            print traceback.format_exc()
+            print(traceback.format_exc())
             exit_status = 1
 
         if exit_status != 0:

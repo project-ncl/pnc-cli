@@ -24,6 +24,7 @@ from six import PY3
 from six.moves.urllib.parse import urlencode
 
 from .configuration import Configuration
+from past.builtins import long
 
 try:
     import urllib3

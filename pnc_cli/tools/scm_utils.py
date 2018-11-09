@@ -9,9 +9,9 @@ from subprocess import PIPE
 from subprocess import Popen
 from subprocess import STDOUT
 
-import maven_utils
-import web_utils
-from maven_utils import MavenArtifact
+from . import maven_utils
+from . import web_utils
+from pnc_cli.tools.maven_utils import MavenArtifact
 
 git_version = None
 

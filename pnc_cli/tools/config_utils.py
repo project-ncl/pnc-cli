@@ -4,11 +4,11 @@ import logging
 import os
 import re
 import string
-from ConfigParser import ConfigParser, NoOptionError, NoSectionError, DuplicateSectionError
+from configparser import ConfigParser, NoOptionError, NoSectionError, DuplicateSectionError
 
-import utils
-from scm_utils import ScmInfo, get_scm_info
-from tasks import Tasks
+# import utils
+# from scm_utils import ScmInfo, get_scm_info
+# from tasks import Tasks
 
 
 def get_config_option(params, option):
@@ -159,7 +159,7 @@ class ConfigReader:
         artifacts = []
         dependencies_dict = {}
         if artifact:
-            if isinstance(artifact, basestring):
+            if isinstance(artifact, str):
                 artifact = self.get_tasks().get_task(artifact)
             artifacts.append(artifact.name)
             dependencies_dict[artifact.name] =  artifact.ordered_dependencies()
@@ -381,7 +381,7 @@ class ConfigReader:
 
         if not parser.has_section('common'):
             logging.error('Mandatory common section missing from configuration file.')
-            raise NoSectionError, 'Mandatory common section missing from configuration file.'
+            raise NoSectionError('Mandatory common section missing from configuration file.')
         common_section['tag'] = parser.get('common', 'tag')
         common_section['target'] = parser.get('common', 'target')
         common_section['jobprefix'] = parser.get('common', 'jobprefix')
@@ -497,7 +497,7 @@ def config_has_option(parser, pommanipext, option, warn=True):
 def parse_pom_manipulator_ext(params, parser, pommanipext):
     if not parser.has_section(pommanipext):
         logging.error('Unable to locate dependency-management-section "{0}".'.format(pommanipext))
-        raise NoSectionError, 'Unable to locate dependency-management-section "{0}".'.format(pommanipext)
+        raise NoSectionError ('Unable to locate dependency-management-section "{0}".'.format(pommanipext))
 
     if config_has_option(parser, pommanipext, 'depmgmt'):
         params['dependencyManagement'] = read_value_add_version_if_not_present(parser, pommanipext, 'depmgmt')
@@ -631,10 +631,10 @@ class ConfigException(BaseException):
         super(ConfigException, self).__init__(message)
 
 
-from ConfigParser import InterpolationMissingOptionError
-from ConfigParser import InterpolationSyntaxError, InterpolationDepthError
-from ConfigParser import MAX_INTERPOLATION_DEPTH
-from ConfigParser import DEFAULTSECT
+from configparser import InterpolationMissingOptionError
+from configparser import InterpolationSyntaxError, InterpolationDepthError
+from configparser import MAX_INTERPOLATION_DEPTH
+from configparser import DEFAULTSECT
 _UNSET = object()
 
 class InterpolationConfigParser(ConfigParser):
