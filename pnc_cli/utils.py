@@ -102,7 +102,8 @@ def get_config():
         if e.errno != errno.EEXIST:
             raise
 
-    found = config.read(os.path.join(configfilename))
+    configFileName = os.path.join(configfilename)
+    found = config.read(configFileName)
 
     if not found:
         config.add_section('PNC')
@@ -113,11 +114,11 @@ def get_config():
         config.set('PNC', 'keycloakClientId', 'pncdirect')
         username = input('Username: ')
         config.set('PNC', 'username', username)
-        with open(os.path.join(configfilename), 'w') as configfile:
+        with open(configFileName, 'w') as configfile:
             config.write(configfile)
         logging.warning("New config file written to %s. Configure pncUrl and keycloakUrl values." % configfilename)
         exit(1)
-    return config
+    return (config, configFileName)
 
 
 def get_internal_repo_start(environment):
