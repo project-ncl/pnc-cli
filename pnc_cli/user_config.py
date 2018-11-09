@@ -1,7 +1,8 @@
 import logging
 
 from argh import arg
-import ConfigParser
+import configparser # see https://pypi.org/project/configparser/
+from configparser import NoSectionError, NoOptionError
 import atexit
 import getpass
 import json
@@ -30,7 +31,8 @@ trueValues = ['True', 'true', '1']
 
 class UserConfig():
     def __init__(self):
-        config = utils.get_config()
+        config, configFileName = utils.get_config()
+        self.configFileName = configFileName
         self.username = self.load_username_from_config(config)
         self.password = self.load_password_from_config(config)
         self.pnc_config = psc.PncServerConfig(config)
@@ -39,8 +41,11 @@ class UserConfig():
         self.refresh_token_time = 0
         self.access_token = None
         self.access_token_time = 0
-        self.retrieve_keycloak_token()
-        self.apiclient = self.create_api_client()
+        if self.username and self.password:
+            self.retrieve_keycloak_token()
+        else:
+            logging.info("Commands requiring authentication will fail.")
+        self.apiclient = self.create_api_client(True)
 
     def __getstate__(self):
         return self.keycloak_config, self.username, self.access_token, self.access_token_time, self.refresh_token, self.refresh_token_time
@@ -51,7 +56,7 @@ class UserConfig():
         # to be changed much once it's in place
         newtoken = False
         refreshtoken = False
-        config = utils.get_config()
+        config, configFilename = utils.get_config()
 
         if len(state) == 4:
             # old version of saved user_config
@@ -125,7 +130,11 @@ class UserConfig():
             username = config.get('PNC', 'username')
             logging.info("Loaded username from pnc-cli.conf: {}\n".format(username))
             return username
-        except ConfigParser.NoOptionError:
+        except (NoSectionError, NoOptionError):
+            logging.info("Username not specified in section PNC of %s" % self.configFileName)
+            return None
+        except Exception, e:
+            logging.error('Error reading username from section PNC of %s - %s' % (self.configFileName, str(e)))
             return None
 
     def load_password_from_config(self, config):
@@ -133,7 +142,11 @@ class UserConfig():
             password = config.get('PNC', 'password')
             logging.info("Loaded password from pnc-cli.conf\n")
             return password
-        except ConfigParser.NoOptionError:
+        except (NoSectionError, NoOptionError):
+            logging.info("Password not specified in section PNC of %s" % self.configFileName)
+            return None
+        except Exception, e:
+            logging.error('Error reading password from section PNC of %s - %s' % (self.configFileName, str(e)))
             return None
 
     def refresh_access_token(self):
@@ -192,12 +205,13 @@ class UserConfig():
             else:
                 logging.error("No credentials. Authentication is not possible.")
 
-    def create_api_client(self):
+    def create_api_client(self, allow_anonymous_access = False):
         if self.access_token:
             return swagger_client.ApiClient(self.pnc_config.url, header_name='Authorization',
                                             header_value='Bearer ' + self.access_token)
         else:
-            logging.error("No Keycloak token is present. Commands requiring authentication will fail.")
+            if not allow_anonymous_access:
+                logging.error("No Keycloak token is present. Commands requiring authentication will fail.")
             return swagger_client.ApiClient(self.pnc_config.url)
 
     def get_api_client(self):
@@ -249,6 +263,9 @@ def login(username=None, password=None):
     else:
         user.password = user.input_password()
 
+    if (not ( user.username and user.password) ):
+        logging.error("Username and password must be provided for login")
+        return;
     user.retrieve_keycloak_token()
     user.apiclient = user.create_api_client()
     save()
