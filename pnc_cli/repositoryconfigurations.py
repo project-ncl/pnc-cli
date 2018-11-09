@@ -2,9 +2,7 @@ from argh import arg
 from argh.exceptions import CommandError
 
 import logging
-import pnc_cli.common as common
 import pnc_cli.cli_types as types
-from pnc_cli import swagger_client
 from pnc_cli import utils
 from pnc_cli.pnc_api import pnc_api
 

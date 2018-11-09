@@ -12,10 +12,10 @@ import sys
 
 import requests
 
-import swagger_client
+from . import swagger_client
 import pnc_cli.utils as utils
-import keycloak_config as kc
-import pnc_server_config as psc
+from . import keycloak_config as kc
+from . import pnc_server_config as psc
 
 # make sure that input behaves as expected
 try:
@@ -134,7 +134,7 @@ class UserConfig():
         except (NoSectionError, NoOptionError):
             logging.info("Username not specified in section PNC of %s" % self.configFileName)
             return None
-        except Exception, e:
+        except Exception as e:
             logging.error('Error reading username from section PNC of %s - %s' % (self.configFileName, str(e)))
             return None
 
@@ -146,7 +146,7 @@ class UserConfig():
         except (NoSectionError, NoOptionError):
             logging.info("Password not specified in section PNC of %s" % self.configFileName)
             return None
-        except Exception, e:
+        except Exception as e:
             logging.error('Error reading password from section PNC of %s - %s' % (self.configFileName, str(e)))
             return None
 

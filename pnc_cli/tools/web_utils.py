@@ -2,14 +2,19 @@
 
 import logging
 import os
-import urllib2
 
+from future.standard_library import install_aliases
+install_aliases()
+
+from urllib.parse import urlparse, urlencode
+from urllib.request import urlopen, Request
+from urllib.error import HTTPError
 
 def download_file(file_url, file_path, artifact):
     try:
         logging.debug("Downloading from %s to '%s'", file_url, file_path)
-        handler = urllib2.urlopen(file_url)
-    except urllib2.HTTPError, err:
+        handler = urlopen(file_url)
+    except HTTPError as err:
         logging.error("[%s] Failed to download %s. %s", artifact, file_url, err)
         return None
     if handler.getcode() == 200:

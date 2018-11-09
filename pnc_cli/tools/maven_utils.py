@@ -4,8 +4,14 @@ import logging
 import os
 import shutil
 import string
-import urllib2
-import urlparse
+
+from future.standard_library import install_aliases
+install_aliases()
+
+from urllib.parse import urlparse, urlencode
+from urllib.request import urlopen, Request
+from urllib.error import HTTPError
+
 from subprocess import Popen
 from subprocess import PIPE
 from subprocess import STDOUT
@@ -240,8 +246,8 @@ def download_pom(repo_url=None, artifact=None, pom_url=None, target_dir=None):
 
     handler = None
     try:
-        handler = urllib2.urlopen(pom_url)
-    except urllib2.HTTPError, err:
+        handler = urlopen(pom_url)
+    except HTTPError as err:
         logging.error("Failed to download POM %s. %s", pom_url, err)
         return None
 

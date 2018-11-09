@@ -4,17 +4,27 @@ import re
 import sys
 import getpass
 
-import exceptions
+from future.standard_library import install_aliases
+install_aliases()
+
+from urllib.parse import urlparse, urlencode
+from urllib.request import urlopen, Request
+from urllib.error import HTTPError
+
+try:
+    input = raw_input
+except NameError:
+    pass
 
 
 def execute_command(cmd, execute, echo=True):
     """Execute a command in shell or just print it if execute is False"""
     if execute:
         if echo:
-            print "Executing: " + cmd
+            print("Executing: " + cmd)
         return os.system(cmd)
     else:
-        print cmd
+        print(cmd)
         return 0
 
 def set_log_level(level):
@@ -103,19 +113,19 @@ def parse_conf_args(argv):
 
             fsplit = arg.split('=', 1)
             if len(fsplit) != 2:
-                raise exceptions.InvalidOptionError(
+                raise Exception(
                     "Command option '%s' not recognized." % rarg)
 
             rkey, value = fsplit
             ssplit = rkey.split('.', 1)
             if len(ssplit) != 2 or not ssplit[1]:
-                raise exceptions.InvalidOptionError(
+                raise Exception(
                     "Command option '%s' not recognized." % rarg)
 
             section, option = ssplit
             args[section] = (option, value)
         else:
-            raise exceptions.InvalidOptionError(
+            raise Exception(
                     "Command option '%s' not recognized." % rarg)
 
     return args
@@ -125,8 +135,8 @@ def get_user_creds():
 
     :return: Pair of username (first) and password (second).
     """
-    print "Please provide your JIRA credentials"
-    username = raw_input("Username: ")
+    print("Please provide your JIRA credentials")
+    username = input("Username: ")
     password = getpass.getpass()
 
     return (username, password)
@@ -139,7 +149,7 @@ def required(field):
         def wrappedf(*args):
             result = f(*args)
             if result is None or result == "":
-                raise exceptions.InvalidConfigError(
+                raise Exception(
                     "Config option '%s' is required." % field)
             else:
                 return result

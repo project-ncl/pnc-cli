@@ -4,7 +4,7 @@ from argh import arg
 from pnc_cli import utils
 from pnc_cli.pnc_api import pnc_api
 
-import cli_types
+from pnc_cli import cli_types
 
 
 @arg("-p", "--page-size", help="Limit the amount of BuildRecords returned")

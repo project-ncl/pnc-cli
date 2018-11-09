@@ -2,8 +2,8 @@ import logging
 import os
 import re
 import sys
-from ConfigParser import Error
-from ConfigParser import NoSectionError
+from configparser import Error
+from configparser import NoSectionError
 
 from argh import arg
 
@@ -53,7 +53,7 @@ def make_mead_impl(config, run_build, environment, sufix, product_name, product_
     except NoSectionError as e:
         logging.error('Missing config in %s (%r)', config, e)
         return 1
-    except Error, err:
+    except Error as err:
         logging.error(err)
         return 1
 
