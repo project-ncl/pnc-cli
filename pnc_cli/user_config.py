@@ -56,7 +56,8 @@ class UserConfig():
         # to be changed much once it's in place
         newtoken = False
         refreshtoken = False
-        config, configFilename = utils.get_config()
+        config, configFileName = utils.get_config()
+        self.configFileName = configFileName
 
         if len(state) == 4:
             # old version of saved user_config
