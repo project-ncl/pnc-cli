@@ -71,7 +71,7 @@ def create_repository_configuration(repository, no_sync=False):
     """
     repo = create_repository_configuration_raw(repository, no_sync)
     if repo:
-        return repo
+        return utils.format_json(repo)
 
 def create_repository_configuration_raw(repository, no_sync=False):
     repo_creation = swagger_client.RepositoryCreationUrlAutoRest()
@@ -85,7 +85,7 @@ def create_repository_configuration_raw(repository, no_sync=False):
     if task_id and  wait_for_repo_creation(task_id):
         repo = repositoryconfigurations.match_repository_configuration_raw(repository)
         if repo:
-            return repo
+            return repo[0]
 
 
 def wait_for_repo_creation(task_id, retry=30):
