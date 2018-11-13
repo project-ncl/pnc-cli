@@ -21,6 +21,7 @@ setup(
 	"six >= 1.9.0",
         "validators >=0.10",
         "tzlocal >= 1.0",
+        "configparser >= 3.5.0",
     ],
     tests_require=["pytest >= 2.0"],
     classifiers=[
