@@ -1565,6 +1565,7 @@ class BuildconfigurationsApi(object):
         :param callback function: The callback function
             for asynchronous request. (optional)
         :param int id: Build configuration id (required)
+        :param bool executed: When true, records with NO_REBUILD_REQUIRED status are excluded.
         :return: BuildRecordPage
                  If the method is called asynchronously,
                  returns the request thread.
@@ -1591,12 +1592,13 @@ class BuildconfigurationsApi(object):
         :param callback function: The callback function
             for asynchronous request. (optional)
         :param int id: Build configuration id (required)
+        :param bool executed: When true, records with NO_REBUILD_REQUIRED status are excluded.
         :return: BuildRecordPage
                  If the method is called asynchronously,
                  returns the request thread.
         """
 
-        all_params = ['id']
+        all_params = ['id', 'executed']
         all_params.append('callback')
         all_params.append('_return_http_data_only')
         all_params.append('_preload_content')
@@ -1623,6 +1625,8 @@ class BuildconfigurationsApi(object):
             path_params['id'] = params['id']
 
         query_params = []
+        if 'executed' in params:
+            query_params.append(('executed', params['executed']))
 
         header_params = {}
 
@@ -2456,10 +2460,11 @@ class BuildconfigurationsApi(object):
         :param int id: Build Configuration id (required)
         :param str callback_url: Optional Callback URL
         :param bool temporary_build: Is it a temporary build or a standard build?
-        :param bool force_rebuild: Should we force the rebuild?
+        :param bool force_rebuild: DEPRECATED: Use RebuildMode.
         :param bool build_dependencies: Should we build also dependencies of this BuildConfiguration?
         :param bool keep_pod_on_failure: Should we keep the build container running, if the build fails?
         :param bool timestamp_alignment: Should we add a timestamp during the alignment? Valid only for temporary builds.
+        :param str rebuild_mode: Rebuild Modes: FORCE: always rebuild the configuration; EXPLICIT_DEPENDENCY_CHECK: check if any of user defined dependencies has been update; IMPLICIT_DEPENDENCY_CHECK: check if any captured dependency has been updated;
         :return: BuildRecordSingleton
                  If the method is called asynchronously,
                  returns the request thread.
@@ -2488,16 +2493,17 @@ class BuildconfigurationsApi(object):
         :param int id: Build Configuration id (required)
         :param str callback_url: Optional Callback URL
         :param bool temporary_build: Is it a temporary build or a standard build?
-        :param bool force_rebuild: Should we force the rebuild?
+        :param bool force_rebuild: DEPRECATED: Use RebuildMode.
         :param bool build_dependencies: Should we build also dependencies of this BuildConfiguration?
         :param bool keep_pod_on_failure: Should we keep the build container running, if the build fails?
         :param bool timestamp_alignment: Should we add a timestamp during the alignment? Valid only for temporary builds.
+        :param str rebuild_mode: Rebuild Modes: FORCE: always rebuild the configuration; EXPLICIT_DEPENDENCY_CHECK: check if any of user defined dependencies has been update; IMPLICIT_DEPENDENCY_CHECK: check if any captured dependency has been updated;
         :return: BuildRecordSingleton
                  If the method is called asynchronously,
                  returns the request thread.
         """
 
-        all_params = ['id', 'callback_url', 'temporary_build', 'force_rebuild', 'build_dependencies', 'keep_pod_on_failure', 'timestamp_alignment']
+        all_params = ['id', 'callback_url', 'temporary_build', 'force_rebuild', 'build_dependencies', 'keep_pod_on_failure', 'timestamp_alignment', 'rebuild_mode']
         all_params.append('callback')
         all_params.append('_return_http_data_only')
         all_params.append('_preload_content')
@@ -2536,6 +2542,8 @@ class BuildconfigurationsApi(object):
             query_params.append(('keepPodOnFailure', params['keep_pod_on_failure']))
         if 'timestamp_alignment' in params:
             query_params.append(('timestampAlignment', params['timestamp_alignment']))
+        if 'rebuild_mode' in params:
+            query_params.append(('rebuildMode', params['rebuild_mode']))
 
         header_params = {}
 
@@ -2587,10 +2595,11 @@ class BuildconfigurationsApi(object):
         :param int rev: Revision of a Build Configuration (required)
         :param str callback_url: Optional Callback URL
         :param bool temporary_build: Is it a temporary build or a standard build?
-        :param bool force_rebuild: Should we force the rebuild?
+        :param bool force_rebuild: DEPRECATED: Use RebuildMode.
         :param bool build_dependencies: Should we build also dependencies of this BuildConfiguration?
         :param bool keep_pod_on_failure: Should we keep the build container running, if the build fails?
         :param bool timestamp_alignment: Should we add a timestamp during the alignment? Valid only for temporary builds.
+        :param str rebuild_mode: Rebuild Modes: FORCE: always rebuild the configuration; EXPLICIT_DEPENDENCY_CHECK: check if any of user defined dependencies has been update; IMPLICIT_DEPENDENCY_CHECK: check if any captured dependency has been updated;
         :return: BuildRecordSingleton
                  If the method is called asynchronously,
                  returns the request thread.
@@ -2620,16 +2629,17 @@ class BuildconfigurationsApi(object):
         :param int rev: Revision of a Build Configuration (required)
         :param str callback_url: Optional Callback URL
         :param bool temporary_build: Is it a temporary build or a standard build?
-        :param bool force_rebuild: Should we force the rebuild?
+        :param bool force_rebuild: DEPRECATED: Use RebuildMode.
         :param bool build_dependencies: Should we build also dependencies of this BuildConfiguration?
         :param bool keep_pod_on_failure: Should we keep the build container running, if the build fails?
         :param bool timestamp_alignment: Should we add a timestamp during the alignment? Valid only for temporary builds.
+        :param str rebuild_mode: Rebuild Modes: FORCE: always rebuild the configuration; EXPLICIT_DEPENDENCY_CHECK: check if any of user defined dependencies has been update; IMPLICIT_DEPENDENCY_CHECK: check if any captured dependency has been updated;
         :return: BuildRecordSingleton
                  If the method is called asynchronously,
                  returns the request thread.
         """
 
-        all_params = ['id', 'rev', 'callback_url', 'temporary_build', 'force_rebuild', 'build_dependencies', 'keep_pod_on_failure', 'timestamp_alignment']
+        all_params = ['id', 'rev', 'callback_url', 'temporary_build', 'force_rebuild', 'build_dependencies', 'keep_pod_on_failure', 'timestamp_alignment', 'rebuild_mode']
         all_params.append('callback')
         all_params.append('_return_http_data_only')
         all_params.append('_preload_content')
@@ -2673,6 +2683,8 @@ class BuildconfigurationsApi(object):
             query_params.append(('keepPodOnFailure', params['keep_pod_on_failure']))
         if 'timestamp_alignment' in params:
             query_params.append(('timestampAlignment', params['timestamp_alignment']))
+        if 'rebuild_mode' in params:
+            query_params.append(('rebuildMode', params['rebuild_mode']))
 
         header_params = {}
 

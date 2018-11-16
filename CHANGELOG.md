@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 
 ## [Unreleased]
+### Added
+- [NCL-4244] Add support for rebuild mode
 
 ### Fixed
 - Fixed anonymous usage

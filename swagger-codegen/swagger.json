@@ -5,45 +5,174 @@
   },
   "basePath" : "/pnc-rest/rest",
   "tags" : [ {
-    "name" : "projects"
-  }, {
-    "name" : "test"
-  }, {
-    "name" : "builds"
-  }, {
-    "name" : "bpm"
-  }, {
-    "name" : "users"
-  }, {
-    "name" : "build-configurations"
-  }, {
-    "name" : "build-configuration-sets"
-  }, {
-    "name" : "build-tasks"
-  }, {
-    "name" : "product-releases"
-  }, {
-    "name" : "repository-configurations"
-  }, {
-    "name" : "build-record-push"
-  }, {
-    "name" : "environments"
-  }, {
-    "name" : "build-config-set-records"
-  }, {
-    "name" : "product-versions"
+    "name" : "products"
   }, {
     "name" : "running-build-records"
   }, {
+    "name" : "artifacts"
+  }, {
+    "name" : "build-tasks"
+  }, {
+    "name" : "product-versions"
+  }, {
+    "name" : "builds"
+  }, {
+    "name" : "product-releases"
+  }, {
     "name" : "build-records"
   }, {
-    "name" : "product-milestones"
+    "name" : "users"
   }, {
     "name" : "licenses"
   }, {
-    "name" : "products"
+    "name" : "build-record-push"
+  }, {
+    "name" : "product-milestones"
+  }, {
+    "name" : "projects"
+  }, {
+    "name" : "build-config-set-records"
+  }, {
+    "name" : "test"
+  }, {
+    "name" : "repository-configurations"
+  }, {
+    "name" : "environments"
+  }, {
+    "name" : "build-configuration-sets"
+  }, {
+    "name" : "build-configurations"
+  }, {
+    "name" : "bpm"
   } ],
   "paths" : {
+    "/artifacts" : {
+      "get" : {
+        "tags" : [ "artifacts" ],
+        "summary" : "Gets all Artifacts",
+        "description" : "",
+        "operationId" : "getAll",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "pageIndex",
+          "in" : "query",
+          "description" : "Page Index",
+          "required" : false,
+          "type" : "integer",
+          "default" : "0",
+          "format" : "int32"
+        }, {
+          "name" : "pageSize",
+          "in" : "query",
+          "description" : "Pagination size",
+          "required" : false,
+          "type" : "integer",
+          "default" : "50",
+          "format" : "int32"
+        }, {
+          "name" : "sort",
+          "in" : "query",
+          "description" : "Sorting RSQL",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "q",
+          "in" : "query",
+          "description" : "RSQL Query",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "sha256",
+          "in" : "query",
+          "description" : "Filter by sha256 of the artifact",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "md5",
+          "in" : "query",
+          "description" : "Filter by md5 of the artifact",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "sha1",
+          "in" : "query",
+          "description" : "Filter by sha1 of the artifact",
+          "required" : false,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Success with results",
+            "schema" : {
+              "$ref" : "#/definitions/ArtifactPage"
+            }
+          },
+          "400" : {
+            "description" : "Invalid input parameters or validation error",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorResponseRest"
+            }
+          },
+          "500" : {
+            "description" : "Server error",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorResponseRest"
+            }
+          },
+          "204" : {
+            "description" : "Success but no content provided",
+            "schema" : {
+              "$ref" : "#/definitions/ArtifactPage"
+            }
+          }
+        }
+      }
+    },
+    "/artifacts/{id}" : {
+      "get" : {
+        "tags" : [ "artifacts" ],
+        "summary" : "Gets an specific Artifact",
+        "description" : "",
+        "operationId" : "getSpecific",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "description" : "Artifact id",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int32"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Success with results",
+            "schema" : {
+              "$ref" : "#/definitions/ArtifactSingleton"
+            }
+          },
+          "400" : {
+            "description" : "Invalid input parameters or validation error",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorResponseRest"
+            }
+          },
+          "500" : {
+            "description" : "Server error",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorResponseRest"
+            }
+          },
+          "404" : {
+            "description" : "Can not find specified result",
+            "schema" : {
+              "$ref" : "#/definitions/ArtifactSingleton"
+            }
+          }
+        }
+      }
+    },
     "/bpm/tasks" : {
       "get" : {
         "tags" : [ "bpm" ],
@@ -702,7 +831,7 @@
         }, {
           "name" : "forceRebuild",
           "in" : "query",
-          "description" : "Should we force the rebuild of all build configurations?",
+          "description" : "DEPRECATED: Use RebuildMode.",
           "required" : false,
           "type" : "boolean",
           "default" : "false"
@@ -713,6 +842,13 @@
           "required" : false,
           "type" : "boolean",
           "default" : "false"
+        }, {
+          "name" : "rebuildMode",
+          "in" : "query",
+          "description" : "Rebuild Modes: FORCE: always rebuild all the configurations in the set; EXPLICIT_DEPENDENCY_CHECK: check if any of user defined dependencies has been update; IMPLICIT_DEPENDENCY_CHECK: check if any captured dependency has been updated;",
+          "required" : false,
+          "type" : "string",
+          "enum" : [ "IMPLICIT_DEPENDENCY_CHECK", "EXPLICIT_DEPENDENCY_CHECK", "FORCE" ]
         } ],
         "responses" : {
           "200" : {
@@ -1094,7 +1230,7 @@
         }, {
           "name" : "forceRebuild",
           "in" : "query",
-          "description" : "Should we force the rebuild of all build configurations?",
+          "description" : "DEPRECATED: Use RebuildMode.",
           "required" : false,
           "type" : "boolean",
           "default" : "false"
@@ -1112,6 +1248,13 @@
           "schema" : {
             "$ref" : "#/definitions/BuildConfigurationSetWithAuditedBCsRest"
           }
+        }, {
+          "name" : "rebuildMode",
+          "in" : "query",
+          "description" : "Rebuild Modes: FORCE: always rebuild all the configurations in the set; EXPLICIT_DEPENDENCY_CHECK: check if any of user defined dependencies has been update; IMPLICIT_DEPENDENCY_CHECK: check if any captured dependency has been updated;",
+          "required" : false,
+          "type" : "string",
+          "enum" : [ "IMPLICIT_DEPENDENCY_CHECK", "EXPLICIT_DEPENDENCY_CHECK", "FORCE" ]
         } ],
         "responses" : {
           "200" : {
@@ -1635,7 +1778,7 @@
         }, {
           "name" : "forceRebuild",
           "in" : "query",
-          "description" : "Should we force the rebuild?",
+          "description" : "DEPRECATED: Use RebuildMode.",
           "required" : false,
           "type" : "boolean",
           "default" : "false"
@@ -1660,6 +1803,13 @@
           "required" : false,
           "type" : "boolean",
           "default" : "false"
+        }, {
+          "name" : "rebuildMode",
+          "in" : "query",
+          "description" : "Rebuild Modes: FORCE: always rebuild the configuration; EXPLICIT_DEPENDENCY_CHECK: check if any of user defined dependencies has been update; IMPLICIT_DEPENDENCY_CHECK: check if any captured dependency has been updated;",
+          "required" : false,
+          "type" : "string",
+          "enum" : [ "IMPLICIT_DEPENDENCY_CHECK", "EXPLICIT_DEPENDENCY_CHECK", "FORCE" ]
         } ],
         "responses" : {
           "200" : {
@@ -1848,6 +1998,13 @@
           "required" : true,
           "type" : "integer",
           "format" : "int32"
+        }, {
+          "name" : "executed",
+          "in" : "query",
+          "description" : "When true, records with NO_REBUILD_REQUIRED status are excluded.",
+          "required" : false,
+          "type" : "boolean",
+          "default" : "false"
         } ],
         "responses" : {
           "200" : {
@@ -2459,7 +2616,7 @@
         }, {
           "name" : "forceRebuild",
           "in" : "query",
-          "description" : "Should we force the rebuild?",
+          "description" : "DEPRECATED: Use RebuildMode.",
           "required" : false,
           "type" : "boolean",
           "default" : "false"
@@ -2484,6 +2641,13 @@
           "required" : false,
           "type" : "boolean",
           "default" : "false"
+        }, {
+          "name" : "rebuildMode",
+          "in" : "query",
+          "description" : "Rebuild Modes: FORCE: always rebuild the configuration; EXPLICIT_DEPENDENCY_CHECK: check if any of user defined dependencies has been update; IMPLICIT_DEPENDENCY_CHECK: check if any captured dependency has been updated;",
+          "required" : false,
+          "type" : "string",
+          "enum" : [ "IMPLICIT_DEPENDENCY_CHECK", "EXPLICIT_DEPENDENCY_CHECK", "FORCE" ]
         } ],
         "responses" : {
           "200" : {
@@ -7556,6 +7720,14 @@
         }
       }
     },
+    "ProductSingleton" : {
+      "type" : "object",
+      "properties" : {
+        "content" : {
+          "$ref" : "#/definitions/ProductRest"
+        }
+      }
+    },
     "BuildEnvironmentRest" : {
       "type" : "object",
       "required" : [ "id", "systemImageId", "systemImageType" ],
@@ -7621,14 +7793,6 @@
         }
       }
     },
-    "ProductSingleton" : {
-      "type" : "object",
-      "properties" : {
-        "content" : {
-          "$ref" : "#/definitions/ProductRest"
-        }
-      }
-    },
     "ProductVersionRefRest" : {
       "type" : "object",
       "properties" : {
@@ -7678,14 +7842,6 @@
         }
       }
     },
-    "BuildConfigurationSingleton" : {
-      "type" : "object",
-      "properties" : {
-        "content" : {
-          "$ref" : "#/definitions/BuildConfigurationRest"
-        }
-      }
-    },
     "RepositoryConfigurationPage" : {
       "type" : "object",
       "properties" : {
@@ -7706,6 +7862,14 @@
           "items" : {
             "$ref" : "#/definitions/RepositoryConfigurationRest"
           }
+        }
+      }
+    },
+    "BuildConfigurationSingleton" : {
+      "type" : "object",
+      "properties" : {
+        "content" : {
+          "$ref" : "#/definitions/BuildConfigurationRest"
         }
       }
     },
@@ -8050,6 +8214,14 @@
         "name" : "BuildConfigurationSetAudited"
       }
     },
+    "ArtifactSingleton" : {
+      "type" : "object",
+      "properties" : {
+        "content" : {
+          "$ref" : "#/definitions/ArtifactRest"
+        }
+      }
+    },
     "BpmTaskRestPage" : {
       "type" : "object",
       "properties" : {
@@ -8073,6 +8245,14 @@
         }
       }
     },
+    "ProductMilestoneSingleton" : {
+      "type" : "object",
+      "properties" : {
+        "content" : {
+          "$ref" : "#/definitions/ProductMilestoneRest"
+        }
+      }
+    },
     "RepositoryCreationUrlAutoRest" : {
       "type" : "object",
       "properties" : {
@@ -8085,22 +8265,6 @@
         },
         "buildConfigurationRest" : {
           "$ref" : "#/definitions/BuildConfigurationRest"
-        }
-      }
-    },
-    "ProductMilestoneSingleton" : {
-      "type" : "object",
-      "properties" : {
-        "content" : {
-          "$ref" : "#/definitions/ProductMilestoneRest"
-        }
-      }
-    },
-    "BuildConfigSetRecordSingleton" : {
-      "type" : "object",
-      "properties" : {
-        "content" : {
-          "$ref" : "#/definitions/BuildConfigSetRecordRest"
         }
       }
     },
@@ -8124,6 +8288,14 @@
           "items" : {
             "$ref" : "#/definitions/ProductReleaseRest"
           }
+        }
+      }
+    },
+    "BuildConfigSetRecordSingleton" : {
+      "type" : "object",
+      "properties" : {
+        "content" : {
+          "$ref" : "#/definitions/BuildConfigSetRecordRest"
         }
       }
     },
@@ -8224,6 +8396,14 @@
         }
       }
     },
+    "LicenseSingleton" : {
+      "type" : "object",
+      "properties" : {
+        "content" : {
+          "$ref" : "#/definitions/LicenseRest"
+        }
+      }
+    },
     "ProductMilestonePage" : {
       "type" : "object",
       "properties" : {
@@ -8272,14 +8452,6 @@
       },
       "xml" : {
         "name" : "ProductMilestoneRelease"
-      }
-    },
-    "LicenseSingleton" : {
-      "type" : "object",
-      "properties" : {
-        "content" : {
-          "$ref" : "#/definitions/LicenseRest"
-        }
       }
     },
     "ProductRest" : {
@@ -8525,14 +8697,6 @@
           "type" : "integer",
           "format" : "int32"
         },
-        "buildSetStartTime" : {
-          "type" : "string",
-          "format" : "date-time"
-        },
-        "buildSetEndTime" : {
-          "type" : "string",
-          "format" : "date-time"
-        },
         "oldStatus" : {
           "type" : "string",
           "enum" : [ "NEW", "DONE", "REJECTED" ]
@@ -8544,6 +8708,14 @@
         "buildSetConfigurationName" : {
           "type" : "string"
         },
+        "buildSetStartTime" : {
+          "type" : "string",
+          "format" : "date-time"
+        },
+        "buildSetEndTime" : {
+          "type" : "string",
+          "format" : "date-time"
+        },
         "newStatus" : {
           "type" : "string",
           "enum" : [ "NEW", "DONE", "REJECTED" ]
@@ -8551,14 +8723,6 @@
         "buildSetConfigurationId" : {
           "type" : "integer",
           "format" : "int32"
-        }
-      }
-    },
-    "BpmNotificationRest" : {
-      "type" : "object",
-      "properties" : {
-        "eventType" : {
-          "type" : "string"
         }
       }
     },
@@ -8582,6 +8746,14 @@
           "items" : {
             "$ref" : "#/definitions/BuildEnvironmentRest"
           }
+        }
+      }
+    },
+    "BpmNotificationRest" : {
+      "type" : "object",
+      "properties" : {
+        "eventType" : {
+          "type" : "string"
         }
       }
     },
@@ -8623,7 +8795,7 @@
         },
         "status" : {
           "type" : "string",
-          "enum" : [ "SUCCESS", "FAILED", "UNSTABLE", "BUILDING", "REJECTED", "CANCELLED", "SYSTEM_ERROR", "UNKNOWN", "NONE" ]
+          "enum" : [ "SUCCESS", "FAILED", "NO_REBUILD_REQUIRED", "UNSTABLE", "BUILDING", "REJECTED", "CANCELLED", "SYSTEM_ERROR", "UNKNOWN", "NONE" ]
         },
         "userId" : {
           "type" : "integer",
@@ -8841,14 +9013,6 @@
         }
       }
     },
-    "ProjectSingleton" : {
-      "type" : "object",
-      "properties" : {
-        "content" : {
-          "$ref" : "#/definitions/ProjectRest"
-        }
-      }
-    },
     "BuildConfigurationSetRest" : {
       "type" : "object",
       "required" : [ "id" ],
@@ -8907,6 +9071,14 @@
         },
         "brewBuildUrl" : {
           "type" : "string"
+        }
+      }
+    },
+    "ProjectSingleton" : {
+      "type" : "object",
+      "properties" : {
+        "content" : {
+          "$ref" : "#/definitions/ProjectRest"
         }
       }
     },
