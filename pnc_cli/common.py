@@ -6,6 +6,15 @@ import pnc_cli.utils as utils
 Utility module that contains generalized API calls for use in other modules.
 """
 
+REBUILD_MODES = ['FORCE',
+                 'EXPLICIT_DEPENDENCY_CHECK',
+                 'IMPLICIT_DEPENDENCY_CHECK']
+
+REBUILD_MODES_DEFAULT = 'IMPLICIT_DEPENDENCY_CHECK'
+REBUILD_MODES_DESC = """
+Rebuild Modes: FORCE: always rebuild the configuration; EXPLICIT_DEPENDENCY_CHECK: check if any of user defined dependencies has been update; IMPLICIT_DEPENDENCY_CHECK: check if any captured dependency has been updated (default)
+"""
+
 
 def id_exists(api, search_id):
     """

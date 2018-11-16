@@ -51,15 +51,21 @@ import swagger_client
 from swagger_client.rest import ApiException
 from pprint import pprint
 # create an instance of the API class
-api_instance = swagger_client.BpmApi()
-task_id = 56 # int | BPM task ID
+api_instance = swagger_client.ArtifactsApi()
+page_index = 0 # int | Page Index (optional) (default to 0)
+page_size = 50 # int | Pagination size (optional) (default to 50)
+sort = 'sort_example' # str | Sorting RSQL (optional)
+q = 'q_example' # str | RSQL Query (optional)
+sha256 = 'sha256_example' # str | Filter by sha256 of the artifact (optional)
+md5 = 'md5_example' # str | Filter by md5 of the artifact (optional)
+sha1 = 'sha1_example' # str | Filter by sha1 of the artifact (optional)
 
 try:
-    # Get single (recently) active BPM task.
-    api_response = api_instance.get_bpm_task_by_id(task_id)
+    # Gets all Artifacts
+    api_response = api_instance.get_all(page_index=page_index, page_size=page_size, sort=sort, q=q, sha256=sha256, md5=md5, sha1=sha1)
     pprint(api_response)
 except ApiException as e:
-    print("Exception when calling BpmApi->get_bpm_task_by_id: %s\n" % e)
+    print("Exception when calling ArtifactsApi->get_all: %s\n" % e)
 
 ```
 
@@ -69,6 +75,8 @@ All URIs are relative to *https://localhost/pnc-rest/rest*
 
 Class | Method | HTTP request | Description
 ------------ | ------------- | ------------- | -------------
+*ArtifactsApi* | [**get_all**](docs/ArtifactsApi.md#get_all) | **GET** /artifacts | Gets all Artifacts
+*ArtifactsApi* | [**get_specific**](docs/ArtifactsApi.md#get_specific) | **GET** /artifacts/{id} | Gets an specific Artifact
 *BpmApi* | [**get_bpm_task_by_id**](docs/BpmApi.md#get_bpm_task_by_id) | **GET** /bpm/tasks/{taskId} | Get single (recently) active BPM task.
 *BpmApi* | [**get_bpm_tasks**](docs/BpmApi.md#get_bpm_tasks) | **GET** /bpm/tasks | List of (recently) active BPM tasks.
 *BpmApi* | [**notify_task**](docs/BpmApi.md#notify_task) | **POST** /bpm/tasks/{taskId}/notify | Notify PNC about a BPM task event. Accepts polymorphic JSON {\&quot;eventType\&quot;: \&quot;string\&quot;} based on \&quot;eventType\&quot; field.
@@ -219,6 +227,7 @@ Class | Method | HTTP request | Description
  - [ArtifactImportError](docs/ArtifactImportError.md)
  - [ArtifactPage](docs/ArtifactPage.md)
  - [ArtifactRest](docs/ArtifactRest.md)
+ - [ArtifactSingleton](docs/ArtifactSingleton.md)
  - [AttributeSingleton](docs/AttributeSingleton.md)
  - [BpmNotificationRest](docs/BpmNotificationRest.md)
  - [BpmTaskRest](docs/BpmTaskRest.md)

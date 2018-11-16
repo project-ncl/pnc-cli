@@ -61,17 +61,20 @@ def config_id_exists(search_id):
 @arg("--timestamp-alignment", help="Enable timestamp alignment for temporary build")
 @arg("--no-build-dependencies", help="Don't build dependencies of this build configuration")
 @arg("--keep-pod-on-failure", help="Keep pod on failure")
-@arg("-f", "--force-rebuild", help="Force Rebuild")
+@arg("-f", "--force-rebuild", help="Force Rebuild (Deprecated)")
+@arg("--rebuild-mode", help=common.REBUILD_MODES_DESC,
+     choices=common.REBUILD_MODES, default=common.REBUILD_MODES_DEFAULT)
 def build(id=None, name=None, revision=None,
           temporary_build=False, timestamp_alignment=False,
           no_build_dependencies=False,
           keep_pod_on_failure=False,
-          force_rebuild=False):
+          force_rebuild=False,
+          rebuild_mode=common.REBUILD_MODES_DEFAULT):
     """
     Trigger a BuildConfiguration by name or ID
     """
     data = build_raw(id, name, revision, temporary_build, timestamp_alignment, no_build_dependencies,
-              keep_pod_on_failure, force_rebuild)
+              keep_pod_on_failure, force_rebuild, rebuild_mode)
     if data:
         return utils.format_json(data)
 
@@ -79,7 +82,9 @@ def build_raw(id=None, name=None, revision=None,
           temporary_build=False, timestamp_alignment=False,
           no_build_dependencies=False,
           keep_pod_on_failure=False,
-          force_rebuild=False):
+          force_rebuild=False,
+          rebuild_mode=common.REBUILD_MODES_DEFAULT):
+
     if temporary_build is False and timestamp_alignment is True:
         print("Error: You can only activate timestamp alignment with the temporary build flag!")
         sys.exit(1)
@@ -93,7 +98,8 @@ def build_raw(id=None, name=None, revision=None,
                                           timestamp_alignment=timestamp_alignment,
                                           build_dependencies=not no_build_dependencies,
                                           keep_pod_on_failure=keep_pod_on_failure,
-                                          force_rebuild=force_rebuild)
+                                          force_rebuild=force_rebuild,
+                                          rebuild_mode=rebuild_mode)
     else:
         response = utils.checked_api_call(pnc_api.build_configs, 'trigger',
                                           id=trigger_id,
@@ -101,7 +107,8 @@ def build_raw(id=None, name=None, revision=None,
                                           timestamp_alignment=timestamp_alignment,
                                           build_dependencies=not no_build_dependencies,
                                           keep_pod_on_failure=keep_pod_on_failure,
-                                          force_rebuild=force_rebuild)
+                                          force_rebuild=force_rebuild,
+                                          rebuild_mode=rebuild_mode)
     if response:
         return response.content
 

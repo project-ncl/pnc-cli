@@ -16,6 +16,7 @@ from __future__ import absolute_import
 from .models.artifact_import_error import ArtifactImportError
 from .models.artifact_page import ArtifactPage
 from .models.artifact_rest import ArtifactRest
+from .models.artifact_singleton import ArtifactSingleton
 from .models.attribute_singleton import AttributeSingleton
 from .models.bpm_notification_rest import BpmNotificationRest
 from .models.bpm_task_rest import BpmTaskRest
@@ -84,6 +85,7 @@ from .models.user_rest import UserRest
 from .models.user_singleton import UserSingleton
 
 # import apis into sdk package
+from .apis.artifacts_api import ArtifactsApi
 from .apis.bpm_api import BpmApi
 from .apis.buildconfigsetrecords_api import BuildconfigsetrecordsApi
 from .apis.buildconfigurations_api import BuildconfigurationsApi

@@ -1,6 +1,7 @@
 from __future__ import absolute_import
 
 # import apis into api package
+from .artifacts_api import ArtifactsApi
 from .bpm_api import BpmApi
 from .buildconfigsetrecords_api import BuildconfigsetrecordsApi
 from .buildconfigurations_api import BuildconfigurationsApi

@@ -166,8 +166,9 @@ class BuildconfigurationsetsApi(object):
         :param int id: Build Configuration Set id (required)
         :param str callback_url: Optional Callback URL
         :param bool temporary_build: Is it a temporary build or a standard build?
-        :param bool force_rebuild: Should we force the rebuild of all build configurations?
+        :param bool force_rebuild: DEPRECATED: Use RebuildMode.
         :param bool timestamp_alignment: Should we add a timestamp during the alignment? Valid only for temporary builds.
+        :param str rebuild_mode: Rebuild Modes: FORCE: always rebuild all the configurations in the set; EXPLICIT_DEPENDENCY_CHECK: check if any of user defined dependencies has been update; IMPLICIT_DEPENDENCY_CHECK: check if any captured dependency has been updated;
         :return: BuildConfigSetRecordSingleton
                  If the method is called asynchronously,
                  returns the request thread.
@@ -196,14 +197,15 @@ class BuildconfigurationsetsApi(object):
         :param int id: Build Configuration Set id (required)
         :param str callback_url: Optional Callback URL
         :param bool temporary_build: Is it a temporary build or a standard build?
-        :param bool force_rebuild: Should we force the rebuild of all build configurations?
+        :param bool force_rebuild: DEPRECATED: Use RebuildMode.
         :param bool timestamp_alignment: Should we add a timestamp during the alignment? Valid only for temporary builds.
+        :param str rebuild_mode: Rebuild Modes: FORCE: always rebuild all the configurations in the set; EXPLICIT_DEPENDENCY_CHECK: check if any of user defined dependencies has been update; IMPLICIT_DEPENDENCY_CHECK: check if any captured dependency has been updated;
         :return: BuildConfigSetRecordSingleton
                  If the method is called asynchronously,
                  returns the request thread.
         """
 
-        all_params = ['id', 'callback_url', 'temporary_build', 'force_rebuild', 'timestamp_alignment']
+        all_params = ['id', 'callback_url', 'temporary_build', 'force_rebuild', 'timestamp_alignment', 'rebuild_mode']
         all_params.append('callback')
         all_params.append('_return_http_data_only')
         all_params.append('_preload_content')
@@ -238,6 +240,8 @@ class BuildconfigurationsetsApi(object):
             query_params.append(('forceRebuild', params['force_rebuild']))
         if 'timestamp_alignment' in params:
             query_params.append(('timestampAlignment', params['timestamp_alignment']))
+        if 'rebuild_mode' in params:
+            query_params.append(('rebuildMode', params['rebuild_mode']))
 
         header_params = {}
 
@@ -288,9 +292,10 @@ class BuildconfigurationsetsApi(object):
         :param int id: Build Configuration Set id (required)
         :param str callback_url: Optional Callback URL
         :param bool temporary_build: Is it a temporary build or a standard build?
-        :param bool force_rebuild: Should we force the rebuild of all build configurations?
+        :param bool force_rebuild: DEPRECATED: Use RebuildMode.
         :param bool timestamp_alignment: Should we add a timestamp during the alignment? Valid only for temporary builds.
         :param BuildConfigurationSetWithAuditedBCsRest body:
+        :param str rebuild_mode: Rebuild Modes: FORCE: always rebuild all the configurations in the set; EXPLICIT_DEPENDENCY_CHECK: check if any of user defined dependencies has been update; IMPLICIT_DEPENDENCY_CHECK: check if any captured dependency has been updated;
         :return: BuildConfigSetRecordSingleton
                  If the method is called asynchronously,
                  returns the request thread.
@@ -319,15 +324,16 @@ class BuildconfigurationsetsApi(object):
         :param int id: Build Configuration Set id (required)
         :param str callback_url: Optional Callback URL
         :param bool temporary_build: Is it a temporary build or a standard build?
-        :param bool force_rebuild: Should we force the rebuild of all build configurations?
+        :param bool force_rebuild: DEPRECATED: Use RebuildMode.
         :param bool timestamp_alignment: Should we add a timestamp during the alignment? Valid only for temporary builds.
         :param BuildConfigurationSetWithAuditedBCsRest body:
+        :param str rebuild_mode: Rebuild Modes: FORCE: always rebuild all the configurations in the set; EXPLICIT_DEPENDENCY_CHECK: check if any of user defined dependencies has been update; IMPLICIT_DEPENDENCY_CHECK: check if any captured dependency has been updated;
         :return: BuildConfigSetRecordSingleton
                  If the method is called asynchronously,
                  returns the request thread.
         """
 
-        all_params = ['id', 'callback_url', 'temporary_build', 'force_rebuild', 'timestamp_alignment', 'body']
+        all_params = ['id', 'callback_url', 'temporary_build', 'force_rebuild', 'timestamp_alignment', 'body', 'rebuild_mode']
         all_params.append('callback')
         all_params.append('_return_http_data_only')
         all_params.append('_preload_content')
@@ -362,6 +368,8 @@ class BuildconfigurationsetsApi(object):
             query_params.append(('forceRebuild', params['force_rebuild']))
         if 'timestamp_alignment' in params:
             query_params.append(('timestampAlignment', params['timestamp_alignment']))
+        if 'rebuild_mode' in params:
+            query_params.append(('rebuildMode', params['rebuild_mode']))
 
         header_params = {}
 

@@ -16,6 +16,7 @@ from __future__ import absolute_import
 from .artifact_import_error import ArtifactImportError
 from .artifact_page import ArtifactPage
 from .artifact_rest import ArtifactRest
+from .artifact_singleton import ArtifactSingleton
 from .attribute_singleton import AttributeSingleton
 from .bpm_notification_rest import BpmNotificationRest
 from .bpm_task_rest import BpmTaskRest

@@ -126,14 +126,15 @@ def delete_build_configuration_set_raw(id=None, name=None):
 # TODO: it may be impossible / undesireable to remove
 # buildconfigsetrecords. so perhaps just check and abort
 def delete_build_configuration_set(id=None, name=None):
-    data =delete_build_configuration_set_raw(id, name)
+    data = delete_build_configuration_set_raw(id, name)
     if data:
         return utils.format_json(data)
 
 
 def build_set_raw(id=None, name=None,
                   tempbuild=False, timestamp_alignment=False,
-                  force=False, **kwargs):
+                  force=False, rebuild_mode=common.REBUILD_MODES_DEFAULT,
+                  **kwargs):
     """
     Start a build of the given BuildConfigurationSet
     """
@@ -158,12 +159,14 @@ def build_set_raw(id=None, name=None,
                                           temporary_build=tempbuild,
                                           timestamp_alignment=timestamp_alignment,
                                           force_rebuild=force,
+                                          rebuild_mode=rebuild_mode,
                                           body=body)
     else:
         response = utils.checked_api_call(pnc_api.build_group_configs, 'build', id=found_id,
                                       temporary_build=tempbuild,
                                       timestamp_alignment=timestamp_alignment,
-                                      force_rebuild=force)
+                                      force_rebuild=force,
+                                      rebuild_mode=rebuild_mode)
     if response:
         return response.content
 
@@ -172,15 +175,17 @@ def build_set_raw(id=None, name=None,
 @arg("-n", "--name", help="Name of the BuildConfigurationSet to build.", type=types.existing_bc_set_name)
 @arg("--temporary-build", help="Temporary builds")
 @arg("--timestamp-alignment", help="Enable timestamp alignment for the temporary builds")
-@arg("-f", "--force", help="Force rebuild of all configurations")
+@arg("-f", "--force", help="Force rebuild of all configurations (DEPRECATED)")
+@arg("--rebuild-mode", help=common.REBUILD_MODES_DESC,
+     choices=common.REBUILD_MODES, default=common.REBUILD_MODES_DEFAULT)
 @arg("--id-revisions", nargs="+", help="Specify exact revisions of BuildConfigurations used in set.\n Format: int:int (bcID:revID)", default=None)
 def build_set(id=None, name=None, temporary_build=False, timestamp_alignment=False,
-              force=False, **kwargs):
+              force=False, rebuild_mode=common.REBUILD_MODES_DEFAULT, **kwargs):
     """
     Start a build of the given BuildConfigurationSet
     """
     content = build_set_raw(id, name,
-                            temporary_build, timestamp_alignment, force, **kwargs)
+                            temporary_build, timestamp_alignment, force, rebuild_mode, **kwargs)
     if content:
         return utils.format_json(content)
 
