@@ -6,6 +6,7 @@ __author__ = 'Tom'
 from test import testutils
 from mock import MagicMock, patch, call
 from pnc_cli import buildconfigurationsets
+from pnc_cli import common
 from pnc_cli.swagger_client import BuildconfigurationsetsApi
 from pnc_cli.swagger_client import BuildConfigurationSetRest
 from pnc_cli.swagger_client import BuildconfigurationsApi
@@ -95,7 +96,7 @@ def test_delete_build_config_set_name(mock_sets_api, mock_delete, mock_set_id):
 def test_build_set_id(mock_sets_api, mock_build, mock_set_id):
     result = buildconfigurationsets.build_set_raw(id=1)
     mock_set_id.assert_called_once_with(mock_sets_api, 1, None)
-    mock_build.assert_called_once_with(id=1, force_rebuild=False, temporary_build=False, timestamp_alignment=False)
+    mock_build.assert_called_once_with(id=1, force_rebuild=False, temporary_build=False, timestamp_alignment=False, rebuild_mode=common.REBUILD_MODES_DEFAULT)
     assert result == 'SUCCESS'
 
 
@@ -105,7 +106,7 @@ def test_build_set_id(mock_sets_api, mock_build, mock_set_id):
 def test_build_set_name(mock_sets_api, mock_build, mock_set_id):
     result = buildconfigurationsets.build_set_raw(name='testerino')
     mock_set_id.assert_called_once_with(mock_sets_api, None, 'testerino')
-    mock_build.assert_called_once_with(id=1, force_rebuild=False, temporary_build=False, timestamp_alignment=False)
+    mock_build.assert_called_once_with(id=1, force_rebuild=False, temporary_build=False, timestamp_alignment=False, rebuild_mode=common.REBUILD_MODES_DEFAULT)
     assert result == 'SUCCESS'
 
 
@@ -218,7 +219,7 @@ def test_build_versioned_for_set_id(mock_sets_api, mock_audited_rest, mock_fill_
     mock_audited_rest.assert_called_once_with()
     mock_fill_audited.assert_called_once_with('BuildConfigSWithAuditedBody', 'BuildConfiguration',
                                               ['parsed_revision', 'parsed_revision', 'parsed_revision'])
-    mock_build_versioned.assert_called_once_with(id=1, temporary_build=True, force_rebuild=True, timestamp_alignment=False, body='FilledBuildConfigSWithAuditedBody')
+    mock_build_versioned.assert_called_once_with(id=1, temporary_build=True, force_rebuild=True, timestamp_alignment=False, body='FilledBuildConfigSWithAuditedBody', rebuild_mode=common.REBUILD_MODES_DEFAULT)
     assert result == 'SUCCESS'
 
 @patch('pnc_cli.common.set_id', return_value=1)
@@ -238,5 +239,5 @@ def test_build_versioned_for_set_name(mock_sets_api, mock_audited_rest, mock_fil
     mock_audited_rest.assert_called_once_with()
     mock_fill_audited.assert_called_once_with('BuildConfigSWithAuditedBody', 'BuildConfiguration',
                                               ['parsed_revision', 'parsed_revision', 'parsed_revision'])
-    mock_build_versioned.assert_called_once_with(id=1, temporary_build=True, force_rebuild=True, timestamp_alignment=False, body='FilledBuildConfigSWithAuditedBody')
+    mock_build_versioned.assert_called_once_with(id=1, temporary_build=True, force_rebuild=True, timestamp_alignment=False, body='FilledBuildConfigSWithAuditedBody', rebuild_mode=common.REBUILD_MODES_DEFAULT)
     assert result == 'SUCCESS'

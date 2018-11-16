@@ -6,6 +6,7 @@ import test.testutils
 __author__ = 'thauser'
 from mock import MagicMock, patch, call
 from pnc_cli import buildconfigurations
+from pnc_cli import common
 from pnc_cli.swagger_client import BuildConfigurationRest
 from pnc_cli.swagger_client import ProductsApi
 
@@ -55,7 +56,7 @@ def test_get_build_configuration_id_by_name_notexist(mock):
 def test_build_id(mock_configs_api, mock_trigger, mock_set_id):
     result = buildconfigurations.build_raw(id=1)
     mock_set_id.assert_called_once_with(mock_configs_api, 1, None)
-    mock_trigger.assert_called_once_with(id=1, build_dependencies=True, force_rebuild=False, keep_pod_on_failure=False, temporary_build=False, timestamp_alignment=False)
+    mock_trigger.assert_called_once_with(id=1, build_dependencies=True, force_rebuild=False, keep_pod_on_failure=False, temporary_build=False, timestamp_alignment=False, rebuild_mode=common.REBUILD_MODES_DEFAULT)
     assert result == 'buildstarted'
 
 
@@ -65,7 +66,7 @@ def test_build_id(mock_configs_api, mock_trigger, mock_set_id):
 def test_build_name(mock_configs_api, mock_trigger, mock_set_id):
     result = buildconfigurations.build_raw(name='testerino')
     mock_set_id.assert_called_once_with(mock_configs_api, None, 'testerino')
-    mock_trigger.assert_called_once_with(id=1, build_dependencies=True, force_rebuild=False, keep_pod_on_failure=False, temporary_build=False, timestamp_alignment=False)
+    mock_trigger.assert_called_once_with(id=1, build_dependencies=True, force_rebuild=False, keep_pod_on_failure=False, temporary_build=False, timestamp_alignment=False, rebuild_mode=common.REBUILD_MODES_DEFAULT)
     assert result == 'buildstarted'
 
 
@@ -460,7 +461,7 @@ def test_build_a_revision(mock_trigger_audited):
     result = buildconfigurations.build_raw(1, revision=2, temporary_build=True, force_rebuild=True)
     mock_trigger_audited.assert_called_once_with(id=1, rev=2, temporary_build=True, force_rebuild=True,
                                                  timestamp_alignment=False, build_dependencies=True,
-                                                 keep_pod_on_failure=False)
+                                                 keep_pod_on_failure=False, rebuild_mode=common.REBUILD_MODES_DEFAULT)
     assert result == 'SUCCESS'
 
 
