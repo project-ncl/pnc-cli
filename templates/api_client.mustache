@@ -6,7 +6,7 @@ import os
 import re
 import json
 import mimetypes
-import random
+import sys
 import tempfile
 import threading
 
@@ -19,6 +19,7 @@ from six.moves.urllib.parse import quote
 from . import models
 from .configuration import Configuration
 from .rest import ApiException, RESTClientObject
+from builtins import str as text
 
 
 class ApiClient(object):
@@ -548,7 +549,7 @@ class ApiClient(object):
         try:
             return klass(data)
         except UnicodeEncodeError:
-            return unicode(data)
+            return text(data)
         except TypeError:
             return data
 
