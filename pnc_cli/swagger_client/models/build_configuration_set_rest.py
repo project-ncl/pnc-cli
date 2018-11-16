@@ -34,17 +34,19 @@ class BuildConfigurationSetRest(object):
         'id': 'int',
         'name': 'str',
         'product_version_id': 'int',
-        'build_configuration_ids': 'list[int]'
+        'build_configuration_ids': 'list[int]',
+        'archived': 'bool'
     }
 
     attribute_map = {
         'id': 'id',
         'name': 'name',
         'product_version_id': 'productVersionId',
-        'build_configuration_ids': 'buildConfigurationIds'
+        'build_configuration_ids': 'buildConfigurationIds',
+        'archived': 'archived'
     }
 
-    def __init__(self, id=None, name=None, product_version_id=None, build_configuration_ids=None):
+    def __init__(self, id=None, name=None, product_version_id=None, build_configuration_ids=None, archived=False):
         """
         BuildConfigurationSetRest - a model defined in Swagger
         """
@@ -53,6 +55,7 @@ class BuildConfigurationSetRest(object):
         self._name = None
         self._product_version_id = None
         self._build_configuration_ids = None
+        self._archived = None
 
         if id is not None:
           self.id = id
@@ -62,6 +65,8 @@ class BuildConfigurationSetRest(object):
           self.product_version_id = product_version_id
         if build_configuration_ids is not None:
           self.build_configuration_ids = build_configuration_ids
+        if archived is not None:
+          self.archived = archived
 
     @property
     def id(self):
@@ -146,6 +151,27 @@ class BuildConfigurationSetRest(object):
         """
 
         self._build_configuration_ids = build_configuration_ids
+
+    @property
+    def archived(self):
+        """
+        Gets the archived of this BuildConfigurationSetRest.
+
+        :return: The archived of this BuildConfigurationSetRest.
+        :rtype: bool
+        """
+        return self._archived
+
+    @archived.setter
+    def archived(self, archived):
+        """
+        Sets the archived of this BuildConfigurationSetRest.
+
+        :param archived: The archived of this BuildConfigurationSetRest.
+        :type: bool
+        """
+
+        self._archived = archived
 
     def to_dict(self):
         """

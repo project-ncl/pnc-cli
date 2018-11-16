@@ -5,45 +5,45 @@
   },
   "basePath" : "/pnc-rest/rest",
   "tags" : [ {
-    "name" : "products"
-  }, {
-    "name" : "running-build-records"
-  }, {
-    "name" : "artifacts"
-  }, {
-    "name" : "build-tasks"
-  }, {
     "name" : "product-versions"
   }, {
-    "name" : "builds"
+    "name" : "build-configurations"
   }, {
-    "name" : "product-releases"
+    "name" : "products"
+  }, {
+    "name" : "build-configuration-sets"
+  }, {
+    "name" : "environments"
   }, {
     "name" : "build-records"
   }, {
     "name" : "users"
   }, {
-    "name" : "licenses"
+    "name" : "test"
   }, {
     "name" : "build-record-push"
   }, {
     "name" : "product-milestones"
   }, {
-    "name" : "projects"
+    "name" : "build-tasks"
   }, {
-    "name" : "build-config-set-records"
-  }, {
-    "name" : "test"
+    "name" : "running-build-records"
   }, {
     "name" : "repository-configurations"
   }, {
-    "name" : "environments"
+    "name" : "licenses"
   }, {
-    "name" : "build-configuration-sets"
-  }, {
-    "name" : "build-configurations"
+    "name" : "product-releases"
   }, {
     "name" : "bpm"
+  }, {
+    "name" : "build-config-set-records"
+  }, {
+    "name" : "builds"
+  }, {
+    "name" : "projects"
+  }, {
+    "name" : "artifacts"
   } ],
   "paths" : {
     "/artifacts" : {
@@ -7720,14 +7720,6 @@
         }
       }
     },
-    "ProductSingleton" : {
-      "type" : "object",
-      "properties" : {
-        "content" : {
-          "$ref" : "#/definitions/ProductRest"
-        }
-      }
-    },
     "BuildEnvironmentRest" : {
       "type" : "object",
       "required" : [ "id", "systemImageId", "systemImageType" ],
@@ -7768,6 +7760,14 @@
       },
       "xml" : {
         "name" : "BuildEnvironment"
+      }
+    },
+    "ProductSingleton" : {
+      "type" : "object",
+      "properties" : {
+        "content" : {
+          "$ref" : "#/definitions/ProductRest"
+        }
       }
     },
     "ArtifactPage" : {
@@ -7842,6 +7842,14 @@
         }
       }
     },
+    "BuildConfigurationSingleton" : {
+      "type" : "object",
+      "properties" : {
+        "content" : {
+          "$ref" : "#/definitions/BuildConfigurationRest"
+        }
+      }
+    },
     "RepositoryConfigurationPage" : {
       "type" : "object",
       "properties" : {
@@ -7862,14 +7870,6 @@
           "items" : {
             "$ref" : "#/definitions/RepositoryConfigurationRest"
           }
-        }
-      }
-    },
-    "BuildConfigurationSingleton" : {
-      "type" : "object",
-      "properties" : {
-        "content" : {
-          "$ref" : "#/definitions/BuildConfigurationRest"
         }
       }
     },
@@ -8268,6 +8268,14 @@
         }
       }
     },
+    "BuildConfigSetRecordSingleton" : {
+      "type" : "object",
+      "properties" : {
+        "content" : {
+          "$ref" : "#/definitions/BuildConfigSetRecordRest"
+        }
+      }
+    },
     "ProductReleasePage" : {
       "type" : "object",
       "properties" : {
@@ -8288,14 +8296,6 @@
           "items" : {
             "$ref" : "#/definitions/ProductReleaseRest"
           }
-        }
-      }
-    },
-    "BuildConfigSetRecordSingleton" : {
-      "type" : "object",
-      "properties" : {
-        "content" : {
-          "$ref" : "#/definitions/BuildConfigSetRecordRest"
         }
       }
     },
@@ -8396,14 +8396,6 @@
         }
       }
     },
-    "LicenseSingleton" : {
-      "type" : "object",
-      "properties" : {
-        "content" : {
-          "$ref" : "#/definitions/LicenseRest"
-        }
-      }
-    },
     "ProductMilestonePage" : {
       "type" : "object",
       "properties" : {
@@ -8452,6 +8444,14 @@
       },
       "xml" : {
         "name" : "ProductMilestoneRelease"
+      }
+    },
+    "LicenseSingleton" : {
+      "type" : "object",
+      "properties" : {
+        "content" : {
+          "$ref" : "#/definitions/LicenseRest"
+        }
       }
     },
     "ProductRest" : {
@@ -8594,7 +8594,7 @@
     },
     "BuildConfigurationRest" : {
       "type" : "object",
-      "required" : [ "environment", "id", "name", "project", "repositoryConfiguration" ],
+      "required" : [ "buildType", "environment", "id", "name", "project", "repositoryConfiguration" ],
       "properties" : {
         "id" : {
           "type" : "integer",
@@ -8629,6 +8629,10 @@
         },
         "project" : {
           "$ref" : "#/definitions/ProjectRest"
+        },
+        "buildType" : {
+          "type" : "string",
+          "enum" : [ "MVN", "NPM" ]
         },
         "environment" : {
           "$ref" : "#/definitions/BuildEnvironmentRest"
@@ -8690,14 +8694,15 @@
     "BuildSetStatusChangedEvent" : {
       "type" : "object",
       "properties" : {
-        "description" : {
-          "type" : "string"
+        "buildSetConfigurationId" : {
+          "type" : "integer",
+          "format" : "int32"
         },
         "userId" : {
           "type" : "integer",
           "format" : "int32"
         },
-        "oldStatus" : {
+        "newStatus" : {
           "type" : "string",
           "enum" : [ "NEW", "DONE", "REJECTED" ]
         },
@@ -8716,13 +8721,9 @@
           "type" : "string",
           "format" : "date-time"
         },
-        "newStatus" : {
+        "oldStatus" : {
           "type" : "string",
           "enum" : [ "NEW", "DONE", "REJECTED" ]
-        },
-        "buildSetConfigurationId" : {
-          "type" : "integer",
-          "format" : "int32"
         }
       }
     },
@@ -8963,6 +8964,14 @@
         }
       }
     },
+    "BuildConfigurationSetSingleton" : {
+      "type" : "object",
+      "properties" : {
+        "content" : {
+          "$ref" : "#/definitions/BuildConfigurationSetRest"
+        }
+      }
+    },
     "SshCredentials" : {
       "type" : "object",
       "properties" : {
@@ -8971,14 +8980,6 @@
         },
         "password" : {
           "type" : "string"
-        }
-      }
-    },
-    "BuildConfigurationSetSingleton" : {
-      "type" : "object",
-      "properties" : {
-        "content" : {
-          "$ref" : "#/definitions/BuildConfigurationSetRest"
         }
       }
     },
@@ -9034,6 +9035,10 @@
             "type" : "integer",
             "format" : "int32"
           }
+        },
+        "archived" : {
+          "type" : "boolean",
+          "default" : false
         }
       },
       "xml" : {
@@ -9169,19 +9174,19 @@
         }
       }
     },
-    "BuildRecordSingleton" : {
-      "type" : "object",
-      "properties" : {
-        "content" : {
-          "$ref" : "#/definitions/BuildRecordRest"
-        }
-      }
-    },
     "ProductVersionSingleton" : {
       "type" : "object",
       "properties" : {
         "content" : {
           "$ref" : "#/definitions/ProductVersionRest"
+        }
+      }
+    },
+    "BuildRecordSingleton" : {
+      "type" : "object",
+      "properties" : {
+        "content" : {
+          "$ref" : "#/definitions/BuildRecordRest"
         }
       }
     },
