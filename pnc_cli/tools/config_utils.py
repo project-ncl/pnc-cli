@@ -6,9 +6,9 @@ import re
 import string
 from configparser import ConfigParser, NoOptionError, NoSectionError, DuplicateSectionError
 
-# import utils
-# from scm_utils import ScmInfo, get_scm_info
-# from tasks import Tasks
+from . import utils
+from .scm_utils import ScmInfo, get_scm_info
+from .tasks import Tasks
 
 
 def get_config_option(params, option):

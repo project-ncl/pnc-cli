@@ -21,7 +21,7 @@ import threading
 from datetime import date, datetime
 
 # python 2 and python 3 compatibility library
-from six import integer_types, iteritems, text_type
+from six import PY3, integer_types, iteritems, text_type
 from six.moves.urllib.parse import quote
 
 from . import models
@@ -46,7 +46,6 @@ class ApiClient(object):
     :param header_name: a header to pass when making calls to the API.
     :param header_value: a header value to pass when making calls to the API.
     """
-    PY3 = sys.version_info[0] >= 3;
 
     PRIMITIVE_TYPES = (float, bool, bytes, text_type) + integer_types
     NATIVE_TYPES_MAPPING = {
