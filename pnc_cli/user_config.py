@@ -222,17 +222,33 @@ user = None
 
 def get_user():
     global user
+
+
     if user is None:
+
+        pickled_file_used = False
+
         if os.path.exists(SAVED_USER):
-            user = pickle.load(open(SAVED_USER, "rb"))
-            if user.keycloak_config.client_mode in trueValues:
-                logging.info("Command performed using client authorization.\n")
-            else:
-                logging.info("Command performed with user: {}\n".format(user.username))
-            users_api = swagger_client.UsersApi(user.get_api_client())
-            utils.checked_api_call(users_api, 'get_logged_user') # inits the user if it doesn't exist in pnc's db already
-        else:
+            try:
+
+                user = pickle.load(open(SAVED_USER, "rb"))
+                pickled_file_used = True
+
+                if user.keycloak_config.client_mode in trueValues:
+                    logging.info("Command performed using client authorization.\n")
+                else:
+                    logging.info("Command performed with user: {}\n".format(user.username))
+                users_api = swagger_client.UsersApi(user.get_api_client())
+                utils.checked_api_call(users_api, 'get_logged_user') # inits the user if it doesn't exist in pnc's db already
+
+            except Exception:
+                # Handle cases when we can't read that pickle protocol
+                logging.debug("Could not read saved-user pickle file. Loading from config")
+                pickled_file_used = False
+
+        if not pickled_file_used:
             user = UserConfig()
+
     return user
 
 
