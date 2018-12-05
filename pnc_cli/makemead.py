@@ -23,7 +23,7 @@ from pnc_cli.tools.config_utils import ConfigReader
 @arg('-c', '--config', help='Make-mead style configuration file possibly extended with pnc.* data fields.')
 @arg('-b', '--run_build', help='Run Build')
 @arg('-e', '--environment', help='PNC Environment ID')
-@arg('-s', '--sufix', help='Adding suffix to artifact\'s name')
+@arg('-s', '--suffix', help='Adding suffix to artifact\'s name')
 @arg('-p', '--product_name', help='Product name')
 @arg('-v', '--product_version', help='Product version')
 @arg('--look-up-only', help="""You can do a partial import by a config and specify, which Build Configurations
@@ -32,19 +32,19 @@ from pnc_cli.tools.config_utils import ConfigReader
  Will look up jdg-infinispan section and process a look up of BC by name (jdg-infinispan-${version_field}.
 """)
 @arg('--clean-group', help='Clean target BuildGroup config from old configurations before adding new ones.')
-def make_mead(config=None, run_build=False, environment=1, sufix="", product_name=None, product_version=None,
+def make_mead(config=None, run_build=False, environment=1, suffix="", product_name=None, product_version=None,
               look_up_only="",clean_group=False):
     """
     Create Build group based on Make-Mead configuration file
     :param config: Make Mead config name
     :return:
     """
-    ret=make_mead_impl(config, run_build, environment, sufix, product_name, product_version, look_up_only, clean_group)
+    ret=make_mead_impl(config, run_build, environment, suffix, product_name, product_version, look_up_only, clean_group)
     if type(ret) == int and ret != 0:
         sys.exit(ret)
     return ret
 
-def make_mead_impl(config, run_build, environment, sufix, product_name, product_version, look_up_only, clean_group):
+def make_mead_impl(config, run_build, environment, suffix, product_name, product_version, look_up_only, clean_group):
     if not validate_input_parameters(config, product_name, product_version):
         return 1
 
@@ -78,7 +78,7 @@ def make_mead_impl(config, run_build, environment, sufix, product_name, product_
     look_up_only_list = look_up_only.split(",")
 
     #Lookup or create Build Configuration Set
-    target_name = product_name + "-" + product_version + "-all" + sufix
+    target_name = product_name + "-" + product_version + "-all" + suffix
     try:
         bc_set = buildconfigurationsets.get_build_configuration_set_raw(name=target_name)
         if clean_group:
@@ -106,7 +106,7 @@ def make_mead_impl(config, run_build, environment, sufix, product_name, product_
         version = art_params['version']
         scm_url = art_params['scmURL']
         (scm_repo_url, scm_revision) = scm_url.split("#", 2)
-        artifact_name = package + "-" + re.sub("[\-\.]*redhat\-\d+", "", version) + sufix
+        artifact_name = package + "-" + re.sub("[\-\.]*redhat\-\d+", "", version) + suffix
 
         #WA for subfolder builds (? in SCM url)
         if "?" in scm_repo_url:

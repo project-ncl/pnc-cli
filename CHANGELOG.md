@@ -6,6 +6,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 
 ## [Unreleased]
+### Changed
+- Fixed spelling of the long '--suffix' option to the make-mead command
+
 ### Added
 - [NCL-4244] build and build_set commands now supports --rebuild-mode argument. The --force-rebuild (-f) argument is now being deprecated in these commands.
 
