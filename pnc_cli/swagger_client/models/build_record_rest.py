@@ -45,6 +45,7 @@ class BuildRecordRest(object):
         'username': 'str',
         'scm_repo_url': 'str',
         'scm_revision': 'str',
+        'scm_tag': 'str',
         'build_environment_id': 'int',
         'attributes': 'dict(str, str)',
         'live_logs_uri': 'str',
@@ -75,6 +76,7 @@ class BuildRecordRest(object):
         'username': 'username',
         'scm_repo_url': 'scmRepoURL',
         'scm_revision': 'scmRevision',
+        'scm_tag': 'scmTag',
         'build_environment_id': 'buildEnvironmentId',
         'attributes': 'attributes',
         'live_logs_uri': 'liveLogsUri',
@@ -90,7 +92,7 @@ class BuildRecordRest(object):
         'dependency_build_record_ids': 'dependencyBuildRecordIds'
     }
 
-    def __init__(self, id=None, submit_time=None, start_time=None, end_time=None, status=None, build_configuration_id=None, build_configuration_name=None, build_configuration_rev=None, project_id=None, project_name=None, user_id=None, username=None, scm_repo_url=None, scm_revision=None, build_environment_id=None, attributes=None, live_logs_uri=None, build_config_set_record_id=None, build_content_id=None, temporary_build=False, product_milestone_id=None, user=None, build_configuration_audited=None, execution_root_name=None, execution_root_version=None, dependent_build_record_ids=None, dependency_build_record_ids=None):
+    def __init__(self, id=None, submit_time=None, start_time=None, end_time=None, status=None, build_configuration_id=None, build_configuration_name=None, build_configuration_rev=None, project_id=None, project_name=None, user_id=None, username=None, scm_repo_url=None, scm_revision=None, scm_tag=None, build_environment_id=None, attributes=None, live_logs_uri=None, build_config_set_record_id=None, build_content_id=None, temporary_build=False, product_milestone_id=None, user=None, build_configuration_audited=None, execution_root_name=None, execution_root_version=None, dependent_build_record_ids=None, dependency_build_record_ids=None):
         """
         BuildRecordRest - a model defined in Swagger
         """
@@ -109,6 +111,7 @@ class BuildRecordRest(object):
         self._username = None
         self._scm_repo_url = None
         self._scm_revision = None
+        self._scm_tag = None
         self._build_environment_id = None
         self._attributes = None
         self._live_logs_uri = None
@@ -151,6 +154,8 @@ class BuildRecordRest(object):
           self.scm_repo_url = scm_repo_url
         if scm_revision is not None:
           self.scm_revision = scm_revision
+        if scm_tag is not None:
+          self.scm_tag = scm_tag
         if build_environment_id is not None:
           self.build_environment_id = build_environment_id
         if attributes is not None:
@@ -477,6 +482,27 @@ class BuildRecordRest(object):
         """
 
         self._scm_revision = scm_revision
+
+    @property
+    def scm_tag(self):
+        """
+        Gets the scm_tag of this BuildRecordRest.
+
+        :return: The scm_tag of this BuildRecordRest.
+        :rtype: str
+        """
+        return self._scm_tag
+
+    @scm_tag.setter
+    def scm_tag(self, scm_tag):
+        """
+        Sets the scm_tag of this BuildRecordRest.
+
+        :param scm_tag: The scm_tag of this BuildRecordRest.
+        :type: str
+        """
+
+        self._scm_tag = scm_tag
 
     @property
     def build_environment_id(self):
