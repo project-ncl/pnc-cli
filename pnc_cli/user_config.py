@@ -43,6 +43,10 @@ class UserConfig():
         self.access_token_time = 0
         if self.username and self.password:
             self.retrieve_keycloak_token()
+        elif self.keycloak_config.client_secret:
+            # authentication using service account
+            logging.info("Authentication using service account")
+            self.retrieve_keycloak_token()
         else:
             logging.info("Commands requiring authentication will fail.")
         self.apiclient = self.create_api_client(True)
