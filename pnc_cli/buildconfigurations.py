@@ -497,7 +497,7 @@ def get_revision_of_build_configuration(revision_id, id=None, name=None):
     """
     data = get_revision_of_build_configuration_raw(revision_id, id, name)
     if data:
-        return utils.format_json_list(data)
+        return utils.format_json(data)
 
 def get_revision_of_build_configuration_raw(revision_id, id=None, name=None):
     found_id = common.set_id(pnc_api.build_configs, id, name)
