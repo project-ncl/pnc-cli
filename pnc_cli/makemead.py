@@ -318,7 +318,8 @@ def create_build_configuration_with_repo(environment, bc_set, product_version_id
                                                    scm_revision=scm_revision,
                                                    build_script=get_maven_options(art_params),
                                                    product_version_id=product_version_id,
-                                                   generic_parameters=get_generic_parameters(art_params))
+                                                   generic_parameters=get_generic_parameters(art_params),
+                                                   build_type="MVN")
     build_config = get_build_configuration_by_name(artifact_name)
     if build_config == None:
         logging.error("Creation of Build Configuration failed.")
@@ -344,7 +345,8 @@ def create_build_configuration_and_repo(environment, bc_set, product_version_id,
                                              product_version_id=product_version_id,
                                              dependency_ids = [],
                                              build_configuration_set_ids = [],
-                                             generic_parameters=get_generic_parameters(art_params))
+                                             generic_parameters=get_generic_parameters(art_params),
+                                             build_type="MVN")
 
     if bpm_task_id is None:
         return None
