@@ -237,6 +237,7 @@ def delete_build_configuration_raw(id=None, name=None):
 @arg("-gp", "--generic-parameters", help="Set of arbitrary additional key=value pairs, such as CUSTOM_PME_PARAMETERS")
 @arg("-dids", "--dependency-ids", type=int, nargs="+",
      help="List of BuildConfiguration IDs that are dependencies of this BuildConfiguration.")
+@arg("-t", "--build-type", help="Type of the Build. MVN (default) or GRADLE.", default="MVN")
 # @arg("-bcsid", "--")
 def create_build_configuration(**kwargs):
     """
