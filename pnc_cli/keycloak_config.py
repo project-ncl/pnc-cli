@@ -9,8 +9,8 @@ trueValues = ['True', 'true', '1']
 
 class KeycloakConfig():
     def __init__(self, config):
-        self.client_mode = self.parse_client_mode(config)
-        if self.client_mode in trueValues:
+        self.client_mode = self.parse_client_mode(config) in trueValues
+        if self.client_mode:
             self.client_secret = self.parse_client_secret(config)
         self.client_id = self.parse_client_id(config)
         self.realm = self.parse_realm(config)

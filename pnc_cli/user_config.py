@@ -26,9 +26,6 @@ except NameError:
 SAVED_USER_FILENAME = "saved-user.p"
 SAVED_USER = utils.CONFIG_LOCATION + SAVED_USER_FILENAME
 
-trueValues = ['True', 'true', '1']
-
-
 class UserConfig():
     def __init__(self):
         config, configFileName = utils.get_config()
@@ -43,7 +40,7 @@ class UserConfig():
         self.access_token_time = 0
         if self.username and self.password:
             self.retrieve_keycloak_token()
-        elif self.keycloak_config.client_secret:
+        elif self.keycloak_config.client_mode:
             # authentication using service account
             logging.info("Authentication using service account")
             self.retrieve_keycloak_token()
@@ -108,7 +105,7 @@ class UserConfig():
 
         if newtoken:
             # if using client auth, we simply get a new token.
-            if self.keycloak_config.client_mode in trueValues:
+            if self.keycloak_config.client_mode:
                 self.retrieve_keycloak_token()
             else:
                 # enter password to get new token, but only if the user has not entered a password in pnc-cli.conf
@@ -170,7 +167,7 @@ class UserConfig():
             self.access_token = str(reply.get('access_token'))
     # retrieves a token from the keycloak server using the configured username / password / keycloak server
     def retrieve_keycloak_token(self):
-        if self.keycloak_config.client_mode in trueValues:
+        if self.keycloak_config.client_mode:
             params = {'grant_type': 'client_credentials',
                       'client_id': self.keycloak_config.client_id,
                       'client_secret': self.keycloak_config.client_secret,
@@ -238,7 +235,7 @@ def get_user():
                 user = pickle.load(open(SAVED_USER, "rb"))
                 pickled_file_used = True
 
-                if user.keycloak_config.client_mode in trueValues:
+                if user.keycloak_config.client_mode:
                     logging.info("Command performed using client authorization.\n")
                 else:
                     logging.info("Command performed with user: {}\n".format(user.username))
