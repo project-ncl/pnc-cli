@@ -39,7 +39,8 @@ class BuildStatusChangedEventRest(object):
         'build_configuration_revision': 'int',
         'build_configuration_name': 'str',
         'build_start_time': 'datetime',
-        'build_end_time': 'datetime'
+        'build_end_time': 'datetime',
+        'build': 'Build'
     }
 
     attribute_map = {
@@ -51,10 +52,11 @@ class BuildStatusChangedEventRest(object):
         'build_configuration_revision': 'buildConfigurationRevision',
         'build_configuration_name': 'buildConfigurationName',
         'build_start_time': 'buildStartTime',
-        'build_end_time': 'buildEndTime'
+        'build_end_time': 'buildEndTime',
+        'build': 'build'
     }
 
-    def __init__(self, old_status=None, new_status=None, build_task_id=None, user_id=None, build_configuration_id=None, build_configuration_revision=None, build_configuration_name=None, build_start_time=None, build_end_time=None):
+    def __init__(self, old_status=None, new_status=None, build_task_id=None, user_id=None, build_configuration_id=None, build_configuration_revision=None, build_configuration_name=None, build_start_time=None, build_end_time=None, build=None):
         """
         BuildStatusChangedEventRest - a model defined in Swagger
         """
@@ -68,6 +70,7 @@ class BuildStatusChangedEventRest(object):
         self._build_configuration_name = None
         self._build_start_time = None
         self._build_end_time = None
+        self._build = None
 
         if old_status is not None:
           self.old_status = old_status
@@ -87,6 +90,8 @@ class BuildStatusChangedEventRest(object):
           self.build_start_time = build_start_time
         if build_end_time is not None:
           self.build_end_time = build_end_time
+        if build is not None:
+          self.build = build
 
     @property
     def old_status(self):
@@ -288,6 +293,27 @@ class BuildStatusChangedEventRest(object):
         """
 
         self._build_end_time = build_end_time
+
+    @property
+    def build(self):
+        """
+        Gets the build of this BuildStatusChangedEventRest.
+
+        :return: The build of this BuildStatusChangedEventRest.
+        :rtype: Build
+        """
+        return self._build
+
+    @build.setter
+    def build(self, build):
+        """
+        Sets the build of this BuildStatusChangedEventRest.
+
+        :param build: The build of this BuildStatusChangedEventRest.
+        :type: Build
+        """
+
+        self._build = build
 
     def to_dict(self):
         """

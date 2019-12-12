@@ -5,45 +5,47 @@
   },
   "basePath" : "/pnc-rest/rest",
   "tags" : [ {
-    "name" : "products"
-  }, {
-    "name" : "running-build-records"
-  }, {
-    "name" : "artifacts"
-  }, {
-    "name" : "build-tasks"
-  }, {
-    "name" : "product-versions"
-  }, {
-    "name" : "builds"
-  }, {
-    "name" : "product-releases"
-  }, {
-    "name" : "build-records"
-  }, {
-    "name" : "users"
-  }, {
-    "name" : "licenses"
-  }, {
     "name" : "build-record-push"
-  }, {
-    "name" : "product-milestones"
-  }, {
-    "name" : "projects"
-  }, {
-    "name" : "build-config-set-records"
-  }, {
-    "name" : "test"
-  }, {
-    "name" : "repository-configurations"
   }, {
     "name" : "environments"
   }, {
-    "name" : "build-configuration-sets"
+    "name" : "running-build-records"
+  }, {
+    "name" : "bpm"
+  }, {
+    "name" : "product-releases"
+  }, {
+    "name" : "licenses"
+  }, {
+    "name" : "generic-setting"
+  }, {
+    "name" : "projects"
+  }, {
+    "name" : "artifacts"
+  }, {
+    "name" : "repository-configurations"
+  }, {
+    "name" : "builds"
+  }, {
+    "name" : "users"
+  }, {
+    "name" : "test"
+  }, {
+    "name" : "build-records"
+  }, {
+    "name" : "product-versions"
   }, {
     "name" : "build-configurations"
   }, {
-    "name" : "bpm"
+    "name" : "product-milestones"
+  }, {
+    "name" : "build-configuration-sets"
+  }, {
+    "name" : "build-tasks"
+  }, {
+    "name" : "build-config-set-records"
+  }, {
+    "name" : "products"
   } ],
   "paths" : {
     "/artifacts" : {
@@ -127,6 +129,48 @@
             }
           }
         }
+      },
+      "post" : {
+        "tags" : [ "artifacts" ],
+        "summary" : "[role:admin] Creates a new Artifact",
+        "description" : "",
+        "operationId" : "createNew",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "body",
+          "required" : false,
+          "schema" : {
+            "$ref" : "#/definitions/ArtifactRest"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Success with results",
+            "schema" : {
+              "$ref" : "#/definitions/ProductSingleton"
+            }
+          },
+          "400" : {
+            "description" : "Invalid input parameters or validation error",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorResponseRest"
+            }
+          },
+          "500" : {
+            "description" : "Server error",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorResponseRest"
+            }
+          },
+          "409" : {
+            "description" : "Conflict while saving an entity",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorResponseRest"
+            }
+          }
+        }
       }
     },
     "/artifacts/{id}" : {
@@ -168,6 +212,52 @@
             "description" : "Can not find specified result",
             "schema" : {
               "$ref" : "#/definitions/ArtifactSingleton"
+            }
+          }
+        }
+      },
+      "put" : {
+        "tags" : [ "artifacts" ],
+        "summary" : "[role:admin] Updates an existing Artifact",
+        "description" : "",
+        "operationId" : "update",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "description" : "Artifact id",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "in" : "body",
+          "name" : "body",
+          "required" : false,
+          "schema" : {
+            "$ref" : "#/definitions/ArtifactRest"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Success with results"
+          },
+          "400" : {
+            "description" : "Invalid input parameters or validation error",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorResponseRest"
+            }
+          },
+          "500" : {
+            "description" : "Server error",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorResponseRest"
+            }
+          },
+          "409" : {
+            "description" : "Conflict while saving an entity",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorResponseRest"
             }
           }
         }
@@ -374,6 +464,78 @@
         }
       }
     },
+    "/build-config-set-records/temporary-older-than-timestamp" : {
+      "get" : {
+        "tags" : [ "build-config-set-records" ],
+        "summary" : "Gets the temporary Build Config Set Records, which were built before a timestamp set by parameter",
+        "description" : "",
+        "operationId" : "getAllTemporaryOlderThanTimestamp",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "pageIndex",
+          "in" : "query",
+          "description" : "Page Index",
+          "required" : false,
+          "type" : "integer",
+          "default" : "0",
+          "format" : "int32"
+        }, {
+          "name" : "pageSize",
+          "in" : "query",
+          "description" : "Pagination size",
+          "required" : false,
+          "type" : "integer",
+          "default" : "50",
+          "format" : "int32"
+        }, {
+          "name" : "sort",
+          "in" : "query",
+          "description" : "Sorting RSQL",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "q",
+          "in" : "query",
+          "description" : "RSQL Query",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "timestamp",
+          "in" : "query",
+          "description" : "Timestamp using Linux epoch in miliseconds",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int64"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Success with results",
+            "schema" : {
+              "$ref" : "#/definitions/BuildConfigurationSetRecordPage"
+            }
+          },
+          "400" : {
+            "description" : "Invalid input parameters or validation error",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorResponseRest"
+            }
+          },
+          "500" : {
+            "description" : "Server error",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorResponseRest"
+            }
+          },
+          "204" : {
+            "description" : "Success but no content provided",
+            "schema" : {
+              "$ref" : "#/definitions/BuildConfigurationSetRecordPage"
+            }
+          }
+        }
+      }
+    },
     "/build-config-set-records/{id}" : {
       "get" : {
         "tags" : [ "build-config-set-records" ],
@@ -419,7 +581,7 @@
       },
       "delete" : {
         "tags" : [ "build-config-set-records" ],
-        "summary" : "Delete specific Build Config Set Record (it must be from a temporary build). Operation is async, for the result subscribe to 'build-config-set-records#delete' events with optional qualifier buildRecord.id.",
+        "summary" : "Delete specific Build Config Set Record (it must be from a temporary build). Operation is async, for the result subscribe to 'build-config-set-records#delete' events with optional qualifier buildRecord.id and possibly callback can be performed with JSON body containing information about operation completion using object org.jboss.pnc.rest.restmodel.DeleteOperationResultRest",
         "description" : "",
         "operationId" : "delete",
         "consumes" : [ "application/json" ],
@@ -431,6 +593,12 @@
           "required" : true,
           "type" : "integer",
           "format" : "int32"
+        }, {
+          "name" : "callback",
+          "in" : "query",
+          "description" : "Optional Callback URL",
+          "required" : false,
+          "type" : "string"
         } ],
         "responses" : {
           "200" : {
@@ -3374,6 +3542,162 @@
         }
       }
     },
+    "/build-records/temporary-older-than-timestamp" : {
+      "get" : {
+        "tags" : [ "build-records" ],
+        "summary" : "Gets the temporary Build Records, which were built before a timestamp set by parameter",
+        "description" : "",
+        "operationId" : "getAllTemporaryOlderThanTimestamp",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "pageIndex",
+          "in" : "query",
+          "description" : "Page Index",
+          "required" : false,
+          "type" : "integer",
+          "default" : "0",
+          "format" : "int32"
+        }, {
+          "name" : "pageSize",
+          "in" : "query",
+          "description" : "Pagination size",
+          "required" : false,
+          "type" : "integer",
+          "default" : "50",
+          "format" : "int32"
+        }, {
+          "name" : "sort",
+          "in" : "query",
+          "description" : "Sorting RSQL",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "q",
+          "in" : "query",
+          "description" : "RSQL Query",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "timestamp",
+          "in" : "query",
+          "description" : "Timestamp using Linux epoch in miliseconds",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int64"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Success with results",
+            "schema" : {
+              "$ref" : "#/definitions/BuildRecordPage"
+            }
+          },
+          "400" : {
+            "description" : "Invalid input parameters or validation error",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorResponseRest"
+            }
+          },
+          "500" : {
+            "description" : "Server error",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorResponseRest"
+            }
+          },
+          "204" : {
+            "description" : "Success but no content provided",
+            "schema" : {
+              "$ref" : "#/definitions/BuildRecordPage"
+            }
+          }
+        }
+      }
+    },
+    "/build-records/with-status-and-log" : {
+      "get" : {
+        "tags" : [ "build-records" ],
+        "summary" : "Gets the Build Records produced from the BuildConfiguration by name.",
+        "description" : "",
+        "operationId" : "getAllByStatusAndLogContaining",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "pageIndex",
+          "in" : "query",
+          "description" : "Page Index",
+          "required" : false,
+          "type" : "integer",
+          "default" : "0",
+          "format" : "int32"
+        }, {
+          "name" : "pageSize",
+          "in" : "query",
+          "description" : "Pagination size",
+          "required" : false,
+          "type" : "integer",
+          "default" : "50",
+          "format" : "int32"
+        }, {
+          "name" : "sort",
+          "in" : "query",
+          "description" : "Sorting RSQL",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "q",
+          "in" : "query",
+          "description" : "RSQL Query",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "status",
+          "in" : "query",
+          "description" : "Build status",
+          "required" : false,
+          "type" : "string",
+          "enum" : [ "SUCCESS", "FAILED", "NO_REBUILD_REQUIRED", "UNSTABLE", "BUILDING", "REJECTED", "CANCELLED", "SYSTEM_ERROR", "UNKNOWN", "NONE" ]
+        }, {
+          "name" : "search",
+          "in" : "query",
+          "description" : "Log search string",
+          "required" : false,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Success with results",
+            "schema" : {
+              "type" : "array",
+              "items" : {
+                "type" : "object"
+              }
+            }
+          },
+          "400" : {
+            "description" : "Invalid input parameters or validation error",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorResponseRest"
+            }
+          },
+          "500" : {
+            "description" : "Server error",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorResponseRest"
+            }
+          },
+          "204" : {
+            "description" : "Success but no content provided",
+            "schema" : {
+              "type" : "array",
+              "items" : {
+                "type" : "object"
+              }
+            }
+          }
+        }
+      }
+    },
     "/build-records/{id}" : {
       "get" : {
         "tags" : [ "build-records" ],
@@ -3419,7 +3743,7 @@
       },
       "delete" : {
         "tags" : [ "build-records" ],
-        "summary" : "Delete specific Build Record (it must be from a temporary build). Operation is async, for the result subscribe to 'build-records#delete' events with optional qualifier buildRecord.id.",
+        "summary" : "Delete specific Build Record (it must be from a temporary build). Operation is async. Once complete notification is set as events 'build-records#delete'and possibly callback can be performed with JSON body containing information about operation completion using object org.jboss.pnc.rest.restmodel.DeleteOperationResultRest",
         "description" : "",
         "operationId" : "delete",
         "consumes" : [ "application/json" ],
@@ -3431,6 +3755,12 @@
           "required" : true,
           "type" : "integer",
           "format" : "int32"
+        }, {
+          "name" : "callback",
+          "in" : "query",
+          "description" : "Optional Callback URL",
+          "required" : false,
+          "type" : "string"
         } ],
         "responses" : {
           "200" : {
@@ -3568,6 +3898,54 @@
             }
           }
         }
+      },
+      "put" : {
+        "tags" : [ "build-records" ],
+        "summary" : "[role:admin] Set built artifacts on the BuildRecord. Note that operation replaces existing collection!",
+        "description" : "",
+        "operationId" : "setArtifacts",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "description" : "BuildRecord id",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "in" : "body",
+          "name" : "body",
+          "description" : "List of artifact ids",
+          "required" : true,
+          "schema" : {
+            "type" : "array",
+            "items" : {
+              "type" : "integer",
+              "format" : "int32"
+            }
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Success with results"
+          },
+          "400" : {
+            "description" : "Invalid input parameters or validation error",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorResponseRest"
+            }
+          },
+          "500" : {
+            "description" : "Server error",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorResponseRest"
+            }
+          },
+          "404" : {
+            "description" : "Can not find specified result"
+          }
+        }
       }
     },
     "/build-records/{id}/completed-or-running" : {
@@ -3611,7 +3989,8 @@
               "$ref" : "#/definitions/BuildRecordSingleton"
             }
           }
-        }
+        },
+        "deprecated" : true
       }
     },
     "/build-records/{id}/dependency-artifacts" : {
@@ -3682,6 +4061,54 @@
             "schema" : {
               "$ref" : "#/definitions/ArtifactPage"
             }
+          }
+        }
+      },
+      "put" : {
+        "tags" : [ "build-records" ],
+        "summary" : "[role:admin] Set dependent artifacts on the BuildRecord. Note that operation replaces existing collection!",
+        "description" : "",
+        "operationId" : "setDependentArtifacts",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "description" : "BuildRecord id",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "in" : "body",
+          "name" : "body",
+          "description" : "List of artifact ids",
+          "required" : true,
+          "schema" : {
+            "type" : "array",
+            "items" : {
+              "type" : "integer",
+              "format" : "int32"
+            }
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Success with results"
+          },
+          "400" : {
+            "description" : "Invalid input parameters or validation error",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorResponseRest"
+            }
+          },
+          "500" : {
+            "description" : "Server error",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorResponseRest"
+            }
+          },
+          "404" : {
+            "description" : "Can not find specified result"
           }
         }
       }
@@ -3893,6 +4320,47 @@
         "responses" : {
           "200" : {
             "description" : "Success with results"
+          },
+          "400" : {
+            "description" : "Invalid input parameters or validation error",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorResponseRest"
+            }
+          },
+          "500" : {
+            "description" : "Server error",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorResponseRest"
+            }
+          },
+          "404" : {
+            "description" : "Can not find specified result"
+          }
+        }
+      }
+    },
+    "/build-records/{id}/repository-manager-result" : {
+      "get" : {
+        "tags" : [ "build-records" ],
+        "summary" : "Gets repository manager result for a specific Build Record",
+        "description" : "",
+        "operationId" : "collectRepoManagerResult",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "description" : "BuildRecord id",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int32"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Success with results",
+            "schema" : {
+              "$ref" : "#/definitions/RepositoryManagerResultRest"
+            }
           },
           "400" : {
             "description" : "Invalid input parameters or validation error",
@@ -4359,6 +4827,119 @@
             "schema" : {
               "$ref" : "#/definitions/BuildEnvironmentSingleton"
             }
+          }
+        }
+      }
+    },
+    "/generic-setting/activate-maintenance-mode" : {
+      "post" : {
+        "tags" : [ "generic-setting" ],
+        "summary" : "Activate maintenance mode. Needs to be admin",
+        "description" : "",
+        "operationId" : "activateMaintenanceMode",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "body",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Success with results"
+          },
+          "500" : {
+            "description" : "Server error"
+          }
+        }
+      }
+    },
+    "/generic-setting/announcement-banner" : {
+      "get" : {
+        "tags" : [ "generic-setting" ],
+        "summary" : "Get announcement banner",
+        "description" : "",
+        "operationId" : "getAnnouncementBanner",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ ],
+        "responses" : {
+          "200" : {
+            "description" : "Success with results",
+            "schema" : {
+              "$ref" : "#/definitions/BannerRest"
+            }
+          },
+          "500" : {
+            "description" : "Server error"
+          }
+        }
+      },
+      "post" : {
+        "tags" : [ "generic-setting" ],
+        "summary" : "Set announcement banner",
+        "description" : "",
+        "operationId" : "setAnnouncementBanner",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "body",
+          "required" : false,
+          "schema" : {
+            "$ref" : "#/definitions/BannerRest"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Success with results"
+          },
+          "500" : {
+            "description" : "Server error"
+          }
+        }
+      }
+    },
+    "/generic-setting/deactivate-maintenance-mode" : {
+      "post" : {
+        "tags" : [ "generic-setting" ],
+        "summary" : "Deactivate maintenance mode. Needs to be admin",
+        "description" : "",
+        "operationId" : "deactivateMaintenanceMode",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ ],
+        "responses" : {
+          "200" : {
+            "description" : "Success with results"
+          },
+          "500" : {
+            "description" : "Server error"
+          }
+        }
+      }
+    },
+    "/generic-setting/in-maintenance-mode" : {
+      "get" : {
+        "tags" : [ "generic-setting" ],
+        "summary" : "Get status of maintenance mode",
+        "description" : "",
+        "operationId" : "isInMaintenanceMode",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ ],
+        "responses" : {
+          "200" : {
+            "description" : "Success with results",
+            "schema" : {
+              "type" : "boolean"
+            }
+          },
+          "500" : {
+            "description" : "Server error"
           }
         }
       }
@@ -7086,6 +7667,37 @@
         }
       }
     },
+    "/running-build-records/count" : {
+      "get" : {
+        "tags" : [ "running-build-records" ],
+        "summary" : "Gets count of running, enqueued, and 'awaiting for dependencies' Build Records",
+        "description" : "",
+        "operationId" : "getCount",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ ],
+        "responses" : {
+          "200" : {
+            "description" : "Success with results",
+            "schema" : {
+              "$ref" : "#/definitions/RunningBuildsCountRest"
+            }
+          },
+          "400" : {
+            "description" : "Invalid input parameters or validation error",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorResponseRest"
+            }
+          },
+          "500" : {
+            "description" : "Server error",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorResponseRest"
+            }
+          }
+        }
+      }
+    },
     "/running-build-records/{id}" : {
       "get" : {
         "tags" : [ "running-build-records" ],
@@ -7557,6 +8169,31 @@
         }
       }
     },
+    "BuildConfigurationRevisionRef" : {
+      "type" : "object",
+      "properties" : {
+        "id" : {
+          "type" : "integer",
+          "format" : "int32"
+        },
+        "rev" : {
+          "type" : "integer",
+          "format" : "int32"
+        },
+        "name" : {
+          "type" : "string"
+        },
+        "description" : {
+          "type" : "string"
+        },
+        "buildScript" : {
+          "type" : "string"
+        },
+        "scmRevision" : {
+          "type" : "string"
+        }
+      }
+    },
     "ProductMilestoneRest" : {
       "type" : "object",
       "required" : [ "id", "productVersionId", "version" ],
@@ -7615,6 +8252,28 @@
         "name" : "ProductMilestone"
       }
     },
+    "ResultRest" : {
+      "type" : "object",
+      "properties" : {
+        "id" : {
+          "type" : "string",
+          "readOnly" : true
+        },
+        "name" : {
+          "type" : "string",
+          "readOnly" : true
+        },
+        "status" : {
+          "type" : "string",
+          "readOnly" : true,
+          "enum" : [ "ACCEPTED", "SUCCESS", "REJECTED", "FAILED", "SYSTEM_ERROR" ]
+        },
+        "message" : {
+          "type" : "string",
+          "readOnly" : true
+        }
+      }
+    },
     "ProductVersionPage" : {
       "type" : "object",
       "properties" : {
@@ -7635,28 +8294,6 @@
           "items" : {
             "$ref" : "#/definitions/ProductVersionRest"
           }
-        }
-      }
-    },
-    "ResultRest" : {
-      "type" : "object",
-      "properties" : {
-        "id" : {
-          "type" : "string",
-          "readOnly" : true
-        },
-        "name" : {
-          "type" : "string",
-          "readOnly" : true
-        },
-        "status" : {
-          "type" : "string",
-          "readOnly" : true,
-          "enum" : [ "ACCEPTED", "SUCCESS", "REJECTED", "FAILED", "SYSTEM_ERROR" ]
-        },
-        "message" : {
-          "type" : "string",
-          "readOnly" : true
         }
       }
     },
@@ -7720,11 +8357,11 @@
         }
       }
     },
-    "ProductSingleton" : {
+    "BannerRest" : {
       "type" : "object",
       "properties" : {
-        "content" : {
-          "$ref" : "#/definitions/ProductRest"
+        "banner" : {
+          "type" : "string"
         }
       }
     },
@@ -7789,6 +8426,69 @@
           "type" : "array",
           "items" : {
             "$ref" : "#/definitions/ArtifactRest"
+          }
+        }
+      }
+    },
+    "ProductSingleton" : {
+      "type" : "object",
+      "properties" : {
+        "content" : {
+          "$ref" : "#/definitions/ProductRest"
+        }
+      }
+    },
+    "Build" : {
+      "type" : "object",
+      "properties" : {
+        "id" : {
+          "type" : "integer",
+          "format" : "int32"
+        },
+        "status" : {
+          "type" : "string",
+          "enum" : [ "NEW", "ENQUEUED", "WAITING_FOR_DEPENDENCIES", "BUILDING", "BUILD_COMPLETED", "DONE", "REJECTED", "REJECTED_FAILED_DEPENDENCIES", "REJECTED_ALREADY_BUILT", "SYSTEM_ERROR", "DONE_WITH_ERRORS", "CANCELLED" ]
+        },
+        "buildContentId" : {
+          "type" : "string"
+        },
+        "temporaryBuild" : {
+          "type" : "boolean",
+          "default" : false
+        },
+        "project" : {
+          "$ref" : "#/definitions/ProjectRef"
+        },
+        "repository" : {
+          "$ref" : "#/definitions/RepositoryConfiguration"
+        },
+        "buildEnvironmentId" : {
+          "$ref" : "#/definitions/BuildEnvironment"
+        },
+        "attributes" : {
+          "type" : "object",
+          "additionalProperties" : {
+            "type" : "string"
+          }
+        },
+        "user" : {
+          "$ref" : "#/definitions/User"
+        },
+        "buildConfigurationAudited" : {
+          "$ref" : "#/definitions/BuildConfigurationRevisionRef"
+        },
+        "dependentBuildIds" : {
+          "type" : "array",
+          "items" : {
+            "type" : "integer",
+            "format" : "int32"
+          }
+        },
+        "dependencyBuildIds" : {
+          "type" : "array",
+          "items" : {
+            "type" : "integer",
+            "format" : "int32"
           }
         }
       }
@@ -7936,6 +8636,25 @@
         "name" : "BuildConfigurationAudited"
       }
     },
+    "RepositoryConfiguration" : {
+      "type" : "object",
+      "properties" : {
+        "id" : {
+          "type" : "integer",
+          "format" : "int32"
+        },
+        "internalUrl" : {
+          "type" : "string"
+        },
+        "externalUrl" : {
+          "type" : "string"
+        },
+        "preBuildSyncEnabled" : {
+          "type" : "boolean",
+          "default" : false
+        }
+      }
+    },
     "TargetRepositoryRest" : {
       "type" : "object",
       "required" : [ "artifactIds", "id", "identifier", "repositoryPath", "repositoryType", "temporaryRepo" ],
@@ -8024,6 +8743,9 @@
           "type" : "string"
         },
         "scmRevision" : {
+          "type" : "string"
+        },
+        "scmTag" : {
           "type" : "string"
         },
         "buildEnvironmentId" : {
@@ -8122,6 +8844,9 @@
         "buildEndTime" : {
           "type" : "string",
           "format" : "date-time"
+        },
+        "build" : {
+          "$ref" : "#/definitions/Build"
         }
       }
     },
@@ -8135,6 +8860,10 @@
         "buildRecordId" : {
           "type" : "integer",
           "format" : "int32"
+        },
+        "reimport" : {
+          "type" : "boolean",
+          "default" : false
         }
       }
     },
@@ -8245,14 +8974,6 @@
         }
       }
     },
-    "ProductMilestoneSingleton" : {
-      "type" : "object",
-      "properties" : {
-        "content" : {
-          "$ref" : "#/definitions/ProductMilestoneRest"
-        }
-      }
-    },
     "RepositoryCreationUrlAutoRest" : {
       "type" : "object",
       "properties" : {
@@ -8265,6 +8986,14 @@
         },
         "buildConfigurationRest" : {
           "$ref" : "#/definitions/BuildConfigurationRest"
+        }
+      }
+    },
+    "ProductMilestoneSingleton" : {
+      "type" : "object",
+      "properties" : {
+        "content" : {
+          "$ref" : "#/definitions/ProductMilestoneRest"
         }
       }
     },
@@ -8313,6 +9042,41 @@
         }
       }
     },
+    "BuildEnvironment" : {
+      "type" : "object",
+      "properties" : {
+        "id" : {
+          "type" : "integer",
+          "format" : "int32"
+        },
+        "name" : {
+          "type" : "string"
+        },
+        "description" : {
+          "type" : "string"
+        },
+        "systemImageRepositoryUrl" : {
+          "type" : "string"
+        },
+        "systemImageId" : {
+          "type" : "string"
+        },
+        "attributes" : {
+          "type" : "object",
+          "additionalProperties" : {
+            "type" : "string"
+          }
+        },
+        "systemImageType" : {
+          "type" : "string",
+          "enum" : [ "DOCKER_IMAGE", "VIRTUAL_MACHINE_RAW", "VIRTUAL_MACHINE_QCOW2", "LOCAL_WORKSPACE" ]
+        },
+        "deprecated" : {
+          "type" : "boolean",
+          "default" : false
+        }
+      }
+    },
     "BuildConfigurationSetPage" : {
       "type" : "object",
       "properties" : {
@@ -8350,6 +9114,27 @@
         "content" : {
           "type" : "integer",
           "format" : "int32"
+        }
+      }
+    },
+    "ProjectRef" : {
+      "type" : "object",
+      "properties" : {
+        "id" : {
+          "type" : "integer",
+          "format" : "int32"
+        },
+        "name" : {
+          "type" : "string"
+        },
+        "description" : {
+          "type" : "string"
+        },
+        "issueTrackerUrl" : {
+          "type" : "string"
+        },
+        "projectUrl" : {
+          "type" : "string"
         }
       }
     },
@@ -8496,6 +9281,18 @@
         "name" : "Product"
       }
     },
+    "User" : {
+      "type" : "object",
+      "properties" : {
+        "id" : {
+          "type" : "integer",
+          "format" : "int32"
+        },
+        "username" : {
+          "type" : "string"
+        }
+      }
+    },
     "ProjectPage" : {
       "type" : "object",
       "properties" : {
@@ -8594,7 +9391,7 @@
     },
     "BuildConfigurationRest" : {
       "type" : "object",
-      "required" : [ "environment", "id", "name", "project", "repositoryConfiguration" ],
+      "required" : [ "buildType", "environment", "id", "name", "project", "repositoryConfiguration" ],
       "properties" : {
         "id" : {
           "type" : "integer",
@@ -8630,6 +9427,10 @@
         "project" : {
           "$ref" : "#/definitions/ProjectRest"
         },
+        "buildType" : {
+          "type" : "string",
+          "enum" : [ "MVN", "GRADLE" ]
+        },
         "environment" : {
           "$ref" : "#/definitions/BuildEnvironmentRest"
         },
@@ -8664,6 +9465,36 @@
         "name" : "Configuration"
       }
     },
+    "RepositoryManagerResultRest" : {
+      "type" : "object",
+      "properties" : {
+        "builtArtifacts" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/ArtifactRest"
+          }
+        },
+        "dependencies" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/ArtifactRest"
+          }
+        },
+        "buildContentId" : {
+          "type" : "string"
+        },
+        "log" : {
+          "type" : "string"
+        },
+        "completionStatus" : {
+          "type" : "string",
+          "enum" : [ "SUCCESS", "NO_REBUILD_REQUIRED", "FAILED", "CANCELLED", "TIMED_OUT", "SYSTEM_ERROR" ]
+        }
+      },
+      "xml" : {
+        "name" : "repositoryManagerResult"
+      }
+    },
     "BuildConfigurationAuditedPage" : {
       "type" : "object",
       "properties" : {
@@ -8693,6 +9524,10 @@
         "description" : {
           "type" : "string"
         },
+        "buildSetConfigurationId" : {
+          "type" : "integer",
+          "format" : "int32"
+        },
         "userId" : {
           "type" : "integer",
           "format" : "int32"
@@ -8700,10 +9535,6 @@
         "oldStatus" : {
           "type" : "string",
           "enum" : [ "NEW", "DONE", "REJECTED" ]
-        },
-        "buildSetTaskId" : {
-          "type" : "integer",
-          "format" : "int32"
         },
         "buildSetConfigurationName" : {
           "type" : "string"
@@ -8720,7 +9551,7 @@
           "type" : "string",
           "enum" : [ "NEW", "DONE", "REJECTED" ]
         },
-        "buildSetConfigurationId" : {
+        "buildSetTaskId" : {
           "type" : "integer",
           "format" : "int32"
         }
@@ -8982,6 +9813,23 @@
         }
       }
     },
+    "RunningBuildsCountRest" : {
+      "type" : "object",
+      "properties" : {
+        "running" : {
+          "type" : "integer",
+          "format" : "int32"
+        },
+        "enqueued" : {
+          "type" : "integer",
+          "format" : "int32"
+        },
+        "waitingForDependencies" : {
+          "type" : "integer",
+          "format" : "int32"
+        }
+      }
+    },
     "RepositoryConfigurationSingleton" : {
       "type" : "object",
       "properties" : {
@@ -9011,33 +9859,6 @@
             "$ref" : "#/definitions/UserRest"
           }
         }
-      }
-    },
-    "BuildConfigurationSetRest" : {
-      "type" : "object",
-      "required" : [ "id" ],
-      "properties" : {
-        "id" : {
-          "type" : "integer",
-          "format" : "int32"
-        },
-        "name" : {
-          "type" : "string"
-        },
-        "productVersionId" : {
-          "type" : "integer",
-          "format" : "int32"
-        },
-        "buildConfigurationIds" : {
-          "type" : "array",
-          "items" : {
-            "type" : "integer",
-            "format" : "int32"
-          }
-        }
-      },
-      "xml" : {
-        "name" : "BuildConfigurationSet"
       }
     },
     "BuildRecordPushResultRest" : {
@@ -9080,6 +9901,33 @@
         "content" : {
           "$ref" : "#/definitions/ProjectRest"
         }
+      }
+    },
+    "BuildConfigurationSetRest" : {
+      "type" : "object",
+      "required" : [ "id" ],
+      "properties" : {
+        "id" : {
+          "type" : "integer",
+          "format" : "int32"
+        },
+        "name" : {
+          "type" : "string"
+        },
+        "productVersionId" : {
+          "type" : "integer",
+          "format" : "int32"
+        },
+        "buildConfigurationIds" : {
+          "type" : "array",
+          "items" : {
+            "type" : "integer",
+            "format" : "int32"
+          }
+        }
+      },
+      "xml" : {
+        "name" : "BuildConfigurationSet"
       }
     },
     "ProductReleaseRest" : {

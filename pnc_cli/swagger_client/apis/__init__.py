@@ -11,6 +11,7 @@ from .buildrecords_api import BuildrecordsApi
 from .builds_api import BuildsApi
 from .buildtasks_api import BuildtasksApi
 from .environments_api import EnvironmentsApi
+from .genericsetting_api import GenericsettingApi
 from .licenses_api import LicensesApi
 from .productmilestones_api import ProductmilestonesApi
 from .productreleases_api import ProductreleasesApi

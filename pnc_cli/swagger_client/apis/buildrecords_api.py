@@ -39,9 +39,115 @@ class BuildrecordsApi(object):
                 config.api_client = ApiClient()
             self.api_client = config.api_client
 
+    def collect_repo_manager_result(self, id, **kwargs):
+        """
+        Gets repository manager result for a specific Build Record
+        
+        This method makes a synchronous HTTP request by default. To make an
+        asynchronous HTTP request, please define a `callback` function
+        to be invoked when receiving the response.
+        >>> def callback_function(response):
+        >>>     pprint(response)
+        >>>
+        >>> thread = api.collect_repo_manager_result(id, callback=callback_function)
+
+        :param callback function: The callback function
+            for asynchronous request. (optional)
+        :param int id: BuildRecord id (required)
+        :return: RepositoryManagerResultRest
+                 If the method is called asynchronously,
+                 returns the request thread.
+        """
+        kwargs['_return_http_data_only'] = True
+        if kwargs.get('callback'):
+            return self.collect_repo_manager_result_with_http_info(id, **kwargs)
+        else:
+            (data) = self.collect_repo_manager_result_with_http_info(id, **kwargs)
+            return data
+
+    def collect_repo_manager_result_with_http_info(self, id, **kwargs):
+        """
+        Gets repository manager result for a specific Build Record
+        
+        This method makes a synchronous HTTP request by default. To make an
+        asynchronous HTTP request, please define a `callback` function
+        to be invoked when receiving the response.
+        >>> def callback_function(response):
+        >>>     pprint(response)
+        >>>
+        >>> thread = api.collect_repo_manager_result_with_http_info(id, callback=callback_function)
+
+        :param callback function: The callback function
+            for asynchronous request. (optional)
+        :param int id: BuildRecord id (required)
+        :return: RepositoryManagerResultRest
+                 If the method is called asynchronously,
+                 returns the request thread.
+        """
+
+        all_params = ['id']
+        all_params.append('callback')
+        all_params.append('_return_http_data_only')
+        all_params.append('_preload_content')
+        all_params.append('_request_timeout')
+
+        params = locals()
+        for key, val in iteritems(params['kwargs']):
+            if key not in all_params:
+                raise TypeError(
+                    "Got an unexpected keyword argument '%s'"
+                    " to method collect_repo_manager_result" % key
+                )
+            params[key] = val
+        del params['kwargs']
+        # verify the required parameter 'id' is set
+        if ('id' not in params) or (params['id'] is None):
+            raise ValueError("Missing the required parameter `id` when calling `collect_repo_manager_result`")
+
+
+        collection_formats = {}
+
+        path_params = {}
+        if 'id' in params:
+            path_params['id'] = params['id']
+
+        query_params = []
+
+        header_params = {}
+
+        form_params = []
+        local_var_files = {}
+
+        body_params = None
+        # HTTP header `Accept`
+        header_params['Accept'] = self.api_client.\
+            select_header_accept(['application/json'])
+
+        # HTTP header `Content-Type`
+        header_params['Content-Type'] = self.api_client.\
+            select_header_content_type(['application/json'])
+
+        # Authentication setting
+        auth_settings = []
+
+        return self.api_client.call_api('/build-records/{id}/repository-manager-result', 'GET',
+                                        path_params,
+                                        query_params,
+                                        header_params,
+                                        body=body_params,
+                                        post_params=form_params,
+                                        files=local_var_files,
+                                        response_type='RepositoryManagerResultRest',
+                                        auth_settings=auth_settings,
+                                        callback=params.get('callback'),
+                                        _return_http_data_only=params.get('_return_http_data_only'),
+                                        _preload_content=params.get('_preload_content', True),
+                                        _request_timeout=params.get('_request_timeout'),
+                                        collection_formats=collection_formats)
+
     def delete(self, id, **kwargs):
         """
-        Delete specific Build Record (it must be from a temporary build). Operation is async, for the result subscribe to 'build-records#delete' events with optional qualifier buildRecord.id.
+        Delete specific Build Record (it must be from a temporary build). Operation is async. Once complete notification is set as events 'build-records#delete'and possibly callback can be performed with JSON body containing information about operation completion using object org.jboss.pnc.rest.restmodel.DeleteOperationResultRest
         
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please define a `callback` function
@@ -54,6 +160,7 @@ class BuildrecordsApi(object):
         :param callback function: The callback function
             for asynchronous request. (optional)
         :param int id: BuildRecord id (required)
+        :param str param_callback: Optional Callback URL
         :return: None
                  If the method is called asynchronously,
                  returns the request thread.
@@ -67,7 +174,7 @@ class BuildrecordsApi(object):
 
     def delete_with_http_info(self, id, **kwargs):
         """
-        Delete specific Build Record (it must be from a temporary build). Operation is async, for the result subscribe to 'build-records#delete' events with optional qualifier buildRecord.id.
+        Delete specific Build Record (it must be from a temporary build). Operation is async. Once complete notification is set as events 'build-records#delete'and possibly callback can be performed with JSON body containing information about operation completion using object org.jboss.pnc.rest.restmodel.DeleteOperationResultRest
         
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please define a `callback` function
@@ -80,12 +187,13 @@ class BuildrecordsApi(object):
         :param callback function: The callback function
             for asynchronous request. (optional)
         :param int id: BuildRecord id (required)
+        :param str param_callback: Optional Callback URL
         :return: None
                  If the method is called asynchronously,
                  returns the request thread.
         """
 
-        all_params = ['id']
+        all_params = ['id', 'param_callback']
         all_params.append('callback')
         all_params.append('_return_http_data_only')
         all_params.append('_preload_content')
@@ -112,6 +220,8 @@ class BuildrecordsApi(object):
             path_params['id'] = params['id']
 
         query_params = []
+        if 'param_callback' in params:
+            query_params.append(('callback', params['param_callback']))
 
         header_params = {}
 
@@ -253,6 +363,129 @@ class BuildrecordsApi(object):
                                         post_params=form_params,
                                         files=local_var_files,
                                         response_type='BuildRecordPage',
+                                        auth_settings=auth_settings,
+                                        callback=params.get('callback'),
+                                        _return_http_data_only=params.get('_return_http_data_only'),
+                                        _preload_content=params.get('_preload_content', True),
+                                        _request_timeout=params.get('_request_timeout'),
+                                        collection_formats=collection_formats)
+
+    def get_all_by_status_and_log_containing(self, **kwargs):
+        """
+        Gets the Build Records produced from the BuildConfiguration by name.
+        
+        This method makes a synchronous HTTP request by default. To make an
+        asynchronous HTTP request, please define a `callback` function
+        to be invoked when receiving the response.
+        >>> def callback_function(response):
+        >>>     pprint(response)
+        >>>
+        >>> thread = api.get_all_by_status_and_log_containing(callback=callback_function)
+
+        :param callback function: The callback function
+            for asynchronous request. (optional)
+        :param int page_index: Page Index
+        :param int page_size: Pagination size
+        :param str sort: Sorting RSQL
+        :param str q: RSQL Query
+        :param str status: Build status
+        :param str search: Log search string
+        :return: list[object]
+                 If the method is called asynchronously,
+                 returns the request thread.
+        """
+        kwargs['_return_http_data_only'] = True
+        if kwargs.get('callback'):
+            return self.get_all_by_status_and_log_containing_with_http_info(**kwargs)
+        else:
+            (data) = self.get_all_by_status_and_log_containing_with_http_info(**kwargs)
+            return data
+
+    def get_all_by_status_and_log_containing_with_http_info(self, **kwargs):
+        """
+        Gets the Build Records produced from the BuildConfiguration by name.
+        
+        This method makes a synchronous HTTP request by default. To make an
+        asynchronous HTTP request, please define a `callback` function
+        to be invoked when receiving the response.
+        >>> def callback_function(response):
+        >>>     pprint(response)
+        >>>
+        >>> thread = api.get_all_by_status_and_log_containing_with_http_info(callback=callback_function)
+
+        :param callback function: The callback function
+            for asynchronous request. (optional)
+        :param int page_index: Page Index
+        :param int page_size: Pagination size
+        :param str sort: Sorting RSQL
+        :param str q: RSQL Query
+        :param str status: Build status
+        :param str search: Log search string
+        :return: list[object]
+                 If the method is called asynchronously,
+                 returns the request thread.
+        """
+
+        all_params = ['page_index', 'page_size', 'sort', 'q', 'status', 'search']
+        all_params.append('callback')
+        all_params.append('_return_http_data_only')
+        all_params.append('_preload_content')
+        all_params.append('_request_timeout')
+
+        params = locals()
+        for key, val in iteritems(params['kwargs']):
+            if key not in all_params:
+                raise TypeError(
+                    "Got an unexpected keyword argument '%s'"
+                    " to method get_all_by_status_and_log_containing" % key
+                )
+            params[key] = val
+        del params['kwargs']
+
+
+        collection_formats = {}
+
+        path_params = {}
+
+        query_params = []
+        if 'page_index' in params:
+            query_params.append(('pageIndex', params['page_index']))
+        if 'page_size' in params:
+            query_params.append(('pageSize', params['page_size']))
+        if 'sort' in params:
+            query_params.append(('sort', params['sort']))
+        if 'q' in params:
+            query_params.append(('q', params['q']))
+        if 'status' in params:
+            query_params.append(('status', params['status']))
+        if 'search' in params:
+            query_params.append(('search', params['search']))
+
+        header_params = {}
+
+        form_params = []
+        local_var_files = {}
+
+        body_params = None
+        # HTTP header `Accept`
+        header_params['Accept'] = self.api_client.\
+            select_header_accept(['application/json'])
+
+        # HTTP header `Content-Type`
+        header_params['Content-Type'] = self.api_client.\
+            select_header_content_type(['application/json'])
+
+        # Authentication setting
+        auth_settings = []
+
+        return self.api_client.call_api('/build-records/with-status-and-log', 'GET',
+                                        path_params,
+                                        query_params,
+                                        header_params,
+                                        body=body_params,
+                                        post_params=form_params,
+                                        files=local_var_files,
+                                        response_type='list[object]',
                                         auth_settings=auth_settings,
                                         callback=params.get('callback'),
                                         _return_http_data_only=params.get('_return_http_data_only'),
@@ -612,6 +845,125 @@ class BuildrecordsApi(object):
         auth_settings = []
 
         return self.api_client.call_api('/build-records/projects/{projectId}', 'GET',
+                                        path_params,
+                                        query_params,
+                                        header_params,
+                                        body=body_params,
+                                        post_params=form_params,
+                                        files=local_var_files,
+                                        response_type='BuildRecordPage',
+                                        auth_settings=auth_settings,
+                                        callback=params.get('callback'),
+                                        _return_http_data_only=params.get('_return_http_data_only'),
+                                        _preload_content=params.get('_preload_content', True),
+                                        _request_timeout=params.get('_request_timeout'),
+                                        collection_formats=collection_formats)
+
+    def get_all_temporary_older_than_timestamp(self, **kwargs):
+        """
+        Gets the temporary Build Records, which were built before a timestamp set by parameter
+        
+        This method makes a synchronous HTTP request by default. To make an
+        asynchronous HTTP request, please define a `callback` function
+        to be invoked when receiving the response.
+        >>> def callback_function(response):
+        >>>     pprint(response)
+        >>>
+        >>> thread = api.get_all_temporary_older_than_timestamp(callback=callback_function)
+
+        :param callback function: The callback function
+            for asynchronous request. (optional)
+        :param int page_index: Page Index
+        :param int page_size: Pagination size
+        :param str sort: Sorting RSQL
+        :param str q: RSQL Query
+        :param int timestamp: Timestamp using Linux epoch in miliseconds
+        :return: BuildRecordPage
+                 If the method is called asynchronously,
+                 returns the request thread.
+        """
+        kwargs['_return_http_data_only'] = True
+        if kwargs.get('callback'):
+            return self.get_all_temporary_older_than_timestamp_with_http_info(**kwargs)
+        else:
+            (data) = self.get_all_temporary_older_than_timestamp_with_http_info(**kwargs)
+            return data
+
+    def get_all_temporary_older_than_timestamp_with_http_info(self, **kwargs):
+        """
+        Gets the temporary Build Records, which were built before a timestamp set by parameter
+        
+        This method makes a synchronous HTTP request by default. To make an
+        asynchronous HTTP request, please define a `callback` function
+        to be invoked when receiving the response.
+        >>> def callback_function(response):
+        >>>     pprint(response)
+        >>>
+        >>> thread = api.get_all_temporary_older_than_timestamp_with_http_info(callback=callback_function)
+
+        :param callback function: The callback function
+            for asynchronous request. (optional)
+        :param int page_index: Page Index
+        :param int page_size: Pagination size
+        :param str sort: Sorting RSQL
+        :param str q: RSQL Query
+        :param int timestamp: Timestamp using Linux epoch in miliseconds
+        :return: BuildRecordPage
+                 If the method is called asynchronously,
+                 returns the request thread.
+        """
+
+        all_params = ['page_index', 'page_size', 'sort', 'q', 'timestamp']
+        all_params.append('callback')
+        all_params.append('_return_http_data_only')
+        all_params.append('_preload_content')
+        all_params.append('_request_timeout')
+
+        params = locals()
+        for key, val in iteritems(params['kwargs']):
+            if key not in all_params:
+                raise TypeError(
+                    "Got an unexpected keyword argument '%s'"
+                    " to method get_all_temporary_older_than_timestamp" % key
+                )
+            params[key] = val
+        del params['kwargs']
+
+
+        collection_formats = {}
+
+        path_params = {}
+
+        query_params = []
+        if 'page_index' in params:
+            query_params.append(('pageIndex', params['page_index']))
+        if 'page_size' in params:
+            query_params.append(('pageSize', params['page_size']))
+        if 'sort' in params:
+            query_params.append(('sort', params['sort']))
+        if 'q' in params:
+            query_params.append(('q', params['q']))
+        if 'timestamp' in params:
+            query_params.append(('timestamp', params['timestamp']))
+
+        header_params = {}
+
+        form_params = []
+        local_var_files = {}
+
+        body_params = None
+        # HTTP header `Accept`
+        header_params['Accept'] = self.api_client.\
+            select_header_accept(['application/json'])
+
+        # HTTP header `Content-Type`
+        header_params['Content-Type'] = self.api_client.\
+            select_header_content_type(['application/json'])
+
+        # Authentication setting
+        auth_settings = []
+
+        return self.api_client.call_api('/build-records/temporary-older-than-timestamp', 'GET',
                                         path_params,
                                         query_params,
                                         header_params,
@@ -1960,6 +2312,232 @@ class BuildrecordsApi(object):
         auth_settings = []
 
         return self.api_client.call_api('/build-records/{id}/remove-attribute', 'DELETE',
+                                        path_params,
+                                        query_params,
+                                        header_params,
+                                        body=body_params,
+                                        post_params=form_params,
+                                        files=local_var_files,
+                                        response_type=None,
+                                        auth_settings=auth_settings,
+                                        callback=params.get('callback'),
+                                        _return_http_data_only=params.get('_return_http_data_only'),
+                                        _preload_content=params.get('_preload_content', True),
+                                        _request_timeout=params.get('_request_timeout'),
+                                        collection_formats=collection_formats)
+
+    def set_artifacts(self, id, body, **kwargs):
+        """
+        [role:admin] Set built artifacts on the BuildRecord. Note that operation replaces existing collection!
+        
+        This method makes a synchronous HTTP request by default. To make an
+        asynchronous HTTP request, please define a `callback` function
+        to be invoked when receiving the response.
+        >>> def callback_function(response):
+        >>>     pprint(response)
+        >>>
+        >>> thread = api.set_artifacts(id, body, callback=callback_function)
+
+        :param callback function: The callback function
+            for asynchronous request. (optional)
+        :param int id: BuildRecord id (required)
+        :param list[int] body: List of artifact ids (required)
+        :return: None
+                 If the method is called asynchronously,
+                 returns the request thread.
+        """
+        kwargs['_return_http_data_only'] = True
+        if kwargs.get('callback'):
+            return self.set_artifacts_with_http_info(id, body, **kwargs)
+        else:
+            (data) = self.set_artifacts_with_http_info(id, body, **kwargs)
+            return data
+
+    def set_artifacts_with_http_info(self, id, body, **kwargs):
+        """
+        [role:admin] Set built artifacts on the BuildRecord. Note that operation replaces existing collection!
+        
+        This method makes a synchronous HTTP request by default. To make an
+        asynchronous HTTP request, please define a `callback` function
+        to be invoked when receiving the response.
+        >>> def callback_function(response):
+        >>>     pprint(response)
+        >>>
+        >>> thread = api.set_artifacts_with_http_info(id, body, callback=callback_function)
+
+        :param callback function: The callback function
+            for asynchronous request. (optional)
+        :param int id: BuildRecord id (required)
+        :param list[int] body: List of artifact ids (required)
+        :return: None
+                 If the method is called asynchronously,
+                 returns the request thread.
+        """
+
+        all_params = ['id', 'body']
+        all_params.append('callback')
+        all_params.append('_return_http_data_only')
+        all_params.append('_preload_content')
+        all_params.append('_request_timeout')
+
+        params = locals()
+        for key, val in iteritems(params['kwargs']):
+            if key not in all_params:
+                raise TypeError(
+                    "Got an unexpected keyword argument '%s'"
+                    " to method set_artifacts" % key
+                )
+            params[key] = val
+        del params['kwargs']
+        # verify the required parameter 'id' is set
+        if ('id' not in params) or (params['id'] is None):
+            raise ValueError("Missing the required parameter `id` when calling `set_artifacts`")
+        # verify the required parameter 'body' is set
+        if ('body' not in params) or (params['body'] is None):
+            raise ValueError("Missing the required parameter `body` when calling `set_artifacts`")
+
+
+        collection_formats = {}
+
+        path_params = {}
+        if 'id' in params:
+            path_params['id'] = params['id']
+
+        query_params = []
+
+        header_params = {}
+
+        form_params = []
+        local_var_files = {}
+
+        body_params = None
+        if 'body' in params:
+            body_params = params['body']
+        # HTTP header `Accept`
+        header_params['Accept'] = self.api_client.\
+            select_header_accept(['application/json'])
+
+        # HTTP header `Content-Type`
+        header_params['Content-Type'] = self.api_client.\
+            select_header_content_type(['application/json'])
+
+        # Authentication setting
+        auth_settings = []
+
+        return self.api_client.call_api('/build-records/{id}/built-artifacts', 'PUT',
+                                        path_params,
+                                        query_params,
+                                        header_params,
+                                        body=body_params,
+                                        post_params=form_params,
+                                        files=local_var_files,
+                                        response_type=None,
+                                        auth_settings=auth_settings,
+                                        callback=params.get('callback'),
+                                        _return_http_data_only=params.get('_return_http_data_only'),
+                                        _preload_content=params.get('_preload_content', True),
+                                        _request_timeout=params.get('_request_timeout'),
+                                        collection_formats=collection_formats)
+
+    def set_dependent_artifacts(self, id, body, **kwargs):
+        """
+        [role:admin] Set dependent artifacts on the BuildRecord. Note that operation replaces existing collection!
+        
+        This method makes a synchronous HTTP request by default. To make an
+        asynchronous HTTP request, please define a `callback` function
+        to be invoked when receiving the response.
+        >>> def callback_function(response):
+        >>>     pprint(response)
+        >>>
+        >>> thread = api.set_dependent_artifacts(id, body, callback=callback_function)
+
+        :param callback function: The callback function
+            for asynchronous request. (optional)
+        :param int id: BuildRecord id (required)
+        :param list[int] body: List of artifact ids (required)
+        :return: None
+                 If the method is called asynchronously,
+                 returns the request thread.
+        """
+        kwargs['_return_http_data_only'] = True
+        if kwargs.get('callback'):
+            return self.set_dependent_artifacts_with_http_info(id, body, **kwargs)
+        else:
+            (data) = self.set_dependent_artifacts_with_http_info(id, body, **kwargs)
+            return data
+
+    def set_dependent_artifacts_with_http_info(self, id, body, **kwargs):
+        """
+        [role:admin] Set dependent artifacts on the BuildRecord. Note that operation replaces existing collection!
+        
+        This method makes a synchronous HTTP request by default. To make an
+        asynchronous HTTP request, please define a `callback` function
+        to be invoked when receiving the response.
+        >>> def callback_function(response):
+        >>>     pprint(response)
+        >>>
+        >>> thread = api.set_dependent_artifacts_with_http_info(id, body, callback=callback_function)
+
+        :param callback function: The callback function
+            for asynchronous request. (optional)
+        :param int id: BuildRecord id (required)
+        :param list[int] body: List of artifact ids (required)
+        :return: None
+                 If the method is called asynchronously,
+                 returns the request thread.
+        """
+
+        all_params = ['id', 'body']
+        all_params.append('callback')
+        all_params.append('_return_http_data_only')
+        all_params.append('_preload_content')
+        all_params.append('_request_timeout')
+
+        params = locals()
+        for key, val in iteritems(params['kwargs']):
+            if key not in all_params:
+                raise TypeError(
+                    "Got an unexpected keyword argument '%s'"
+                    " to method set_dependent_artifacts" % key
+                )
+            params[key] = val
+        del params['kwargs']
+        # verify the required parameter 'id' is set
+        if ('id' not in params) or (params['id'] is None):
+            raise ValueError("Missing the required parameter `id` when calling `set_dependent_artifacts`")
+        # verify the required parameter 'body' is set
+        if ('body' not in params) or (params['body'] is None):
+            raise ValueError("Missing the required parameter `body` when calling `set_dependent_artifacts`")
+
+
+        collection_formats = {}
+
+        path_params = {}
+        if 'id' in params:
+            path_params['id'] = params['id']
+
+        query_params = []
+
+        header_params = {}
+
+        form_params = []
+        local_var_files = {}
+
+        body_params = None
+        if 'body' in params:
+            body_params = params['body']
+        # HTTP header `Accept`
+        header_params['Accept'] = self.api_client.\
+            select_header_accept(['application/json'])
+
+        # HTTP header `Content-Type`
+        header_params['Content-Type'] = self.api_client.\
+            select_header_content_type(['application/json'])
+
+        # Authentication setting
+        auth_settings = []
+
+        return self.api_client.call_api('/build-records/{id}/dependency-artifacts', 'PUT',
                                         path_params,
                                         query_params,
                                         header_params,

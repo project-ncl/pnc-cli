@@ -9,6 +9,7 @@ from pnc_cli import buildconfigurationsets
 from pnc_cli import buildrecords
 from pnc_cli import brewpush
 from pnc_cli import environments
+from pnc_cli import genericsetting
 from pnc_cli import licenses
 from pnc_cli import productmilestones
 from pnc_cli import productreleases
@@ -132,6 +133,13 @@ parser.add_commands([brewpush.push_build,
                      brewpush.push_build_set,
                      brewpush.push_build_status],
                      namespace="brew-push", namespace_kwargs=brewpush.namespace_kwargs)
+
+parser.add_commands([genericsetting.in_maintenance_mode,
+                     genericsetting.activate_maintenance_mode,
+                     genericsetting.deactivate_maintenance_mode,
+                     genericsetting.get_announcement_banner,
+                     genericsetting.set_announcement_banner],
+    namespace="admin", namespace_kwargs={'title': 'Admin stuff'})
 parser.autocomplete()
 
 

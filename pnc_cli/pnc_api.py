@@ -7,6 +7,7 @@ from pnc_cli.swagger_client import BuildconfigsetrecordsApi
 from pnc_cli.swagger_client import BuildconfigurationsApi
 from pnc_cli.swagger_client import BuildconfigurationsetsApi
 from pnc_cli.swagger_client import EnvironmentsApi
+from pnc_cli.swagger_client import GenericsettingApi
 from pnc_cli.swagger_client import LicensesApi
 from pnc_cli.swagger_client import ProductmilestonesApi
 from pnc_cli.swagger_client import ProductreleasesApi
@@ -32,6 +33,7 @@ class PncApi:
         self._build_configs = None
         self._build_group_configs = None
         self._environments = None
+        self._generic_setting = None
         self._licenses = None
         self._product_milestones = None
         self._product_releases = None
@@ -95,6 +97,12 @@ class PncApi:
         if not self._environments:
             self._environments = EnvironmentsApi(self.user.get_api_client())
         return self._environments
+
+    @property
+    def generic_setting(self):
+        if not self._generic_setting:
+            self._generic_setting = GenericsettingApi(self.user.get_api_client())
+        return self._generic_setting
 
     @property
     def licenses(self):
