@@ -138,8 +138,10 @@ Class | Method | HTTP request | Description
 *BuildrecordsApi* | [**get_attributes**](docs/BuildrecordsApi.md#get_attributes) | **GET** /build-records/{id}/get-attributes | Get Build Record attributes.
 *BuildrecordsApi* | [**get_build_configuration_audited**](docs/BuildrecordsApi.md#get_build_configuration_audited) | **GET** /build-records/{id}/build-configuration-audited | Gets the audited build configuration for specific build record
 *BuildrecordsApi* | [**get_built_artifacts**](docs/BuildrecordsApi.md#get_built_artifacts) | **GET** /build-records/{id}/built-artifacts | Gets artifacts built for specific Build Record
+*BuildrecordsApi* | [**get_built_artifacts_minimized**](docs/BuildrecordsApi.md#get_built_artifacts_minimized) | **GET** /build-records/{id}/built-artifacts-minimized | Gets minimized artifacts built for specific Build Record (no buildRecordIds nor dependantBuildRecordIds arrays provided)
 *BuildrecordsApi* | [**get_completed_or_runnning**](docs/BuildrecordsApi.md#get_completed_or_runnning) | **GET** /build-records/{id}/completed-or-running | Deprecated, use /builds/{id}
 *BuildrecordsApi* | [**get_dependency_artifacts**](docs/BuildrecordsApi.md#get_dependency_artifacts) | **GET** /build-records/{id}/dependency-artifacts | Gets dependency artifacts for specific Build Record
+*BuildrecordsApi* | [**get_dependency_artifacts_minimized**](docs/BuildrecordsApi.md#get_dependency_artifacts_minimized) | **GET** /build-records/{id}/dependency-artifacts-minimized | Gets minimized dependency artifacts for specific Build Record (no buildRecordIds nor dependantBuildRecordIds arrays provided)
 *BuildrecordsApi* | [**get_dependency_graph**](docs/BuildrecordsApi.md#get_dependency_graph) | **GET** /build-records/{id}/dependency-graph | Gets dependency graph for a Build Record (running or completed).
 *BuildrecordsApi* | [**get_logs**](docs/BuildrecordsApi.md#get_logs) | **GET** /build-records/{id}/log | Gets logs for specific Build Record
 *BuildrecordsApi* | [**get_repour_logs**](docs/BuildrecordsApi.md#get_repour_logs) | **GET** /build-records/{id}/repour-log | Gets repour logs for specific Build Record

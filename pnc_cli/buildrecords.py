@@ -102,6 +102,23 @@ def list_built_artifacts_raw(id, page_size=200, page_index=0, sort="", q=""):
     if response:
         return response.content
 
+@arg("id", help="BuildRecord ID to retrieve minimized artifacts from.", type=types.existing_build_record)
+@arg("-p", "--page-size", help="Limit the amount of Artifacts returned", type=int)
+@arg("--page-index", help="Select the index of page", type=int)
+def list_built_artifacts_minimized(id, page_size=200, page_index=0):
+    """
+    List minimized Artifacts associated with a BuildRecord (no buildRecordIds nor dependantBuildRecordIds arrays provided)
+    """
+    data = list_built_artifacts_minimized_raw(id, page_size, page_index)
+    if data:
+        return utils.format_json_list(data)
+
+def list_built_artifacts_minimized_raw(id, page_size=200, page_index=0):
+    response = utils.checked_api_call(pnc_api.builds, 'get_built_artifacts_minimized', id=id,
+            page_size=page_size, page_index=page_index)
+    if response:
+        return response.content
+
 
 @arg("id", help="BuildRecord ID to retrieve dependency Artifacts from.", type=types.existing_build_record)
 @arg("-p", "--page-size", help="Limit the amount of Artifacts returned", type=int)
@@ -119,6 +136,22 @@ def list_dependency_artifacts(id, page_size=200, page_index=0, sort="", q=""):
 def list_dependency_artifacts_raw(id, page_size=200, page_index=0, sort="", q=""):
     response = utils.checked_api_call(pnc_api.builds, 'get_dependency_artifacts', id=id, page_size=page_size, page_index=page_index, sort=sort,
                                       q=q)
+    if response:
+        return response.content
+
+@arg("id", help="BuildRecord ID to retrieve minimized dependency Artifacts from.", type=types.existing_build_record)
+@arg("-p", "--page-size", help="Limit the amount of Artifacts returned", type=int)
+@arg("--page-index", help="Select the index of page", type=int)
+def list_dependency_artifacts_minimized(id, page_size=200, page_index=0):
+    """
+    List minimized dependency artifacts associated with a BuildRecord (no buildRecordIds nor dependantBuildRecordIds arrays provided)
+    """
+    data = list_dependency_artifacts_minimized_raw(id, page_size, page_index)
+    if data:
+        return utils.format_json_list(data)
+
+def list_dependency_artifacts_minimized_raw(id, page_size=200, page_index=0):
+    response = utils.checked_api_call(pnc_api.builds, 'get_dependency_artifacts_minimized', id=id, page_size=page_size, page_index=page_index)
     if response:
         return response.content
 

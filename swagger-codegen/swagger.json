@@ -3948,6 +3948,66 @@
         }
       }
     },
+    "/build-records/{id}/built-artifacts-minimized" : {
+      "get" : {
+        "tags" : [ "build-records" ],
+        "summary" : "Gets minimized artifacts built for specific Build Record (no buildRecordIds nor dependantBuildRecordIds arrays provided)",
+        "description" : "",
+        "operationId" : "getBuiltArtifactsMinimized",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "description" : "BuildRecord id",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "name" : "pageIndex",
+          "in" : "query",
+          "description" : "Page Index",
+          "required" : false,
+          "type" : "integer",
+          "default" : "0",
+          "format" : "int32"
+        }, {
+          "name" : "pageSize",
+          "in" : "query",
+          "description" : "Pagination size",
+          "required" : false,
+          "type" : "integer",
+          "default" : "50",
+          "format" : "int32"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Success with results",
+            "schema" : {
+              "$ref" : "#/definitions/ArtifactPage"
+            }
+          },
+          "400" : {
+            "description" : "Invalid input parameters or validation error",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorResponseRest"
+            }
+          },
+          "500" : {
+            "description" : "Server error",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorResponseRest"
+            }
+          },
+          "204" : {
+            "description" : "Success but no content provided",
+            "schema" : {
+              "$ref" : "#/definitions/ArtifactPage"
+            }
+          }
+        }
+      }
+    },
     "/build-records/{id}/completed-or-running" : {
       "get" : {
         "tags" : [ "build-records" ],
@@ -4109,6 +4169,66 @@
           },
           "404" : {
             "description" : "Can not find specified result"
+          }
+        }
+      }
+    },
+    "/build-records/{id}/dependency-artifacts-minimized" : {
+      "get" : {
+        "tags" : [ "build-records" ],
+        "summary" : "Gets minimized dependency artifacts for specific Build Record (no buildRecordIds nor dependantBuildRecordIds arrays provided)",
+        "description" : "",
+        "operationId" : "getDependencyArtifactsMinimized",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "description" : "BuildRecord id",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "name" : "pageIndex",
+          "in" : "query",
+          "description" : "Page Index",
+          "required" : false,
+          "type" : "integer",
+          "default" : "0",
+          "format" : "int32"
+        }, {
+          "name" : "pageSize",
+          "in" : "query",
+          "description" : "Pagination size",
+          "required" : false,
+          "type" : "integer",
+          "default" : "50",
+          "format" : "int32"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Success with results",
+            "schema" : {
+              "$ref" : "#/definitions/ArtifactPage"
+            }
+          },
+          "400" : {
+            "description" : "Invalid input parameters or validation error",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorResponseRest"
+            }
+          },
+          "500" : {
+            "description" : "Server error",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorResponseRest"
+            }
+          },
+          "204" : {
+            "description" : "Success but no content provided",
+            "schema" : {
+              "$ref" : "#/definitions/ArtifactPage"
+            }
           }
         }
       }
