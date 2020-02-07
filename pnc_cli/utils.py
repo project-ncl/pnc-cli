@@ -2,9 +2,8 @@ import getpass
 import json
 import logging
 
-import requests
-
-requests.packages.urllib3.disable_warnings()
+from requests.packages import urllib3
+urllib3.disable_warnings()
 
 try:
     import configparser
