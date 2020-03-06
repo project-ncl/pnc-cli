@@ -151,6 +151,7 @@ Class | Method | HTTP request | Description
 *BuildrecordsApi* | [**remove_attribute**](docs/BuildrecordsApi.md#remove_attribute) | **DELETE** /build-records/{id}/remove-attribute | Remove attribute from BuildRecord.
 *BuildrecordsApi* | [**set_artifacts**](docs/BuildrecordsApi.md#set_artifacts) | **PUT** /build-records/{id}/built-artifacts | [role:admin] Set built artifacts on the BuildRecord. Note that operation replaces existing collection!
 *BuildrecordsApi* | [**set_dependent_artifacts**](docs/BuildrecordsApi.md#set_dependent_artifacts) | **PUT** /build-records/{id}/dependency-artifacts | [role:admin] Set dependent artifacts on the BuildRecord. Note that operation replaces existing collection!
+*BuildrecordsApi* | [**download_scm_sources**](docs/BuildrecordsApi.md#download_scm_sources) | **GET** /build-records/{id}/scm-archive | Download SCM sources used for the build given a Build Record.
 *BuildsApi* | [**cancel**](docs/BuildsApi.md#cancel) | **POST** /builds/{id}/cancel | Cancel running build.
 *BuildsApi* | [**get_all**](docs/BuildsApi.md#get_all) | **GET** /builds | Gets all Build Records
 *BuildsApi* | [**get_specific**](docs/BuildsApi.md#get_specific) | **GET** /builds/{id} | Gets a BuildRecord (active or archived)

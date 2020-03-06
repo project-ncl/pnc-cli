@@ -4,7 +4,7 @@ import pnc_cli.common as common
 import pnc_cli.cli_types as types
 import pnc_cli.utils as utils
 from pnc_cli.pnc_api import pnc_api
-
+from urllib import urlretrieve
 
 @arg("-p", "--page-size", help="Limit the amount of BuildRecords returned", type=int)
 @arg("--page-index", help="Select the index of page", type=int)
@@ -226,3 +226,17 @@ def list_attributes_raw(id,):
     response = utils.checked_api_call(pnc_api.builds, 'get_attributes', id=id)
     if response:
         return response.content
+
+@arg("id", help="BuildRecord ID to download the scm sources from.", type=types.existing_build_record)
+def download_scm_sources_for_record(id):
+    """
+    Download SCM sources for a given BuildRecord
+    """
+    data = download_scm_sources_for_record_raw(id)
+    if data:
+        return data
+
+def download_scm_sources_for_record_raw(id):
+    response = utils.checked_api_call(pnc_api.builds, 'download_scm_sources', id=id)
+    if response:
+      urlretrieve(response)

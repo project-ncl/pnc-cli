@@ -8255,6 +8255,35 @@
           }
         }
       }
+    },
+    "/build-records/{id}/scm-archive" : {
+      "get" : {
+        "tags" : [ "build-records" ],
+        "summary" : "Download SCM sources used for the build given a Build Record",
+        "description" : "",
+        "operationId" : "getSCMArchive",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "*/*" ],
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "description" : "BuildRecord id",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int32"
+        }],
+        "responses" : {
+          "200" : {
+            "description" : "Success with results",
+            "schema" : {
+              "type" : "string"
+            }
+          },
+          "404" : {
+            "description" : "Can not find specified result"
+          }
+        }
+      }
     }
   },
   "definitions" : {
