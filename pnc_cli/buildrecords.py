@@ -4,7 +4,6 @@ import pnc_cli.common as common
 import pnc_cli.cli_types as types
 import pnc_cli.utils as utils
 from pnc_cli.pnc_api import pnc_api
-from urllib import urlretrieve
 
 @arg("-p", "--page-size", help="Limit the amount of BuildRecords returned", type=int)
 @arg("--page-index", help="Select the index of page", type=int)
@@ -237,6 +236,9 @@ def download_scm_sources_for_record(id):
         return data
 
 def download_scm_sources_for_record_raw(id):
-    response = utils.checked_api_call(pnc_api.builds, 'download_scm_sources', id=id)
+    response = utils.checked_api_call(pnc_api.builds, 'download_scm_sources', id=id, _preload_content=False)
     if response:
-      urlretrieve(response)
+        data = response.read()
+        print("Writing to: " + str(id) + ".tar.gz")
+        with open(str(id) + '.tar.gz', 'wb') as f:
+            f.write(data)

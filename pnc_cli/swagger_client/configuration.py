@@ -77,7 +77,7 @@ class Configuration(object):
 
         # SSL/TLS verification
         # Set this to false to skip verifying SSL certificate when calling API from https server.
-        self.verify_ssl = True
+        self.verify_ssl = False
         # Set this to customize the certificate file to verify the peer.
         self.ssl_ca_cert = None
         # client certificate file
